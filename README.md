@@ -1,3 +1,6 @@
+# GameDesign2018sp
+Advanced game design project for group 3.
+=======
 # Game Design Group 3 Spring 2018
 
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
@@ -20,4 +23,4 @@ Android, and Windows IDEs.
 
 You will need to make changes to the project to give it a different name and package
 identifier (to prevent your application from clashing with others).  See the course 
-web page for instructions  
+web page for instructions
