@@ -1,6 +1,7 @@
 # GameDesign2018sp
 Advanced game design project for group 3.
-=======
+
+
 # Game Design Group 3 Spring 2018
 
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
