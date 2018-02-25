@@ -1,4 +1,4 @@
-package edu.cornell.gdiac.helloworld;
+package edu.cornell.gdiac.chaoscastle;
 
 import org.libsdl.app.*;
 import android.os.*;
