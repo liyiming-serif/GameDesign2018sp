@@ -1,3 +1,6 @@
+# GameDesign2018sp
+Advanced game design project for group 3.
+=======
 # Game Design Group 3 Spring 2018
 
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
@@ -9,7 +12,7 @@ Create a new branch for each coding task, and name the branch \[netId\]\_\[codin
 
 When you're done with your coding task, submit a **pull request**. We'll merge our changes to the master branch during coding meetings or after class.
 
-Be as descriptive with your commit messages as you can under 80 characters.
+Write commit messages **in the imperative** and keep them under 80 characters. Ex. `git commit -m "add art assets for castle"` `git commit -m "implement basic networking"`
 
 
 ## Cornell University Game Library (CUGL)
@@ -20,4 +23,4 @@ Android, and Windows IDEs.
 
 You will need to make changes to the project to give it a different name and package
 identifier (to prevent your application from clashing with others).  See the course 
-web page for instructions  
+web page for instructions

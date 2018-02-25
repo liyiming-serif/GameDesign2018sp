@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.cornell.gdiac.helloworld"
+    package="edu.cornell.gdiac.chaoscastle"
 	android:installLocation="auto">
       
 	<!-- Android 4.4+ -->
