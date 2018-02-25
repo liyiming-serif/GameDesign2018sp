@@ -9,7 +9,7 @@ Create a new branch for each coding task, and name the branch \[netId\]\_\[codin
 
 When you're done with your coding task, submit a **pull request**. We'll merge our changes to the master branch during coding meetings or after class.
 
-Write commit messages **in the imperative** and keep them under 80 characters. Ex. <git commit -m "add art assets for castle"> <git commit -m "implement basic networking">
+Write commit messages **in the imperative** and keep them under 80 characters. Ex. `git commit -m "add art assets for castle"` `git commit -m "implement basic networking"`
 
 
 ## Cornell University Game Library (CUGL)
