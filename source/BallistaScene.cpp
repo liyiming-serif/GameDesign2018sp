@@ -3,3 +3,9 @@
 //
 
 #include "BallistaScene.h"
+
+using namespace cugl;
+
+void BallistaScene::onStartUp(){
+
+}
