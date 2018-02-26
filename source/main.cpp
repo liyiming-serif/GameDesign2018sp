@@ -53,10 +53,10 @@ int main(int argc, char * argv[]) {
     /// SET YOUR APPLICATION PROPERTIES
     
     // The unique application name
-    app.setName("Hello World");
+    app.setName("Chaos Castle");
     
     // The name of your studio (for organizing save files)
-    app.setOrganization("GDIAC");
+    app.setOrganization("Squid Inc");
 
     // Set the window properties (Only applies to OS X/Windows Desktop)
     app.setSize(GAME_WIDTH, GAME_HEIGHT);
