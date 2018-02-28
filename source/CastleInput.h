@@ -1,8 +1,0 @@
-//
-// Created by Yiming on 2/26/2018.
-//
-
-#ifndef BUILD_ANDROID_CASTLEINPUT_H
-#define BUILD_ANDROID_CASTLEINPUT_H
-
-#endif //BUILD_ANDROID_CASTLEINPUT_H

@@ -20,6 +20,13 @@
 			"magfilter":"linear",
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
+		},
+		"ballista": {
+			"file":     "textures/Ballista.png",
+			"minfilter":"nearest",
+			"magfilter":"linear",
+			"wrapS":    "clamp",
+			"wrapT":    "clamp"
 		}
 	},
 	"fonts": {
