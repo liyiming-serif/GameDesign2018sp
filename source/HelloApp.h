@@ -47,7 +47,6 @@ protected:
 
     /** First scene graph to load. */
     BallistaScene _scene;
-
     
 public:
     /**
