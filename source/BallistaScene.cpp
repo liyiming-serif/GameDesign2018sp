@@ -54,6 +54,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void BallistaScene::dispose() {
     if (_active) {
         removeAllChildren();
+        _ballista = nullptr;
         _active = false;
     }
 }
