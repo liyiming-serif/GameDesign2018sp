@@ -30,6 +30,7 @@
 #ifndef __HELLO_APP_H__
 #define __HELLO_APP_H__
 #include <cugl/cugl.h>
+#include "BallistaScene.h"
 
 /**
  * Class for a simple Hello World style application
@@ -41,25 +42,11 @@ class HelloApp : public cugl::Application {
 protected:
     /** The loaders to (synchronously) load in assets */
     std::shared_ptr<cugl::AssetManager> _assets;
-
-    /** A scene graph, used to display our 2D scenes */
-    std::shared_ptr<cugl::Scene> _scene;
     /** A 3152 style SpriteBatch to render the scene */
     std::shared_ptr<cugl::SpriteBatch>  _batch;
-    /** A reference to the logo, so that we can move it around */
-    std::shared_ptr<cugl::Node>  _logo;
 
-    /** A countdown used to move the logo */
-    int  _countdown;
-    
-    /** 
-     * Internal helper to build the scene graph.
-     *
-     * Scene graphs are not required.  You could manage all scenes just like
-     * you do in 3152.  However, they greatly simplify scene management, and
-     * have become standard in most game engines.
-     */
-    void buildScene();
+    /** First scene graph to load. */
+    BallistaScene _scene;
     
 public:
     /**
@@ -71,7 +58,7 @@ public:
      * of initialization from the constructor allows main.cpp to perform
      * advanced configuration of the application before it starts.
      */
-    HelloApp() : Application(), _countdown(-1) {}
+    HelloApp(): cugl::Application() {}
     
     /**
      * Disposes of this application, releasing all resources.
