@@ -20,6 +20,8 @@ protected:
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
 
+    std::shared_ptr<cugl::Button> _overworld_button;
+
 
 
 public:

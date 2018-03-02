@@ -41,34 +41,33 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("background");
     
     Size overworld_b_size = overworld_up->getSize();
-    std::shared_ptr<Button> overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
-                                                            PolygonNode::allocWithTexture(overworld_down));
-    overworld_button->setScale(0.1f); // Magic number to rescale asset
+    _overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
+                                      PolygonNode::allocWithTexture(overworld_down));
+    _overworld_button->setScale(0.1f); // Magic number to rescale asset
 
-        // Create a callback function for the OVERWORLD button
-        overworld_button->setName("close");
-        overworld_button->setListener([=] (const std::string& name, bool down) {
-            // Only quit when the button is released
-            if (!down) {
-                CULog("Goodbye!");
-                Application::get()->quit();
-            }
-        });
+    // Create a callback function for the OVERWORLD button
+    _overworld_button->setName("close");
+    _overworld_button->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            switchscene = true;
+        }
+    });
     
     
     // Position the LOOKOUT button in the center
-    overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
-    overworld_button->setPosition(100,80);
+    _overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
+    _overworld_button->setPosition(100,80);
     
     // Add the logo and button to the scene graph
 
     
     addChild(_ballista);
-    addChild(overworld_button);
+    addChild(_overworld_button);
 
     // We can only activate a button AFTER it is added to a scene
     
-     overworld_button->activate(1);
+     _overworld_button->activate(1);
 
     CULog("Ballista position: %s\n", _ballista->getPosition().toString().c_str());
 
@@ -92,6 +91,7 @@ void BallistaScene::dispose() {
         removeAllChildren();
         _ballista = nullptr;
         _assets = nullptr;
+        _overworld_button = nullptr;
         _active = false;
     }
 }
@@ -116,5 +116,9 @@ void BallistaScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(225,229,170,255));
+        _overworld_button->activate(1);
+    }
+    else{
+        _overworld_button->deactivate();
     }
 }
