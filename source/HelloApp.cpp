@@ -69,7 +69,7 @@ void HelloApp::onStartup() {
 
     // Build the scene from these assets
     CULog("hello");
-    _scene.init(_assets);
+    _overworldScene.init(_assets);
 
     Application::onStartup(); //call super
     CULog("bye");
@@ -88,7 +88,8 @@ void HelloApp::onStartup() {
  */
 void HelloApp::onShutdown() {
     // Delete all smart pointers
-    _scene.dispose();
+    _overworldScene.dispose();
+    _ballistaScene.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -113,7 +114,7 @@ void HelloApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void HelloApp::update(float timestep) {
-    _scene.update(timestep);
+    _overworldScene.update(timestep);
 }
 
 /**
@@ -127,5 +128,5 @@ void HelloApp::update(float timestep) {
  */
 void HelloApp::draw() {
     // This takes care of begin/end
-    _scene.render(_batch);
+    _overworldScene.render(_batch);
 }

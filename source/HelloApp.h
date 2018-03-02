@@ -31,6 +31,7 @@
 #define __HELLO_APP_H__
 #include <cugl/cugl.h>
 #include "BallistaScene.h"
+#include "OverworldScene.h"
 
 /**
  * Class for a simple Hello World style application
@@ -45,8 +46,10 @@ protected:
     /** A 3152 style SpriteBatch to render the scene */
     std::shared_ptr<cugl::SpriteBatch>  _batch;
 
+    /**  scene graph to load. */
+    BallistaScene _ballistaScene;
     /** First scene graph to load. */
-    BallistaScene _scene;
+    OverworldScene _overworldScene;
 
     
 public:
