@@ -4,7 +4,9 @@
 
 #include "BallistaScene.h"
 #define LISTENER_KEY                1
-
+#define BALLISTA    1
+#define OVERWORLD   2
+#define LOOKOUT     3
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
@@ -23,7 +25,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(225,229,170,255));
 
-    switchscene = false;
+    switchscene = 0;
 
     _assets = assets;
 
@@ -46,11 +48,11 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _overworld_button->setScale(0.1f); // Magic number to rescale asset
 
     // Create a callback function for the OVERWORLD button
-    _overworld_button->setName("close");
+    _overworld_button->setName("overworld");
     _overworld_button->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            switchscene = true;
+            switchscene = OVERWORLD;
         }
     });
     
@@ -67,9 +69,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // We can only activate a button AFTER it is added to a scene
     
-     _overworld_button->activate(1);
-
-    CULog("Ballista position: %s\n", _ballista->getPosition().toString().c_str());
+     _overworld_button->activate(5);
 
     // Input controller
 #ifdef CU_TOUCH_SCREEN
@@ -112,11 +112,11 @@ void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, b
 //Pause or Resume
 void BallistaScene::setActive(bool active){
     _active = active;
-    switchscene = false;
+    switchscene = 0;
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(225,229,170,255));
-        _overworld_button->activate(1);
+        _overworld_button->activate(5);
     }
     else{
         _overworld_button->deactivate();

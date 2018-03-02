@@ -38,7 +38,7 @@ public:
 
     //Pause or Resume
     void setActive(bool active);
-    bool switchscene;
+    int switchscene;
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H

@@ -32,6 +32,7 @@
 
 #define BALLISTA    1
 #define OVERWORLD   2
+#define LOOKOUT     3
 
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
@@ -74,7 +75,9 @@ void HelloApp::onStartup() {
     _ballistaScene.init(_assets);
     _ballistaScene.setActive(false);
     _overworldScene.init(_assets);
-    _currscene=OVERWORLD;
+    _overworldScene.setActive(false);
+    _lookoutScene.init(_assets);
+    _currscene=LOOKOUT;
 
     Application::onStartup(); //call super
 }
@@ -94,6 +97,7 @@ void HelloApp::onShutdown() {
     // Delete all smart pointers
     _overworldScene.dispose();
     _ballistaScene.dispose();
+    _lookoutScene.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -120,20 +124,40 @@ void HelloApp::onShutdown() {
 void HelloApp::update(float timestep) {
     if(_currscene==OVERWORLD) {
         _overworldScene.update(timestep);
-        if(_overworldScene.switchscene==true){
+        if(_overworldScene.switchscene!=0){
+            swapscenes(_overworldScene.switchscene);
             _overworldScene.setActive(false);
-            _ballistaScene.setActive(true);
-            _currscene = BALLISTA;
         }
     }
     else if(_currscene==BALLISTA){
         _ballistaScene.update(timestep);
-        if(_ballistaScene.switchscene==true){
-            _overworldScene.setActive(true);
+        if(_ballistaScene.switchscene!=0){
+            swapscenes(_ballistaScene.switchscene);
             _ballistaScene.setActive(false);
-            _currscene = OVERWORLD;
         }
     }
+    else if(_currscene==LOOKOUT){
+        _lookoutScene.update(timestep);
+        if(_lookoutScene.switchscene!=0){
+            swapscenes(_lookoutScene.switchscene);
+            _lookoutScene.setActive(false);
+        }
+    }
+}
+
+void HelloApp::swapscenes(int nextscene){
+    switch(nextscene){
+        case OVERWORLD:
+            _overworldScene.setActive(true);
+            break;
+        case BALLISTA:
+            _ballistaScene.setActive(true);
+            break;
+        case LOOKOUT:
+            _lookoutScene.setActive(true);
+            break;
+    }
+    _currscene = nextscene;
 }
 
 /**
@@ -152,5 +176,8 @@ void HelloApp::draw() {
     }
     else if(_currscene==BALLISTA){
         _ballistaScene.render(_batch);
+    }
+    else if(_currscene==LOOKOUT){
+        _lookoutScene.render(_batch);
     }
 }

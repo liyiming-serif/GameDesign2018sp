@@ -8,9 +8,9 @@
 
 #include "OverworldScene.h"
 
-
-
-#define LISTENER_KEY  1
+#define BALLISTA    1
+#define OVERWORLD   2
+#define LOOKOUT     3
 
 using namespace cugl;
 
@@ -32,7 +32,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
 
-    switchscene = false;
+    switchscene = 0;
     
     Application::get()->setClearColor(Color4(170,170,170,255));
     
@@ -45,20 +45,12 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     background->setScale(0.4f); // Magic number to rescale asset
     background->setAnchor(Vec2::ANCHOR_CENTER);
     background->setPosition(0,0);
+
     _background->addChild(background);
-    
-    //    // Get the font and make a label for the logo
-    //    std::shared_ptr<Font> font = _assets->get<Font>("charlemagne");
-    //    std::shared_ptr<Label> label = Label::alloc("CUGL",font);
-    //    label->setAnchor(Vec2::ANCHOR_TOP_CENTER);
-    //    label->setPosition(15,-15); // Magic numbers for some manual kerning
-    //    _logo->addChild(label);
-    
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(size.width/2,size.height/2);
 
-    
-    
+
     // Create a button.  A button has an up image and a down image
     std::shared_ptr<Texture> up   = _assets->get<Texture>("close-normal");
     std::shared_ptr<Texture> down = _assets->get<Texture>("close-selected");
@@ -98,24 +90,23 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // Create a callback function for the BALLISTA button
-    _ballista_button->setName("close");
+    _ballista_button->setName("ballista");
     _ballista_button->setListener([=] (const std::string& name, bool down) {
         // Only switch scenes when the button is released
         if (!down) {
-            switchscene = true;
+            switchscene = BALLISTA;
         }
     });
     
     
-//    // Create a callback function for the LOOKOUT button
-//    lookout_button->setName("lookout");
-//    lookout_button->setListener([=] (const std::string& name, bool down) {
-//        // Only go to lookout when the button is released
-//        if (!down) {
-//            CULog("Lookout!");
-//            this->quit();
-//        }
-//    });
+    // Create a callback function for the LOOKOUT button
+    _lookout_button->setName("lookout");
+    _lookout_button->setListener([=] (const std::string& name, bool down) {
+        // Only go to lookout when the button is released
+        if (!down) {
+            switchscene = LOOKOUT;
+        }
+    });
     
     // Position the button in the bottom right corner
     _button->setAnchor(Vec2::ANCHOR_CENTER);
@@ -139,9 +130,9 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // We can only activate a button AFTER it is added to a scene
-    _button->activate(1);
-    _ballista_button->activate(2);
-    _lookout_button->activate(3);
+    _button->activate(2);
+    _ballista_button->activate(3);
+    _lookout_button->activate(4);
     
     return true;
 }
@@ -161,11 +152,11 @@ void OverworldScene::update(float timestep){
 
 void OverworldScene::setActive(bool active) {
     _active = active;
-    switchscene = false;
+    switchscene = 0;
     if(active){
-        _button->activate(1);
-        _ballista_button->activate(2);
-        _lookout_button->activate(3);
+        _button->activate(2);
+        _ballista_button->activate(3);
+        _lookout_button->activate(4);
         Application::get()->setClearColor(Color4(170,170,170,255));
     }
     else{

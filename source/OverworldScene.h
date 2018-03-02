@@ -40,7 +40,7 @@ public:
 
     // What sort of a codebase are you running here? The demos are so inconsistent.
     void setActive(bool active);
-    bool switchscene;
+    int switchscene;
 };
 
 
