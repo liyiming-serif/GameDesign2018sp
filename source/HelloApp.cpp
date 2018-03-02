@@ -70,7 +70,7 @@ void HelloApp::onStartup() {
     // Build the scene from these assets
 
     CULog("hello");
-    _overworldScene.init(_assets);
+    _ballistaScene.init(_assets);
 
     Application::onStartup(); //call super
 }
@@ -114,7 +114,7 @@ void HelloApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void HelloApp::update(float timestep) {
-    _overworldScene.update(timestep);
+    _ballistaScene.update(timestep);
 }
 
 /**
@@ -128,5 +128,5 @@ void HelloApp::update(float timestep) {
  */
 void HelloApp::draw() {
     // This takes care of begin/end
-    _overworldScene.render(_batch);
+    _ballistaScene.render(_batch);
 }
