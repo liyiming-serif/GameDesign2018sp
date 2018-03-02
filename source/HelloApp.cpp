@@ -30,6 +30,9 @@
 // Include the class header, which includes all of the CUGL classes
 #include "HelloApp.h"
 
+#define BALLISTA    1
+#define OVERWORLD   2
+
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
 
@@ -68,7 +71,10 @@ void HelloApp::onStartup() {
 #endif
 
     // Build the scene from these assets
-    _scene.init(_assets);
+    _ballistaScene.init(_assets);
+    _ballistaScene.setActive(false);
+    _overworldScene.init(_assets);
+    _currscene=OVERWORLD;
 
     Application::onStartup(); //call super
 }
@@ -86,7 +92,8 @@ void HelloApp::onStartup() {
  */
 void HelloApp::onShutdown() {
     // Delete all smart pointers
-    _scene.dispose();
+    _overworldScene.dispose();
+    _ballistaScene.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -111,7 +118,22 @@ void HelloApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void HelloApp::update(float timestep) {
-    _scene.update(timestep);
+    if(_currscene==OVERWORLD) {
+        _overworldScene.update(timestep);
+        if(_overworldScene.switchscene==true){
+            _overworldScene.setActive(false);
+            _ballistaScene.setActive(true);
+            _currscene = BALLISTA;
+        }
+    }
+    else if(_currscene==BALLISTA){
+        _ballistaScene.update(timestep);
+        if(_ballistaScene.switchscene==true){
+            _overworldScene.setActive(true);
+            _ballistaScene.setActive(false);
+            _currscene = OVERWORLD;
+        }
+    }
 }
 
 /**
@@ -125,5 +147,10 @@ void HelloApp::update(float timestep) {
  */
 void HelloApp::draw() {
     // This takes care of begin/end
-    _scene.render(_batch);
+    if(_currscene==OVERWORLD) {
+        _overworldScene.render(_batch);
+    }
+    else if(_currscene==BALLISTA){
+        _ballistaScene.render(_batch);
+    }
 }

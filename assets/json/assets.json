@@ -21,13 +21,34 @@
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
 		},
-		"ballista": {
-			"file":     "textures/Ballista.png",
-			"minfilter":"nearest",
-			"magfilter":"linear",
-			"wrapS":    "clamp",
-			"wrapT":    "clamp"
-		}
+        "ballista_icon": {
+            "file":     "textures/ballista_icon.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout": {
+            "file":     "textures/lookout.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "background": {
+            "file":     "textures/background.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista": {
+            "file":     "textures/Ballista.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        }
 	},
 	"fonts": {
 		"charlemagne": {

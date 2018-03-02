@@ -20,6 +20,8 @@ protected:
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
 
+
+
 public:
     // Constructors
     BallistaScene() : Scene() {}
@@ -32,6 +34,9 @@ public:
     // Gameplay
     void update(float timestep);
 
+    //Pause or Resume
+    void setActive(bool active);
+    bool switchscene;
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H

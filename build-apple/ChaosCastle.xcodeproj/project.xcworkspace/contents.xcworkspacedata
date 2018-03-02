@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/nsterling4/Documents/Game_Design/GameDesign2018sp/build-apple/ChaosCastle.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>
