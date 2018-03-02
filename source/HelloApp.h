@@ -51,7 +51,7 @@ protected:
     /** First scene graph to load. */
     OverworldScene _overworldScene;
 
-    
+    int _currscene;
 public:
     /**
      * Creates, but does not initialized a new application.

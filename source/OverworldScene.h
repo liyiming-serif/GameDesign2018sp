@@ -20,13 +20,12 @@ protected:
     
     //bakground floorplan
     std::shared_ptr<cugl::Node>  _background;
-    
-    // Controllers
-    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-    
-    // Models
-    std::shared_ptr<cugl::PolygonNode> _ballista;
-    
+
+    //buttons
+    std::shared_ptr<cugl::Button> _button;
+    std::shared_ptr<cugl::Button> _ballista_button;
+    std::shared_ptr<cugl::Button> _lookout_button;
+
 public:
     // Constructors
     OverworldScene() : Scene() {}
@@ -38,7 +37,10 @@ public:
     
     // Gameplay
     void update(float timestep);
-    
+
+    // What sort of a codebase are you running here? The demos are so inconsistent.
+    void setActive(bool active);
+    bool switchscene;
 };
 
 

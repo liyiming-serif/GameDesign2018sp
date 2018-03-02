@@ -31,6 +31,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
     
     _assets = assets;
+
+    switchscene = false;
     
     Application::get()->setClearColor(Color4(170,170,170,255));
     
@@ -62,17 +64,17 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> down = _assets->get<Texture>("close-selected");
     
     Size bsize = up->getSize();
-    std::shared_ptr<Button> button = Button::alloc(PolygonNode::allocWithTexture(up),
-                                                   PolygonNode::allocWithTexture(down));
+    _button = Button::alloc(PolygonNode::allocWithTexture(up),
+                            PolygonNode::allocWithTexture(down));
     
     // Create the BALLISTA button.  A button has an up image and a down image
     std::shared_ptr<Texture> ballista_up   = _assets->get<Texture>("ballista_icon");
     std::shared_ptr<Texture> ballista_down = _assets->get<Texture>("ballista_icon");
     
     Size ballista_b_size = ballista_up->getSize();
-    std::shared_ptr<Button> ballista_button = Button::alloc(PolygonNode::allocWithTexture(ballista_up),
-                                                            PolygonNode::allocWithTexture(ballista_down));
-    ballista_button->setScale(0.2f); // Magic number to rescale asset
+    _ballista_button = Button::alloc(PolygonNode::allocWithTexture(ballista_up),
+                                     PolygonNode::allocWithTexture(ballista_down));
+    _ballista_button->setScale(0.2f); // Magic number to rescale asset
     
     
     // Create the LOOKOUT button.  A button has an up image and a down image
@@ -80,13 +82,13 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> lookout_down = _assets->get<Texture>("lookout");
     
     //Size lookout_b_size = lookout_up->getSize();
-    std::shared_ptr<Button> lookout_button = Button::alloc(PolygonNode::allocWithTexture(lookout_up),
-                                                           PolygonNode::allocWithTexture(lookout_down));
-    lookout_button->setScale(0.2f); // Magic number to rescale asset
+    _lookout_button = Button::alloc(PolygonNode::allocWithTexture(lookout_up),
+                                    PolygonNode::allocWithTexture(lookout_down));
+    _lookout_button->setScale(0.2f); // Magic number to rescale asset
     
 //    // Create a callback function for the button
-    button->setName("close");
-    button->setListener([=] (const std::string& name, bool down) {
+    _button->setName("close");
+    _button->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
             CULog("Goodbye!");
@@ -95,52 +97,51 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     
-//    // Create a callback function for the BALLISTA button
-//    ballista_button->setName("close");
-//    ballista_button->setListener([=] (const std::string& name, bool down) {
-//        // Only quit when the button is released
-//        if (!down) {
-//            CULog("Ballista");
-//            (HelloApp) Application::get()->_ballistaScene;
-//        }
-//    });
+    // Create a callback function for the BALLISTA button
+    _ballista_button->setName("close");
+    _ballista_button->setListener([=] (const std::string& name, bool down) {
+        // Only switch scenes when the button is released
+        if (!down) {
+            switchscene = true;
+        }
+    });
     
     
 //    // Create a callback function for the LOOKOUT button
-//    lookout_button->setName("close");
+//    lookout_button->setName("lookout");
 //    lookout_button->setListener([=] (const std::string& name, bool down) {
-//        // Only quit when the button is released
+//        // Only go to lookout when the button is released
 //        if (!down) {
-//            CULog("Goodbye!");
+//            CULog("Lookout!");
 //            this->quit();
 //        }
 //    });
     
     // Position the button in the bottom right corner
-    button->setAnchor(Vec2::ANCHOR_CENTER);
-    button->setPosition(size.width-bsize.width/2,bsize.height/2);
+    _button->setAnchor(Vec2::ANCHOR_CENTER);
+    _button->setPosition(size.width-bsize.width/2,bsize.height/2);
     
     // Position the BALLISTA button on the background
-    ballista_button->setAnchor(Vec2::ANCHOR_CENTER);
-    ballista_button->setPosition(ballista_b_size.width/2+90,ballista_b_size.height/2+90);
+    _ballista_button->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballista_button->setPosition(ballista_b_size.width/2+90,ballista_b_size.height/2+90);
     
     // Position the LOOKOUT button in the center
-    lookout_button->setAnchor(Vec2::ANCHOR_CENTER);
-    lookout_button->setPosition(size.width/2,size.height/2);
+    _lookout_button->setAnchor(Vec2::ANCHOR_CENTER);
+    _lookout_button->setPosition(size.width/2,size.height/2);
     
     // Add the logo and button to the scene graph
 
     addChild(_background);
-    addChild(button);
+    addChild(_button);
     
-    addChild(ballista_button);
-    addChild(lookout_button);
+    addChild(_ballista_button);
+    addChild(_lookout_button);
     
     
     // We can only activate a button AFTER it is added to a scene
-    button->activate(1);
-    ballista_button->activate(2);
-    lookout_button->activate(3);
+    _button->activate(1);
+    _ballista_button->activate(2);
+    _lookout_button->activate(3);
     
     return true;
 }
@@ -148,12 +149,30 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void OverworldScene::dispose() {
     if (_active) {
         removeAllChildren();
+        _assets = nullptr;
+        _background = nullptr;
         _active = false;
     }
 }
 
 void OverworldScene::update(float timestep){
     
+}
+
+void OverworldScene::setActive(bool active) {
+    _active = active;
+    switchscene = false;
+    if(active){
+        _button->activate(1);
+        _ballista_button->activate(2);
+        _lookout_button->activate(3);
+        Application::get()->setClearColor(Color4(170,170,170,255));
+    }
+    else{
+        _button->deactivate();
+        _ballista_button->deactivate();
+        _lookout_button->deactivate();
+    }
 }
 
 

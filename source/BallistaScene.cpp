@@ -23,6 +23,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(225,229,170,255));
 
+    switchscene = false;
+
     _assets = assets;
 
     // Get the image and attach it to a polygon obj. (no model yet)
@@ -89,6 +91,7 @@ void BallistaScene::dispose() {
     if (_active) {
         removeAllChildren();
         _ballista = nullptr;
+        _assets = nullptr;
         _active = false;
     }
 }
@@ -105,3 +108,13 @@ void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, b
 //void touchReleaseCB(const cugl::TouchEvent& event, bool focus){
 //
 //};
+
+//Pause or Resume
+void BallistaScene::setActive(bool active){
+    _active = active;
+    switchscene = false;
+    if(active){
+        // Set background color
+        Application::get()->setClearColor(Color4(225,229,170,255));
+    }
+}
