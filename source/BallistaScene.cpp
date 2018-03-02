@@ -33,8 +33,42 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballista->setScale(0.8f); // Magic number to rescale asset
     _ballista->setAnchor(Vec2::ANCHOR_CENTER);
     _ballista->setPosition(_size.width/2,_size.height/2);
+    
+    
+    
+    // Create the OVERWORLD button.  A button has an up image and a down image
+    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("background");
+    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("background");
+    
+    Size overworld_b_size = overworld_up->getSize();
+    std::shared_ptr<Button> overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
+                                                            PolygonNode::allocWithTexture(overworld_down));
+    overworld_button->setScale(0.1f); // Magic number to rescale asset
 
+        // Create a callback function for the OVERWORLD button
+        overworld_button->setName("close");
+        overworld_button->setListener([=] (const std::string& name, bool down) {
+            // Only quit when the button is released
+            if (!down) {
+                CULog("Goodbye!");
+                Application::get()->quit();
+            }
+        });
+    
+    
+    // Position the LOOKOUT button in the center
+    overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
+    overworld_button->setPosition(100,80);
+    
+    // Add the logo and button to the scene graph
+
+    
     addChild(_ballista);
+    addChild(overworld_button);
+
+    // We can only activate a button AFTER it is added to a scene
+    
+     overworld_button->activate(1);
 
     CULog("Ballista position: %s\n", _ballista->getPosition().toString().c_str());
 
