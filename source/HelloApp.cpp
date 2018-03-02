@@ -68,11 +68,11 @@ void HelloApp::onStartup() {
 #endif
 
     // Build the scene from these assets
+
     CULog("hello");
     _overworldScene.init(_assets);
 
     Application::onStartup(); //call super
-    CULog("bye");
 }
 
 /**

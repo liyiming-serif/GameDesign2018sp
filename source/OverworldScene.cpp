@@ -95,15 +95,15 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     
-    // Create a callback function for the BALLISTA button
-    ballista_button->setName("close");
-    ballista_button->setListener([=] (const std::string& name, bool down) {
-        // Only quit when the button is released
-        if (!down) {
-            CULog("Ballista");
-            (HelloApp) Application::get()->_ballistaScene;
-        }
-    });
+//    // Create a callback function for the BALLISTA button
+//    ballista_button->setName("close");
+//    ballista_button->setListener([=] (const std::string& name, bool down) {
+//        // Only quit when the button is released
+//        if (!down) {
+//            CULog("Ballista");
+//            (HelloApp) Application::get()->_ballistaScene;
+//        }
+//    });
     
     
 //    // Create a callback function for the LOOKOUT button

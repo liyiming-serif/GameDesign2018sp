@@ -8,11 +8,14 @@
 
 class BallistaScene : public cugl::Scene{
 protected:
+    cugl::Size _size;
+
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
-    // Controllers
+    // Input Callbacks
     void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
+//    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
 
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
