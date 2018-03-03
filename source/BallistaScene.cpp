@@ -23,20 +23,25 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
 
     // Set background color
-    Application::get()->setClearColor(Color4(225,229,170,255));
+    Application::get()->setClearColor(Color4(132,180,113,255));
 
     switchscene = 0;
-
     _assets = assets;
+
+    // Set the background image
+    std::shared_ptr<Texture> bktexture  = _assets->get<Texture>("ballista_view");
+    _background = PolygonNode::allocWithTexture(bktexture);
+    _background->setScale(.5625f); // Magic number to rescale asset
+    _background->setAnchor(Vec2::ANCHOR_CENTER);
+    _background->setPosition(_size.width/2,_size.height/2);
 
     // Get the image and attach it to a polygon obj. (no model yet)
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("ballista");
     _ballista = PolygonNode::allocWithTexture(texture);
-    _ballista->setScale(0.8f); // Magic number to rescale asset
+    _ballista->setScale(1.0f); // Magic number to rescale asset
     _ballista->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballista->setPosition(_size.width/2,_size.height/2);
-    
-    
+    _ballista->setPosition(766,230);
+
     
     // Create the OVERWORLD button.  A button has an up image and a down image
     std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("background");
@@ -55,20 +60,17 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             switchscene = OVERWORLD;
         }
     });
-    
-    
-    // Position the LOOKOUT button in the center
+
+    // Position the OVERWORLD button in the bottom left
     _overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
     _overworld_button->setPosition(100,80);
     
-    // Add the logo and button to the scene graph
-
-    
+    // Add children to the scene graph
+    addChild(_background);
     addChild(_ballista);
     addChild(_overworld_button);
 
     // We can only activate a button AFTER it is added to a scene
-    
      _overworld_button->activate(5);
 
     // Input controller
@@ -78,9 +80,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     touch->addMotionListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
         this->touchDragCB(event,prev,focus);
     });
-//    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-//        this->touchReleaseCB(event,focus);
-//    });
+    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+        this->touchReleaseCB(event,focus);
+    });
 #endif
 
     return true;
@@ -92,6 +94,7 @@ void BallistaScene::dispose() {
         _ballista = nullptr;
         _assets = nullptr;
         _overworld_button = nullptr;
+        _background = nullptr;
         _active = false;
     }
 }
@@ -101,13 +104,15 @@ void BallistaScene::update(float timestep){
 }
 
 void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, bool focus) {
-    Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(event.position);
-    _ballista->setAngle(pointdir.getAngle());
+    if(_active) {
+        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(event.position);
+        _ballista->setAngle(pointdir.getAngle());
+    }
 }
 
-//void touchReleaseCB(const cugl::TouchEvent& event, bool focus){
-//
-//};
+void BallistaScene::touchReleaseCB(const cugl::TouchEvent& event, bool focus){
+
+}
 
 //Pause or Resume
 void BallistaScene::setActive(bool active){
@@ -115,7 +120,7 @@ void BallistaScene::setActive(bool active){
     switchscene = 0;
     if(active){
         // Set background color
-        Application::get()->setClearColor(Color4(225,229,170,255));
+        Application::get()->setClearColor(Color4(132,180,113,255));
         _overworld_button->activate(5);
     }
     else{
