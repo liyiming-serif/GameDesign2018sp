@@ -40,18 +40,28 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background = Node::alloc();
     
     // Get the image and add it to the node.
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("background");
-    std::shared_ptr<PolygonNode> background = PolygonNode::allocWithTexture(texture);
-    background->setScale(0.4f); // Magic number to rescale asset
-    background->setAnchor(Vec2::ANCHOR_CENTER);
-    background->setPosition(0,0);
+    std::shared_ptr<Texture> bg_texture  = _assets->get<Texture>("background");
+    std::shared_ptr<PolygonNode> floorplan = PolygonNode::allocWithTexture(bg_texture);
+    floorplan->setScale(0.4f); // Magic number to rescale asset
+    floorplan->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+    floorplan->setPosition(size.width/2,0);
 
-    _background->addChild(background);
+    _background->addChild(floorplan);
+
+    
+    // Get the image and add it to the node.
+    std::shared_ptr<Texture> ca_texture  = _assets->get<Texture>("castle");
+    std::shared_ptr<PolygonNode> castle = PolygonNode::allocWithTexture(ca_texture);
+    castle->setScale(0.9f); // Magic number to rescale asset
+    castle->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    castle->setPosition(-size.width/2+20,0);
+    
+    _background->addChild(castle);
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(size.width/2,size.height/2);
 
 
-    // Create a button.  A button has an up image and a down image
+    // Create the quit button.  A button has an up image and a down image
     std::shared_ptr<Texture> up   = _assets->get<Texture>("close-normal");
     std::shared_ptr<Texture> down = _assets->get<Texture>("close-selected");
     
@@ -114,11 +124,11 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the BALLISTA button on the background
     _ballista_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballista_button->setPosition(ballista_b_size.width/2+90,ballista_b_size.height/2+90);
+    _ballista_button->setPosition(ballista_b_size.width/2+250,ballista_b_size.height/2+90);
     
     // Position the LOOKOUT button in the center
     _lookout_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _lookout_button->setPosition(size.width/2,size.height/2);
+    _lookout_button->setPosition(size.width/2+180,size.height/2);
     
     // Add the logo and button to the scene graph
 
