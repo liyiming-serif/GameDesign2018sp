@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B61F2048F1C30036047B /* BallistaScene.cpp */; };
+		A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B61F2048F1C30036047B /* BallistaScene.cpp */; };
+		A9AA61132049AEE700940276 /* HelloApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE9B21D74952A002FE78B /* HelloApp.cpp */; };
+		A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
+		A9AA6117204A19C500940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
+		A9AA6118204A19C600940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
 		A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B61F2048F1C30036047B /* BallistaScene.cpp */; };
 		A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
 		A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
@@ -49,7 +55,6 @@
 		EB0FF62B2016F09F00517030 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF5512016E8D800517030 /* QuartzCore.framework */; };
 		EB0FF62C2016F09F00517030 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF54F2016E8D800517030 /* UIKit.framework */; };
 		EB0FF63B2016F42F00517030 /* libcugl-sim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF6152016EF4F00517030 /* libcugl-sim.a */; };
-		EB2BE9B51D74952A002FE78B /* HelloApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE9B21D74952A002FE78B /* HelloApp.cpp */; };
 		EB2BE9B61D74952A002FE78B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE9B41D74952A002FE78B /* main.cpp */; };
 		EB2BE9B91D7498C9002FE78B /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE9B81D7498C9002FE78B /* fonts */; };
 		EB2BE9BB1D7498D2002FE78B /* textures in Resources */ = {isa = PBXBuildFile; fileRef = EB2BE9BA1D7498D2002FE78B /* textures */; };
@@ -105,6 +110,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A9AA6114204A19BC00940276 /* LookoutScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LookoutScene.cpp; sourceTree = "<group>"; };
+		A9AA6115204A19BC00940276 /* LookoutScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LookoutScene.h; sourceTree = "<group>"; };
 		A9B9B61F2048F1C30036047B /* BallistaScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BallistaScene.cpp; sourceTree = "<group>"; };
 		A9B9B6232048F1C30036047B /* BallistaScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallistaScene.h; sourceTree = "<group>"; };
 		A9B9B6252048F26D0036047B /* OverworldScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OverworldScene.cpp; sourceTree = "<group>"; };
@@ -342,6 +349,8 @@
 				EB2BE9B21D74952A002FE78B /* HelloApp.cpp */,
 				A9B9B61F2048F1C30036047B /* BallistaScene.cpp */,
 				A9B9B6232048F1C30036047B /* BallistaScene.h */,
+				A9AA6114204A19BC00940276 /* LookoutScene.cpp */,
+				A9AA6115204A19BC00940276 /* LookoutScene.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -519,9 +528,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */,
 				EB0FF61D2016F06000517030 /* main.cpp in Sources */,
 				A9B9B6292048F26D0036047B /* OverworldScene.cpp in Sources */,
 				EB0FF61E2016F06000517030 /* HelloApp.cpp in Sources */,
+				A9AA6118204A19C600940276 /* LookoutScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,9 +540,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
 				A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */,
 				EB7454AF1D74D891002FBAE6 /* HelloApp.cpp in Sources */,
+				A9AA6117204A19C500940276 /* LookoutScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,8 +554,9 @@
 			files = (
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */,
-				EB2BE9B51D74952A002FE78B /* HelloApp.cpp in Sources */,
+				A9AA61132049AEE700940276 /* HelloApp.cpp in Sources */,
 				A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */,
+				A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

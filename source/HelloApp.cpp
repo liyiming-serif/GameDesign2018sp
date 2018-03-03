@@ -74,10 +74,10 @@ void HelloApp::onStartup() {
     // Build the scene from these assets
     _ballistaScene.init(_assets);
     _ballistaScene.setActive(false);
-    _overworldScene.init(_assets);
-    _overworldScene.setActive(false);
     _lookoutScene.init(_assets);
-    _currscene=LOOKOUT;
+    _lookoutScene.setActive(false);
+    _overworldScene.init(_assets);
+    _currscene=OVERWORLD;
 
     Application::onStartup(); //call super
 }
