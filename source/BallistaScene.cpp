@@ -40,7 +40,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballista = PolygonNode::allocWithTexture(texture);
     _ballista->setScale(1.0f); // Magic number to rescale asset
     _ballista->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballista->setPosition(766,230);
+    _ballista->setPosition(760,225);
 
     
     // Create the OVERWORLD button.  A button has an up image and a down image
