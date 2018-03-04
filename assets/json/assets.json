@@ -42,6 +42,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+		"lookout_view": {
+			"file":     "textures/lookout_view.png",
+			"minfilter":"nearest",
+			"magfilter":"linear",
+			"wrapS":    "clamp",
+			"wrapT":    "clamp"
+		},
+		"ballista_view": {
+			"file":     "textures/ballista_view.png",
+			"minfilter":"nearest",
+			"magfilter":"linear",
+			"wrapS":    "clamp",
+			"wrapT":    "clamp"
+		},
         "ballista": {
             "file":     "textures/Ballista.png",
             "minfilter":"nearest",

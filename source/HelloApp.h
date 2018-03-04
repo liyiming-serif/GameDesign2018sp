@@ -32,6 +32,7 @@
 #include <cugl/cugl.h>
 #include "BallistaScene.h"
 #include "OverworldScene.h"
+#include "LookoutScene.h"
 
 /**
  * Class for a simple Hello World style application
@@ -48,6 +49,7 @@ protected:
 
     /**  scene graph to load. */
     BallistaScene _ballistaScene;
+    LookoutScene _lookoutScene;
     /** First scene graph to load. */
     OverworldScene _overworldScene;
 
@@ -110,6 +112,7 @@ public:
      * @param timestep  The amount of time (in seconds) since the last frame
      */
     virtual void update(float timestep) override;
+    void swapscenes(int nextscene);
     
     /**
      * The method called to draw the application to the screen.
