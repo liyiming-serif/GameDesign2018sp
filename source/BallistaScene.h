@@ -15,10 +15,12 @@ protected:
 
     // Input Callbacks
     void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-//    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
+    void touchReleaseCB(const cugl::TouchEvent& event, bool focus, const std::shared_ptr<cugl::AssetManager>& assets);
 
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
+
+    std::shared_ptr<cugl::PolygonNode> _arrow;
 
     std::shared_ptr<cugl::Button> _overworld_button;
 
