@@ -13,16 +13,10 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
-    // Input Callbacks
-    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-//    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
-
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
-
+    std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Button> _overworld_button;
-
-
 
 public:
     // Constructors
@@ -39,6 +33,11 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+    // Input Callbacks
+    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
+    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
+
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H

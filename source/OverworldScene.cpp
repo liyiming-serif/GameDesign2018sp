@@ -33,8 +33,9 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
 
     switchscene = 0;
-    
-    Application::get()->setClearColor(Color4(170,170,170,255));
+
+    // Set background color
+    Application::get()->setClearColor(Color4(132,180,113,255));
     
     // The logo is actually an image+label.  We need a parent node
     _background = Node::alloc();
@@ -167,7 +168,7 @@ void OverworldScene::setActive(bool active) {
         _button->activate(2);
         _ballista_button->activate(3);
         _lookout_button->activate(4);
-        Application::get()->setClearColor(Color4(170,170,170,255));
+        Application::get()->setClearColor(Color4(132,180,113,255));
     }
     else{
         _button->deactivate();
