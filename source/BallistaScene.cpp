@@ -112,8 +112,9 @@ void BallistaScene::update(float timestep){
         if ((_arrow->getPositionX() > _size.width || _arrow->getPositionX() < 0) ||
             (_arrow->getPositionY() > _size.height || _arrow->getPositionY() < 0)) {
             _arrow->dispose();
+            _arrow = nullptr;
         }
-        CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
+        //CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
     }
 }
 
@@ -126,6 +127,8 @@ void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, b
 
 void BallistaScene::touchReleaseCB(const cugl::TouchEvent& event, bool focus){
     // Get the image and attach it to a polygon obj. (no model yet)
+    //_arrow->dispose();
+    //_arrow = nullptr;
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("arrow");
     _arrow = PolygonNode::allocWithTexture(texture);
     _arrow->setScale(0.8f); // Magic number to rescale asset
