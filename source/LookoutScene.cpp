@@ -41,8 +41,8 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(_size.width/2,_size.height/2);
 
     // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("background");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("background");
+    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
+    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
 
     Size overworld_b_size = overworld_up->getSize();
     _overworld_button2 = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
@@ -68,7 +68,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_overworld_button2);
 
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button2->activate(6);
+    _overworld_button2->activate(26);
 
     return true;
 }
@@ -99,7 +99,7 @@ void LookoutScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("over here now");
-        _overworld_button2->activate(6);
+        _overworld_button2->activate(26);
     }
     else{
         _overworld_button2->deactivate();
