@@ -96,11 +96,12 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void BallistaScene::dispose() {
     if (_active) {
         removeAllChildren();
-        _ballista = nullptr;
-        _arrow = nullptr;
-        _assets = nullptr;
-        _overworld_button = nullptr;
-        _background = nullptr;
+#ifdef CU_TOUCH_SCREEN
+        Touchscreen* touch = Input::get<Touchscreen>();
+
+        touch->removeMotionListener(LISTENER_KEY);
+        touch->removeEndListener(LISTENER_KEY);
+#endif
         _active = false;
     }
 }
@@ -148,8 +149,26 @@ void BallistaScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _overworld_button->activate(25);
+        //reactivate input listener
+#ifdef CU_TOUCH_SCREEN
+        Touchscreen* touch = Input::get<Touchscreen>();
+
+        touch->addMotionListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
+            this->touchDragCB(event,prev,focus);
+        });
+        touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+            this->touchReleaseCB(event, focus);
+        });
+#endif
     }
     else{
         _overworld_button->deactivate();
+        //deactivate the touch listener
+#ifdef CU_TOUCH_SCREEN
+        Touchscreen* touch = Input::get<Touchscreen>();
+
+        touch->removeMotionListener(LISTENER_KEY);
+        touch->removeEndListener(LISTENER_KEY);
+#endif
     }
 }
