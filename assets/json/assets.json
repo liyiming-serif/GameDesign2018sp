@@ -125,7 +125,14 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
-        }
+        },
+		"arrow": {
+			"file":     "textures/arrow.png",
+			"minfilter":"nearest",
+			"magfilter":"linear",
+			"wrapS":    "clamp",
+			"wrapT":    "clamp"
+		}
 	},
 	"fonts": {
 		"charlemagne": {

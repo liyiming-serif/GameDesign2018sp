@@ -65,8 +65,13 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
     _overworld_button->setPosition(100,80);
     
+
     // Add children to the scene graph
     addChild(_background);
+    // Add the logo and button to the scene graph
+
+    _arrow = nullptr;
+
     addChild(_ballista);
     addChild(_overworld_button);
 
@@ -81,7 +86,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         this->touchDragCB(event,prev,focus);
     });
     touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-        this->touchReleaseCB(event,focus);
+        this->touchReleaseCB(event, focus);
     });
 #endif
 
@@ -92,6 +97,7 @@ void BallistaScene::dispose() {
     if (_active) {
         removeAllChildren();
         _ballista = nullptr;
+        _arrow = nullptr;
         _assets = nullptr;
         _overworld_button = nullptr;
         _background = nullptr;
@@ -100,7 +106,16 @@ void BallistaScene::dispose() {
 }
 
 void BallistaScene::update(float timestep){
-
+    if (_arrow != nullptr) {
+        _arrow->setPosition(_arrow->getPositionX() + cos(_arrow->getAngle()),
+                            _arrow->getPositionY() + sin(_arrow->getAngle()));
+        if ((_arrow->getPositionX() > _size.width || _arrow->getPositionX() < 0) ||
+            (_arrow->getPositionY() > _size.height || _arrow->getPositionY() < 0)) {
+            _arrow->dispose();
+            _arrow = nullptr;
+        }
+        //CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
+    }
 }
 
 void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, bool focus) {
@@ -111,7 +126,18 @@ void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, b
 }
 
 void BallistaScene::touchReleaseCB(const cugl::TouchEvent& event, bool focus){
+    // Get the image and attach it to a polygon obj. (no model yet)
+    //_arrow->dispose();
+    //_arrow = nullptr;
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("arrow");
+    _arrow = PolygonNode::allocWithTexture(texture);
+    _arrow->setScale(0.8f); // Magic number to rescale asset
+    _arrow->setAnchor(Vec2::ANCHOR_CENTER);
+    _arrow->setPosition(_size.width/2,_size.height/2);
+    _arrow->setAngle(_ballista->getAngle());
+    addChild(_arrow);
 
+    CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
 }
 
 //Pause or Resume
