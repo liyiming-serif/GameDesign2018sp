@@ -21,43 +21,106 @@
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
 		},
+        "castle": {
+            "file":     "textures/Castle.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_floor": {
+            "file":     "textures/BallistaFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "ballista_icon": {
-            "file":     "textures/ballista_icon.png",
+            "file":     "textures/BallistaIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "lookout": {
-            "file":     "textures/lookout.png",
+        "ballista_icon_selected": {
+            "file":     "textures/BallistaIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "background": {
-            "file":     "textures/background.png",
+        "ballista_view": {
+            "file":     "textures/BallistaView.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista": {
+            "file":     "textures/Ballista.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_floor": {
+            "file":     "textures/LookoutFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_icon": {
+            "file":     "textures/LookoutIcon.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_icon_selected": {
+            "file":     "textures/LookoutIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
 		"lookout_view": {
-			"file":     "textures/lookout_view.png",
+			"file":     "textures/LookoutView.png",
 			"minfilter":"nearest",
 			"magfilter":"linear",
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
-		},
-		"ballista_view": {
-			"file":     "textures/ballista_view.png",
-			"minfilter":"nearest",
-			"magfilter":"linear",
-			"wrapS":    "clamp",
-			"wrapT":    "clamp"
-		},
-        "ballista": {
-            "file":     "textures/Ballista.png",
+        },
+        "basement_floor": {
+            "file":     "textures/BasementFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "catapult_floor": {
+            "file":     "textures/CatapultFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_floor": {
+            "file":     "textures/OilFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "up": {
+            "file":     "textures/Up.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "down": {
+            "file":     "textures/Down.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

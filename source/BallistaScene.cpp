@@ -44,8 +44,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     
     // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("background");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("background");
+    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
+    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
     
     Size overworld_b_size = overworld_up->getSize();
     _overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
@@ -76,7 +76,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_overworld_button);
 
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button->activate(5);
+     _overworld_button->activate(25);
 
     // Input controller
 #ifdef CU_TOUCH_SCREEN
@@ -147,7 +147,7 @@ void BallistaScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        _overworld_button->activate(5);
+        _overworld_button->activate(25);
     }
     else{
         _overworld_button->deactivate();
