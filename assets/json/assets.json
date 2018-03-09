@@ -21,8 +21,36 @@
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
 		},
-        "castle": {
-            "file":     "textures/Castle.png",
+        "castle_ballista": {
+            "file":     "textures/Purgatory/Fake/CastleBallista.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_basement": {
+            "file":     "textures/Purgatory/Fake/CastleBasement.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_catapult": {
+            "file":     "textures/Purgatory/Fake/CastleCatapult.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_oil": {
+            "file":     "textures/Purgatory/Fake/CastleOil.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_lookout": {
+            "file":     "textures/Purgatory/Fake/CastleLookout.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

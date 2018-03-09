@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <cugl/cugl.h>
+#include <map>
 
 
 class OverworldScene : public cugl::Scene{
@@ -24,13 +25,25 @@ protected:
     /** The movement actions */
     std::shared_ptr<cugl::MoveBy> _moveup;
     std::shared_ptr<cugl::MoveBy> _movedn;
+    std::shared_ptr<cugl::FadeIn> _castleFadeIN;
+    std::shared_ptr<cugl::FadeOut> _castleFadeOUT;
+    std::shared_ptr<cugl::FadeOut> _castleFadeINSTANT;
     
     //background floorplan
     std::shared_ptr<cugl::Node>  _background;
     std::shared_ptr<cugl::Node>  _levels;
+    
+    //castle views
+    std::shared_ptr<cugl::PolygonNode> _castle_ballista;
+    std::shared_ptr<cugl::PolygonNode> _castle_catapult;
+    std::shared_ptr<cugl::PolygonNode> _castle_oil;
+    std::shared_ptr<cugl::PolygonNode> _castle_lookout;
+    std::shared_ptr<cugl::PolygonNode> _castle_basement;
+
 
     //buttons
     std::shared_ptr<cugl::Button> _quitButton;
+    std::shared_ptr<cugl::Button> _resetButton;
     //Ballista Buttons
         std::shared_ptr<cugl::Button> _ballistaNorth;
         std::shared_ptr<cugl::Button> _ballistaNorthEast;
@@ -45,6 +58,8 @@ protected:
     
     std::shared_ptr<cugl::Button> _up_button;
     std::shared_ptr<cugl::Button> _down_button;
+    
+    
     
 
 
@@ -65,17 +80,51 @@ public:
     int switchscene;
     bool isMoving = false;
     float stairs;
+    cugl::Vec2 castleOrigin;
+    int currentCastleFloor;
     
+    
+    /**
+     * Resets the castle to the first floor
+     *
+     *
+     */
+    void resetCastle();
     
     /**
      * Performs a move action
      *
      * @param action The move action
      */
-    void doMove(const std::shared_ptr<cugl::MoveBy>& action);
+    void doMove(const std::shared_ptr<cugl::MoveBy>& action, int floor);
+    
+    /**
+     * Performs a fade in action
+     *
+     * @param action The move action
+     */
+    void doFadeIn(const std::shared_ptr<cugl::FadeIn>& action,  int floor);
+    
+    /**
+     * Performs a fade out action
+     *
+     * @param action The move action
+     */
+    void doFadeOut(const std::shared_ptr<cugl::FadeOut>& action,  int floor);
+    
+    /**
+     * Returns the correct tower view
+     *
+     * @param floor The floor number
+     */
+    std::shared_ptr<cugl::PolygonNode> getTowerView(int floor);
+    
+    
     
     
 };
+
+
 
 
 #endif /* OverworldScene_h */
