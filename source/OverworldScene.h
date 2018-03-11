@@ -53,8 +53,28 @@ protected:
         std::shared_ptr<cugl::Button> _ballistaSouthWest;
         std::shared_ptr<cugl::Button> _ballistaWest;
         std::shared_ptr<cugl::Button> _ballistaNorthWest;
+    //Catapult Buttons
+        std::shared_ptr<cugl::Button> _catapultNorth;
+        std::shared_ptr<cugl::Button> _catapultNorthEast;
+        std::shared_ptr<cugl::Button> _catapultEast;
+        std::shared_ptr<cugl::Button> _catapultSouthEast;
+        std::shared_ptr<cugl::Button> _catapultSouth;
+        std::shared_ptr<cugl::Button> _catapultSouthWest;
+        std::shared_ptr<cugl::Button> _catapultWest;
+        std::shared_ptr<cugl::Button> _catapultNorthWest;
+    //Oil Buttons
+        std::shared_ptr<cugl::Button> _oilNorth;
+        std::shared_ptr<cugl::Button> _oilNorthEast;
+        std::shared_ptr<cugl::Button> _oilEast;
+        std::shared_ptr<cugl::Button> _oilSouthEast;
+        std::shared_ptr<cugl::Button> _oilSouth;
+        std::shared_ptr<cugl::Button> _oilSouthWest;
+        std::shared_ptr<cugl::Button> _oilWest;
+        std::shared_ptr<cugl::Button> _oilNorthWest;
     //Lookout Button
     std::shared_ptr<cugl::Button> _lookout_button;
+    //Basement Buttons
+    std::shared_ptr<cugl::Button> _repair_button;
     
     std::shared_ptr<cugl::Button> _up_button;
     std::shared_ptr<cugl::Button> _down_button;
@@ -118,6 +138,9 @@ public:
      * @param floor The floor number
      */
     std::shared_ptr<cugl::PolygonNode> getTowerView(int floor);
+    
+    
+    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
     
     
     
