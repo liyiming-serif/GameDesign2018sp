@@ -41,8 +41,8 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(_size.width/2,_size.height/2);
 
     // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
+    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("lookout_floor");
+    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("lookout_floor");
 
     Size overworld_b_size = overworld_up->getSize();
     _overworld_button2 = Button::alloc(PolygonNode::allocWithTexture(overworld_up),

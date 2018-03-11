@@ -33,6 +33,7 @@
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+#define REPAIR     4
 
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
@@ -76,6 +77,8 @@ void HelloApp::onStartup() {
     _ballistaScene.setActive(false);
     _lookoutScene.init(_assets);
     _lookoutScene.setActive(false);
+    _repairScene.init(_assets);
+    _repairScene.setActive(false);
     _overworldScene.init(_assets);
     _currscene=OVERWORLD;
 
@@ -98,6 +101,7 @@ void HelloApp::onShutdown() {
     _overworldScene.dispose();
     _ballistaScene.dispose();
     _lookoutScene.dispose();
+    _repairScene.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -143,6 +147,13 @@ void HelloApp::update(float timestep) {
             _lookoutScene.setActive(false);
         }
     }
+    else if(_currscene==REPAIR){
+        _repairScene.update(timestep);
+        if(_repairScene.switchscene!=0){
+            swapscenes(_repairScene.switchscene);
+            _repairScene.setActive(false);
+        }
+    }
 }
 
 void HelloApp::swapscenes(int nextscene){
@@ -155,6 +166,9 @@ void HelloApp::swapscenes(int nextscene){
             break;
         case LOOKOUT:
             _lookoutScene.setActive(true);
+            break;
+        case REPAIR:
+            _repairScene.setActive(true);
             break;
     }
     _currscene = nextscene;
@@ -179,5 +193,8 @@ void HelloApp::draw() {
     }
     else if(_currscene==LOOKOUT){
         _lookoutScene.render(_batch);
+    }
+    else if(_currscene==REPAIR){
+        _repairScene.render(_batch);
     }
 }
