@@ -33,6 +33,7 @@
 #include "BallistaScene.h"
 #include "OverworldScene.h"
 #include "LookoutScene.h"
+#include "RepairScene.h"
 
 /**
  * Class for a simple Hello World style application
@@ -50,6 +51,7 @@ protected:
     /**  scene graph to load. */
     BallistaScene _ballistaScene;
     LookoutScene _lookoutScene;
+    RepairScene _repairScene;
     /** First scene graph to load. */
     OverworldScene _overworldScene;
 
