@@ -5,6 +5,9 @@
 #ifndef BUILD_ANDROID_BALLISTASCENE_H
 #define BUILD_ANDROID_BALLISTASCENE_H
 #include <cugl/cugl.h>
+#include "ArrowModel.h"
+#include "InputController.h"
+#include <Set>
 
 class BallistaScene : public cugl::Scene{
 protected:
@@ -13,10 +16,18 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
+    // Physics manager
+    std::shared_ptr<cugl::ObstacleWorld> _world;
+
+    // Memory Managers
+    std::set<std::shared_ptr<ArrowModel>> _arrows;
+
+    // Input Controller
+    InputController _input;
+
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
-    std::shared_ptr<cugl::PolygonNode> _arrow;
     std::shared_ptr<cugl::Button> _overworld_button;
 
 public:
@@ -29,15 +40,16 @@ public:
     ~BallistaScene() {dispose();}
 
     // Gameplay
-    void update(float timestep);
+    void update(float deltaTime);
 
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
 
     // Input Callbacks
-    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
+//    void touchBeginCB(const cugl::TouchEvent& event, bool focus);
+//    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
+//    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
 
 };
 

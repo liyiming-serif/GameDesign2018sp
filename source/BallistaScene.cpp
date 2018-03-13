@@ -7,12 +7,14 @@
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
 #define GAME_WIDTH 1024
 
 bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+    // Set display size
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
 
@@ -25,6 +27,10 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
 
+    // Set the Input Controller
+    _input.init();
+
+    // Set the assets
     switchscene = 0;
     _assets = assets;
 
@@ -35,14 +41,14 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
 
-    // Get the image and attach it to a polygon obj. (no model yet)
+    // Get the ballista image and attach it to a polygon obj. (no model yet)
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("ballista");
     _ballista = PolygonNode::allocWithTexture(texture);
     _ballista->setScale(1.0f); // Magic number to rescale asset
     _ballista->setAnchor(Vec2::ANCHOR_CENTER);
     _ballista->setPosition(760,225);
 
-    
+
     // Create the OVERWORLD button.  A button has an up image and a down image
     std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
     std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
@@ -68,107 +74,89 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Add children to the scene graph
     addChild(_background);
-    // Add the logo and button to the scene graph
-
-    _arrow = nullptr;
-
     addChild(_ballista);
     addChild(_overworld_button);
 
+    // Create the arrows set
+    _arrows.clear();
+
+    // Create the physics world
+    _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size),Vec2::ZERO);
+
     // We can only activate a button AFTER it is added to a scene
      _overworld_button->activate(25);
-
-    // Input controller
-#ifdef CU_TOUCH_SCREEN
-    Touchscreen* touch = Input::get<Touchscreen>();
-
-    touch->addMotionListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
-        this->touchDragCB(event,prev,focus);
-    });
-    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-        this->touchReleaseCB(event, focus);
-    });
-#endif
 
     return true;
 }
 
 void BallistaScene::dispose() {
     if (_active) {
+        if (_world != nullptr) {
+            _world->clear();
+            _world = nullptr;
+        }
         removeAllChildren();
-#ifdef CU_TOUCH_SCREEN
-        Touchscreen* touch = Input::get<Touchscreen>();
-
-        touch->removeMotionListener(LISTENER_KEY);
-        touch->removeEndListener(LISTENER_KEY);
-#endif
+        _arrows.clear();
+        _input.dispose();
         _active = false;
     }
 }
 
-void BallistaScene::update(float timestep){
-    if (_arrow != nullptr) {
-        _arrow->setPosition(_arrow->getPositionX() + cos(_arrow->getAngle()),
-                            _arrow->getPositionY() + sin(_arrow->getAngle()));
-        if ((_arrow->getPositionX() > _size.width || _arrow->getPositionX() < 0) ||
-            (_arrow->getPositionY() > _size.height || _arrow->getPositionY() < 0)) {
-            _arrow->dispose();
-            _arrow = nullptr;
-        }
-        //CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
-    }
-}
-
-void BallistaScene::touchDragCB(const TouchEvent& event, const Vec2& previous, bool focus) {
-    if(_active) {
-        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(event.position);
+void BallistaScene::update(float deltaTime){
+    // Poll inputs
+    if(_input.isPressed()){
+        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(_input.pointerPos());
         _ballista->setAngle(pointdir.getAngle());
     }
-}
+    if(_input.justReleased()){
+        // Allocate a new arrow in memory
+        std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),_assets);
+        if(a != nullptr) {
+            _arrows.insert(a);
+            _world->addObstacle(a);
+            addChild(a->getNode());
+        }
+    }
 
-void BallistaScene::touchReleaseCB(const cugl::TouchEvent& event, bool focus){
-    // Get the image and attach it to a polygon obj. (no model yet)
-    //_arrow->dispose();
-    //_arrow = nullptr;
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("arrow");
-    _arrow = PolygonNode::allocWithTexture(texture);
-    _arrow->setScale(0.8f); // Magic number to rescale asset
-    _arrow->setAnchor(Vec2::ANCHOR_CENTER);
-    _arrow->setPosition(_size.width/2,_size.height/2);
-    _arrow->setAngle(_ballista->getAngle());
-    addChild(_arrow);
+    // Update arrows and mark out of bound ones for deletion
+    Rect bounds(Vec2::ZERO, _size);
+    for(auto it = _arrows.begin(); it != _arrows.end(); it++){
+        std::shared_ptr<ArrowModel> a = *it;
+        if(a != nullptr) {
+            a->update(deltaTime);
+        }
+        if(!bounds.contains(a->getPosition())){
+            _world->removeObstacle(a.get());
+            removeChild(a->getNode());
+            _arrows.erase(a);
+            a = nullptr;
+            CULog("Arrow post destruction!");
+        }
+    }
 
-    CULog("arrow position: %s\n", _arrow->getPosition().toString().c_str());
+    //crank the physics engine
+    _world->update(deltaTime);
+
+    //refresh the input controller
+    _input.update(deltaTime);
 }
 
 //Pause or Resume
 void BallistaScene::setActive(bool active){
     _active = active;
     switchscene = 0;
+    _arrows.clear();
+
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _overworld_button->activate(25);
         //reactivate input listener
-#ifdef CU_TOUCH_SCREEN
-        Touchscreen* touch = Input::get<Touchscreen>();
-
-        touch->addMotionListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
-            this->touchDragCB(event,prev,focus);
-        });
-        touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
-            this->touchReleaseCB(event, focus);
-        });
-#endif
+        _input.init();
     }
     else{
         _overworld_button->deactivate();
-        //deactivate the touch listener
-#ifdef CU_TOUCH_SCREEN
-        Touchscreen* touch = Input::get<Touchscreen>();
-
-        touch->removeMotionListener(LISTENER_KEY);
-        touch->removeEndListener(LISTENER_KEY);
-#endif
+        //deactivate the input listener
+        _input.dispose();
     }
 }

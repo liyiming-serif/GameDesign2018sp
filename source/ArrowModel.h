@@ -1,4 +1,11 @@
 //
+// ArrowModel.h
+// Chaos Castle
+//
+// An ArrowModel represents a single arrow fired by the ballista.
+// Game object models extend a Box2D class and update their own node in the scene graph.
+// They effectively connect physics objects to scene nodes.
+//
 // Created by Yiming on 3/9/2018.
 //
 
@@ -8,10 +15,51 @@
 #include <cugl/2d/physics/CUCapsuleObstacle.h>
 #include <cugl/cugl.h>
 
-using namespace cugl;
+class ArrowModel : public cugl::CapsuleObstacle{
+private:
+    //I don't completely understand Walker's rationale, but do this for every non-singleton model.
+    CU_DISALLOW_COPY_AND_ASSIGN(ArrowModel);
 
-class ArrowModel : public CapsuleObstacle{
+public:
+    /**
+     * Constructors
+     */
+    ArrowModel(void) : CapsuleObstacle() { }
 
+    //Alloc calls init, and returns a reference to this arrow. In scene controllers, call alloc.
+    static std::shared_ptr<ArrowModel> alloc(cugl::Vec2 pos, float dir,
+                                             const std::shared_ptr<cugl::AssetManager>& assets) {
+        std::shared_ptr<ArrowModel> ref = std::make_shared<ArrowModel>();
+        return (ref->init(pos, dir, assets) ? ref : nullptr);
+    }
+
+    bool init(cugl::Vec2 pos, float dir, const std::shared_ptr<cugl::AssetManager>& assets);
+
+
+    /**
+     * Gameplay Functions
+     */
+    void update(float deltaTime) override;
+
+    // Assume assets are already loaded, and _node is immutable after init
+    const std::shared_ptr<cugl::Node>& getNode() const { return _node; }
+
+
+    /**
+     * Destructors
+     */
+    void dispose();
+
+    ~ArrowModel() {dispose();}
+
+
+protected:
+    /**
+     * Private members
+     */
+
+    //This is the root scene node that corresponds to this model.
+    std::shared_ptr<cugl::PolygonNode> _node;
 };
 
 #endif //BUILD_ANDROID_ARROWMODEL_H
