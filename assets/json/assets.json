@@ -230,7 +230,14 @@
 			"magfilter":"linear",
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
-		}
+		},
+        "homepage": {
+            "file":     "textures/homepage.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        }
 	},
 	"fonts": {
 		"charlemagne": {

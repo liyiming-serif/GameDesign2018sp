@@ -27,9 +27,11 @@
 //  Author: Walker White
 //  Version: 1/8/17
 //
-#ifndef __HELLO_APP_H__
-#define __HELLO_APP_H__
+#ifndef __CASTLE_APP_H__
+#define __CASTLE_APP_H__
 #include <cugl/cugl.h>
+#include "LoadingScene.h"
+#include "MenuScene.h"
 #include "BallistaScene.h"
 #include "OverworldScene.h"
 #include "LookoutScene.h"
@@ -41,21 +43,39 @@
  * The application simply moves the CUGL logo across the screen.  It also
  * provides a button to quit the application.
  */
-class HelloApp : public cugl::Application {
+class CastleApp : public cugl::Application {
 protected:
     /** The loaders to (synchronously) load in assets */
     std::shared_ptr<cugl::AssetManager> _assets;
     /** A 3152 style SpriteBatch to render the scene */
     std::shared_ptr<cugl::SpriteBatch>  _batch;
+    
+    // Player modes
+    /** The primary controller for the game world */
+    //GameScene _gameplay;
+//    std::vector<std::shared_ptr<cugl::Scene>> _gameplay;
+    
+    /** The controller for the loading screen */
+    LoadingScene _loadingScene;
+    
+    
+    /** Whether or not we have finished loading all assets */
+    bool _loaded;
 
+    /** First scene graph to load. */
+    MenuScene _menuScene; 
+    
     /**  scene graph to load. */
     BallistaScene _ballistaScene;
     LookoutScene _lookoutScene;
     RepairScene _repairScene;
-    /** First scene graph to load. */
     OverworldScene _overworldScene;
+    
+
+
 
     int _currscene;
+    
 public:
     /**
      * Creates, but does not initialized a new application.
@@ -66,7 +86,7 @@ public:
      * of initialization from the constructor allows main.cpp to perform
      * advanced configuration of the application before it starts.
      */
-    HelloApp(): cugl::Application() {}
+    CastleApp(): cugl::Application() {}
     
     /**
      * Disposes of this application, releasing all resources.
@@ -75,7 +95,7 @@ public:
      * It simply calls the dispose() method in Application.  There is nothing
      * special to do here.
      */
-    ~HelloApp() { }
+    ~CastleApp() { }
     
     /**
      * The method called after OpenGL is initialized, but before running the application.
@@ -129,4 +149,4 @@ public:
     
 };
 
-#endif /* __HELLO_APP_H__ */
+#endif /* __CASTLE_APP_H__ */
