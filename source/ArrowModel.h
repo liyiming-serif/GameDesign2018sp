@@ -27,13 +27,13 @@ public:
     ArrowModel(void) : CapsuleObstacle() { }
 
     //Alloc calls init, and returns a reference to this arrow. In scene controllers, call alloc.
-    static std::shared_ptr<ArrowModel> alloc(cugl::Vec2 pos, float dir,
+    static std::shared_ptr<ArrowModel> alloc(cugl::Vec2 pos, float dir, int drawScale,
                                              const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<ArrowModel> ref = std::make_shared<ArrowModel>();
-        return (ref->init(pos, dir, assets) ? ref : nullptr);
+        return (ref->init(pos, dir, drawScale, assets) ? ref : nullptr);
     }
 
-    bool init(cugl::Vec2 pos, float dir, const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(cugl::Vec2 pos, float dir, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
 
 
     /**
@@ -42,7 +42,7 @@ public:
     void update(float deltaTime) override;
 
     // Assume assets are already loaded, and _node is immutable after init
-    const std::shared_ptr<cugl::Node>& getNode() const { return _node; }
+    const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; }
 
 
     /**
@@ -60,6 +60,9 @@ protected:
 
     //This is the root scene node that corresponds to this model.
     std::shared_ptr<cugl::PolygonNode> _node;
+
+	//pixels per meter measurement. obstacle world * _drawScale = screen size
+	int _drawScale;
 };
 
 #endif //BUILD_ANDROID_ARROWMODEL_H

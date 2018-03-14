@@ -4,11 +4,13 @@
 
 #include "ArrowModel.h"
 
-#define ARROW_SPEED 7
+#define ARROW_SPEED 12
 
 using namespace cugl;
 
-bool ArrowModel::init(Vec2 pos, float dir, const std::shared_ptr<AssetManager>& assets){
+bool ArrowModel::init(Vec2 pos, float dir, int drawScale, const std::shared_ptr<AssetManager>& assets){
+	//_drawScale is pixels per meter (meter is for box2d)
+	_drawScale = drawScale;
     //create the scene node
     _node = nullptr;
     std::shared_ptr<Texture> texture  = assets->get<Texture>("arrow");
@@ -16,9 +18,7 @@ bool ArrowModel::init(Vec2 pos, float dir, const std::shared_ptr<AssetManager>& 
     _node->setAnchor(Vec2::ANCHOR_CENTER);
 
     //initialize the box2d obstacle
-    CapsuleObstacle::init(pos, Size(_node->getWidth(), _node->getHeight()));
-    setFriction(0);
-    setMass(.1);
+    CapsuleObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
     setAngle(dir);
     setLinearVelocity(cos(dir)*ARROW_SPEED,sin(dir)*ARROW_SPEED);
     return true;
@@ -27,7 +27,7 @@ bool ArrowModel::init(Vec2 pos, float dir, const std::shared_ptr<AssetManager>& 
 void ArrowModel::update(float deltaTime) {
     Obstacle::update(deltaTime);
     if (_node != nullptr) {
-        _node->setPosition(getPosition());
+        _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
     }
 }

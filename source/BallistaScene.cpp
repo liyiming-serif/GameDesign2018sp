@@ -3,10 +3,10 @@
 //
 
 #include "BallistaScene.h"
-#define LISTENER_KEY                1
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+#define DRAW_SCALE 32
 
 using namespace cugl;
 
@@ -79,9 +79,10 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Create the arrows set
     _arrows.clear();
+	_arrowsToFree.clear();
 
     // Create the physics world
-    _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size),Vec2::ZERO);
+    _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
 
     // We can only activate a button AFTER it is added to a scene
      _overworld_button->activate(25);
@@ -97,6 +98,7 @@ void BallistaScene::dispose() {
         }
         removeAllChildren();
         _arrows.clear();
+		_arrowsToFree.clear();
         _input.dispose();
         _active = false;
     }
@@ -110,29 +112,36 @@ void BallistaScene::update(float deltaTime){
     }
     if(_input.justReleased()){
         // Allocate a new arrow in memory
-        std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),_assets);
+        std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),DRAW_SCALE,_assets);
         if(a != nullptr) {
             _arrows.insert(a);
             _world->addObstacle(a);
             addChild(a->getNode());
+			CULog("%d\n", _arrows.size());
         }
     }
 
     // Update arrows and mark out of bound ones for deletion
-    Rect bounds(Vec2::ZERO, _size);
+    Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);
     for(auto it = _arrows.begin(); it != _arrows.end(); it++){
         std::shared_ptr<ArrowModel> a = *it;
         if(a != nullptr) {
             a->update(deltaTime);
         }
         if(!bounds.contains(a->getPosition())){
+			_arrowsToFree.insert(a);
             _world->removeObstacle(a.get());
-            removeChild(a->getNode());
-            _arrows.erase(a);
-            a = nullptr;
-            CULog("Arrow post destruction!");
+			removeChild(a->getNode());
         }
     }
+
+	// Delete the arrows here because you can't remove elements while iterating
+	for (auto it = _arrowsToFree.begin(); it != _arrowsToFree.end(); it++) {
+		std::shared_ptr<ArrowModel> a = *it;
+		_arrows.erase(a);
+		CULog("%d\n", _arrows.size());
+	}
+	_arrowsToFree.clear();
 
     //crank the physics engine
     _world->update(deltaTime);

@@ -21,6 +21,7 @@ protected:
 
     // Memory Managers
     std::set<std::shared_ptr<ArrowModel>> _arrows;
+	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
 
     // Input Controller
     InputController _input;
