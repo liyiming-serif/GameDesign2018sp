@@ -1,12 +1,12 @@
 //
-//  RepairScene.cpp
+//  MenuScene.cpp
 //  ChaosCastle
 //
-//  Created by Noah Sterling on 3/9/18.
+//  Created by Noah Sterling on 3/14/18.
 //  Copyright © 2018 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#include "RepairScene.h"
+#include "MenuScene.h"
 
 using namespace cugl;
 
@@ -17,7 +17,7 @@ using namespace cugl;
 #define OVERWORLD   2
 #define LOOKOUT     3
 
-bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
+bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
     
@@ -35,21 +35,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
     
     // Set the background image
-//    std::shared_ptr<Texture> texture  = _assets->get<Texture>("lookout_view");
-//    _background = PolygonNode::allocWithTexture(texture);
-//    _background->setScale(0.5625f); // Magic number to rescale asset
-//    _background->setAnchor(Vec2::ANCHOR_CENTER);
-//    _background->setPosition(0,0);
-//    addChild(_background);
+        std::shared_ptr<Texture> texture  = _assets->get<Texture>("homepage");
+        _background = PolygonNode::allocWithTexture(texture);
+        _background->setScale(0.5625f); // Magic number to rescale asset
+        _background->setAnchor(Vec2::ANCHOR_CENTER);
+        _background->setPosition(0,0);
+        addChild(_background);
     
-//    _background->setAnchor(Vec2::ANCHOR_CENTER);
-//    _background->setPosition(_size.width/2,_size.height/2);
+        _background->setAnchor(Vec2::ANCHOR_CENTER);
+        _background->setPosition(_size.width/2,_size.height/2);
     
     // Create the OVERWORLD button.  A button has an up image and a down image
     std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("basement_floor");
     std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("basement_floor");
     
-
+    
     _overworld_button3 = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
                                        PolygonNode::allocWithTexture(overworld_down));
     _overworld_button3->setScale(0.1f); // Magic number to rescale asset
@@ -78,7 +78,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     return true;
 }
 
-void RepairScene::dispose() {
+void MenuScene::dispose() {
     if (_active) {
         removeAllChildren();
         _assets = nullptr;
@@ -88,20 +88,20 @@ void RepairScene::dispose() {
     }
 }
 
-void RepairScene::update(float timestep){
+void MenuScene::update(float timestep){
     
 }
 
 
 
 //Pause or Resume
-void RepairScene::setActive(bool active){
+void MenuScene::setActive(bool active){
     _active = active;
     switchscene = 0;
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("Repair scene");
+        CULog("Menu scene");
         _overworld_button3->activate(26);
     }
     else{
