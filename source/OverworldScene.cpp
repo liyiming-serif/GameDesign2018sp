@@ -16,7 +16,8 @@
 
 #define BUTTON_SCALE .9f
 #define TOWER_SCALE .55f
-#define FLOOR_SCALE .55f
+#define FLOOR_SCALEx .52f
+#define FLOOR_SCALEy .533f
 
 
 
@@ -27,7 +28,7 @@ using namespace cugl;
 #define GAME_WIDTH 1024
 
 /** Define the time settings for animation */
-#define DURATION 1
+#define DURATION .5f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -44,6 +45,9 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     } else if (!Scene::init(size)) {
         return false;
     }
+    
+    
+    
     
     _assets = assets;
     
@@ -127,7 +131,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Basement Floor
     std::shared_ptr<Texture> basementFloor_texture  = _assets->get<Texture>("basement_floor");
     std::shared_ptr<PolygonNode> basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
-    basement_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
     basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
     basement_floor->setPosition(size.width/2.14,-4*size.height);
     
@@ -168,7 +172,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Catapult Floor
         std::shared_ptr<Texture> catapultFloor_texture  = _assets->get<Texture>("catapult_floor");
         std::shared_ptr<PolygonNode> catapult_floor = PolygonNode::allocWithTexture(catapultFloor_texture);
-        catapult_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+        catapult_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         catapult_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
         catapult_floor->setPosition(size.width/2.14,-3*size.height);
     
@@ -247,7 +251,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Oil Floor
         std::shared_ptr<Texture> oilFloor_texture  = _assets->get<Texture>("oil_floor");
         std::shared_ptr<PolygonNode> oil_floor = PolygonNode::allocWithTexture(oilFloor_texture);
-        oil_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+        oil_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         oil_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
         oil_floor->setPosition(size.width/2.14,-2*size.height);
     
@@ -326,7 +330,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     //Ballista Floor
         std::shared_ptr<Texture> ballistaFloor_texture  = _assets->get<Texture>("ballista_floor");
         std::shared_ptr<PolygonNode> ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture);
-        ballista_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+        ballista_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         ballista_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
         ballista_floor->setPosition(size.width/2.14,-size.height);
     
@@ -446,9 +450,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Lookout Floor
     std::shared_ptr<Texture> lookoutFloor_texture  = _assets->get<Texture>("lookout_floor");
     std::shared_ptr<PolygonNode> lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture);
-    lookout_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    //lookout_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    lookout_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
     lookout_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    lookout_floor->setPosition(size.width/2.14,10);
+    lookout_floor->setPosition(size.width/2.147,1);
     
     
     // Create the Lookout button
