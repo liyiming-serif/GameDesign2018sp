@@ -185,12 +185,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\source\HelloApp.h" />
+    <ClInclude Include="..\..\source\ArrowModel.h" />
+    <ClInclude Include="..\..\source\BallistaScene.h" />
+    <ClInclude Include="..\..\source\CastleApp.h" />
+    <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\LoadingScene.h" />
+    <ClInclude Include="..\..\source\LookoutScene.h" />
+    <ClInclude Include="..\..\source\MenuScene.h" />
+    <ClInclude Include="..\..\source\OverworldScene.h" />
+    <ClInclude Include="..\..\source\RepairScene.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\HelloApp.cpp" />
+    <ClCompile Include="..\..\source\ArrowModel.cpp" />
+    <ClCompile Include="..\..\source\BallistaScene.cpp" />
+    <ClCompile Include="..\..\source\CastleApp.cpp" />
+    <ClCompile Include="..\..\source\InputController.cpp" />
+    <ClCompile Include="..\..\source\LoadingScene.cpp" />
+    <ClCompile Include="..\..\source\LookoutScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
+    <ClCompile Include="..\..\source\MenuScene.cpp" />
+    <ClCompile Include="..\..\source\OverworldScene.cpp" />
+    <ClCompile Include="..\..\source\RepairScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />
