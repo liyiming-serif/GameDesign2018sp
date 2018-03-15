@@ -7,6 +7,7 @@
 #include <cugl/cugl.h>
 #include "ArrowModel.h"
 #include "InputController.h"
+#include "GameModel.h"
 #include <Set>
 
 class BallistaScene : public cugl::Scene{

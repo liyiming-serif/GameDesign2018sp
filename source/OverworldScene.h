@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <cugl/cugl.h>
 #include <map>
+#include "GameModel.h"
 
 
 class OverworldScene : public cugl::Scene{
@@ -94,9 +95,6 @@ public:
     
     // Gameplay
     void update(float timestep);
-
-    //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW)
-    const std::vector<std::shared_ptr<EnemyModel>> enemyArrayGroundN;
 
     // What sort of a codebase are you running here? The demos are so inconsistent.
     void setActive(bool active);

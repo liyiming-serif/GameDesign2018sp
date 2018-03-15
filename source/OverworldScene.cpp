@@ -7,7 +7,6 @@
 //
 
 #include "OverworldScene.h"
-#include <vector>
 
 #define BALLISTA    1
 #define OVERWORLD   2
@@ -73,17 +72,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         this->touchDragCB(event,prev,focus);
     });
 #endif
-
-    //testing enemy code
-        std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
-            if(a != nullptr) {
-                _enemyArrayGroundN.push_back(enemy1);
-            }
-        std::shared_ptr<EnemyModel> enemy2 = EnemyModel::alloc(Vec2(200, 400), 0, 1, DRAW_SCALE, _assets);
-            if(a != nullptr) {
-                _enemyArrayGroundN.push_back(enemy2);
-            }
-    
     
     // Creates the Scene Graph
     _background = Node::alloc();
@@ -746,6 +734,8 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
 void OverworldScene::update(float timestep){
     // Animate
     _actions->update(timestep);
+
+    //need to update enemies somewhere here - maybe not
 }
 
 void OverworldScene::setActive(bool active) {
