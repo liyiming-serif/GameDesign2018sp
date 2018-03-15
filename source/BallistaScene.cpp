@@ -130,14 +130,14 @@ void BallistaScene::update(float deltaTime){
         }
         if(!bounds.contains(a->getPosition())){
 			_arrowsToFree.insert(a);
-            _world->removeObstacle(a.get());
-			removeChild(a->getNode());
         }
     }
 
 	// Delete the arrows here because you can't remove elements while iterating
 	for (auto it = _arrowsToFree.begin(); it != _arrowsToFree.end(); it++) {
 		std::shared_ptr<ArrowModel> a = *it;
+		_world->removeObstacle(a.get());
+		removeChild(a->getNode());
 		_arrows.erase(a);
 		CULog("%d\n", _arrows.size());
 	}
