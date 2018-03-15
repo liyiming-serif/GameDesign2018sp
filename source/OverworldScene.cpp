@@ -7,11 +7,13 @@
 //
 
 #include "OverworldScene.h"
+#include <vector>
 
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
 #define REPAIR      4
+#define DRAW_SCALE 32
 
 
 #define BUTTON_SCALE .9f
@@ -46,9 +48,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         return false;
     }
     
-    
-    
-    
     _assets = assets;
     
     switchscene = 0;
@@ -74,7 +73,16 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         this->touchDragCB(event,prev,focus);
     });
 #endif
-    
+
+    //testing enemy code
+        std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
+            if(a != nullptr) {
+                _enemyArrayGroundN.push_back(enemy1);
+            }
+        std::shared_ptr<EnemyModel> enemy2 = EnemyModel::alloc(Vec2(200, 400), 0, 1, DRAW_SCALE, _assets);
+            if(a != nullptr) {
+                _enemyArrayGroundN.push_back(enemy2);
+            }
     
     
     // Creates the Scene Graph
