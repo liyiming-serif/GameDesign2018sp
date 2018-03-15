@@ -9,24 +9,26 @@
 #define BUILD_ANDROID_GAMEMODEL_H
 
 #include <cugl/cugl.h>
-#include <vector>
+#include <Set>
+#include "EnemyModel.h"
 
 class GameModel{
 protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
+    int _spawnTimer;
 public:
 
     // Constructors
-    MenuScene() : Scene() {}
+    GameModel();
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
-    const std::vector<std::shared_ptr<EnemyModel>> enemyArrayGroundN;
+    std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
 
     // Destructors
     void dispose();
-    ~MenuScene() {dispose();}
+    ~GameModel() {dispose();}
 
     // Gameplay
     void update(float timestep);
