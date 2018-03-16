@@ -50,7 +50,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
     std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
     
-    Size overworld_b_size = overworld_up->getSize();
+  
     _overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
                                       PolygonNode::allocWithTexture(overworld_down));
     _overworld_button->setScale(0.1f); // Magic number to rescale asset

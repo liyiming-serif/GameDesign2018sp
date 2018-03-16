@@ -19,7 +19,7 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    std::shared_ptr<cugl::Button> _overworld_button3;
+    std::shared_ptr<cugl::Button> _playButton;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     
