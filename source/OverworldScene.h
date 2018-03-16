@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <cugl/cugl.h>
+#include "InputController.h"
 #include <map>
 
 
@@ -140,10 +141,7 @@ public:
     std::shared_ptr<cugl::PolygonNode> getTowerView(int floor);
     
     
-    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-    
-    
-    
+    //void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
     
 };
 

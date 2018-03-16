@@ -20,8 +20,6 @@
 #define FLOOR_SCALEy .533f
 
 
-
-
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
@@ -47,8 +45,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
     
     
-    
-    
     _assets = assets;
     
     switchscene = 0;
@@ -63,18 +59,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _movedn = MoveBy::alloc(Vec2(0,size.height),DURATION);
     _castleFadeIN = FadeIn::alloc(DURATION);
     _castleFadeOUT = FadeOut::alloc(DURATION);
-    
-
-    
-    // Input controller
-#ifdef CU_TOUCH_SCREEN
-    Touchscreen* touch = Input::get<Touchscreen>();
-    
-    touch->addMotionListener(10,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
-        this->touchDragCB(event,prev,focus);
-    });
-#endif
-    
     
     
     // Creates the Scene Graph
@@ -656,41 +640,24 @@ void OverworldScene::resetCastle(){
 }
 
 
-
-void OverworldScene::touchDragCB(const TouchEvent& event, const Vec2& previous, bool focus) {
-    if(_active) {
-        if (event.position.y - previous.y > 30 && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
-            CULog("Move Up");
-            CULog("curent floor");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doMove(_moveup, currentCastleFloor);
-            CULog("fade out");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-            CULog("fade in");
-            CULog("%d/n",currentCastleFloor+1);
-            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor+1);
-            currentCastleFloor += 1;
-            CULog("current floor");
-            CULog("%d/n",currentCastleFloor);
-        }
-        else if (event.position.y - previous.y < -30 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)){
-            CULog("Move Down");
-            CULog("curent floor");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doMove(_movedn, currentCastleFloor);
-            CULog("fade out");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-            CULog("fade in");
-            CULog("%d/n",currentCastleFloor-1);
-            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor-1);
-            currentCastleFloor -= 1;
-            CULog("current floor");
-            CULog("%d/n",currentCastleFloor);
-        }
-    }
-}
+//void OverworldScene::touchDragCB(const TouchEvent& event, const Vec2& previous, bool focus) {
+//    if(_active) {
+//        if (event.position.y - previous.y > 30 ) {
+//            CULog("Move Up");
+//            OverworldScene::doMove(_moveup, currentCastleFloor);
+//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor+1);
+//            currentCastleFloor += 1;
+//        }
+//        else if (event.position.y - previous.y < -30 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)){
+//            CULog("Move Down");
+//            OverworldScene::doMove(_movedn, currentCastleFloor);
+//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor-1);
+//            currentCastleFloor -= 1;
+//        }
+//    }
+//}
 
 
 void OverworldScene::doMove(const std::shared_ptr<MoveBy>& action, int floor) {
@@ -736,8 +703,23 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
 
 
 void OverworldScene::update(float timestep){
-    // Animate
-    _actions->update(timestep);
+	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
+		//Moving down
+		OverworldScene::doMove(_movedn, currentCastleFloor);
+		OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor - 1);
+		currentCastleFloor -= 1;
+	}
+	else if (input.vScrolling() > 0 && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
+		//Moving up
+		OverworldScene::doMove(_moveup, currentCastleFloor);
+		OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor + 1);
+		currentCastleFloor += 1;
+	}
+
+	// Animate
+	_actions->update(timestep);
 }
 
 void OverworldScene::setActive(bool active) {

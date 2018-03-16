@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\source\ArrowModel.h" />
     <ClInclude Include="..\..\source\BallistaScene.h" />
     <ClInclude Include="..\..\source\CastleApp.h" />
+    <ClInclude Include="..\..\source\global.h" />
     <ClInclude Include="..\..\source\InputController.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
     <ClInclude Include="..\..\source\LookoutScene.h" />

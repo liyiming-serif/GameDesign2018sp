@@ -6,7 +6,7 @@
 
 using namespace cugl;
 
-#define SWIPE_SENSITIVITY 100
+#define SWIPE_SENSITIVITY 30
 #define LISTENER_KEY 1
 
 /**
@@ -47,15 +47,15 @@ bool InputController::init(){
     //MOUSE CONTROLS
 	Mouse* mouse = Input::get<Mouse>();
 
-	mouse->setPointerAwareness(cugl::Mouse::PointerAwareness::ALWAYS);
+	mouse->setPointerAwareness(cugl::Mouse::PointerAwareness::DRAG);
 	mouse->addPressListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, Uint8 clicks, bool focus) {
 		this->mouseDownCB(event, clicks, focus);
 	});
 	mouse->addReleaseListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, Uint8 clicks, bool focus) {
 		this->mouseUpCB(event, clicks, focus);
 	});
-	mouse->addMotionListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus) {
-		this->mouseMovedCB(event, previous, focus);
+	mouse->addDragListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus) {
+		this->mouseDragCB(event, previous, focus);
 	});
 #endif
     _active = true;
@@ -126,7 +126,7 @@ void InputController::mouseDownCB(const cugl::MouseEvent& event, Uint8 clicks, b
     _isPressed = true;
 }
 
-void InputController::mouseMovedCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus){
+void InputController::mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus){
     _pointerVel += event.position - previous;
     _pointerPos.set(event.position);
     if(abs(_pointerVel.y) >= SWIPE_SENSITIVITY){

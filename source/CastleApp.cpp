@@ -39,7 +39,7 @@
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
 
-
+InputController input;
 /**
  * The method called after OpenGL is initialized, but before running the application.
  *
@@ -64,6 +64,7 @@ void CastleApp::onStartup() {
 #else
     Input::activate<Mouse>();
 #endif
+	input.init();
 
     // You have to attach the individual loaders for each asset type
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
@@ -80,12 +81,12 @@ void CastleApp::onStartup() {
     _loadingScene.init(_assets);
     
     
-    // Que up the other assets
+    // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     
     // Build the scene from these assets
 
-    
+
     Application::onStartup(); // YOU MUST END with call to parent
 
 }
@@ -113,11 +114,13 @@ void CastleApp::onShutdown() {
     _assets = nullptr;
 
     // Deativate input
+	input.dispose();
 #if defined CU_TOUCH_SCREEN
     Input::deactivate<Touchscreen>();
 #else
     Input::deactivate<Mouse>();
 #endif
+
     Application::onShutdown();
 }
 
@@ -186,7 +189,8 @@ void CastleApp::update(float timestep) {
         }
     }
     
-    
+    //refresh the input controller
+	input.update(timestep);
 
 }
 

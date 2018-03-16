@@ -27,9 +27,6 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
 
-    // Set the Input Controller
-    _input.init();
-
     // Set the assets
     switchscene = 0;
     _assets = assets;
@@ -99,18 +96,17 @@ void BallistaScene::dispose() {
         removeAllChildren();
         _arrows.clear();
 		_arrowsToFree.clear();
-        _input.dispose();
         _active = false;
     }
 }
 
 void BallistaScene::update(float deltaTime){
     // Poll inputs
-    if(_input.isPressed()){
-        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(_input.pointerPos());
+    if(input.isPressed()){
+        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());
         _ballista->setAngle(pointdir.getAngle());
     }
-    if(_input.justReleased()){
+    if(input.justReleased()){
         // Allocate a new arrow in memory
         std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),DRAW_SCALE,_assets);
         if(a != nullptr) {
@@ -146,8 +142,6 @@ void BallistaScene::update(float deltaTime){
     //crank the physics engine
     _world->update(deltaTime);
 
-    //refresh the input controller
-    _input.update(deltaTime);
 }
 
 //Pause or Resume
@@ -160,12 +154,8 @@ void BallistaScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _overworld_button->activate(25);
-        //reactivate input listener
-        _input.init();
     }
     else{
         _overworld_button->deactivate();
-        //deactivate the input listener
-        _input.dispose();
     }
 }

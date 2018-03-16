@@ -20,7 +20,7 @@
 using namespace cugl;
 
 /** The ID for the button listener */
-#define LISTENER_ID 1
+#define LISTENER_ID 153
 /** This is adjusted by screen aspect ratio to get the height */
 #define SCENE_WIDTH 1024
 
@@ -96,7 +96,7 @@ void LoadingScene::update(float progress) {
         if (_progress >= 1) {
             _progress = 1.0f;
             _button->setVisible(true);
-            _button->activate(1);
+            _button->activate(LISTENER_ID);
         }
         _bar->setProgress(_progress);
     }

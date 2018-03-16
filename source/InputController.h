@@ -112,10 +112,12 @@ public:
     //MOUSE CALLBACKS
     void mouseDownCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
 
+	void mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus);
+
     void mouseUpCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
 
-    void mouseMovedCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus);
-
 };
+
+extern InputController input;
 
 #endif //BUILD_ANDROID_INPUTCONTROLLER_H
