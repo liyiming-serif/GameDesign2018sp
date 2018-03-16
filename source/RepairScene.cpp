@@ -24,7 +24,7 @@ using namespace std;
 #define BUTTON_SCALE .8f
 
 /** Define the time settings for animation */
-#define DURATION .6f
+#define DURATION .4f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -245,6 +245,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SW");
+				_new_wall = "SW";
                 if (_new_wall.compare(_curr_wall) != 0) {
                     RepairScene::doFadeIn(_wallFadeIN, "SW");
                     RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
@@ -260,6 +261,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NW");
+				_new_wall = "NW";
                 if (_new_wall.compare(_curr_wall) != 0) {
                     RepairScene::doFadeIn(_wallFadeIN, "NW");
                     RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
@@ -322,13 +324,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _buttons->addChild(_southwestWallButton);
         _buttons->addChild(_northwestWallButton);
     
-    
-    _northWallButton->activate(1);
-    _northeastWallButton->activate(2);
-    _southeastWallButton->activate(3);
-    _southWallButton->activate(4);
-    _southwestWallButton->activate(5);
-    _northwestWallButton->activate(6);
+	_northWallButton->activate(44);
+	_northeastWallButton->activate(211);
+	_southeastWallButton->activate(311);
+	_southWallButton->activate(411);
+	_southwestWallButton->activate(420);
+	_northwestWallButton->activate(69);
     
     _northWallButton->setColor(Color4(255,255,255,0));
     _northeastWallButton->setColor(Color4(255,255,255,0));
@@ -544,8 +545,8 @@ void RepairScene::setActive(bool active){
         _northeastWallButton->activate(211);
         _southeastWallButton->activate(311);
         _southWallButton->activate(411);
-        _southwestWallButton->activate(511);
-        _northwestWallButton->activate(611);
+        _southwestWallButton->activate(420);
+        _northwestWallButton->activate(69);
         CULog("Repair scene");
     }
     else{
