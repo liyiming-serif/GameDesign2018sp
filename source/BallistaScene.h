@@ -14,6 +14,8 @@ class BallistaScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 
+    int _spawnTimer;
+
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
