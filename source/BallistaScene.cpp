@@ -24,7 +24,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         return false;
     }
 
-    _spawnTimer = 360;
+    _spawnTimer = 180;
 
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -112,7 +112,7 @@ void BallistaScene::update(float deltaTime){
             addChild(e->getNode());
             CULog("enemy added");
         }
-        _spawnTimer = 60;
+        _spawnTimer = 120;
     }
     else{
         _spawnTimer--;
@@ -186,7 +186,20 @@ void BallistaScene::update(float deltaTime){
 void BallistaScene::setActive(bool active){
     _active = active;
     switchscene = 0;
+
+	//empty the arrow arrays to prevent data leeks
+	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
+		std::shared_ptr<ArrowModel> a = *it;
+		_world->removeObstacle(a.get());
+		removeChild(a->getNode());
+	}
     _arrows.clear();
+	for (auto it = _arrowsToFree.begin(); it != _arrowsToFree.end(); it++) {
+		std::shared_ptr<ArrowModel> a = *it;
+		_world->removeObstacle(a.get());
+		removeChild(a->getNode());
+	}
+	_arrowsToFree.clear();
 
     if(active){
         // Set background color
