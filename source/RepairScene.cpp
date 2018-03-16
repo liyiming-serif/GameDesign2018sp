@@ -21,7 +21,7 @@ using namespace cugl;
 #define BUTTON_SCALE .8f
 
 /** Define the time settings for animation */
-#define DURATION .5f
+#define DURATION .6f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -374,7 +374,7 @@ void RepairScene::setActive(bool active){
         //Application::get()->setClearColor(Color4(132,180,113,255));
         Application::get()->setClearColor(Color4(0,0,0,255));
         _overworld_button3->activate(50);
-        _northeastWallButton->activate(112);
+        _northWallButton->activate(44);
         _northeastWallButton->activate(211);
         _southeastWallButton->activate(311);
         _southWallButton->activate(411);
@@ -384,7 +384,7 @@ void RepairScene::setActive(bool active){
     }
     else{
         _overworld_button3->deactivate();
-        _northeastWallButton->deactivate();
+        _northWallButton->deactivate();
         _northeastWallButton->deactivate();
         _southeastWallButton->deactivate();
         _southWallButton->deactivate();

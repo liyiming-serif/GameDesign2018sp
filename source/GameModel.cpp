@@ -18,10 +18,11 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     _spawnTimer = 360;
 
     // Create the physics world
-    _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
+    //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
 
 
     //testing enemy code
+    /*
         std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
             if(enemy1 != nullptr) {
                 _enemyArrayGroundN.insert(enemy1);
@@ -32,6 +33,7 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
                 _enemyArrayGroundN.insert(enemy2);
                 _world->addObstacle(enemy2);
             }
+            */
     return true;
 }
 
@@ -45,6 +47,7 @@ void GameModel::dispose() {
 }
 
 void GameModel::update(float timestep){
+/*
     if(_spawnTimer == 0){
         std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
                 if(enemy1 != nullptr) {
@@ -58,4 +61,5 @@ void GameModel::update(float timestep){
         _spawnTimer--;
     }
     _world->update(timestep);
+    */
 }
