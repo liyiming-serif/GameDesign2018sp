@@ -120,18 +120,24 @@ void BallistaScene::update(float deltaTime, std::set<std::shared_ptr<EnemyModel>
 			CULog("%d\n", _arrows.size());
         }
     }
-
+    CULog("Size: %d",_enemies.size());
+    for(auto it = _enemies.begin(); it != _enemies.end(); it++){
+        std::shared_ptr<EnemyModel> e = *it;
+        e->update(deltaTime);
+        CULog("position: %d, %d", e->getX(), e->getY());
+    }
+/*
     //Update enemies
-    for(auto  it = _enemies.begin(); it != _enemies.end(); it++){
+    for(auto it = _enemies.begin(); it != _enemies.end(); it++){
         std::shared_ptr<EnemyModel> e = *it;
         if(e != nullptr){
-            if(std::find(getChildren().begin(), getChildren().end(), e) == getChildren().end()){
+            if(std::find(getChildren().begin(), getChildren().end(), e->getNode()) == getChildren().end()){
                 addChild(e->getNode());
             }
             e->update(deltaTime);
         }
     }
-
+*/
     // Update arrows and mark out of bound ones for deletion
     Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);
     for(auto it = _arrows.begin(); it != _arrows.end(); it++){

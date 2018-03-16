@@ -52,10 +52,10 @@ void GameModel::update(float timestep){
                     _world->addObstacle(enemy1);
                 }
         _spawnTimer = 360;
+        CULog("spawn");
     }
     else{
         _spawnTimer--;
     }
     _world->update(timestep);
-    //CULog("update");
 }

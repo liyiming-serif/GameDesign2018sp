@@ -19,6 +19,7 @@ bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::s
 
 	//regular enemies, type 1
     if(type == 1){
+    CULog("type 1");
     //create the scene node
     _node = nullptr;
     std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");
