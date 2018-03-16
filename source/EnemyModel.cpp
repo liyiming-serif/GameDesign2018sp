@@ -19,25 +19,25 @@ bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::s
 
 	//regular enemies, type 1
     if(type == 1){
-    CULog("type 1");
-    //create the scene node
-    _node = nullptr;
-    std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");
-    _node = PolygonNode::allocWithTexture(texture);
-    _node->setScale(0.3);
-    _node->setAnchor(Vec2::ANCHOR_CENTER);
+		CULog("type 1");
+		//create the scene node
+		_node = nullptr;
+		std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");
+		_node = PolygonNode::allocWithTexture(texture);
+		_node->setScale(0.3);
+		_node->setAnchor(Vec2::ANCHOR_CENTER);
 
-	//create the scene node
-	_icon = nullptr;
-	std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
-	_icon = PolygonNode::allocWithTexture(texture2);
-	_icon->setScale(0.3);
-	_icon->setAnchor(Vec2::ANCHOR_CENTER);
+		//create the scene node
+		_icon = nullptr;
+		std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
+		_icon = PolygonNode::allocWithTexture(texture2);
+		_icon->setScale(0.3);
+		_icon->setAnchor(Vec2::ANCHOR_CENTER);
 
-    //initialize the box2d obstacle
-    BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
-    setAngle(dir);
-    setLinearVelocity(cos(dir)*BASE_SPEED,sin(dir)*BASE_SPEED);
+		//initialize the box2d obstacle
+		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
+		setAngle(dir);
+		setLinearVelocity(cos(dir)*BASE_SPEED,sin(dir)*BASE_SPEED);
     }
     return true;
 }
@@ -49,7 +49,8 @@ void EnemyModel::update(float deltaTime) {
         _node->setAngle(getAngle());
     }
 	if (_icon != nullptr) {
-		_icon->setPosition(getPosition()*_drawScale);
+		Vec2 pos = getPosition()*_drawScale/2;
+		_icon->setPosition(pos.x, 576-pos.y);
 		_icon->setAngle(getAngle());
 	}
 }
