@@ -489,67 +489,67 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(_size.width/2,_size.height/2);
     
     
-    //FLOOR NAVIGATION
-    std::shared_ptr<Texture> floor_up   = _assets->get<Texture>("up");
-    std::shared_ptr<Texture> floor_down = _assets->get<Texture>("down");
-    _up_button = Button::alloc(PolygonNode::allocWithTexture(floor_up),
-                               PolygonNode::allocWithTexture(floor_up));
-    _down_button = Button::alloc(PolygonNode::allocWithTexture(floor_down),
-                                 PolygonNode::allocWithTexture(floor_down));
-    
-    // Create a callback function for the MOVE UP button
-    _up_button->setName("lookout");
-    _up_button->setListener([=] (const std::string& name, bool down) {
-        // Only go to lookout when the button is released
-        if (!down && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
-            CULog("Move Up");
-            CULog("curent floor");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doMove(_moveup, currentCastleFloor);
-            CULog("fade out");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-            CULog("fade in");
-            CULog("%d/n",currentCastleFloor+1);
-            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor+1);
-            currentCastleFloor += 1;
-            CULog("current floor");
-            CULog("%d/n",currentCastleFloor);
-        }
-    });
-    
-    
-    // Create a callback function for the MOVE DOWN button
-    _down_button->setName("lookout");
-    _down_button->setListener([=] (const std::string& name, bool down) {
-        // Only go to lookout when the button is released
-        if (!down && currentCastleFloor>0  && !_actions->isActive(ACT_KEY)) {
-            CULog("Move Down");
-            CULog("curent floor");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doMove(_movedn, currentCastleFloor);
-            CULog("fade out");
-            CULog("%d/n",currentCastleFloor);
-            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-            CULog("fade in");
-            CULog("%d/n",currentCastleFloor-1);
-            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor-1);
-            currentCastleFloor -= 1;
-            CULog("current floor");
-            CULog("%d/n",currentCastleFloor);
-        }
-    });
-    
-    _up_button->setScale(0.1f); // Magic number to rescale asset
-    _up_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _up_button->setPosition(-60,50);
-    
-    _down_button->setScale(0.1f); // Magic number to rescale asset
-    _down_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _down_button->setPosition(-60,-50);
-    
-    _background->addChild(_up_button);
-    _background->addChild(_down_button);
+//    //FLOOR NAVIGATION
+//    std::shared_ptr<Texture> floor_up   = _assets->get<Texture>("up");
+//    std::shared_ptr<Texture> floor_down = _assets->get<Texture>("down");
+//    _up_button = Button::alloc(PolygonNode::allocWithTexture(floor_up),
+//                               PolygonNode::allocWithTexture(floor_up));
+//    _down_button = Button::alloc(PolygonNode::allocWithTexture(floor_down),
+//                                 PolygonNode::allocWithTexture(floor_down));
+//    
+//    // Create a callback function for the MOVE UP button
+//    _up_button->setName("lookout");
+//    _up_button->setListener([=] (const std::string& name, bool down) {
+//        // Only go to lookout when the button is released
+//        if (!down && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
+//            CULog("Move Up");
+//            CULog("curent floor");
+//            CULog("%d/n",currentCastleFloor);
+//            OverworldScene::doMove(_moveup, currentCastleFloor);
+//            CULog("fade out");
+//            CULog("%d/n",currentCastleFloor);
+//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+//            CULog("fade in");
+//            CULog("%d/n",currentCastleFloor+1);
+//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor+1);
+//            currentCastleFloor += 1;
+//            CULog("current floor");
+//            CULog("%d/n",currentCastleFloor);
+//        }
+//    });
+//    
+//    
+//    // Create a callback function for the MOVE DOWN button
+//    _down_button->setName("lookout");
+//    _down_button->setListener([=] (const std::string& name, bool down) {
+//        // Only go to lookout when the button is released
+//        if (!down && currentCastleFloor>0  && !_actions->isActive(ACT_KEY)) {
+//            CULog("Move Down");
+//            CULog("curent floor");
+//            CULog("%d/n",currentCastleFloor);
+//            OverworldScene::doMove(_movedn, currentCastleFloor);
+//            CULog("fade out");
+//            CULog("%d/n",currentCastleFloor);
+//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+//            CULog("fade in");
+//            CULog("%d/n",currentCastleFloor-1);
+//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor-1);
+//            currentCastleFloor -= 1;
+//            CULog("current floor");
+//            CULog("%d/n",currentCastleFloor);
+//        }
+//    });
+//    
+//    _up_button->setScale(0.1f); // Magic number to rescale asset
+//    _up_button->setAnchor(Vec2::ANCHOR_CENTER);
+//    _up_button->setPosition(-60,50);
+//    
+//    _down_button->setScale(0.1f); // Magic number to rescale asset
+//    _down_button->setAnchor(Vec2::ANCHOR_CENTER);
+//    _down_button->setPosition(-60,-50);
+//    
+//    _background->addChild(_up_button);
+//    _background->addChild(_down_button);
     
     
     // Create the quit button.  A button has an up image and a down image
@@ -576,31 +576,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     
-    // Create the reset button.  A button has an up image and a down image
-    _resetButton = Button::alloc(PolygonNode::allocWithTexture(up),
-                                 PolygonNode::allocWithTexture(down));
     
-    // Position the button in the bottom right corner
-    _resetButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _resetButton->setPosition(0,0);
-    
-    
-    // Create a callback function for the button
-    _resetButton->setName("close");
-    _resetButton->setListener([=] (const std::string& name, bool down) {
-        // Only quit when the button is released
-        if (!down) {
-            CULog("reset!");
-            OverworldScene::resetCastle();
-        }
-    });
     
     
     
     // Add the background to the scene graph
     addChild(_background);
     addChild(_quitButton);
-    addChild(_resetButton);
+
     
     
     
@@ -611,9 +594,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballistaSouth->activate(5); _ballistaSouthWest->activate(6); _ballistaNorthWest->activate(7);
     _lookout_button->activate(8);
     _quitButton->activate(9);
-    _up_button->activate(10);
-    _down_button->activate(11);
-    _resetButton->activate(12);
+//    _up_button->activate(10);
+//    _down_button->activate(11);
     _repair_button->activate(13);
     
     return true;
