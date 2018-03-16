@@ -36,6 +36,7 @@
 #include "OverworldScene.h"
 #include "LookoutScene.h"
 #include "RepairScene.h"
+#include "InputController.h"
 
 /**
  * Class for a simple Hello World style application

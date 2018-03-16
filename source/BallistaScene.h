@@ -23,9 +23,6 @@ protected:
     std::set<std::shared_ptr<ArrowModel>> _arrows;
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
 
-    // Input Controller
-    InputController _input;
-
     // Models
     std::shared_ptr<cugl::PolygonNode> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
@@ -46,11 +43,6 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
-
-    // Input Callbacks
-//    void touchBeginCB(const cugl::TouchEvent& event, bool focus);
-//    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-//    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
 
 };
 
