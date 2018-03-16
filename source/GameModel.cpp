@@ -42,10 +42,10 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 }
 
 void GameModel::dispose() {
-    if (_world != nullptr) {
-        _world->clear();
-        _world = nullptr;
-    }
+    //if (_world != nullptr) {
+    //    _world->clear();
+    //    _world = nullptr;
+    //}
     _assets = nullptr;
     _enemyArrayGroundN.clear();
 	_enemiesToFree.clear();

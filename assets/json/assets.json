@@ -245,6 +245,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "skeletonIcon": {
+            "file":     "textures/skeletonIcon.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "repair_background": {
             "file":     "textures/Basement/BasementBackground.png",
             "minfilter":"nearest",
@@ -303,6 +310,34 @@
         },
         "repair_northwest_wall": {
             "file":     "textures/Basement/northwestWall.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "healthbar_good": {
+            "file":     "textures/CastleHealth/healthGood.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "healthbar_warning": {
+            "file":     "textures/CastleHealth/healthWarning.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "healthbar_low": {
+            "file":     "textures/CastleHealth/healthLow.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "health_frame": {
+            "file":     "textures/CastleHealth/frame.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
