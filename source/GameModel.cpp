@@ -3,7 +3,7 @@
 //
 
 #include "GameModel.h"
-#define DRAW_SCALE 32
+#define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
 using namespace cugl;

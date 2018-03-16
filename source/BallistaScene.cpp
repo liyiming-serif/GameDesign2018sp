@@ -119,6 +119,16 @@ void BallistaScene::update(float deltaTime, std::set<std::shared_ptr<EnemyModel>
             addChild(a->getNode());
 			CULog("%d\n", _arrows.size());
         }
+        //testing
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE,_assets);
+        if(e != nullptr) {
+            _enemies.insert(e);
+            _world->addObstacle(e);
+            addChild(e->getNode());
+            CULog("enemy added");
+        }
+        CULog("Position: %d, %d", _ballista->getPosition().x, _ballista->getPosition().y);
+
     }
     CULog("Size: %d",_enemies.size());
     for(auto it = _enemies.begin(); it != _enemies.end(); it++){
