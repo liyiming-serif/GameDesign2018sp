@@ -173,7 +173,7 @@ void BallistaScene::update(float deltaTime){
 		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		gameModel._enemyArrayGroundN.erase(e);
-		gameModel.damageWallHealth(5, 9);
+		gameModel.changeWallHealth(5, -9);
 		CULog("Num enemies left: %d\n", gameModel._enemyArrayGroundN.size());
 	}
 	gameModel._enemiesToFree.clear();

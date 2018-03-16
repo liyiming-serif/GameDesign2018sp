@@ -41,25 +41,9 @@ public:
     // Physics manager
     //std::shared_ptr<cugl::ObstacleWorld> _world;
 
-    int getWallHealth(int wall) {
-        return _castleHealth[wall];
-    }
+    int getWallHealth(int wall);
 
-    void damageWallHealth(int wall, int damage) {
-        if (_castleHealth[wall] >= damage) {
-            _castleHealth[wall] -= damage;
-        }
-    }
-
-    void repairWallHealth(int wall) {
-        if (_castleHealth[wall] < 99) {
-            _castleHealth[wall] += 2;
-        }
-    }
-
-
-
-
+    void changeWallHealth(int wall, int damage);
 
 };
 

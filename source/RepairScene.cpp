@@ -187,7 +187,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="N";
                 }
                 else {
-                    gameModel.repairWallHealth(0);
+                    gameModel.changeWallHealth(0, 2);
                 }
 
             }
@@ -204,7 +204,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="NE";
                 }
                 else {
-                    gameModel.repairWallHealth(1);
+                    gameModel.changeWallHealth(1, 2);
                 }
             }
         });
@@ -220,7 +220,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="SE";
                 }
                 else {
-                    gameModel.repairWallHealth(2);
+                    gameModel.changeWallHealth(2, 2);
                 }
             }
         });
@@ -236,7 +236,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="S";
                 }
                 else {
-                    gameModel.repairWallHealth(3);
+                    gameModel.changeWallHealth(3, 2);
                 }
             }
         });
@@ -252,7 +252,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="SW";
                 }
                 else {
-                    gameModel.repairWallHealth(4);
+                    gameModel.changeWallHealth(4, 2);
                 }
             }
         });
@@ -268,7 +268,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _curr_wall="NW";
                 }
                 else {
-                    gameModel.repairWallHealth(5);
+                    gameModel.changeWallHealth(5, 2);
                 }
             }
         });

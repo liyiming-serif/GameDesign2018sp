@@ -77,3 +77,17 @@ void GameModel::update(float deltaTime){
 	//}
 	//_enemiesToFree.clear();
 }
+
+int GameModel::getWallHealth(int wall) {
+    return _castleHealth[wall];
+}
+
+//positive is healing, negative is damage
+void GameModel::changeWallHealth(int wall, int damage) {
+    if (_castleHealth[wall] >= damage) {
+    //change this from hardcoded number eventually
+        if(_castleHealth[wall] < 99){
+            _castleHealth[wall] += damage;
+        }
+    }
+}
