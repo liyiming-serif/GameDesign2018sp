@@ -77,7 +77,7 @@ protected:
     GameModel _gameModel;
     
 
-    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SE
+    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SW
     int _direction;
     int _currscene;
     

@@ -39,7 +39,9 @@
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
 
+//global variables
 InputController input;
+GameModel gameModel;
 /**
  * The method called after OpenGL is initialized, but before running the application.
  *
@@ -82,9 +84,6 @@ void CastleApp::onStartup() {
     
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
-    
-    // Build the scene from these assets
-
 
     Application::onStartup(); // YOU MUST END with call to parent
 
@@ -109,7 +108,7 @@ void CastleApp::onShutdown() {
     _ballistaScene.dispose();
     _lookoutScene.dispose();
     _repairScene.dispose();
-    _gameModel.dispose();
+    gameModel.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -169,7 +168,7 @@ void CastleApp::update(float timestep) {
             }
             else if(_currscene==BALLISTA){
             //later on, use _direction to determine array
-                _ballistaScene.update(timestep, _gameModel._enemyArrayGroundN);
+                _ballistaScene.update(timestep);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
                     _ballistaScene.setActive(false);
@@ -189,7 +188,7 @@ void CastleApp::update(float timestep) {
                     _repairScene.setActive(false);
                 }
             }
-            _gameModel.update(timestep);
+            gameModel.update(timestep);
         }
     }
     
@@ -200,9 +199,9 @@ void CastleApp::update(float timestep) {
 
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
-    if (_currscene == MENU && nextscene == OVERWORLD){
-        _gameModel.init(_assets);
-    }
+	if (_currscene == MENU && nextscene == OVERWORLD) {
+		gameModel.init(_assets);
+	}
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);

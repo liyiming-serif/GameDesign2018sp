@@ -100,7 +100,7 @@ void BallistaScene::dispose() {
     }
 }
 
-void BallistaScene::update(float deltaTime, std::set<std::shared_ptr<EnemyModel>> _enemies){
+void BallistaScene::update(float deltaTime){
     // Poll inputs
     if(input.isPressed()){
         Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());
@@ -116,12 +116,12 @@ void BallistaScene::update(float deltaTime, std::set<std::shared_ptr<EnemyModel>
 			CULog("%d\n", _arrows.size());
         }
     }
-    CULog("Size: %d",_enemies.size());
-    for(auto it = _enemies.begin(); it != _enemies.end(); it++){
-        std::shared_ptr<EnemyModel> e = *it;
-        e->update(deltaTime);
-        CULog("position: %d, %d", e->getX(), e->getY());
-    }
+    //CULog("Size: %d",gameScene._enemieArrayGroundN.size());
+    //for(auto it = gameScene._enemieArrayGroundN.begin(); it != gameScene._enemieArrayGroundN.end(); it++){
+    //    std::shared_ptr<EnemyModel> e = *it;
+    //    e->update(deltaTime);
+    //    CULog("position: %d, %d", e->getX(), e->getY());
+    //}
 /*
     //Update enemies
     for(auto it = _enemies.begin(); it != _enemies.end(); it++){

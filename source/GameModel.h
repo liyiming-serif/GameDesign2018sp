@@ -41,4 +41,6 @@ public:
 
 };
 
+extern GameModel gameModel;
+
 #endif //BUILD_ANDROID_GAMEMODEL_H

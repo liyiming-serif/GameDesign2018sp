@@ -39,7 +39,7 @@ public:
     ~BallistaScene() {dispose();}
 
     // Gameplay
-    void update(float deltaTime, std::set<std::shared_ptr<EnemyModel>> enemies);
+    void update(float deltaTime);
 
     //Pause or Resume
     void setActive(bool active);
