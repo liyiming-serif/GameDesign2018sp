@@ -46,7 +46,9 @@ public:
     }
 
     void damageWallHealth(int wall, int damage) {
-        _castleHealth[wall] -= health;
+        if (_castleHealth[wall] >= damage) {
+            _castleHealth[wall] -= damage;
+        }
     }
 
     void repairWallHealth(int wall) {

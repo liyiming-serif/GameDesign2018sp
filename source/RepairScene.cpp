@@ -64,35 +64,38 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(0,_size.height/2);
     addChild(_background);
 
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("healthbar_good");
-    _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _background->setPosition(0,_size.height/2);
-    addChild(_background);
+    std::shared_ptr<Texture> texture_good  = _assets->get<Texture>("healthbar_good");
+    _healthbar_good = PolygonNode::allocWithTexture(texture_good);
+    _healthbar_good->setScale(1.2f); // Magic number to rescale asset
+    _healthbar_good->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _healthbar_good->setPosition(_size.width/1.55,_size.height/2);
+    addChild(_healthbar_good);
 
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
-    _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _background->setPosition(0,_size.height/2);
-    addChild(_background);
+    std::shared_ptr<Texture> texture_warning  = _assets->get<Texture>("healthbar_warning");
+    _healthbar_warning = PolygonNode::allocWithTexture(texture_warning);
+    _healthbar_warning->setScale(1.2f); // Magic number to rescale asset
+    _healthbar_warning->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _healthbar_warning->setPosition(_size.width/1.55,_size.height/2);
+    addChild(_healthbar_warning);
 
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
-    _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _background->setPosition(0,_size.height/2);
-    addChild(_background);
+    std::shared_ptr<Texture> texture_low  = _assets->get<Texture>("healthbar_low");
+    _healthbar_low = PolygonNode::allocWithTexture(texture_low);
+    _healthbar_low->setScale(1.2f); // Magic number to rescale asset
+    _healthbar_low->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _healthbar_low->setPosition(_size.width/1.55,_size.height/2);
+    addChild(_healthbar_low);
 
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
-    _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _background->setPosition(0,_size.height/2);
-    addChild(_background);
+    std::shared_ptr<Texture> texture_frame  = _assets->get<Texture>("health_frame");
+    _health_frame = PolygonNode::allocWithTexture(texture_frame);
+    _health_frame->setScale(1.2f); // Magic number to rescale asset
+    _health_frame->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _health_frame->setPosition(_size.width/1.55,_size.height/2);
+    addChild(_health_frame);
 
-    
+    _healthbar_low->setVisible(false);
+    _healthbar_warning->setVisible(false);
+    _healthbar_good->setVisible(false);
+    _health_frame->setVisible(true);
     
     
     // Wall Layers
@@ -427,6 +430,102 @@ void RepairScene::dispose() {
 void RepairScene::update(float timestep){
     // Animate
     _actions->update(timestep);
+    int _curr_wall_health;
+
+    _healthbar_good->setVisible(false);
+    _healthbar_warning->setVisible(false);
+    _healthbar_low->setVisible(false);
+
+    if (_curr_wall.compare("N") == 0) {
+        _curr_wall_health = gameModel.getWallHealth(0);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
+    else if (_curr_wall.compare("NE")==0) {
+        _curr_wall_health = gameModel.getWallHealth(1);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
+    else if (_curr_wall.compare("SE")==0) {
+        _curr_wall_health = gameModel.getWallHealth(2);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
+    else if (_curr_wall.compare("S")==0) {
+        _curr_wall_health = gameModel.getWallHealth(3);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
+    else if (_curr_wall.compare("SW")==0) {
+        _curr_wall_health = gameModel.getWallHealth(4);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health * (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
+    else if (_curr_wall.compare("NW")==0) {
+        _curr_wall_health = gameModel.getWallHealth(5);
+        if (_curr_wall_health >= 66) {
+            _healthbar_good->setVisible(true);
+            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        }
+        else if (_curr_wall_health <= 33) {
+            _healthbar_low->setVisible(true);
+            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        }
+        else {
+            _healthbar_warning->setVisible(true);
+            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+        }
+    }
 
 }
 

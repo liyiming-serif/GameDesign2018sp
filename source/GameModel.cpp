@@ -17,8 +17,11 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     _spawnTimer = 360;
 
+    int sum = 0;
+
     for (int i = 0; i < 6; ++i) {
-        _castleHealth[i] = 100;
+        _castleHealth[i] = sum;
+        sum +=20;
     }
 
     // Create the physics world
