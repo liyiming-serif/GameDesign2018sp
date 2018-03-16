@@ -76,8 +76,8 @@ protected:
     GameModel _gameModel;
     
 
-
-
+    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SE
+    int _direction;
     int _currscene;
     
 public:
@@ -138,7 +138,7 @@ public:
      * @param timestep  The amount of time (in seconds) since the last frame
      */
     virtual void update(float timestep) override;
-    void swapscenes(int nextscene);
+    void swapscenes(int nextscene, int direction);
     
     /**
      * The method called to draw the application to the screen.

@@ -48,7 +48,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
     
     _assets = assets;
-    
+
+    direction = 0;
     switchscene = 0;
     
     // Set background color
@@ -356,6 +357,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                    direction = 1;
                 }
             });
             _ballistaNorthEast->setName("ballista");
@@ -363,6 +365,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                     direction = 2;
                 }
             });
             _ballistaSouthEast->setName("ballista");
@@ -370,6 +373,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                    direction = 3;
                 }
             });
             _ballistaSouth->setName("ballista");
@@ -377,6 +381,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                    direction = 4;
                 }
             });
             _ballistaSouthWest->setName("ballista");
@@ -384,6 +389,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                    direction = 5;
                 }
             });
             _ballistaNorthWest->setName("ballista");
@@ -391,6 +397,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
+                    direction = 6;
                 }
             });
     

@@ -152,7 +152,7 @@ void CastleApp::update(float timestep) {
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){
-                swapscenes(_menuScene.switchscene);
+                swapscenes(_menuScene.switchscene, 0);
                 _menuScene.setActive(false);
             }
         }
@@ -160,28 +160,28 @@ void CastleApp::update(float timestep) {
             if(_currscene==OVERWORLD) {
                 _overworldScene.update(timestep);
                 if(_overworldScene.switchscene!=0){
-                    swapscenes(_overworldScene.switchscene);
+                    swapscenes(_overworldScene.switchscene, _overworldScene.direction);
                     _overworldScene.setActive(false);
                 }
             }
             else if(_currscene==BALLISTA){
                 _ballistaScene.update(timestep);
                 if(_ballistaScene.switchscene!=0){
-                    swapscenes(_ballistaScene.switchscene);
+                    swapscenes(_ballistaScene.switchscene, 0);
                     _ballistaScene.setActive(false);
                 }
             }
             else if(_currscene==LOOKOUT){
                 _lookoutScene.update(timestep);
                 if(_lookoutScene.switchscene!=0){
-                    swapscenes(_lookoutScene.switchscene);
+                    swapscenes(_lookoutScene.switchscene, 0);
                     _lookoutScene.setActive(false);
                 }
             }
             else if(_currscene==REPAIR){
                 _repairScene.update(timestep);
                 if(_repairScene.switchscene!=0){
-                    swapscenes(_repairScene.switchscene);
+                    swapscenes(_repairScene.switchscene, 0);
                     _repairScene.setActive(false);
                 }
             }
@@ -193,7 +193,8 @@ void CastleApp::update(float timestep) {
 
 }
 
-void CastleApp::swapscenes(int nextscene){
+void CastleApp::swapscenes(int nextscene, int direction){
+    _direction = direction;
     if (_currscene == MENU && nextscene == OVERWORLD){
         _gameModel.init(_assets);
     }

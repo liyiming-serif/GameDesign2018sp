@@ -79,10 +79,6 @@ protected:
     
     std::shared_ptr<cugl::Button> _up_button;
     std::shared_ptr<cugl::Button> _down_button;
-    
-    
-    
-
 
 public:
     // Constructors
@@ -103,6 +99,9 @@ public:
     float stairs;
     cugl::Vec2 castleOrigin;
     int currentCastleFloor;
+
+    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SE
+    int direction;
     
     
     /**

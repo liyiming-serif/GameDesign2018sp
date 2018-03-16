@@ -9,7 +9,7 @@
 #define BUILD_ANDROID_GAMEMODEL_H
 
 #include <cugl/cugl.h>
-#include <Set>
+#include <set>
 #include "EnemyModel.h"
 
 class GameModel{

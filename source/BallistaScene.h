@@ -8,7 +8,7 @@
 #include "ArrowModel.h"
 #include "InputController.h"
 #include "GameModel.h"
-#include <Set>
+#include <set>
 
 class BallistaScene : public cugl::Scene{
 protected:
