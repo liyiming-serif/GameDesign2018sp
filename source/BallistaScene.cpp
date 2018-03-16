@@ -104,7 +104,7 @@ void BallistaScene::dispose() {
     }
 }
 
-void BallistaScene::update(float deltaTime){
+void BallistaScene::update(float deltaTime, std::set<std::shared_ptr<EnemyModel>> _enemies){
     // Poll inputs
     if(_input.isPressed()){
         Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(_input.pointerPos());
@@ -118,6 +118,17 @@ void BallistaScene::update(float deltaTime){
             _world->addObstacle(a);
             addChild(a->getNode());
 			CULog("%d\n", _arrows.size());
+        }
+    }
+
+    //Update enemies
+    for(auto  it = _enemies.begin(); it != _enemies.end(); it++){
+        std::shared_ptr<EnemyModel> e = *it;
+        if(e != nullptr){
+            if(std::find(getChildren().begin(), getChildren().end(), e) == getChildren().end()){
+                addChild(e->getNode());
+            }
+            e->update(deltaTime);
         }
     }
 

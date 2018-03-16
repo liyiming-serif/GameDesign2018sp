@@ -128,7 +128,7 @@ void CastleApp::onShutdown() {
  * This method should contain any code that is not an OpenGL call.
  *
  * When overriding this method, you do not need to call the parent method
- * at all. The default implmentation does nothing.
+ * at all. The default implementation does nothing.
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
@@ -165,7 +165,8 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==BALLISTA){
-                _ballistaScene.update(timestep);
+            //later on, use _direction to determine array
+                _ballistaScene.update(timestep, _gameModel._enemyArrayGroundN);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
                     _ballistaScene.setActive(false);

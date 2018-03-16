@@ -57,4 +57,5 @@ void GameModel::update(float timestep){
         _spawnTimer--;
     }
     _world->update(timestep);
+    //CULog("update");
 }
