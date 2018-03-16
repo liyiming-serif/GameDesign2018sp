@@ -238,6 +238,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "skeleton": {
+            "file":     "textures/skeleton.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "repair_background": {
             "file":     "textures/Basement/BasementBackground.png",
             "minfilter":"nearest",

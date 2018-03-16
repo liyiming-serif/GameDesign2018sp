@@ -4,6 +4,8 @@
 
 #ifndef BUILD_ANDROID_LOOKOUTSCENE_H
 #define BUILD_ANDROID_LOOKOUTSCENE_H
+
+#include "GameModel.h"
 #include <cugl/cugl.h>
 
 class LookoutScene : public cugl::Scene{
