@@ -7,7 +7,8 @@
 #include <cugl/cugl.h>
 #include "ArrowModel.h"
 #include "InputController.h"
-#include <Set>
+#include "GameModel.h"
+#include <set>
 
 class BallistaScene : public cugl::Scene{
 protected:
@@ -38,7 +39,7 @@ public:
     ~BallistaScene() {dispose();}
 
     // Gameplay
-    void update(float deltaTime);
+    void update(float deltaTime, std::set<std::shared_ptr<EnemyModel>> enemies);
 
     //Pause or Resume
     void setActive(bool active);

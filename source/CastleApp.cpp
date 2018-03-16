@@ -80,7 +80,6 @@ void CastleApp::onStartup() {
     _loaded = false;
     _loadingScene.init(_assets);
     
-    
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     
@@ -110,6 +109,7 @@ void CastleApp::onShutdown() {
     _ballistaScene.dispose();
     _lookoutScene.dispose();
     _repairScene.dispose();
+    _gameModel.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -131,7 +131,7 @@ void CastleApp::onShutdown() {
  * This method should contain any code that is not an OpenGL call.
  *
  * When overriding this method, you do not need to call the parent method
- * at all. The default implmentation does nothing.
+ * at all. The default implementation does nothing.
  *
  * @param timestep  The amount of time (in seconds) since the last frame
  */
@@ -155,37 +155,41 @@ void CastleApp::update(float timestep) {
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){
-                swapscenes(_menuScene.switchscene);
+                swapscenes(_menuScene.switchscene, 0);
                 _menuScene.setActive(false);
             }
         }
-        else if(_currscene==OVERWORLD) {
-            _overworldScene.update(timestep);
-            if(_overworldScene.switchscene!=0){
-                swapscenes(_overworldScene.switchscene);
-                _overworldScene.setActive(false);
+        else{
+            if(_currscene==OVERWORLD) {
+                _overworldScene.update(timestep);
+                if(_overworldScene.switchscene!=0){
+                    swapscenes(_overworldScene.switchscene, _overworldScene.direction);
+                    _overworldScene.setActive(false);
+                }
             }
-        }
-        else if(_currscene==BALLISTA){
-            _ballistaScene.update(timestep);
-            if(_ballistaScene.switchscene!=0){
-                swapscenes(_ballistaScene.switchscene);
-                _ballistaScene.setActive(false);
+            else if(_currscene==BALLISTA){
+            //later on, use _direction to determine array
+                _ballistaScene.update(timestep, _gameModel._enemyArrayGroundN);
+                if(_ballistaScene.switchscene!=0){
+                    swapscenes(_ballistaScene.switchscene, 0);
+                    _ballistaScene.setActive(false);
+                }
             }
-        }
-        else if(_currscene==LOOKOUT){
-            _lookoutScene.update(timestep);
-            if(_lookoutScene.switchscene!=0){
-                swapscenes(_lookoutScene.switchscene);
-                _lookoutScene.setActive(false);
+            else if(_currscene==LOOKOUT){
+                _lookoutScene.update(timestep);
+                if(_lookoutScene.switchscene!=0){
+                    swapscenes(_lookoutScene.switchscene, 0);
+                    _lookoutScene.setActive(false);
+                }
             }
-        }
-        else if(_currscene==REPAIR){
-            _repairScene.update(timestep);
-            if(_repairScene.switchscene!=0){
-                swapscenes(_repairScene.switchscene);
-                _repairScene.setActive(false);
+            else if(_currscene==REPAIR){
+                _repairScene.update(timestep);
+                if(_repairScene.switchscene!=0){
+                    swapscenes(_repairScene.switchscene, 0);
+                    _repairScene.setActive(false);
+                }
             }
+            _gameModel.update(timestep);
         }
     }
     
@@ -194,7 +198,11 @@ void CastleApp::update(float timestep) {
 
 }
 
-void CastleApp::swapscenes(int nextscene){
+void CastleApp::swapscenes(int nextscene, int direction){
+    _direction = direction;
+    if (_currscene == MENU && nextscene == OVERWORLD){
+        _gameModel.init(_assets);
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
