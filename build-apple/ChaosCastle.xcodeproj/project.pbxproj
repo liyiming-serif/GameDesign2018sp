@@ -26,6 +26,12 @@
 		A9E86369205965D300166C6F /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E86367205965D300166C6F /* LoadingScene.cpp */; };
 		A9E8636A205965D300166C6F /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E86367205965D300166C6F /* LoadingScene.cpp */; };
 		A9E8636B205965D300166C6F /* LoadingScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E86367205965D300166C6F /* LoadingScene.cpp */; };
+		A9E863892059C59500166C6F /* ArrowModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863862059C59400166C6F /* ArrowModel.cpp */; };
+		A9E8638A2059C59500166C6F /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863882059C59500166C6F /* InputController.cpp */; };
+		A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863862059C59400166C6F /* ArrowModel.cpp */; };
+		A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863862059C59400166C6F /* ArrowModel.cpp */; };
+		A9E8638D205B584400166C6F /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863882059C59500166C6F /* InputController.cpp */; };
+		A9E8638E205B584400166C6F /* InputController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863882059C59500166C6F /* InputController.cpp */; };
 		EB0FF5092016E4A700517030 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF5082016E4A700517030 /* CoreFoundation.framework */; };
 		EB0FF53F2016E83700517030 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF5352016E83500517030 /* CoreGraphics.framework */; };
 		EB0FF5412016E83700517030 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0FF5392016E83500517030 /* CoreMotion.framework */; };
@@ -131,6 +137,10 @@
 		A9E863602059645F00166C6F /* MenuScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		A9E86367205965D300166C6F /* LoadingScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingScene.cpp; sourceTree = "<group>"; };
 		A9E86368205965D300166C6F /* LoadingScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingScene.h; sourceTree = "<group>"; };
+		A9E863822059C59400166C6F /* ArrowModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrowModel.h; sourceTree = "<group>"; };
+		A9E863862059C59400166C6F /* ArrowModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrowModel.cpp; sourceTree = "<group>"; };
+		A9E863872059C59400166C6F /* InputController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputController.h; sourceTree = "<group>"; };
+		A9E863882059C59500166C6F /* InputController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputController.cpp; sourceTree = "<group>"; };
 		EB0FF5082016E4A700517030 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		EB0FF5352016E83500517030 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		EB0FF5392016E83500517030 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.2.sdk/System/Library/Frameworks/CoreMotion.framework; sourceTree = DEVELOPER_DIR; };
@@ -358,6 +368,10 @@
 			isa = PBXGroup;
 			children = (
 				EB2BE9B41D74952A002FE78B /* main.cpp */,
+				A9E863862059C59400166C6F /* ArrowModel.cpp */,
+				A9E863822059C59400166C6F /* ArrowModel.h */,
+				A9E863882059C59500166C6F /* InputController.cpp */,
+				A9E863872059C59400166C6F /* InputController.h */,
 				EB2BE9B31D74952A002FE78B /* CastleApp.h */,
 				EB2BE9B21D74952A002FE78B /* CastleApp.cpp */,
 				A9E86367205965D300166C6F /* LoadingScene.cpp */,
@@ -552,6 +566,8 @@
 				A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */,
 				EB0FF61D2016F06000517030 /* main.cpp in Sources */,
 				A9B9B6292048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */,
+				A9E8638E205B584400166C6F /* InputController.cpp in Sources */,
 				A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */,
 				EB0FF61E2016F06000517030 /* CastleApp.cpp in Sources */,
 				A9E8636B205965D300166C6F /* LoadingScene.cpp in Sources */,
@@ -567,6 +583,8 @@
 				A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
 				A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */,
+				A9E8638D205B584400166C6F /* InputController.cpp in Sources */,
 				A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */,
 				EB7454AF1D74D891002FBAE6 /* CastleApp.cpp in Sources */,
 				A9E8636A205965D300166C6F /* LoadingScene.cpp in Sources */,
@@ -582,6 +600,8 @@
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */,
 				A9AA61132049AEE700940276 /* CastleApp.cpp in Sources */,
+				A9E863892059C59500166C6F /* ArrowModel.cpp in Sources */,
+				A9E8638A2059C59500166C6F /* InputController.cpp in Sources */,
 				A979457320537A97006DB3E3 /* RepairScene.cpp in Sources */,
 				A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */,
 				A9E86369205965D300166C6F /* LoadingScene.cpp in Sources */,
