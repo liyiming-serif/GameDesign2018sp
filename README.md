@@ -13,7 +13,7 @@ Create a new branch for each coding task, and name the branch \[netId\]\_\[codin
 
 When you're done with your coding task, submit a **pull request**. We'll merge our changes to the master branch during coding meetings or after class.
 
-Keep commit messages under 80 characters. Commit messages should complete this sentence: "If merged, this commit will \__\__". Ex. `git commit -m "add art assets for castle"` `git commit -m "implement basic networking"`
+Keep commit messages under 80 characters. Commit messages should complete this sentence: "If merged, this commit will \_\_\_\_". Ex. `git commit -m "add art assets for castle"` `git commit -m "implement basic networking"`
 
 
 ## Cornell University Game Library (CUGL)
