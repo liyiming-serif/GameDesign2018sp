@@ -7,8 +7,11 @@
 //
 
 #include "RepairScene.h"
+#include <string>
+#include "GameModel.h"
 
 using namespace cugl;
+using namespace std;
 
 // This is adjusted by screen aspect ratio to get the height
 #define GAME_WIDTH 1024
@@ -45,6 +48,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
     
     _curr_wall = "";
+    _new_wall = "";
     
     // Allocate the manager and the actions
     _actions = ActionManager::alloc();
@@ -53,6 +57,34 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _wallFadeOUT = FadeOut::alloc(DURATION);
     
     // Set the background image
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
+    _background = PolygonNode::allocWithTexture(texture);
+    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _background->setPosition(0,_size.height/2);
+    addChild(_background);
+
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("healthbar_good");
+    _background = PolygonNode::allocWithTexture(texture);
+    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _background->setPosition(0,_size.height/2);
+    addChild(_background);
+
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
+    _background = PolygonNode::allocWithTexture(texture);
+    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _background->setPosition(0,_size.height/2);
+    addChild(_background);
+
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
+    _background = PolygonNode::allocWithTexture(texture);
+    _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
+    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _background->setPosition(0,_size.height/2);
+    addChild(_background);
+
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
@@ -145,9 +177,16 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                  CULog("N");
-                RepairScene::doFadeIn(_wallFadeIN, "N");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="N";
+                _new_wall = "N";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "N");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="N";
+                }
+                else {
+                    gameModel.repairWallHealth(0);
+                }
+
             }
         });
         _northeastWallButton->setName("fade in NE");
@@ -155,9 +194,15 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NE");
-                RepairScene::doFadeIn(_wallFadeIN, "NE");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="NE";
+                _new_wall = "NE";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "NE");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="NE";
+                }
+                else {
+                    gameModel.repairWallHealth(1);
+                }
             }
         });
         _southeastWallButton->setName("fade in SE");
@@ -165,10 +210,15 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SE");
-                RepairScene::doFadeIn(_wallFadeIN, "SE");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="SE";
-                
+                _new_wall = "SE";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "SE");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="SE";
+                }
+                else {
+                    gameModel.repairWallHealth(2);
+                }
             }
         });
         _southWallButton->setName("fade in S");
@@ -176,9 +226,15 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("S");
-                RepairScene::doFadeIn(_wallFadeIN, "S");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="S";
+                _new_wall = "S";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "S");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="S";
+                }
+                else {
+                    gameModel.repairWallHealth(3);
+                }
             }
         });
         _southwestWallButton->setName("fade in SW");
@@ -186,9 +242,14 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SW");
-                RepairScene::doFadeIn(_wallFadeIN, "SW");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="SW";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "SW");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="SW";
+                }
+                else {
+                    gameModel.repairWallHealth(4);
+                }
             }
         });
         _northwestWallButton->setName("fade in NW");
@@ -196,9 +257,14 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NW");
-                RepairScene::doFadeIn(_wallFadeIN, "NW");
-                RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                _curr_wall="NW";
+                if (_new_wall.compare(_curr_wall) != 0) {
+                    RepairScene::doFadeIn(_wallFadeIN, "NW");
+                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
+                    _curr_wall="NW";
+                }
+                else {
+                    gameModel.repairWallHealth(5);
+                }
             }
         });
     
@@ -361,6 +427,7 @@ void RepairScene::dispose() {
 void RepairScene::update(float timestep){
     // Animate
     _actions->update(timestep);
+
 }
 
 

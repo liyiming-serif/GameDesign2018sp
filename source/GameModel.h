@@ -10,13 +10,14 @@
 
 #include <cugl/cugl.h>
 #include <set>
+#include <Array>
 #include "EnemyModel.h"
 
 class GameModel{
 protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
-
+    int _castleHealth[6];
     int _spawnTimer;
     cugl::Size _size;
 
@@ -39,6 +40,24 @@ public:
 
     // Physics manager
     std::shared_ptr<cugl::ObstacleWorld> _world;
+
+    int getWallHealth(int wall) {
+        return _castleHealth[wall];
+    }
+
+    void damageWallHealth(int wall, int damage) {
+        _castleHealth[wall] -= health;
+    }
+
+    void repairWallHealth(int wall) {
+        if (_castleHealth[wall] < 99) {
+            _castleHealth[wall] += 2;
+        }
+    }
+
+
+
+
 
 };
 

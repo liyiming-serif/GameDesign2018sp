@@ -48,6 +48,12 @@ protected:
     std::shared_ptr<cugl::Node>  _buttons;
     
     std::string _curr_wall;
+    std::string _new_wall;
+
+    std::shared_ptr<cugl::PolygonNode> _healthbar_good;
+    std::shared_ptr<cugl::PolygonNode> _healthbar_warning;
+    std::shared_ptr<cugl::PolygonNode> _healthbar_low;
+    std::shared_ptr<cugl::PolygonNode> _health_frame;
     
     
     

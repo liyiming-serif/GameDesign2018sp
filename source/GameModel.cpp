@@ -17,6 +17,10 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     _spawnTimer = 360;
 
+    for (int i = 0; i < 6; ++i) {
+        _castleHealth[i] = 100;
+    }
+
     // Create the physics world
     //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
 
