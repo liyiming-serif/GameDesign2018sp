@@ -28,8 +28,8 @@ using namespace cugl;
 #define GAME_WIDTH 1024
 
 /** Define the time settings for animation */
-//#define DURATION .7f
-#define DURATION .3f
+#define DURATION .7f
+//#define DURATION .3f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"

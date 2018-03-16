@@ -18,11 +18,10 @@ using namespace cugl;
 #define LOOKOUT     3
 
 #define FLOOR_SCALE .55f
-#define BUTTON_SCALE .9f
+#define BUTTON_SCALE .8f
 
 /** Define the time settings for animation */
-//#define DURATION .7f
-#define DURATION .75f
+#define DURATION .5f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -69,14 +68,14 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         plain_floor = PolygonNode::allocWithTexture(plainFloor_texture);
         plain_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         plain_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        plain_floor->setPosition(0,_size.height/2);
+        plain_floor->setPosition(_size.width/80,_size.height/2);
         addChild(plain_floor);
     
         std::shared_ptr<Texture> northWall_texture  = _assets->get<Texture>("repair_north_wall");
         northWall_floor = PolygonNode::allocWithTexture(northWall_texture);
         northWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         northWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northWall_floor->setPosition(0,_size.height/2);
+        northWall_floor->setPosition(_size.width/80,_size.height/2);
         northWall_floor->setColor(Color4(255,255,255,0));
         addChild(northWall_floor);
     
@@ -84,7 +83,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         northeastWall_floor = PolygonNode::allocWithTexture(northeastWall_texture);
         northeastWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         northeastWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northeastWall_floor->setPosition(0,_size.height/2);
+        northeastWall_floor->setPosition(_size.width/80,_size.height/2);
         northeastWall_floor->setColor(Color4(255,255,255,0));
         addChild(northeastWall_floor);
     
@@ -92,7 +91,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         southeastWall_floor = PolygonNode::allocWithTexture(southeastWall_texture);
         southeastWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         southeastWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southeastWall_floor->setPosition(0,_size.height/2);
+        southeastWall_floor->setPosition(_size.width/80,_size.height/2);
         southeastWall_floor->setColor(Color4(255,255,255,0));
         addChild(southeastWall_floor);
     
@@ -100,7 +99,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         southWall_floor = PolygonNode::allocWithTexture(southWall_texture);
         southWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         southWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southWall_floor->setPosition(0,_size.height/2);
+        southWall_floor->setPosition(_size.width/80,_size.height/2);
         southWall_floor->setColor(Color4(255,255,255,0));
         addChild(southWall_floor);
     
@@ -108,7 +107,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         southwestWall_floor = PolygonNode::allocWithTexture(southwestWall_texture);
         southwestWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         southwestWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southwestWall_floor->setPosition(0,_size.height/2);
+        southwestWall_floor->setPosition(_size.width/80,_size.height/2);
         southwestWall_floor->setColor(Color4(255,255,255,0));
         addChild(southwestWall_floor);
     
@@ -116,7 +115,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         northwestWall_floor = PolygonNode::allocWithTexture(northwestWall_texture);
         northwestWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
         northwestWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northwestWall_floor->setPosition(0,_size.height/2);
+        northwestWall_floor->setPosition(_size.width/80,_size.height/2);
         northwestWall_floor->setColor(Color4(255,255,255,0));
         addChild(northwestWall_floor);
     
@@ -211,21 +210,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         float centerY = plain_floor->getContentSize().height/2;
         _northWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northWallButton->setPosition(centerX,centerY+.35*plain_floor->getContentHeight());
+        _northWallButton->setPosition(centerX,centerY+.37*plain_floor->getContentHeight());
     
         _northeastWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northeastWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northeastWallButton->setPosition(centerX+.25*plain_floor->getContentWidth(),centerY+.18*plain_floor->getContentHeight());
+        _northeastWallButton->setPosition(centerX+.27*plain_floor->getContentWidth(),centerY+.18*plain_floor->getContentHeight());
         _northeastWallButton->setAngle(-M_PI/3);
     
         _southeastWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _southeastWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _southeastWallButton->setPosition(centerX+.25*plain_floor->getContentWidth(),centerY-.18*plain_floor->getContentHeight());
+        _southeastWallButton->setPosition(centerX+.27*plain_floor->getContentWidth(),centerY-.18*plain_floor->getContentHeight());
         _southeastWallButton->setAngle(-2*M_PI/3);
     
         _southWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _southWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _southWallButton->setPosition(centerX,centerY-.35*plain_floor->getContentHeight());
+        _southWallButton->setPosition(centerX,centerY-.37*plain_floor->getContentHeight());
         _southWallButton->setAngle(-3*M_PI/3);
     
         _southwestWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
@@ -242,7 +241,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _buttons = Node::alloc();
         _buttons->setScale(.67); // Magic number to rescale asset
         _buttons->setAnchor(Vec2::ANCHOR_CENTER);
-        _buttons->setPosition(-_size.width/20,0);
+        _buttons->setPosition(-_size.width/24,0);
         addChild(_buttons);
     
     
