@@ -27,6 +27,13 @@ bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::s
     _node->setScale(0.3);
     _node->setAnchor(Vec2::ANCHOR_CENTER);
 
+	//create the scene node
+	_icon = nullptr;
+	std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
+	_icon = PolygonNode::allocWithTexture(texture2);
+	_icon->setScale(0.3);
+	_icon->setAnchor(Vec2::ANCHOR_CENTER);
+
     //initialize the box2d obstacle
     BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
     setAngle(dir);
@@ -41,9 +48,14 @@ void EnemyModel::update(float deltaTime) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
     }
+	if (_icon != nullptr) {
+		_icon->setPosition(getPosition()*_drawScale);
+		_icon->setAngle(getAngle());
+	}
 }
 
 void EnemyModel::dispose(){
     CULog("enemy destroyed");
     _node = nullptr;
+	_icon = nullptr;
 }

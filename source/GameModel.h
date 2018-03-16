@@ -38,7 +38,7 @@ public:
     void update(float deltaTime);
 
     // Physics manager
-    std::shared_ptr<cugl::ObstacleWorld> _world;
+    //std::shared_ptr<cugl::ObstacleWorld> _world;
 
 };
 
