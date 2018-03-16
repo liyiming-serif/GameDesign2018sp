@@ -44,22 +44,29 @@ void GameModel::dispose() {
     }
     _assets = nullptr;
     _enemyArrayGroundN.clear();
+	_enemiesToFree.clear();
 }
 
-void GameModel::update(float timestep){
-/*
-    if(_spawnTimer == 0){
-        std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
-                if(enemy1 != nullptr) {
-                    _enemyArrayGroundN.insert(enemy1);
-                    _world->addObstacle(enemy1);
-                }
-        _spawnTimer = 360;
-        CULog("spawn");
-    }
-    else{
-        _spawnTimer--;
-    }
-    _world->update(timestep);
-    */
+void GameModel::update(float deltaTime){
+	//// Update enemies and mark out of bound ones for deletion
+	//Rect bounds(Vec2::ZERO, _size / DRAW_SCALE);
+	//for (auto it = _enemyArrayGroundN.begin(); it != _enemyArrayGroundN.end(); it++) {
+	//	std::shared_ptr<EnemyModel> e = *it;
+	//	if (e != nullptr) {
+	//		e->update(deltaTime);
+	//	}
+	//	if (!bounds.contains(e->getPosition())) {
+	//		_enemiesToFree.insert(e);
+	//	}
+	//}
+
+	//// Delete the arrows here because you can't remove elements while iterating
+	//for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
+	//	std::shared_ptr<EnemyModel> e = *it;
+	//	_world->removeObstacle(e.get());
+	//	removeChild(e->getNode());
+	//	_enemyArrayGroundN.erase(e);
+	//	CULog("%d\n", _enemyArrayGroundN.size());
+	//}
+	//_enemiesToFree.clear();
 }

@@ -60,7 +60,6 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create a callback function for the OVERWORLD button
     _overworld_button->setName("overworld");
     _overworld_button->setListener([=] (const std::string& name, bool down) {
-        // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
         }
@@ -82,6 +81,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Create the physics world
     _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
+	activateWorldCollisions();
 
     // We can only activate a button AFTER it is added to a scene
      _overworld_button->activate(25);
@@ -103,22 +103,22 @@ void BallistaScene::dispose() {
 }
 
 void BallistaScene::update(float deltaTime){
-    // Poll inputs
     if(_spawnTimer == 0){
         //testing
-
-            std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(0, rand()%(int)(_size.height)), 0, 1, DRAW_SCALE,_assets);
-            if(e != nullptr) {
-                gameModel._enemyArrayGroundN.insert(e);
-                _world->addObstacle(e);
-                addChild(e->getNode());
-                CULog("enemy added");
-            }
-            _spawnTimer = 60;
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(0, rand()%(int)(_size.height)), 0, 1, DRAW_SCALE,_assets);
+        if(e != nullptr) {
+            gameModel._enemyArrayGroundN.insert(e);
+            _world->addObstacle(e);
+            addChild(e->getNode());
+            CULog("enemy added");
+        }
+        _spawnTimer = 60;
     }
     else{
         _spawnTimer--;
     }
+
+	// Poll inputs
     if(input.isPressed()){
         Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());
         _ballista->setAngle(pointdir.getAngle());
@@ -133,24 +133,7 @@ void BallistaScene::update(float deltaTime){
 			CULog("%d\n", _arrows.size());
         }
     }
-    //CULog("Size: %d",gameScene._enemieArrayGroundN.size());
-    //for(auto it = gameScene._enemieArrayGroundN.begin(); it != gameScene._enemieArrayGroundN.end(); it++){
-    //    std::shared_ptr<EnemyModel> e = *it;
-    //    e->update(deltaTime);
-    //    CULog("position: %d, %d", e->getX(), e->getY());
-    //}
-/*
-    //Update enemies
-    for(auto it = _enemies.begin(); it != _enemies.end(); it++){
-        std::shared_ptr<EnemyModel> e = *it;
-        if(e != nullptr){
-            if(std::find(getChildren().begin(), getChildren().end(), e->getNode()) == getChildren().end()){
-                addChild(e->getNode());
-            }
-            e->update(deltaTime);
-        }
-    }
-*/
+
     // Update arrows and mark out of bound ones for deletion
     Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);
     for(auto it = _arrows.begin(); it != _arrows.end(); it++){
@@ -173,6 +156,27 @@ void BallistaScene::update(float deltaTime){
 	}
 	_arrowsToFree.clear();
 
+	// Update enemies and mark out of bound ones for deletion
+	for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
+		std::shared_ptr<EnemyModel> e = *it;
+		if (e != nullptr) {
+			e->update(deltaTime);
+		}
+		if (!bounds.contains(e->getPosition())) {
+			gameModel._enemiesToFree.insert(e);
+		}
+	}
+
+	// Delete the enemies here because you can't remove elements while iterating
+	for (auto it = gameModel._enemiesToFree.begin(); it != gameModel._enemiesToFree.end(); it++) {
+		std::shared_ptr<EnemyModel> e = *it;
+		_world->removeObstacle(e.get());
+		removeChild(e->getNode());
+		gameModel._enemyArrayGroundN.erase(e);
+		CULog("Num enemies left: %d\n", gameModel._enemyArrayGroundN.size());
+	}
+	gameModel._enemiesToFree.clear();
+
     //crank the physics engine
     _world->update(deltaTime);
 
@@ -192,4 +196,32 @@ void BallistaScene::setActive(bool active){
     else{
         _overworld_button->deactivate();
     }
+}
+
+void BallistaScene::activateWorldCollisions() {
+	_world->activateCollisionCallbacks(true);
+	_world->onBeginContact = [this](b2Contact* contact) {
+		beginContact(contact);
+	};
+}
+
+void BallistaScene::beginContact(b2Contact* contact) {
+	b2Body* body1 = contact->GetFixtureA()->GetBody();
+	b2Body* body2 = contact->GetFixtureB()->GetBody();
+
+	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
+		std::shared_ptr<ArrowModel> a = *it;
+		if (body1->GetUserData() == a.get() || body2->GetUserData() == a.get()) {
+			_arrowsToFree.insert(a);
+			break;
+		}
+	}
+
+	for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
+		std::shared_ptr<EnemyModel> e = *it;
+		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
+			gameModel._enemiesToFree.insert(e);
+			break;
+		}
+	}
 }

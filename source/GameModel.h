@@ -28,13 +28,14 @@ public:
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
     std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
+	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
     // Destructors
     void dispose();
     ~GameModel() {dispose();}
 
     // Gameplay
-    void update(float timestep);
+    void update(float deltaTime);
 
     // Physics manager
     std::shared_ptr<cugl::ObstacleWorld> _world;

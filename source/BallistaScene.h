@@ -9,6 +9,10 @@
 #include "InputController.h"
 #include "GameModel.h"
 #include <set>
+#include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include <Box2D/Dynamics/b2World.h>
+#include <Box2D/Dynamics/Contacts/b2Contact.h>
+#include <Box2D/Collision/b2Collision.h>
 
 class BallistaScene : public cugl::Scene{
 protected:
@@ -46,6 +50,12 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+	//Call to activate collisions for this world
+	void activateWorldCollisions();
+
+	//Collision Callbacks
+	void beginContact(b2Contact* contact);
 
 };
 
