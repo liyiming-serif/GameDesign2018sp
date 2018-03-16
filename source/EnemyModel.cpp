@@ -49,8 +49,8 @@ void EnemyModel::update(float deltaTime) {
         _node->setAngle(getAngle());
     }
 	if (_icon != nullptr) {
-		Vec2 pos = getPosition()*_drawScale/2;
-		_icon->setPosition(pos.x, 576-pos.y);
+		Vec2 pos = getPosition()*_drawScale/3;
+		_icon->setPosition(180+pos.x, 288+pos.y);
 		_icon->setAngle(getAngle());
 	}
 }
