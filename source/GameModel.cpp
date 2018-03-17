@@ -83,11 +83,15 @@ int GameModel::getWallHealth(int wall) {
 }
 
 //positive is healing, negative is damage
-void GameModel::changeWallHealth(int wall, int damage) {
-    if (_castleHealth[wall] >= damage) {
-    //change this from hardcoded number eventually
-        if(_castleHealth[wall] < 99){
-            _castleHealth[wall] += damage;
-        }
-    }
+void GameModel::changeWallHealth(int wall, int amt) {
+	//cap health between 0 and 100
+	if (_castleHealth[wall] + amt > 100) {
+		_castleHealth[wall] = 100;
+	}
+	else if (_castleHealth[wall] + amt < 0) {
+		_castleHealth[wall] = 0;
+	}
+	else {
+		_castleHealth[wall] += amt;
+	}
 }
