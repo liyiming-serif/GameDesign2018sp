@@ -2,6 +2,7 @@
 // Created by Josh on 3/15/2018.
 //
 
+#include <stdlib.h>
 #include "GameModel.h"
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
@@ -23,6 +24,12 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
         _castleHealth[i] = sum;
         sum +=20;
     }
+
+    //eventually will read from the level JSON
+    std::vector<float> enemy = {100.0, (float)(rand()%(int)(_size.height)), 1.0, 1.0};
+    std::vector<float> enemy2 = {100.0, (float)(rand()%(int)(_size.height)), 1.0, 1.0};
+    _enemyArrayGroundN.push_back(enemy);
+    _enemyArrayGroundN.push_back(enemy2);
 
     // Create the physics world
     //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
@@ -55,27 +62,7 @@ void GameModel::dispose() {
 }
 
 void GameModel::update(float deltaTime){
-	//// Update enemies and mark out of bound ones for deletion
-	//Rect bounds(Vec2::ZERO, _size / DRAW_SCALE);
-	//for (auto it = _enemyArrayGroundN.begin(); it != _enemyArrayGroundN.end(); it++) {
-	//	std::shared_ptr<EnemyModel> e = *it;
-	//	if (e != nullptr) {
-	//		e->update(deltaTime);
-	//	}
-	//	if (!bounds.contains(e->getPosition())) {
-	//		_enemiesToFree.insert(e);
-	//	}
-	//}
-
-	//// Delete the arrows here because you can't remove elements while iterating
-	//for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
-	//	std::shared_ptr<EnemyModel> e = *it;
-	//	_world->removeObstacle(e.get());
-	//	removeChild(e->getNode());
-	//	_enemyArrayGroundN.erase(e);
-	//	CULog("%d\n", _enemyArrayGroundN.size());
-	//}
-	//_enemiesToFree.clear();
+	//MAYBE UPDATE ENEMY POSITIONS HERE?
 }
 
 int GameModel::getWallHealth(int wall) {

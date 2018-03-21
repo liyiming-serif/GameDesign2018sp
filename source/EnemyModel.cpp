@@ -13,7 +13,7 @@
 
 using namespace cugl;
 
-bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::shared_ptr<AssetManager>& assets){
+bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<AssetManager>& assets){
 
 	_drawScale = drawScale;
 

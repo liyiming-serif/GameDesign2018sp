@@ -19,13 +19,13 @@ public:
     //constructors
     EnemyModel(void) : BoxObstacle() { }
 
-    static std::shared_ptr<EnemyModel> alloc(cugl::Vec2 pos, float dir, int type, int drawScale,
+    static std::shared_ptr<EnemyModel> alloc(cugl::Vec2 pos, float dir, float type, float health, int drawScale,
                                              const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<EnemyModel> ref = std::make_shared<EnemyModel>();
-        return (ref->init(pos, dir, type, drawScale, assets) ? ref : nullptr);
+        return (ref->init(pos, dir, type, health, drawScale, assets) ? ref : nullptr);
     }
 
-    bool init(cugl::Vec2 pos, float dir, int type, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(cugl::Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
 
 
     //methods

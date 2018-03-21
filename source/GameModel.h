@@ -10,7 +10,8 @@
 
 #include <cugl/cugl.h>
 #include <set>
-#include <Array>
+#include <array>
+#include <vector>
 #include "EnemyModel.h"
 
 class GameModel{
@@ -28,8 +29,9 @@ public:
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
-    std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
-	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
+    //2D vector, each element has {xCoord, yCoord, type, remaining health}
+    std::vector<std::vector<float>> _enemyArrayGroundN;
+	std::vector<int> _enemiesToFree;
 
     // Destructors
     void dispose();

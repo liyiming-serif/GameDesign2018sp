@@ -100,16 +100,19 @@ void LookoutScene::setActive(bool active){
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("over here now");
         _overworld_button2->activate(26);
-		for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
-			std::shared_ptr<EnemyModel> e = *it;
+		for (int it = 0; it < gameModel._enemyArrayGroundN.size(); it++) {
+		//instead of creating enemy, can we just place icon?
+			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[it][1], gameModel._enemyArrayGroundN[it][2]),
+                                                  0, gameModel._enemyArrayGroundN[it][3], gameModel._enemyArrayGroundN[it][4], 32,_assets);
+			_enemyArray.push_back(e);
 			addChild(e->getIcon());
 		}
     }
     else{
         _overworld_button2->deactivate();
-		for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
-			std::shared_ptr<EnemyModel> e = *it;
-			removeChild(e->getIcon());
+		for (int i = 0; i<_enemyArray.size(); i++) {
+			removeChild(_enemyArray[i]->getIcon());
 		}
+		_enemyArray.clear();
     }
 }

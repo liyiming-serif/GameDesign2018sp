@@ -6,7 +6,9 @@
 #define BUILD_ANDROID_LOOKOUTSCENE_H
 
 #include "GameModel.h"
+#include "EnemyModel.h"
 #include <cugl/cugl.h>
+#include <vector>
 
 class LookoutScene : public cugl::Scene{
 protected:
@@ -18,6 +20,8 @@ protected:
     std::shared_ptr<cugl::Button> _overworld_button2;
 
     std::shared_ptr<cugl::PolygonNode> _background;
+
+    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
 
 
 
