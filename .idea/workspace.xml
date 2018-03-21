@@ -3,14 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c04df7d4-5f66-414d-a6dd-0c9540f2e609" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/BallistaScene.cpp" afterPath="$PROJECT_DIR$/source/BallistaScene.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/BallistaScene.h" afterPath="$PROJECT_DIR$/source/BallistaScene.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/EnemyModel.cpp" afterPath="$PROJECT_DIR$/source/EnemyModel.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/EnemyModel.h" afterPath="$PROJECT_DIR$/source/EnemyModel.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/GameModel.cpp" afterPath="$PROJECT_DIR$/source/GameModel.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/GameModel.h" afterPath="$PROJECT_DIR$/source/GameModel.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/LookoutScene.cpp" afterPath="$PROJECT_DIR$/source/LookoutScene.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/source/LookoutScene.h" afterPath="$PROJECT_DIR$/source/LookoutScene.h" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,7 +17,7 @@
       <file leaf-file-name="BallistaScene.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/BallistaScene.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7206">
+            <state relative-caret-position="1086">
               <caret line="255" column="12" lean-forward="false" selection-start-line="255" selection-start-column="9" selection-end-line="255" selection-end-column="12" />
               <folding />
             </state>
@@ -85,8 +77,8 @@
       <file leaf-file-name="GameModel.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/source/GameModel.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="908">
-              <caret line="28" column="59" lean-forward="true" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
+            <state relative-caret-position="920">
+              <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -139,8 +131,8 @@
       <find>repairwall</find>
       <find>gameModel</find>
       <find>enemyArray</find>
-      <find>enemyModel</find>
       <find>int</find>
+      <find>enemyModel</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -892,26 +884,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/LookoutScene.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="938">
-          <caret line="105" column="90" lean-forward="false" selection-start-line="105" selection-start-column="90" selection-end-line="105" selection-end-column="90" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/EnemyModel.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="828">
           <caret line="27" column="58" lean-forward="false" selection-start-line="27" selection-start-column="58" selection-end-line="27" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/source/BallistaScene.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1228">
-          <caret line="41" column="36" lean-forward="false" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -924,14 +900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/BallistaScene.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7206">
-          <caret line="255" column="12" lean-forward="false" selection-start-line="255" selection-start-column="9" selection-end-line="255" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/source/EnemyModel.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="508">
@@ -940,10 +908,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/source/BallistaScene.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1086">
+          <caret line="255" column="12" lean-forward="false" selection-start-line="255" selection-start-column="9" selection-end-line="255" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/LookoutScene.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="938">
+          <caret line="105" column="90" lean-forward="false" selection-start-line="105" selection-start-column="90" selection-end-line="105" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/BallistaScene.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1228">
+          <caret line="41" column="36" lean-forward="false" selection-start-line="41" selection-start-column="36" selection-end-line="41" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/source/GameModel.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="908">
-          <caret line="28" column="59" lean-forward="true" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
+        <state relative-caret-position="920">
+          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding />
         </state>
       </provider>
