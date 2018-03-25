@@ -64,39 +64,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(0,_size.height/2);
     addChild(_background);
 
-    std::shared_ptr<Texture> texture_good  = _assets->get<Texture>("healthbar_good");
-    _healthbar_good = PolygonNode::allocWithTexture(texture_good);
-    _healthbar_good->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_good->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_good->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_good);
-
-    std::shared_ptr<Texture> texture_warning  = _assets->get<Texture>("healthbar_warning");
-    _healthbar_warning = PolygonNode::allocWithTexture(texture_warning);
-    _healthbar_warning->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_warning->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_warning->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_warning);
-
-    std::shared_ptr<Texture> texture_low  = _assets->get<Texture>("healthbar_low");
-    _healthbar_low = PolygonNode::allocWithTexture(texture_low);
-    _healthbar_low->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_low->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_low->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_low);
-
-    std::shared_ptr<Texture> texture_frame  = _assets->get<Texture>("health_frame");
-    _health_frame = PolygonNode::allocWithTexture(texture_frame);
-    _health_frame->setScale(1.2f); // Magic number to rescale asset
-    _health_frame->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _health_frame->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_health_frame);
-
-    _healthbar_low->setVisible(false);
-    _healthbar_warning->setVisible(false);
-    _healthbar_good->setVisible(false);
-    _health_frame->setVisible(true);
-    
     
     // Wall Layers
         std::shared_ptr<Texture> plainFloor_texture  = _assets->get<Texture>("repair_plain_wall");

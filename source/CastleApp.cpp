@@ -35,6 +35,7 @@
 #define LOOKOUT     3
 #define REPAIR      4
 #define MENU        5
+#define LOBBY       10
 
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
@@ -108,6 +109,7 @@ void CastleApp::onShutdown() {
     _ballistaScene.dispose();
     _lookoutScene.dispose();
     _repairScene.dispose();
+    _lobbyScene.dispose();
     gameModel.dispose();
     _batch = nullptr;
     _assets = nullptr;
@@ -147,6 +149,8 @@ void CastleApp::update(float timestep) {
         _repairScene.setActive(false);
         _overworldScene.init(_assets);
         _overworldScene.setActive(false);
+        _lobbyScene.init(_assets);
+        _lobbyScene.setActive(false);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -188,13 +192,19 @@ void CastleApp::update(float timestep) {
                     _repairScene.setActive(false);
                 }
             }
+            else if(_currscene==LOBBY){
+                _lobbyScene.update(timestep);
+                if(_lobbyScene.switchscene!=0){
+                    swapscenes(_lobbyScene.switchscene, 0);
+                    _lobbyScene.setActive(false);
+                }
+            }
             gameModel.update(timestep);
-        }
     }
     
     //refresh the input controller
 	input.update(timestep);
-
+    }
 }
 
 void CastleApp::swapscenes(int nextscene, int direction){
@@ -217,6 +227,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
             break;
         case REPAIR:
             _repairScene.setActive(true);
+            break;
+        case LOBBY:
+            _lobbyScene.setActive(true);
             break;
     }
     _currscene = nextscene;
@@ -250,6 +263,9 @@ void CastleApp::draw() {
         }
         else if(_currscene==REPAIR){
             _repairScene.render(_batch);
+        }
+        else if(_currscene==LOBBY){
+            _lobbyScene.render(_batch);
         }
     }
 }

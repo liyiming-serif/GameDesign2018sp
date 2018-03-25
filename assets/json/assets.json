@@ -315,33 +315,33 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_good": {
-            "file":     "textures/CastleHealth/healthGood.png",
+        "lobby_background": {
+            "file":     "textures/Lobby/LobbyBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_warning": {
-            "file":     "textures/CastleHealth/healthWarning.png",
+        "lobby_button": {
+            "file":     "textures/Lobby/LobbyButton.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_low": {
-            "file":     "textures/CastleHealth/healthLow.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
+        "create_button": {
+        "file":     "textures/Lobby/Create.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
         },
-        "health_frame": {
-            "file":     "textures/CastleHealth/frame.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
+        "enter_button": {
+        "file":     "textures/Lobby/Enter.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
         }
 	},
 	"fonts": {

@@ -38,6 +38,7 @@
 #include "RepairScene.h"
 #include "InputController.h"
 #include "GameModel.h"
+#include "LobbyScene.h"
 
 /**
  * Class for a simple Hello World style application
@@ -72,6 +73,8 @@ protected:
     LookoutScene _lookoutScene;
     RepairScene _repairScene;
     OverworldScene _overworldScene;
+    LobbyScene _lobbyScene;
+    
 
     //controls enemies
     GameModel _gameModel;

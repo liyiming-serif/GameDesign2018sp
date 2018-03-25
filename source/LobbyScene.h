@@ -1,26 +1,29 @@
 //
-//  MenuScene.h
+//  LobbyScene.h
 //  ChaosCastle
 //
-//  Created by Noah Sterling on 3/14/18.
+//  Created by Noah Sterling on 3/25/18.
 //  Copyright © 2018 Game Design Initiative at Cornell. All rights reserved.
 //
 
-#ifndef MenuScene_h
-#define MenuScene_h
+#ifndef LobbyScene_h
+#define LobbyScene_h
 
 #include <stdio.h>
+
+#include "GameModel.h"
 #include <cugl/cugl.h>
 
-class MenuScene : public cugl::Scene{
+class LobbyScene : public cugl::Scene{
 protected:
     cugl::Size _size;
     
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    std::shared_ptr<cugl::Button> _playButton;
-    std::shared_ptr<cugl::Button> _lobbyButton;
+    std::shared_ptr<cugl::Button> _menuButton;
+     std::shared_ptr<cugl::Button> _createButton;
+     std::shared_ptr<cugl::Button> _enterButton;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     
@@ -28,12 +31,12 @@ protected:
     
 public:
     // Constructors
-    MenuScene() : Scene() {}
+    LobbyScene() : Scene() {}
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
     
     // Destructors
     void dispose();
-    ~MenuScene() {dispose();}
+    ~LobbyScene() {dispose();}
     
     // Gameplay
     void update(float timestep);
@@ -43,4 +46,5 @@ public:
     int switchscene;
 };
 
-#endif /* MenuScene_h */
+
+#endif /* LobbyScene_h */
