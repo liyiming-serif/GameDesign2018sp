@@ -21,7 +21,7 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     for (int i = 0; i < 6; ++i) {
         _castleHealth[i] = sum;
-        sum +=20;
+        sum +=1;
     }
 
     // Create the physics world

@@ -28,6 +28,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "castle": {
+            "file":     "textures/castle.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "castle_basement": {
             "file":     "textures/Basement/BasementTower.png",
             "minfilter":"nearest",
@@ -70,13 +77,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "ballista_icon_selected": {
-            "file":     "textures/Ballista/BallistaIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "ballista_view": {
             "file":     "textures/Ballista/BallistaView.png",
             "minfilter":"nearest",
@@ -105,13 +105,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "lookout_icon_selected": {
-            "file":     "textures/Lookout/LookoutIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
 		"lookout_view": {
 			"file":     "textures/Lookout/LookoutView.png",
 			"minfilter":"nearest",
@@ -133,13 +126,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_icon_selected": {
-            "file":     "textures/Basement/RepairIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "mage_icon": {
             "file":     "textures/Basement/MageIcon.png",
             "minfilter":"nearest",
@@ -147,21 +133,7 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "mage_icon_selected": {
-            "file":     "textures/Basement/MageIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "ammo_icon": {
-            "file":     "textures/Basement/AmmoIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "ammo_icon_selected": {
             "file":     "textures/Basement/AmmoIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
@@ -182,13 +154,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "catapult_icon_selected": {
-            "file":     "textures/Catapult/CatapultIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "oil_floor": {
             "file":     "textures/Oil/OilFloor.png",
             "minfilter":"nearest",
@@ -197,13 +162,6 @@
             "wrapT":    "clamp"
         },
         "oil_icon": {
-            "file":     "textures/Oil/OilIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "oil_icon_selected": {
             "file":     "textures/Oil/OilIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
@@ -253,7 +211,7 @@
             "wrapT":    "clamp"
         },
         "repair_background": {
-            "file":     "textures/Basement/BasementBackground.png",
+            "file":     "textures/Basement/RepairBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -342,12 +300,37 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
+        },
+        "mage_background": {
+            "file":     "textures/Basement/MageBackground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_background": {
+            "file":     "textures/Basement/AmmoBackground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_background": {
+            "file":     "textures/Oil/OilBackground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
         }
 	},
 	"fonts": {
 		"charlemagne": {
 			"file":     "fonts/Charlemagne.ttf",
 			"size":     64
-		}
+		},
+        "langdon": {
+            "file":     "fonts/langdon.ttf",
+            "size":     64
+        }
 	}
 }
