@@ -22,6 +22,7 @@
 #define BUILD_ANDROID_INPUTCONTROLLER_H
 
 #include <cugl/cugl.h>
+#include <unordered_map>
 
 class InputController {
 private:
@@ -43,8 +44,33 @@ protected:
     int _vScrolling;
     /** Wizard spell gestures go here*/
 
+
+	// READ-ONLY BUTTON KEYGEN
+	Uint32 _currMaxKey;
+	/** Data structure for remembering all the button keys*/
+	std::unordered_map<std::string, Uint32> _buttonMap;
+
+
+
     /** Whether the debug toggle was chosen. */
     bool _debugPressed;
+
+
+
+	//TOUCH CALLBACKS
+	void touchBeginCB(const cugl::TouchEvent& event, bool focus);
+
+	void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
+
+	void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
+
+
+	//MOUSE CALLBACKS
+	void mouseDownCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
+
+	void mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus);
+
+	void mouseUpCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
 
 public:
     //CONSTRUCTORS
@@ -85,6 +111,13 @@ public:
 
 
 
+	//BUTTON KEYGEN - API for generating and keeping track of input keys
+	Uint32 generateKey(const std::string & name);
+
+	Uint32 findKey(const std::string & name);
+
+
+
     //INPUT RESULTS - This is what your scenes check for every update
     //Check these BEFORE updating InputController.
     bool justPressed() {return _justPressed;}
@@ -98,23 +131,6 @@ public:
     int vScrolling() {return _vScrolling;}
 
     /**Wizard gestures go here*/
-
-
-
-    //TOUCH CALLBACKS
-    void touchBeginCB(const cugl::TouchEvent& event, bool focus);
-
-    void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
-
-    void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
-
-
-    //MOUSE CALLBACKS
-    void mouseDownCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
-
-	void mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus);
-
-    void mouseUpCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
 
 };
 

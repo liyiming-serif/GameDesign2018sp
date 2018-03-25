@@ -9,6 +9,7 @@
 #ifndef MenuScene_h
 #define MenuScene_h
 
+#include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 

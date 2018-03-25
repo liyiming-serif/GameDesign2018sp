@@ -68,7 +68,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_overworld_button2);
 
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button2->activate(26);
+    _overworld_button2->activate(input.generateKey("lookoutToOverworld"));
 
     return true;
 }
@@ -99,7 +99,7 @@ void LookoutScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("over here now");
-        _overworld_button2->activate(26);
+        _overworld_button2->activate(input.findKey("lookoutToOverworld"));
 		for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
 			std::shared_ptr<EnemyModel> e = *it;
 			addChild(e->getIcon());

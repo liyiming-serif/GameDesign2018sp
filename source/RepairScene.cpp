@@ -324,12 +324,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _buttons->addChild(_southwestWallButton);
         _buttons->addChild(_northwestWallButton);
     
-	_northWallButton->activate(44);
-	_northeastWallButton->activate(211);
-	_southeastWallButton->activate(311);
-	_southWallButton->activate(411);
-	_southwestWallButton->activate(420);
-	_northwestWallButton->activate(69);
+	_northWallButton->activate(input.generateKey("northWallButton"));
+	_northeastWallButton->activate(input.generateKey("northeastWallButton"));
+	_southeastWallButton->activate(input.generateKey("southeastWallButton"));
+	_southWallButton->activate(input.generateKey("southWallButton"));
+	_southwestWallButton->activate(input.generateKey("southwestWallButton"));
+	_northwestWallButton->activate(input.generateKey("northwestWallButton"));
     
     _northWallButton->setColor(Color4(255,255,255,0));
     _northeastWallButton->setColor(Color4(255,255,255,0));
@@ -372,7 +372,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_overworld_button3);
     
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button3->activate(30);
+    _overworld_button3->activate(input.generateKey("repairToOverworld"));
     
     return true;
 }
@@ -540,13 +540,13 @@ void RepairScene::setActive(bool active){
         // Set background color
         //Application::get()->setClearColor(Color4(132,180,113,255));
         Application::get()->setClearColor(Color4(0,0,0,255));
-        _overworld_button3->activate(50);
-        _northWallButton->activate(44);
-        _northeastWallButton->activate(211);
-        _southeastWallButton->activate(311);
-        _southWallButton->activate(411);
-        _southwestWallButton->activate(420);
-        _northwestWallButton->activate(69);
+        _overworld_button3->activate(input.findKey("repairToOverworld"));
+        _northWallButton->activate(input.findKey("northWallButton"));
+        _northeastWallButton->activate(input.findKey("northeastWallButton"));
+        _southeastWallButton->activate(input.findKey("southeastWallButton"));
+        _southWallButton->activate(input.findKey("southWallButton"));
+        _southwestWallButton->activate(input.findKey("southwestWallButton"));
+        _northwestWallButton->activate(input.findKey("northwestWallButton"));
         CULog("Repair scene");
     }
     else{

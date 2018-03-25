@@ -73,7 +73,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_playButton);
     
     // We can only activate a button AFTER it is added to a scene
-    _playButton->activate(27);
+    _playButton->activate(input.generateKey("playButton"));
     
     return true;
 }
@@ -102,7 +102,7 @@ void MenuScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("Menu scene");
-        _playButton->activate(26);
+        _playButton->activate(input.findKey("playButton"));
     }
     else{
         _playButton->deactivate();

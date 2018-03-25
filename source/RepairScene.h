@@ -9,6 +9,7 @@
 #ifndef RepairScene_h
 #define RepairScene_h
 
+#include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 

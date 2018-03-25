@@ -22,7 +22,8 @@ InputController::InputController() :
         _justReleased(false),
         _isPressed(false),
         _pointerPos(0,0),
-        _vScrolling(0){
+        _vScrolling(0),
+		_currMaxKey(2){
 }
 
 /**
@@ -34,27 +35,27 @@ bool InputController::init(){
 #ifdef CU_TOUCH_SCREEN
     Touchscreen* touch = Input::get<Touchscreen>();
 
-    touch->addBeginListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+    touch->addBeginListener(LISTENER_KEY,[=](const TouchEvent& event, bool focus) {
         this->touchBeginCB(event, focus);
     });
-    touch->addMotionListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, const Vec2& prev, bool focus) {
+    touch->addMotionListener(LISTENER_KEY,[=](const TouchEvent& event, const Vec2& prev, bool focus) {
         this->touchDragCB(event,prev,focus);
     });
-    touch->addEndListener(LISTENER_KEY,[=](const cugl::TouchEvent& event, bool focus) {
+    touch->addEndListener(LISTENER_KEY,[=](const TouchEvent& event, bool focus) {
         this->touchReleaseCB(event, focus);
     });
 #else
     //MOUSE CONTROLS
 	Mouse* mouse = Input::get<Mouse>();
 
-	mouse->setPointerAwareness(cugl::Mouse::PointerAwareness::DRAG);
-	mouse->addPressListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, Uint8 clicks, bool focus) {
+	mouse->setPointerAwareness(Mouse::PointerAwareness::DRAG);
+	mouse->addPressListener(LISTENER_KEY, [=](const MouseEvent& event, Uint8 clicks, bool focus) {
 		this->mouseDownCB(event, clicks, focus);
 	});
-	mouse->addReleaseListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, Uint8 clicks, bool focus) {
+	mouse->addReleaseListener(LISTENER_KEY, [=](const MouseEvent& event, Uint8 clicks, bool focus) {
 		this->mouseUpCB(event, clicks, focus);
 	});
-	mouse->addDragListener(LISTENER_KEY, [=](const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus) {
+	mouse->addDragListener(LISTENER_KEY, [=](const MouseEvent& event, const Vec2& previous, bool focus) {
 		this->mouseDragCB(event, previous, focus);
 	});
 #endif
@@ -97,15 +98,16 @@ void InputController::clear() {
     _justReleased = false;
     _isPressed = false;
     _vScrolling = 0;
+	_currMaxKey = 0;
 }
 
-void InputController::touchBeginCB(const cugl::TouchEvent &event, bool focus) {
+void InputController::touchBeginCB(const TouchEvent &event, bool focus) {
     _justPressed = true;
     _pointerPos.set(event.position);
     _isPressed = true;
 }
 
-void InputController::touchDragCB(const cugl::TouchEvent &event, const cugl::Vec2 &previous,
+void InputController::touchDragCB(const TouchEvent &event, const Vec2 &previous,
                                   bool focus) {
     _pointerVel += event.position - previous;
     _pointerPos.set(event.position);
@@ -114,19 +116,19 @@ void InputController::touchDragCB(const cugl::TouchEvent &event, const cugl::Vec
     }
 }
 
-void InputController::touchReleaseCB(const cugl::TouchEvent &event, bool focus) {
+void InputController::touchReleaseCB(const TouchEvent &event, bool focus) {
     _justReleased = true;
     _pointerPos.set(event.position);
     _isPressed = false;
 }
 
-void InputController::mouseDownCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus){
+void InputController::mouseDownCB(const MouseEvent& event, Uint8 clicks, bool focus){
     _justPressed = true;
     _pointerPos.set(event.position);
     _isPressed = true;
 }
 
-void InputController::mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus){
+void InputController::mouseDragCB(const MouseEvent& event, const Vec2& previous, bool focus){
     _pointerVel += event.position - previous;
     _pointerPos.set(event.position);
     if(abs(_pointerVel.y) >= SWIPE_SENSITIVITY){
@@ -134,8 +136,23 @@ void InputController::mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec
     }
 }
 
-void InputController::mouseUpCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus){
+void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focus){
     _justReleased = true;
     _pointerPos.set(event.position);
     _isPressed = false;
+}
+
+Uint32 InputController::generateKey(const std::string & name) {
+	//duplicate button name
+	assert(_buttonMap.find(name) == _buttonMap.end());
+
+	_buttonMap[name] = _currMaxKey++;
+	return _currMaxKey - 1;
+}
+
+Uint32 InputController::findKey(const std::string & name) {
+	//Fuck c++ hashmaps
+	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
+	assert(i != _buttonMap.end());
+	return i->second;
 }

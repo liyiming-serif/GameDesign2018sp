@@ -6,6 +6,7 @@
 #define BUILD_ANDROID_LOOKOUTSCENE_H
 
 #include "GameModel.h"
+#include "InputController.h"
 #include <cugl/cugl.h>
 
 class LookoutScene : public cugl::Scene{
