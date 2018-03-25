@@ -77,6 +77,8 @@ protected:
     std::shared_ptr<cugl::Button> _lookout_button;
     //Basement Buttons
     std::shared_ptr<cugl::Button> _repair_button;
+    std::shared_ptr<cugl::Button> _mage_button;
+    std::shared_ptr<cugl::Button> _ammo_button;
     
     std::shared_ptr<cugl::Button> _up_button;
     std::shared_ptr<cugl::Button> _down_button;
@@ -93,7 +95,7 @@ public:
     // Gameplay
     void update(float timestep);
 
-    // What sort of a codebase are you running here? The demos are so inconsistent.
+
     void setActive(bool active);
     int switchscene;
     bool isMoving = false;

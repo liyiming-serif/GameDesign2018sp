@@ -35,6 +35,10 @@
 #define LOOKOUT     3
 #define REPAIR      4
 #define MENU        5
+#define AMMO        6
+#define MAGE        7
+#define OIL         8
+
 
 // This keeps us from having to write cugl:: all the time
 using namespace cugl;
@@ -108,6 +112,9 @@ void CastleApp::onShutdown() {
     _ballistaScene.dispose();
     _lookoutScene.dispose();
     _repairScene.dispose();
+    _mageScene.dispose();
+    _ammoScene.dispose();
+    _oilScene.dispose();
     gameModel.dispose();
     _batch = nullptr;
     _assets = nullptr;
@@ -147,6 +154,12 @@ void CastleApp::update(float timestep) {
         _repairScene.setActive(false);
         _overworldScene.init(_assets);
         _overworldScene.setActive(false);
+        _mageScene.init(_assets);
+        _mageScene.setActive(false);
+        _ammoScene.init(_assets);
+        _ammoScene.setActive(false);
+        _oilScene.init(_assets);
+        _oilScene.setActive(false);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -188,6 +201,27 @@ void CastleApp::update(float timestep) {
                     _repairScene.setActive(false);
                 }
             }
+            else if(_currscene==MAGE){
+                _mageScene.update(timestep);
+                if(_mageScene.switchscene!=0){
+                    swapscenes(_mageScene.switchscene, 0);
+                    _mageScene.setActive(false);
+                }
+            }
+            else if(_currscene==AMMO){
+                _ammoScene.update(timestep);
+                if(_ammoScene.switchscene!=0){
+                    swapscenes(_ammoScene.switchscene, 0);
+                    _ammoScene.setActive(false);
+                }
+            }
+            else if(_currscene==OIL){
+                _oilScene.update(timestep);
+                if(_oilScene.switchscene!=0){
+                    swapscenes(_oilScene.switchscene, 0);
+                    _oilScene.setActive(false);
+                }
+            }
             gameModel.update(timestep);
         }
     }
@@ -217,6 +251,15 @@ void CastleApp::swapscenes(int nextscene, int direction){
             break;
         case REPAIR:
             _repairScene.setActive(true);
+            break;
+        case MAGE:
+            _mageScene.setActive(true);
+            break;
+        case AMMO:
+            _ammoScene.setActive(true);
+            break;
+        case OIL:
+            _oilScene.setActive(true);
             break;
     }
     _currscene = nextscene;
@@ -250,6 +293,15 @@ void CastleApp::draw() {
         }
         else if(_currscene==REPAIR){
             _repairScene.render(_batch);
+        }
+        else if(_currscene==MAGE){
+            _mageScene.render(_batch);
+        }
+        else if(_currscene==AMMO){
+            _ammoScene.render(_batch);
+        }
+        else if(_currscene==OIL){
+            _ammoScene.render(_batch);
         }
     }
 }
