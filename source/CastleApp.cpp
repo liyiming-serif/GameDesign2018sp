@@ -38,6 +38,7 @@
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LOBBY       10
 
 
 // This keeps us from having to write cugl:: all the time
@@ -115,6 +116,7 @@ void CastleApp::onShutdown() {
     _mageScene.dispose();
     _ammoScene.dispose();
     _oilScene.dispose();
+    _lobbyScene.dispose();
     gameModel.dispose();
     _batch = nullptr;
     _assets = nullptr;
@@ -160,6 +162,8 @@ void CastleApp::update(float timestep) {
         _ammoScene.setActive(false);
         _oilScene.init(_assets);
         _oilScene.setActive(false);
+        _lobbyScene.init(_assets);
+        _lobbyScene.setActive(false);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -222,6 +226,13 @@ void CastleApp::update(float timestep) {
                     _oilScene.setActive(false);
                 }
             }
+            else if(_currscene==LOBBY){
+                _lobbyScene.update(timestep);
+                if(_lobbyScene.switchscene!=0){
+                    swapscenes(_lobbyScene.switchscene, 0);
+                    _lobbyScene.setActive(false);
+                }
+            }
             gameModel.update(timestep);
         }
     }
@@ -260,6 +271,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
             break;
         case OIL:
             _oilScene.setActive(true);
+            break;
+        case LOBBY:
+            _lobbyScene.setActive(true);
             break;
     }
     _currscene = nextscene;
@@ -302,6 +316,9 @@ void CastleApp::draw() {
         }
         else if(_currscene==OIL){
             _ammoScene.render(_batch);
+        }
+        else if(_currscene==LOBBY){
+            _lobbyScene.render(_batch);
         }
     }
 }

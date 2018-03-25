@@ -39,6 +39,7 @@
 #include "MageScene.h"
 #include "AmmoScene.h"
 #include "OilScene.h"
+#include "LobbyScene.h"
 #include "InputController.h"
 #include "GameModel.h"
 
@@ -78,7 +79,9 @@ protected:
     MageScene _mageScene;
     AmmoScene _ammoScene;
     OilScene _oilScene;
+    LobbyScene _lobbyScene;
 
+    
     //controls enemies
     GameModel _gameModel;
     

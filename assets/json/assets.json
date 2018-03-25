@@ -224,83 +224,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_plain_wall": {
-            "file":     "textures/Basement/plainWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_north_wall": {
-            "file":     "textures/Basement/northWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_northeast_wall": {
-            "file":     "textures/Basement/northeastWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_southeast_wall": {
-            "file":     "textures/Basement/southeastWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_south_wall": {
-            "file":     "textures/Basement/southWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_southwest_wall": {
-            "file":     "textures/Basement/southwestWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "repair_northwest_wall": {
-            "file":     "textures/Basement/northwestWall.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "healthbar_good": {
-            "file":     "textures/CastleHealth/healthGood.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "healthbar_warning": {
-            "file":     "textures/CastleHealth/healthWarning.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "healthbar_low": {
-            "file":     "textures/CastleHealth/healthLow.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "health_frame": {
-            "file":     "textures/CastleHealth/frame.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "mage_background": {
             "file":     "textures/Basement/MageBackground.png",
             "minfilter":"nearest",
@@ -317,6 +240,34 @@
         },
         "oil_background": {
             "file":     "textures/Oil/OilBackground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lobby_background": {
+            "file":     "textures/Lobby/LobbyBackground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lobby_button": {
+            "file":     "textures/Lobby/LobbyButton.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "create_button": {
+            "file":     "textures/Lobby/Create.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "enter_button": {
+            "file":     "textures/Lobby/Enter.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
