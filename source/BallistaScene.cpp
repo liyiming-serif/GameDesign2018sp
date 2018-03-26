@@ -208,7 +208,6 @@ void BallistaScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        _overworld_button->activate(input.findKey("ballistaToOverworld"));
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
     }
     else{

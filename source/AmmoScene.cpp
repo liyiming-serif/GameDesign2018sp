@@ -74,7 +74,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ammoTOcastle);
     
     // We can only activate a button AFTER it is added to a scene
-    _ammoTOcastle->activate(26);
+    _ammoTOcastle->activate(input.generateKey("ammoTOcastle"));
     
     return true;
 }
@@ -102,7 +102,7 @@ void AmmoScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("over here now");
-        _ammoTOcastle->activate(26);
+        _ammoTOcastle->activate(input.findKey("ammoTOcastle"));
     }
     else{
         _ammoTOcastle->deactivate();

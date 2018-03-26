@@ -74,7 +74,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_mageTOcastle);
     
     // We can only activate a button AFTER it is added to a scene
-    _mageTOcastle->activate(26);
+    _mageTOcastle->activate(input.generateKey("mageTOcastle"));
     
     return true;
 }
@@ -101,8 +101,7 @@ void MageScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
-        _mageTOcastle->activate(26);
+        _mageTOcastle->activate(input.findKey("mageTOcastle"));
     }
     else{
         _mageTOcastle->deactivate();

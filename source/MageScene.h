@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "GameModel.h"
+#include "InputController.h"
 #include <cugl/cugl.h>
 
 class MageScene : public cugl::Scene{

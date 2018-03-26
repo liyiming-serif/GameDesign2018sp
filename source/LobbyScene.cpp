@@ -115,9 +115,9 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_enterButton);
     
     // We can only activate a button AFTER it is added to a scene
-    _menuButton->activate(26);
-    _createButton->activate(30);
-    _enterButton->activate(31);
+    _menuButton->activate(input.generateKey("menuButton"));
+    _createButton->activate(input.generateKey("createButton"));
+    _enterButton->activate(input.generateKey("enterButton"));
     
     return true;
 }
@@ -147,9 +147,9 @@ void LobbyScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         CULog("over here now");
-        _menuButton->activate(29);
-        _createButton->activate(30);
-        _enterButton->activate(31);
+        _menuButton->activate(input.findKey("menuButton"));
+        _createButton->activate(input.findKey("createButton"));
+        _enterButton->activate(input.findKey("enterButton"));
     }
     else{
         _menuButton->deactivate();

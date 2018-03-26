@@ -453,7 +453,7 @@ void RepairScene::setActive(bool active){
         // Set background color
         //Application::get()->setClearColor(Color4(132,180,113,255));
         Application::get()->setClearColor(Color4(0,0,0,255));
-        _repairTocastle->activate(input.findKey("repairTOcastle"));
+        _repairTOcastle->activate(input.findKey("repairTOcastle"));
         _northWallButton->activate(input.findKey("northWallButton"));
         _northeastWallButton->activate(input.findKey("northeastWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));

@@ -73,7 +73,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_oilTOcastle);
     
     // We can only activate a button AFTER it is added to a scene
-    _oilTOcastle->activate(26);
+    _oilTOcastle->activate(input.generateKey("oilTOcastle"));
     
     return true;
 }
@@ -100,8 +100,7 @@ void OilScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
-        _oilTOcastle->activate(26);
+        _oilTOcastle->activate(input.findKey("oilTOcastle"));
     }
     else{
         _oilTOcastle->deactivate();

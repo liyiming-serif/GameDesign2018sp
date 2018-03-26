@@ -10,7 +10,7 @@
 #define OilScene_h
 
 #include <stdio.h>
-
+#include "InputController.h"
 #include "GameModel.h"
 #include <cugl/cugl.h>
 
