@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Default application entry point
  */
-public class HelloWorld extends SDLActivity {
+public class ChaosCastle extends SDLActivity {
 
 	private static final int REQUEST_ENABLE_BT = 1;
 
