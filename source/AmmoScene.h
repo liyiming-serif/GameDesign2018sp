@@ -24,7 +24,17 @@ protected:
     std::shared_ptr<cugl::Button> _ammoTOcastle;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _node;
     
+    
+    /** Manager to process the animation actions */
+    std::shared_ptr<cugl::ActionManager> _actions;
+    
+    /** The movement actions */
+    std::shared_ptr<cugl::MoveBy> _moveleft;
+    std::shared_ptr<cugl::MoveBy> _moveright;
+    
+    bool move_direction;
     
     
 public:
@@ -42,6 +52,15 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+    
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove(const std::shared_ptr<cugl::MoveBy>& action);
 };
+
 
 #endif /* AmmoScene_h */

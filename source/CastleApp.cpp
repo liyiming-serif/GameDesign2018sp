@@ -315,7 +315,7 @@ void CastleApp::draw() {
             _ammoScene.render(_batch);
         }
         else if(_currscene==OIL){
-            _ammoScene.render(_batch);
+            _oilScene.render(_batch);
         }
         else if(_currscene==LOBBY){
             _lobbyScene.render(_batch);

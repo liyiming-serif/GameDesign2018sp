@@ -217,8 +217,36 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_wall_button": {
-            "file":     "textures/Basement/wallButton.png",
+        "repair_100": {
+            "file":     "textures/Basement/100.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_75": {
+            "file":     "textures/Basement/75.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_50": {
+            "file":     "textures/Basement/50.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_25": {
+            "file":     "textures/Basement/25.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_transparent": {
+            "file":     "textures/Basement/transparent.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
