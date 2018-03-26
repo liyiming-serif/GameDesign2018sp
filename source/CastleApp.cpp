@@ -109,6 +109,7 @@ void CastleApp::onShutdown() {
     _lookoutScene.dispose();
     _repairScene.dispose();
     gameModel.dispose();
+    _spawnController.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -188,7 +189,8 @@ void CastleApp::update(float timestep) {
                     _repairScene.setActive(false);
                 }
             }
-            gameModel.update(timestep);
+            _spawnController.update(timestep);
+            gameModel.update(timestep, _spawnController._enemyToSpawn);
         }
     }
     
@@ -201,6 +203,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == MENU && nextscene == OVERWORLD) {
 		gameModel.init(_assets);
+		_spawnController.init(_assets);
+
 	}
     switch(nextscene){
         case MENU:

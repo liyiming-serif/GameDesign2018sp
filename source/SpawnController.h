@@ -1,0 +1,64 @@
+//
+// SpawnController.h
+// Chaos Castle
+//
+// Controls the enemy spawns
+//
+// Created by Josh on 3/26/2018.
+//
+
+#ifndef BUILD_ANDROID_SPAWNCONTROLLER_H
+#define BUILD_ANDROID_SPAWNCONTROLLER_H
+
+#include <cugl/cugl.h>
+#include <vector>
+
+class SpawnController {
+private:
+    /** Whether or not this input is active */
+    bool _active;
+
+    //when this equals -1, stop spawning
+    int _currSpawnIndex;
+
+
+protected:
+    // variables
+    int _totalTime;
+
+    //enemy that will spawn now, same format as GameModel (4 elements)
+    std::vector<float> _enemyToSpawn;
+
+    //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
+    //2D vector, each element has {xCoord, yCoord, type, health, spawnTime}
+    std::vector<std::vector<float>> _enemyArray;
+
+public:
+    //CONSTRUCTORS
+    SpawnController(){};
+
+    bool init(const std::shared_ptr<AssetManager>& assets);
+
+
+
+    //DESTRUCTORS
+    ~SpawnController() { dispose(); }
+
+    /**
+     * Deactivates this input controller, releasing all listeners.
+     * This method will not dispose of the input controller. It can be reused
+     * once it is reinitialized.
+     */
+    void dispose();
+
+    //GAMEPLAY
+    bool isActive( ) const { return _active; }
+
+    void update(float deltaTime);
+
+    void clear();
+
+
+};
+
+#endif //BUILD_ANDROID_SPAWNCONTROLLER_H

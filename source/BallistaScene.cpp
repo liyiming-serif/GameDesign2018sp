@@ -198,8 +198,8 @@ void BallistaScene::setActive(bool active){
 
     //create all the enemies here from gameModel
     for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
-        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[i][1], gameModel._enemyArrayGroundN[i][2]),
-                                      0, gameModel._enemyArrayGroundN[i][3], gameModel._enemyArrayGroundN[i][4], DRAW_SCALE,_assets);
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[i][0], gameModel._enemyArrayGroundN[i][1]),
+                                      0, gameModel._enemyArrayGroundN[i][2], gameModel._enemyArrayGroundN[i][3], DRAW_SCALE,_assets);
         if(e != nullptr) {
             _enemyArray.push_back(e);
             _world->addObstacle(e);

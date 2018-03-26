@@ -38,7 +38,7 @@ public:
     ~GameModel() {dispose();}
 
     // Gameplay
-    void update(float deltaTime);
+    void update(float deltaTime, std::vector<float> enemy);
 
     // Physics manager
     //std::shared_ptr<cugl::ObstacleWorld> _world;

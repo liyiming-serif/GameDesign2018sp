@@ -25,12 +25,6 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
         sum +=20;
     }
 
-    //eventually will read from the level JSON
-    std::vector<float> enemy = {100.0, (float)(rand()%(int)(_size.height)), 1.0, 1.0};
-    std::vector<float> enemy2 = {100.0, (float)(rand()%(int)(_size.height)), 1.0, 1.0};
-    _enemyArrayGroundN.push_back(enemy);
-    _enemyArrayGroundN.push_back(enemy2);
-
     // Create the physics world
     //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
 
@@ -61,8 +55,11 @@ void GameModel::dispose() {
 	_enemiesToFree.clear();
 }
 
-void GameModel::update(float deltaTime){
-	//MAYBE UPDATE ENEMY POSITIONS HERE?
+void GameModel::update(float deltaTime, std::vector<float> enemy){
+	if(enemy.size()>0){
+	    _enemyArrayGroundN.push_back(enemy);
+	}
+	//update positions
 }
 
 int GameModel::getWallHealth(int wall) {
