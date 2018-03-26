@@ -99,6 +99,8 @@ void BallistaScene::dispose() {
         _arrows.clear();
 		_arrowsToFree.clear();
         _active = false;
+        _enemyArray.clear();
+        _enemiesToFree.clear();
     }
 }
 
@@ -162,14 +164,22 @@ void BallistaScene::update(float deltaTime){
 	for (int it = 0; it < _enemyArray.size(); it++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (e != nullptr) {
+		    CULog("start");
+		    CULog("before");
+		    CULog("X coord: %d", e->getX());
+		    CULog("Y coord: %d", e->getY());
 			e->update(deltaTime);
+			CULog("after");
+            CULog("X coord: %d", e->getX());
+            CULog("Y coord: %d", e->getY());
+            CULog("end");
 		}
 		if (!bounds.contains(e->getPosition())) {
 			_enemiesToFree.push_back(it);
 			gameModel._enemiesToFree.push_back(it);
 		}
 	}
-
+    CULog("BEFORE, Enemies to Free size: %d, GAMEMODEL Enemies to Free size: %d", _enemiesToFree.size(), gameModel._enemiesToFree.size());
 	// Delete the enemies here because you can't remove elements while iterating
 	for (int i = 0; i<_enemiesToFree.size(); i++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[_enemiesToFree[i]];
@@ -180,6 +190,7 @@ void BallistaScene::update(float deltaTime){
 		CULog("Num enemies left: %d\n", _enemyArray.size());
 	}
 	_enemiesToFree.clear();
+	CULog("AFTER, Enemies to Free size: %d, GAMEMODEL Enemies to Free size: %d", _enemiesToFree.size(), gameModel._enemiesToFree.size());
 	for (int i = 0; i<gameModel._enemiesToFree.size(); i++){
 	    gameModel._enemyArrayGroundN.erase(gameModel._enemyArrayGroundN.begin() + gameModel._enemiesToFree[i]);
 	    CULog("erased from gameModel");
@@ -193,8 +204,11 @@ void BallistaScene::update(float deltaTime){
 
 //Pause or Resume
 void BallistaScene::setActive(bool active){
+
     _active = active;
     switchscene = 0;
+    CULog("ballistaScene setActive");
+    CULog("array size: %d", gameModel._enemyArrayGroundN.size());
 
     //create all the enemies here from gameModel
     for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){

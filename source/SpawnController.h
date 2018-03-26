@@ -12,6 +12,7 @@
 
 #include <cugl/cugl.h>
 #include <vector>
+#include "GameModel.h"
 
 class SpawnController {
 private:
@@ -34,8 +35,6 @@ protected:
 
 public:
     //variables
-    //enemy that will spawn now, same format as GameModel (4 elements)
-    std::vector<float> _enemyToSpawn;
 
     //CONSTRUCTORS
     SpawnController(){};

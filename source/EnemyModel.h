@@ -32,8 +32,8 @@ public:
     void update(float deltaTime) override;
 
     // Assume assets are already loaded, and _node is immutable after init
-    const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; }
-	const std::shared_ptr<cugl::PolygonNode> getIcon() const { return _icon; }
+    const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; };
+	const std::shared_ptr<cugl::PolygonNode> getIcon() const { return _icon; };
 
     //destructors
     void dispose();

@@ -55,10 +55,7 @@ void GameModel::dispose() {
 	_enemiesToFree.clear();
 }
 
-void GameModel::update(float deltaTime, std::vector<float> enemy){
-	if(enemy.size()>0){
-	    _enemyArrayGroundN.push_back(enemy);
-	}
+void GameModel::update(float deltaTime){
 	//update positions
 }
 
