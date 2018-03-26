@@ -26,18 +26,21 @@ protected:
     // variables
     int _totalTime;
 
-    //enemy that will spawn now, same format as GameModel (4 elements)
-    std::vector<float> _enemyToSpawn;
+
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
     //2D vector, each element has {xCoord, yCoord, type, health, spawnTime}
     std::vector<std::vector<float>> _enemyArray;
 
 public:
+    //variables
+    //enemy that will spawn now, same format as GameModel (4 elements)
+    std::vector<float> _enemyToSpawn;
+
     //CONSTRUCTORS
     SpawnController(){};
 
-    bool init(const std::shared_ptr<AssetManager>& assets);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets);
 
 
 
