@@ -13,6 +13,7 @@
 #include "InputController.h"
 #include "GameModel.h"
 #include <cugl/cugl.h>
+#include <jni.h>
 
 class LobbyScene : public cugl::Scene{
 protected:
@@ -44,6 +45,40 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+    void setupBluetoothServer() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothServer",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
+
+    void setupBluetoothClient() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothClient",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
 };
 
 

@@ -13,6 +13,8 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
 
+
+
     _assets = assets;
 
     _spawnTimer = 360;
@@ -95,3 +97,13 @@ void GameModel::changeWallHealth(int wall, int amt) {
 		_castleHealth[wall] += amt;
 	}
 }
+
+int GameModel::getPlayerAvatar(int player) {
+    return _playerAvatars[player];
+}
+
+void GameModel::setPlayerAvatar(int player, int avatar) {
+    _playerAvatars[player] = avatar;
+}
+
+

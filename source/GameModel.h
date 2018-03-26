@@ -18,8 +18,10 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     int _castleHealth[6];
+    int _playerAvatars[6];
     int _spawnTimer;
     cugl::Size _size;
+    cugl::JsonWriter NetworkJSONWriter;
 
 public:
 
@@ -44,6 +46,10 @@ public:
     int getWallHealth(int wall);
 
     void changeWallHealth(int wall, int damage);
+
+    int getPlayerAvatar(int player);
+
+    void setPlayerAvatar(int player, int avatar);
 
 };
 

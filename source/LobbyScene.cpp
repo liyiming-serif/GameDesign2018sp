@@ -7,6 +7,7 @@
 //
 
 #include "LobbyScene.h"
+#include "GameModel.h"
 
 
 using namespace cugl;
@@ -79,6 +80,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             CULog("create");
+            setupBluetoothServer();
         }
     });
     
@@ -95,6 +97,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             CULog("enter");
+            setupBluetoothClient();
         }
     });
     
