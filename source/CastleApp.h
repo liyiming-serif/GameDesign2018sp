@@ -36,6 +36,10 @@
 #include "OverworldScene.h"
 #include "LookoutScene.h"
 #include "RepairScene.h"
+#include "MageScene.h"
+#include "AmmoScene.h"
+#include "OilScene.h"
+#include "LobbyScene.h"
 #include "InputController.h"
 #include "GameModel.h"
 
@@ -72,7 +76,12 @@ protected:
     LookoutScene _lookoutScene;
     RepairScene _repairScene;
     OverworldScene _overworldScene;
+    MageScene _mageScene;
+    AmmoScene _ammoScene;
+    OilScene _oilScene;
+    LobbyScene _lobbyScene;
 
+    
     //controls enemies
     GameModel _gameModel;
     

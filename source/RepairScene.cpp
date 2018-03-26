@@ -19,9 +19,14 @@ using namespace std;
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+#define REPAIR      4
+#define MENU        5
+#define AMMO        6
+#define MAGE        7
+#define OIL         8
 
-#define FLOOR_SCALE .55f
-#define BUTTON_SCALE .8f
+#define FLOOR_SCALE .54f
+#define BUTTON_SCALE 1.255f
 
 /** Define the time settings for animation */
 #define DURATION .4f
@@ -29,9 +34,14 @@ using namespace std;
 #define REPEATS  3
 #define ACT_KEY  "current"
 
+#define UP  _assets->get<Texture>("ammo_icon")
+
+#define FONT    _assets->get<Font>("langdon")
+
 bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
+    
     
     if (assets == nullptr) {
         return false;
@@ -60,119 +70,28 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(FLOOR_SCALE); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _background->setPosition(0,_size.height/2);
+    _background->setAnchor(Vec2::ANCHOR_CENTER);
+    _background->setPosition(_size.width/2,_size.height/2);
     addChild(_background);
 
-    std::shared_ptr<Texture> texture_good  = _assets->get<Texture>("healthbar_good");
-    _healthbar_good = PolygonNode::allocWithTexture(texture_good);
-    _healthbar_good->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_good->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_good->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_good);
-
-    std::shared_ptr<Texture> texture_warning  = _assets->get<Texture>("healthbar_warning");
-    _healthbar_warning = PolygonNode::allocWithTexture(texture_warning);
-    _healthbar_warning->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_warning->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_warning->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_warning);
-
-    std::shared_ptr<Texture> texture_low  = _assets->get<Texture>("healthbar_low");
-    _healthbar_low = PolygonNode::allocWithTexture(texture_low);
-    _healthbar_low->setScale(1.2f); // Magic number to rescale asset
-    _healthbar_low->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _healthbar_low->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_healthbar_low);
-
-    std::shared_ptr<Texture> texture_frame  = _assets->get<Texture>("health_frame");
-    _health_frame = PolygonNode::allocWithTexture(texture_frame);
-    _health_frame->setScale(1.2f); // Magic number to rescale asset
-    _health_frame->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _health_frame->setPosition(_size.width/1.55,_size.height/2);
-    addChild(_health_frame);
-
-    _healthbar_low->setVisible(false);
-    _healthbar_warning->setVisible(false);
-    _healthbar_good->setVisible(false);
-    _health_frame->setVisible(true);
-    
-    
-    // Wall Layers
-        std::shared_ptr<Texture> plainFloor_texture  = _assets->get<Texture>("repair_plain_wall");
-        plain_floor = PolygonNode::allocWithTexture(plainFloor_texture);
-        plain_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        plain_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        plain_floor->setPosition(_size.width/80,_size.height/2);
-        addChild(plain_floor);
-    
-        std::shared_ptr<Texture> northWall_texture  = _assets->get<Texture>("repair_north_wall");
-        northWall_floor = PolygonNode::allocWithTexture(northWall_texture);
-        northWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        northWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northWall_floor->setPosition(_size.width/80,_size.height/2);
-        northWall_floor->setColor(Color4(255,255,255,0));
-        addChild(northWall_floor);
-    
-        std::shared_ptr<Texture> northeastWall_texture  = _assets->get<Texture>("repair_northeast_wall");
-        northeastWall_floor = PolygonNode::allocWithTexture(northeastWall_texture);
-        northeastWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        northeastWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northeastWall_floor->setPosition(_size.width/80,_size.height/2);
-        northeastWall_floor->setColor(Color4(255,255,255,0));
-        addChild(northeastWall_floor);
-    
-        std::shared_ptr<Texture> southeastWall_texture  = _assets->get<Texture>("repair_southeast_wall");
-        southeastWall_floor = PolygonNode::allocWithTexture(southeastWall_texture);
-        southeastWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        southeastWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southeastWall_floor->setPosition(_size.width/80,_size.height/2);
-        southeastWall_floor->setColor(Color4(255,255,255,0));
-        addChild(southeastWall_floor);
-    
-        std::shared_ptr<Texture> southWall_texture  = _assets->get<Texture>("repair_south_wall");
-        southWall_floor = PolygonNode::allocWithTexture(southWall_texture);
-        southWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        southWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southWall_floor->setPosition(_size.width/80,_size.height/2);
-        southWall_floor->setColor(Color4(255,255,255,0));
-        addChild(southWall_floor);
-    
-        std::shared_ptr<Texture> southwestWall_texture  = _assets->get<Texture>("repair_southwest_wall");
-        southwestWall_floor = PolygonNode::allocWithTexture(southwestWall_texture);
-        southwestWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        southwestWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        southwestWall_floor->setPosition(_size.width/80,_size.height/2);
-        southwestWall_floor->setColor(Color4(255,255,255,0));
-        addChild(southwestWall_floor);
-    
-        std::shared_ptr<Texture> northwestWall_texture  = _assets->get<Texture>("repair_northwest_wall");
-        northwestWall_floor = PolygonNode::allocWithTexture(northwestWall_texture);
-        northwestWall_floor->setScale(FLOOR_SCALE); // Magic number to rescale asset
-        northwestWall_floor->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-        northwestWall_floor->setPosition(_size.width/80,_size.height/2);
-        northwestWall_floor->setColor(Color4(255,255,255,0));
-        addChild(northwestWall_floor);
-    
-    
-    
-    
-    
     // Buttons
         std::shared_ptr<Texture> image_up   = _assets->get<Texture>("repair_wall_button");
-        std::shared_ptr<Texture> image_down = _assets->get<Texture>("repair_wall_button");
-        _northWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                       PolygonNode::allocWithTexture(image_down));
-        _northeastWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-        _southeastWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                      PolygonNode::allocWithTexture(image_down));
-        _southWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-        _southwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                       PolygonNode::allocWithTexture(image_down));
-        _northwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
+    
+
+
+    std::shared_ptr<Texture> image_3   = _assets->get<Texture>("ammo_icon");
+        _northWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+    
+    //CULog("change image");
+   // _northWallButton->setUp(PolygonNode::allocWithTexture(image_3));
+    // _northWallButton = Button::init(const std::shared_ptr<Node> &up);
+    //_northWallButton = Button::init((PolygonNode::allocWithTexture(image_up));
+  //  _northWallButton = Button::alloc
+        _northeastWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+        _southeastWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+        _southWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+        _southwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+        _northwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
     
     // Create a callback function for the Ballista buttons
         _northWallButton->setName("fade in N");
@@ -181,47 +100,32 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                  CULog("N");
                 _new_wall = "N";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "N");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="N";
-                }
-                else {
-                    gameModel.changeWallHealth(0, 2);
-                }
-
+                gameModel.changeWallHealth(0, 2);
+                _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
             }
         });
+    
         _northeastWallButton->setName("fade in NE");
         _northeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NE");
                 _new_wall = "NE";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "NE");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="NE";
-                }
-                else {
-                    gameModel.changeWallHealth(1, 2);
-                }
+                gameModel.changeWallHealth(1, 2);
+                _northeastText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
             }
         });
+    
+    
         _southeastWallButton->setName("fade in SE");
         _southeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SE");
                 _new_wall = "SE";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "SE");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="SE";
-                }
-                else {
-                    gameModel.changeWallHealth(2, 2);
-                }
+                gameModel.changeWallHealth(2, 2);
+                _southeastText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+
             }
         });
         _southWallButton->setName("fade in S");
@@ -230,14 +134,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("S");
                 _new_wall = "S";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "S");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="S";
-                }
-                else {
-                    gameModel.changeWallHealth(3, 2);
-                }
+                gameModel.changeWallHealth(3, 2);
+                _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
             }
         });
         _southwestWallButton->setName("fade in SW");
@@ -246,14 +144,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SW");
 				_new_wall = "SW";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "SW");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="SW";
-                }
-                else {
-                    gameModel.changeWallHealth(4, 2);
-                }
+                gameModel.changeWallHealth(4, 2);
+                _southwestText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
             }
         });
         _northwestWallButton->setName("fade in NW");
@@ -262,14 +154,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NW");
 				_new_wall = "NW";
-                if (_new_wall.compare(_curr_wall) != 0) {
-                    RepairScene::doFadeIn(_wallFadeIN, "NW");
-                    RepairScene::doFadeOut(_wallFadeOUT, _curr_wall);
-                    _curr_wall="NW";
-                }
-                else {
-                    gameModel.changeWallHealth(5, 2);
-                }
+                gameModel.changeWallHealth(5, 2);
+                _northwestText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
             }
         });
     
@@ -277,42 +163,99 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Positions the Catapult Buttons
         //Catapult Floor Center
-        float centerX = plain_floor->getContentSize().width/2;
-        float centerY = plain_floor->getContentSize().height/2;
+        float centerX = _background->getContentSize().width/2;
+        float centerY = _background->getContentSize().height/2;
         _northWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northWallButton->setPosition(centerX,centerY+.37*plain_floor->getContentHeight());
+        _northWallButton->setPosition(centerX,centerY+.22*_background->getContentHeight());
+        //_northeastWallButton->setPushable(<#const std::vector<Vec2> &vertices#>)
+   // _northText->setFont(<#const std::shared_ptr<Font> &font#>)
+//    std::vector<Vec2> vec = new std::vector<Vec2>(.5f,.5f);
+//    _northeastWallButton->setPushable(std::vector<Vec2>);
+    float array [8] = {0,158,90,0,220,0,309,153};
+    
+    //cugl::Poly2 myPushable = Poly2(array);
+   // cugl::SimpleTriangulator obj = SimpleTriangulator({0,158,90,0,220,0,309,153});
+   // obj.calculate();
+ //   _northWallButton->setPushable(obj.getPolygon());
+    
+    
+            _northText =Label::alloc((std::string) "                         ", FONT);
+            _northWallButton->addChild(_northText);
+            _northText->setAnchor(Vec2::ANCHOR_CENTER);
+            _northText->setPosition(_northWallButton->getContentWidth()/2,_northWallButton->getContentHeight()/2);
+            _northText->setForeground(cugl::Color4(233,225,212,255));
+    
+//        _winnode = Label::alloc(WIN_MESSAGE, _assets->get<Font>(MESSAGE_FONT));
+//        _winnode->setAnchor(Vec2::ANCHOR_CENTER);
+//        _winnode->setPosition(dimen.width/2.0f,dimen.height/2.0f);
+//        _winnode->setForeground(WIN_COLOR);
+
+
     
         _northeastWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northeastWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northeastWallButton->setPosition(centerX+.27*plain_floor->getContentWidth(),centerY+.18*plain_floor->getContentHeight());
+        _northeastWallButton->setPosition(centerX+.11*_background->getContentWidth(),centerY+.11*_background->getContentHeight());
         _northeastWallButton->setAngle(-M_PI/3);
+    
+            _northeastText =Label::alloc( (std::string) "                         ", FONT);
+            _northeastWallButton->addChild(_northeastText);
+            _northeastText->setAnchor(Vec2::ANCHOR_CENTER);
+            _northeastText->setPosition(_northeastWallButton->getContentWidth()/2,_northeastWallButton->getContentHeight()/2);
+            _northeastText->setForeground(cugl::Color4(233,225,212,255));
     
         _southeastWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _southeastWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _southeastWallButton->setPosition(centerX+.27*plain_floor->getContentWidth(),centerY-.18*plain_floor->getContentHeight());
+        _southeastWallButton->setPosition(centerX+.11*_background->getContentWidth(),centerY-.111*_background->getContentHeight());
         _southeastWallButton->setAngle(-2*M_PI/3);
+    
+            _southeastText =Label::alloc((std::string) "                         ", FONT);
+            _southeastWallButton->addChild(_southeastText);
+            _southeastText->setAnchor(Vec2::ANCHOR_CENTER);
+            _southeastText->setPosition(_southeastWallButton->getContentWidth()/2,_southeastWallButton->getContentHeight()/2);
+            _southeastText->setAngle(M_PI);
+            _southeastText->setForeground(cugl::Color4(233,225,212,255));
     
         _southWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _southWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _southWallButton->setPosition(centerX,centerY-.37*plain_floor->getContentHeight());
+        _southWallButton->setPosition(centerX,centerY-.22*_background->getContentHeight());
         _southWallButton->setAngle(-3*M_PI/3);
+    
+            _southText =Label::alloc((std::string) "                         ", FONT);
+            _southWallButton->addChild(_southText);
+            _southText->setAnchor(Vec2::ANCHOR_CENTER);
+            _southText->setPosition(_southWallButton->getContentWidth()/2,_southWallButton->getContentHeight()/2);
+            _southText->setAngle(M_PI);
+            _southText->setForeground(cugl::Color4(233,225,212,255));
     
         _southwestWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _southwestWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _southwestWallButton->setPosition(centerX-.28*plain_floor->getContentWidth(),centerY-.18*plain_floor->getContentHeight());
+        _southwestWallButton->setPosition(centerX-.11*_background->getContentWidth(),centerY-.113*_background->getContentHeight());
         _southwestWallButton->setAngle(-4*M_PI/3);
+    
+            _southwestText =Label::alloc((std::string) "                         ", FONT);
+            _southwestWallButton->addChild(_southwestText);
+            _southwestText->setAnchor(Vec2::ANCHOR_CENTER);
+            _southwestText->setPosition(_southwestWallButton->getContentWidth()/2,_southwestWallButton->getContentHeight()/2);
+            _southwestText->setAngle(M_PI);
+            _southwestText->setForeground(cugl::Color4(233,225,212,255));
     
         _northwestWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northwestWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northwestWallButton->setPosition(centerX-.28*plain_floor->getContentWidth(),centerY+.18*plain_floor->getContentHeight());
+        _northwestWallButton->setPosition(centerX-.11*_background->getContentWidth(),centerY+.11*_background->getContentHeight());
         _northwestWallButton->setAngle(M_PI/3);
+    
+            _northwestText =Label::alloc((std::string) "                         ", FONT);
+            _northwestWallButton->addChild(_northwestText);
+            _northwestText->setAnchor(Vec2::ANCHOR_CENTER);
+            _northwestText->setPosition(_northwestWallButton->getContentWidth()/2,_northwestWallButton->getContentHeight()/2);
+            _northwestText->setForeground(cugl::Color4(233,225,212,255));
     
     
         _buttons = Node::alloc();
-        _buttons->setScale(.67); // Magic number to rescale asset
+        _buttons->setScale(.5); // Magic number to rescale asset
         _buttons->setAnchor(Vec2::ANCHOR_CENTER);
-        _buttons->setPosition(-_size.width/24,0);
+        _buttons->setPosition(15,-4);
         addChild(_buttons);
     
     
@@ -323,6 +266,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _buttons->addChild(_southWallButton);
         _buttons->addChild(_southwestWallButton);
         _buttons->addChild(_northwestWallButton);
+        //_northWallButton = Button::alloc(PolygonNode::allocWithTexture(UP));
     
 	_northWallButton->activate(input.generateKey("northWallButton"));
 	_northeastWallButton->activate(input.generateKey("northeastWallButton"));
@@ -331,30 +275,28 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	_southwestWallButton->activate(input.generateKey("southwestWallButton"));
 	_northwestWallButton->activate(input.generateKey("northwestWallButton"));
     
-    _northWallButton->setColor(Color4(255,255,255,0));
-    _northeastWallButton->setColor(Color4(255,255,255,0));
-    _southeastWallButton->setColor(Color4(255,255,255,0));
-    _southWallButton->setColor(Color4(255,255,255,0));
-    _southwestWallButton->setColor(Color4(255,255,255,0));
-    _northwestWallButton->setColor(Color4(255,255,255,0));
+//    _northWallButton->setColor(Color4(255,255,255,0));
+//    _northeastWallButton->setColor(Color4(255,255,255,0));
+//    _southeastWallButton->setColor(Color4(255,255,255,0));
+//    _southWallButton->setColor(Color4(255,255,255,0));
+//    _southwestWallButton->setColor(Color4(255,255,255,0));
+//    _northwestWallButton->setColor(Color4(255,255,255,0));
     
     
 
     
     
     
-    // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("basement_floor");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("basement_floor");
+    // Create the back button.
+    std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     
 
-    _overworld_button3 = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
-                                       PolygonNode::allocWithTexture(overworld_down));
-    _overworld_button3->setScale(0.1f); // Magic number to rescale asset
+    _repairTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
+    _repairTOcastle->setScale(0.8f); // Magic number to rescale asset
     
-    // Create a callback function for the OVERWORLD button
-    _overworld_button3->setName("overworld3");
-    _overworld_button3->setListener([=] (const std::string& name, bool down) {
+    // Create a callback function for the back button
+    _repairTOcastle->setName("repairTOcastle");
+    _repairTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
             CULog("in repair");
@@ -365,56 +307,37 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the overworld button in the bottom right
     //Size bsize = overworld_up->getSize();
-    _overworld_button3->setAnchor(Vec2::ANCHOR_CENTER);
-    _overworld_button3->setPosition(_size.width-60,60);
+    _repairTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
+    _repairTOcastle->setPosition(_size.width-60,60);
     
     // Add the logo and button to the scene graph
-    addChild(_overworld_button3);
+    addChild(_repairTOcastle);
     
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button3->activate(input.generateKey("repairToOverworld"));
+    _repairTOcastle->activate(input.generateKey("repairTOcastle"));
     
     return true;
 }
 
 
-void RepairScene::doFadeIn(const std::shared_ptr<FadeIn>& action, std::string direction) {
-    CULog("Do wall fade in");
-    std::shared_ptr<cugl::PolygonNode> _curr_castle_wall;
-    _curr_castle_wall = RepairScene::getWall(direction);
-    auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
-    _actions->activate(ACT_KEY, action, _curr_castle_wall, fcn);
-}
-
-void RepairScene::doFadeOut(const std::shared_ptr<FadeOut>& action, std::string direction) {
-    CULog("Do wall fade out");
-    std::shared_ptr<cugl::PolygonNode> _curr_castle_wall;
-    _curr_castle_wall = RepairScene::getWall(direction);
-    auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
-    _actions->activate(ACT_KEY+1, action, _curr_castle_wall, fcn);
-}
-
-std::shared_ptr<cugl::PolygonNode> RepairScene::getWall(std::string direction) {
+std::shared_ptr<cugl::Button> RepairScene::getWall(std::string direction) {
     if (direction=="N"){
-        return northWall_floor;
+        return _northWallButton;
     }
     else if (direction=="NE"){
-        return northeastWall_floor;
+        return _northeastWallButton;
     }
     else if (direction=="SE"){
-        return southeastWall_floor;
+        return _southwestWallButton;
     }
     else if (direction=="S"){
-        return southWall_floor;
+        return _southWallButton;
     }
     else if (direction=="SW"){
-        return southwestWall_floor;
-    }
-    else if (direction=="NW"){
-        return northwestWall_floor;
+        return _southwestWallButton;
     }
     else {
-        return plain_floor;
+        return _northwestWallButton;
     }
 }
 
@@ -422,7 +345,7 @@ void RepairScene::dispose() {
     if (_active) {
         removeAllChildren();
         _assets = nullptr;
-        _overworld_button3 = nullptr;
+        _repairTOcastle = nullptr;
         _background = nullptr;
         _active = false;
     }
@@ -433,101 +356,91 @@ void RepairScene::update(float timestep){
     _actions->update(timestep);
     int _curr_wall_health;
 
-    _healthbar_good->setVisible(false);
-    _healthbar_warning->setVisible(false);
-    _healthbar_low->setVisible(false);
+    
 
-    if (_curr_wall.compare("N") == 0) {
+        _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
+        _northeastText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+        _southeastText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+        _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
+        _southwestText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+        _northwestText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+    
+    std::shared_ptr<Texture> image   = _assets->get<Texture>("castle");
+
+
         _curr_wall_health = gameModel.getWallHealth(0);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        if (_curr_wall_health < 10){
+            _northText->setPosition(190,80);
+//            CULog("change image");
+//             _northWallButton->setUp(PolygonNode::allocWithTexture(image));
+    
         }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        else if (_curr_wall_health < 100){
+            _northText->setPosition(170,80);
         }
         else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+            _northText->setPosition(150,80);
         }
-    }
-    else if (_curr_wall.compare("NE")==0) {
+    
+    
+    
         _curr_wall_health = gameModel.getWallHealth(1);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
+        if (_curr_wall_health < 10){
+            _northeastText->setPosition(190,80);
         }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
+        else if (_curr_wall_health < 100){
+            _northeastText->setPosition(170,80);
         }
         else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
+            _northeastText->setPosition(150,80);
         }
-    }
-    else if (_curr_wall.compare("SE")==0) {
-        _curr_wall_health = gameModel.getWallHealth(2);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
-        }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
-        }
-        else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
-        }
-    }
-    else if (_curr_wall.compare("S")==0) {
-        _curr_wall_health = gameModel.getWallHealth(3);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
-        }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
-        }
-        else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
-        }
-    }
-    else if (_curr_wall.compare("SW")==0) {
-        _curr_wall_health = gameModel.getWallHealth(4);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
-        }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
-        }
-        else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health * (1.2f)/(float)100, _healthbar_warning->getScaleY());
-        }
-    }
-    else if (_curr_wall.compare("NW")==0) {
-        _curr_wall_health = gameModel.getWallHealth(5);
-        if (_curr_wall_health >= 66) {
-            _healthbar_good->setVisible(true);
-            _healthbar_good->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_good->getScaleY());
-        }
-        else if (_curr_wall_health <= 33) {
-            _healthbar_low->setVisible(true);
-            _healthbar_low->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_low->getScaleY());
-        }
-        else {
-            _healthbar_warning->setVisible(true);
-            _healthbar_warning->setScale((float)_curr_wall_health* (1.2f)/(float)100, _healthbar_warning->getScaleY());
-        }
-    }
 
+    
+        _curr_wall_health = gameModel.getWallHealth(2);
+        if (_curr_wall_health < 10){
+            _southeastText->setPosition(120,90);
+        }
+        else if (_curr_wall_health < 100){
+            _southeastText->setPosition(140,90);
+        }
+        else {
+            _southeastText->setPosition(160,90);
+        }
+
+
+        _curr_wall_health = gameModel.getWallHealth(3);
+        if (_curr_wall_health < 10){
+            _southText->setPosition(120,90);
+        }
+        else if (_curr_wall_health < 100){
+            _southText->setPosition(140,90);
+        }
+        else {
+            _southText->setPosition(160,90);
+        }
+
+
+        _curr_wall_health = gameModel.getWallHealth(4);
+        if (_curr_wall_health < 10){
+            _southwestText->setPosition(120,90);
+        }
+        else if (_curr_wall_health < 100){
+            _southwestText->setPosition(140,90);
+        }
+        else {
+            _southwestText->setPosition(160,90);
+        }
+
+        _curr_wall_health = gameModel.getWallHealth(5);
+        if (_curr_wall_health < 10){
+            _northwestText->setPosition(190,80);
+        }
+        else if (_curr_wall_health < 100){
+            _northwestText->setPosition(170,80);
+        }
+        else {
+            _northwestText->setPosition(150,80);
+        }
 }
 
 
@@ -540,17 +453,16 @@ void RepairScene::setActive(bool active){
         // Set background color
         //Application::get()->setClearColor(Color4(132,180,113,255));
         Application::get()->setClearColor(Color4(0,0,0,255));
-        _overworld_button3->activate(input.findKey("repairToOverworld"));
+        _repairTocastle->activate(input.findKey("repairTOcastle"));
         _northWallButton->activate(input.findKey("northWallButton"));
         _northeastWallButton->activate(input.findKey("northeastWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));
         _southWallButton->activate(input.findKey("southWallButton"));
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
         _northwestWallButton->activate(input.findKey("northwestWallButton"));
-        CULog("Repair scene");
     }
     else{
-        _overworld_button3->deactivate();
+        _repairTOcastle->deactivate();
         _northWallButton->deactivate();
         _northeastWallButton->deactivate();
         _southeastWallButton->deactivate();
