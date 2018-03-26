@@ -86,7 +86,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	activateWorldCollisions();
 
     // We can only activate a button AFTER it is added to a scene
-     _ballistaTOcastle->activate(25);
+     _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
 
     return true;
 }
@@ -208,7 +208,8 @@ void BallistaScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        _ballistaTOcastle->activate(25);
+        _overworld_button->activate(input.findKey("ballistaToOverworld"));
+        _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
     }
     else{
         _ballistaTOcastle->deactivate();

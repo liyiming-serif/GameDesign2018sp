@@ -600,15 +600,20 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // We can only activate a button AFTER it is added to a scene
-    _ballistaNorth->activate(200); _ballistaNorthEast->activate(3); _ballistaSouthEast->activate(4);
-    _ballistaSouth->activate(5); _ballistaSouthWest->activate(6); _ballistaNorthWest->activate(7);
-    _lookout_button->activate(8);
-    _quitButton->activate(9);
+    _ballistaNorth->activate(input.generateKey("ballistaNorth"));
+	_ballistaNorthEast->activate(input.generateKey("ballistaNorthEast"));
+	_ballistaSouthEast->activate(input.generateKey("ballistaSouthEast"));
+    _ballistaSouth->activate(input.generateKey("ballistaSouth"));
+	_ballistaSouthWest->activate(input.generateKey("ballistaSouthWest"));
+	_ballistaNorthWest->activate(input.generateKey("ballistaNorthWest"));
+    _lookout_button->activate(input.generateKey("lookout_button"));
+    _quitButton->activate(input.generateKey("quitButton"));
 //    _up_button->activate(10);
 //    _down_button->activate(11);
-    _repair_button->activate(13);
-    _ammo_button->activate(14);
-    _mage_button->activate(15);
+
+    _repair_button->activate(input.generateKey("repair_button"));
+    _ammo_button->activate(input.generateKey("ammo_button"));
+    _mage_button->activate(input.generateKey("mage_button"));
     
     return true;
 }
@@ -701,9 +706,9 @@ void OverworldScene::setActive(bool active) {
     _active = active;
     switchscene = 0;
     if(active){
-        _quitButton->activate(2);
-        _ballistaNorth->activate(30);
-        _lookout_button->activate(8);
+        _quitButton->activate(input.findKey("quitButton"));
+        _ballistaNorth->activate(input.findKey("ballistaNorth"));
+        _lookout_button->activate(input.findKey("lookout_button"));
         Application::get()->setClearColor(Color4(132,180,113,255));
     }
     else{
