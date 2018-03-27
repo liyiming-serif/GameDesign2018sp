@@ -41,6 +41,7 @@ protected:
     bool _justReleased;
     bool _isPressed;
     cugl::Vec2 _pointerPos;
+	cugl::Vec2 _dTouch;
     int _vScrolling;
     /** Wizard spell gestures go here*/
 
@@ -127,6 +128,8 @@ public:
     bool isPressed() {return _isPressed;}
 
     cugl::Vec2 pointerPos() {return _pointerPos;}
+
+	cugl::Vec2 dTouch() { return _dTouch; }
 
     int vScrolling() {return _vScrolling;}
 
