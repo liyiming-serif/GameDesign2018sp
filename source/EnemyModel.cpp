@@ -4,7 +4,7 @@
 
 #include "EnemyModel.h"
 
-#define BASE_SPEED 3
+#define BASE_SPEED 0.75
 
 /*
 * ENEMY TYPES:

@@ -34,6 +34,7 @@ void SpawnController::update(float deltaTime) {
             std::vector<float> enemy = {_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1],
                                         _enemyArray[_currSpawnIndex][2], _enemyArray[_currSpawnIndex][3]};
             gameModel._enemyArrayGroundN.push_back(enemy);
+            gameModel._newSpawn = enemy;
             CULog("GameModel array size: %d", gameModel._enemyArrayGroundN.size());
 
             if(_currSpawnIndex != _enemyArray.size()-1){

@@ -121,7 +121,21 @@ void BallistaScene::update(float deltaTime){
         _spawnTimer--;
     }
     */
-
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
+        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    }
+    if(gameModel._newSpawn.size()>0){
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._newSpawn[0], gameModel._newSpawn[1]),
+                                      0, gameModel._newSpawn[2], gameModel._newSpawn[3], DRAW_SCALE,_assets);
+        if(e != nullptr) {
+            _enemyArray.push_back(e);
+            _world->addObstacle(e);
+            addChild(e->getNode());
+            CULog("enemy added");
+        }
+    }
+    gameModel._newSpawn.clear();
 	// Poll inputs
     if(input.isPressed()){
         Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());

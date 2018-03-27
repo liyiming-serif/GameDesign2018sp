@@ -32,6 +32,7 @@ public:
     //2D vector, each element has {xCoord, yCoord, type, remaining health}
     std::vector<std::vector<float>> _enemyArrayGroundN;
 	std::vector<int> _enemiesToFree;
+	std::vector<float> _newSpawn;
 
     // Destructors
     void dispose();
