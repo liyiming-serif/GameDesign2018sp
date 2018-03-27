@@ -26,7 +26,7 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
 
 void SpawnController::update(float deltaTime) {
     _totalTime++;
-    if(_currSpawnIndex != -1){
+    if(_currSpawnIndex >= 0){
         if(_enemyArray[_currSpawnIndex][4]<_totalTime){
         //we need to spawn one
             std::vector<float> enemy = {_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1],

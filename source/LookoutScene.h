@@ -22,7 +22,7 @@ protected:
 
     std::shared_ptr<cugl::PolygonNode> _background;
 
-    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
+    //std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
 
 
 

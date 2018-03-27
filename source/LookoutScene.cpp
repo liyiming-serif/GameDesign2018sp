@@ -88,10 +88,6 @@ void LookoutScene::update(float timestep){
 
 }
 
-//void touchReleaseCB(const cugl::TouchEvent& event, bool focus){
-//
-//};
-
 //Pause or Resume
 void LookoutScene::setActive(bool active){
     _active = active;
@@ -100,19 +96,19 @@ void LookoutScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
-		for (int it = 0; it < gameModel._enemyArrayGroundN.size(); it++) {
-		//instead of creating enemy, can we just place icon?
-			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[it][1], gameModel._enemyArrayGroundN[it][2]),
-                                                  0, gameModel._enemyArrayGroundN[it][3], gameModel._enemyArrayGroundN[it][4], 32,_assets);
-			_enemyArray.push_back(e);
-			addChild(e->getIcon());
-		}
+		//for (int it = 0; it < gameModel._enemyArrayGroundN.size(); it++) {
+		////instead of creating enemy, can we just place icon?
+		//	std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[it][1], gameModel._enemyArrayGroundN[it][2]),
+  //                                                0, gameModel._enemyArrayGroundN[it][3], gameModel._enemyArrayGroundN[it][4], 32,_assets);
+		//	_enemyArray.push_back(e);
+		//	addChild(e->getIcon());
+		//}
     }
     else{
         _lookoutTOcastle->deactivate();
-      for (int i = 0; i<_enemyArray.size(); i++) {
-        removeChild(_enemyArray[i]->getIcon());
-      }
-		  _enemyArray.clear();
+		//for (int i = 0; i<_enemyArray.size(); i++) {
+		//	removeChild(_enemyArray[i]->getIcon());
+		//}
+		//_enemyArray.clear();
     }
 }
