@@ -2,7 +2,10 @@
 // Created by Josh on 3/15/2018.
 //
 
+#include <cugl/cugl.h>
 #include "GameModel.h"
+#include "CastleApp.h"
+
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
@@ -12,6 +15,10 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     // Set display size
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
+    _networkStateOutPath = Application::get()->getSaveDirectory() + "networkStateOutgoing.txt";
+    _networkStateInPath = Application::get()->getSaveDirectory() + "networkStateIncoming.txt";
+    _networkJSONWriter = TextWriter::alloc(_networkStateOutPath);
+    _networkJSONReader = TextReader::alloc(_networkStateOutPath);
 
 
 
@@ -23,6 +30,7 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     for (int i = 0; i < 6; ++i) {
         _castleHealth[i] = sum;
+        _prevCastleHealth[i] = sum;
         sum +=1;
     }
 
@@ -78,6 +86,9 @@ void GameModel::update(float deltaTime){
 	//	CULog("%d\n", _enemyArrayGroundN.size());
 	//}
 	//_enemiesToFree.clear();
+    _networkJSONWriter->write(getStateChange());
+    CULog("updating");
+    updateState();
 }
 
 int GameModel::getWallHealth(int wall) {
@@ -105,5 +116,25 @@ int GameModel::getPlayerAvatar(int player) {
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
 }
+
+std::string GameModel::getStateChange() {
+    int _tmpHealth[6];
+    for (int i = 0; i < 6; ++i) {
+        _tmpHealth[i] = _castleHealth[i] - _prevCastleHealth[i];
+    }
+    std::string _tmpHealthString = "{ Health: " + to_string(_tmpHealth, 6) + "}";
+    std::string _tmpAvatarString = "{ Avatars: " + to_string(_playerAvatars,6) + "}";
+    return _tmpHealthString + ", " + _tmpAvatarString;
+}
+
+void GameModel::updateState() {
+    std::string _tmpStateString = _networkJSONReader->readLine();
+    const char *cstr = _tmpStateString.c_str();
+    CULog("% \n", cstr);
+    for (int i = 0; i < 6; ++i) {
+        _prevCastleHealth[i] = _castleHealth[i];
+    }
+}
+
 
 

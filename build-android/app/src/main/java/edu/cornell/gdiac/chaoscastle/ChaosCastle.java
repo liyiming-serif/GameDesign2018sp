@@ -35,7 +35,6 @@ public class ChaosCastle extends SDLActivity {
 	    super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
-		mba = enableBluetooth();
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
