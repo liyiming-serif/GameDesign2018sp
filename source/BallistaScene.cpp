@@ -101,25 +101,27 @@ void BallistaScene::dispose() {
         _arrows.clear();
 		_arrowsToFree.clear();
         _active = false;
+        _enemyArray.clear();
+        _enemiesToFree.clear();
     }
 }
 
 void BallistaScene::update(float deltaTime){
-    if(_spawnTimer == 0){
-        //testing
-        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(rand()%(int)(_size.width),_size.height), -M_PI/2, 1, DRAW_SCALE,_assets);
+
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
+        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    }
+    if(gameModel._newSpawn.size()>0){
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._newSpawn[0], gameModel._newSpawn[1]),
+                                      -M_PI/2, gameModel._newSpawn[2], gameModel._newSpawn[3], DRAW_SCALE,_assets);
         if(e != nullptr) {
-            gameModel._enemyArrayGroundN.insert(e);
+            _enemyArray.push_back(e);
             _world->addObstacle(e);
             addChild(e->getNode());
-            CULog("enemy added");
         }
-        _spawnTimer = 120;
     }
-    else{
-        _spawnTimer--;
-    }
-
+    gameModel._newSpawn.clear();
 	// Poll inputs
     if(input.isPressed()){
         Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());
@@ -133,7 +135,6 @@ void BallistaScene::update(float deltaTime){
             _arrows.insert(a);
             _world->addObstacle(a);
             addChild(a->getNode());
-			CULog("%d\n", _arrows.size());
         }
     }
 
@@ -155,29 +156,31 @@ void BallistaScene::update(float deltaTime){
 		_world->removeObstacle(a.get());
 		removeChild(a->getNode());
 		_arrows.erase(a);
-		CULog("%d\n", _arrows.size());
 	}
 	_arrowsToFree.clear();
 
 	// Update enemies and mark out of bound ones for deletion
-	for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
-		std::shared_ptr<EnemyModel> e = *it;
+	for (int it = 0; it < _enemyArray.size(); it++) {
+		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (e != nullptr) {
 			e->update(deltaTime);
 		}
 		if (!bounds.contains(e->getPosition())) {
-			gameModel._enemiesToFree.insert(e);
+			_enemiesToFree.push_back(it);
+			gameModel._enemiesToFree.push_back(it);
 		}
 	}
-
 	// Delete the enemies here because you can't remove elements while iterating
-	for (auto it = gameModel._enemiesToFree.begin(); it != gameModel._enemiesToFree.end(); it++) {
-		std::shared_ptr<EnemyModel> e = *it;
+	for (int i = 0; i<_enemiesToFree.size(); i++) {
+		std::shared_ptr<EnemyModel> e = _enemyArray[_enemiesToFree[i]];
 		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
-		gameModel._enemyArrayGroundN.erase(e);
+		_enemyArray.erase(_enemyArray.begin() + _enemiesToFree[i]);
 		gameModel.changeWallHealth(5, -9);
-		CULog("Num enemies left: %d\n", gameModel._enemyArrayGroundN.size());
+	}
+	_enemiesToFree.clear();
+	for (int i = 0; i<gameModel._enemiesToFree.size(); i++){
+	    gameModel._enemyArrayGroundN.erase(gameModel._enemyArrayGroundN.begin() + gameModel._enemiesToFree[i]);
 	}
 	gameModel._enemiesToFree.clear();
 
@@ -188,8 +191,20 @@ void BallistaScene::update(float deltaTime){
 
 //Pause or Resume
 void BallistaScene::setActive(bool active){
+
     _active = active;
     switchscene = 0;
+
+    //create all the enemies here from gameModel
+    for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
+        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[i][0], gameModel._enemyArrayGroundN[i][1]),
+                                      0, gameModel._enemyArrayGroundN[i][2], gameModel._enemyArrayGroundN[i][3], DRAW_SCALE,_assets);
+        if(e != nullptr) {
+            _enemyArray.push_back(e);
+            _world->addObstacle(e);
+            addChild(e->getNode());
+        }
+    }
 
 	//empty the arrow arrays to prevent data leeks
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
@@ -222,6 +237,8 @@ void BallistaScene::activateWorldCollisions() {
 	};
 }
 
+//FIX BUG WITH TWO ARROWS COLLIDING
+//HAVE TO IMPLEMENT HEALTH LATER
 void BallistaScene::beginContact(b2Contact* contact) {
 	b2Body* body1 = contact->GetFixtureA()->GetBody();
 	b2Body* body2 = contact->GetFixtureB()->GetBody();
@@ -234,10 +251,11 @@ void BallistaScene::beginContact(b2Contact* contact) {
 		}
 	}
 
-	for (auto it = gameModel._enemyArrayGroundN.begin(); it != gameModel._enemyArrayGroundN.end(); it++) {
-		std::shared_ptr<EnemyModel> e = *it;
+	for (int it = 0; it<_enemyArray.size(); it++) {
+		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
-			gameModel._enemiesToFree.insert(e);
+			_enemiesToFree.push_back(it);
+			gameModel._enemiesToFree.push_back(it);
 			break;
 		}
 	}

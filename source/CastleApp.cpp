@@ -118,6 +118,7 @@ void CastleApp::onShutdown() {
     _oilScene.dispose();
     _lobbyScene.dispose();
     gameModel.dispose();
+    _spawnController.dispose();
     _batch = nullptr;
     _assets = nullptr;
 
@@ -188,7 +189,7 @@ void CastleApp::update(float timestep) {
                 _ballistaScene.update(timestep);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
-                    _ballistaScene.setActive(false);
+                    _ballistaScene.dispose();
                 }
             }
             else if(_currscene==LOOKOUT){
@@ -233,6 +234,7 @@ void CastleApp::update(float timestep) {
                     _lobbyScene.setActive(false);
                 }
             }
+            _spawnController.update(timestep);
             gameModel.update(timestep);
         }
     }
@@ -246,6 +248,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == MENU && nextscene == OVERWORLD) {
 		gameModel.init(_assets);
+		_spawnController.init(_assets);
+
 	}
     switch(nextscene){
         case MENU:
@@ -255,6 +259,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _overworldScene.setActive(true);
             break;
         case BALLISTA:
+            _ballistaScene.init(_assets);
             _ballistaScene.setActive(true);
             break;
         case LOOKOUT:

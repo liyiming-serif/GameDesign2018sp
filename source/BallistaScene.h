@@ -7,8 +7,10 @@
 #include <cugl/cugl.h>
 #include "ArrowModel.h"
 #include "InputController.h"
+#include "EnemyModel.h"
 #include "GameModel.h"
 #include <set>
+#include <vector>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
@@ -34,6 +36,10 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Button> _ballistaTOcastle;
+
+    //enemies
+    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
+    std::vector<int> _enemiesToFree;
 
 public:
     // Constructors

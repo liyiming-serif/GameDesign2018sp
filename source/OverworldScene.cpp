@@ -699,6 +699,10 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
 
 
 void OverworldScene::update(float timestep){
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
+        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    }
 	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
 		//Moving down
 		OverworldScene::doMove(_movedn, currentCastleFloor);
