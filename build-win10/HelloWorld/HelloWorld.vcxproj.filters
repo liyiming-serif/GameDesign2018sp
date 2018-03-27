@@ -63,6 +63,7 @@
     <ClInclude Include="..\..\source\LobbyScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\BallistaModel.h">
     <ClInclude Include="..\..\source\SpawnController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,6 +117,7 @@
     <ClCompile Include="..\..\source\LobbyScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\BallistaModel.cpp">
     <ClCompile Include="..\..\source\SpawnController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
