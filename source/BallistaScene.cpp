@@ -107,10 +107,18 @@ void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-            gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-        }
-    }
+		for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+			if(gameModel._enemyArrayMaster[i][j][1] < 85){
+				//remove
+				_enemiesToFree.push_back(j);
+				gameModel._enemiesToFreeMaster[i].push_back(j);
+				gameModel.changeWallHealth(i, -9);
+			}
+			else{
+				gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+			}
+		}
+	}
 
     if(gameModel._newSpawn.size()>0 && (int)(gameModel._newSpawn[4]) == direction){
         std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._newSpawn[0], gameModel._newSpawn[1]),
