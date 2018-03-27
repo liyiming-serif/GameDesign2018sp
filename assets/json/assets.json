@@ -140,6 +140,27 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "ammo_perfect": {
+            "file":     "textures/Basement/Perfect.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_okay": {
+            "file":     "textures/Basement/Okay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_bad": {
+            "file":     "textures/Basement/Bad.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "catapult_floor": {
             "file":     "textures/Catapult/CatapultFloor.png",
             "minfilter":"nearest",
