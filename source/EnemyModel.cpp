@@ -27,13 +27,6 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 		_node->setScale(0.3);
 		_node->setAnchor(Vec2::ANCHOR_CENTER);
 
-		//create the scene node
-		_icon = nullptr;
-		std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
-		_icon = PolygonNode::allocWithTexture(texture2);
-		_icon->setScale(0.3);
-		_icon->setAnchor(Vec2::ANCHOR_CENTER);
-
 		//initialize the box2d obstacle
 		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
 		setAngle(0);
