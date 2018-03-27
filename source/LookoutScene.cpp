@@ -11,6 +11,11 @@ using namespace cugl;
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+#define REPAIR      4
+#define MENU        5
+#define AMMO        6
+#define MAGE        7
+#define OIL         8
 
 bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -40,18 +45,14 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
 
-    // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("lookout_floor");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("lookout_floor");
-
-    Size overworld_b_size = overworld_up->getSize();
-    _overworld_button2 = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
-                                      PolygonNode::allocWithTexture(overworld_down));
-    _overworld_button2->setScale(0.1f); // Magic number to rescale asset
+    // Create the back button.  A button has an up image and a down image
+    std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
+    _lookoutTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
+    _lookoutTOcastle->setScale(.8f); // Magic number to rescale asset
 
     // Create a callback function for the OVERWORLD button
-    _overworld_button2->setName("overworld2");
-    _overworld_button2->setListener([=] (const std::string& name, bool down) {
+    _lookoutTOcastle->setName("lookoutTOcastle");
+    _lookoutTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
             CULog("at lookout");
@@ -61,14 +62,14 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 
     // Position the overworld button in the bottom left
-    _overworld_button2->setAnchor(Vec2::ANCHOR_CENTER);
-    _overworld_button2->setPosition(100,80);
+    _lookoutTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
+    _lookoutTOcastle->setPosition(100,80);
 
     // Add the logo and button to the scene graph
-    addChild(_overworld_button2);
+    addChild(_lookoutTOcastle);
 
     // We can only activate a button AFTER it is added to a scene
-    _overworld_button2->activate(26);
+    _lookoutTOcastle->activate(input.generateKey("lookoutTOcastle"));
 
     return true;
 }
@@ -77,7 +78,7 @@ void LookoutScene::dispose() {
     if (_active) {
         removeAllChildren();
         _assets = nullptr;
-        _overworld_button2 = nullptr;
+        _lookoutTOcastle = nullptr;
         _background = nullptr;
         _active = false;
     }
@@ -98,8 +99,7 @@ void LookoutScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
-        _overworld_button2->activate(26);
+        _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
 		for (int it = 0; it < gameModel._enemyArrayGroundN.size(); it++) {
 		//instead of creating enemy, can we just place icon?
 			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[it][1], gameModel._enemyArrayGroundN[it][2]),
@@ -109,10 +109,10 @@ void LookoutScene::setActive(bool active){
 		}
     }
     else{
-        _overworld_button2->deactivate();
-		for (int i = 0; i<_enemyArray.size(); i++) {
-			removeChild(_enemyArray[i]->getIcon());
-		}
-		_enemyArray.clear();
+        _lookoutTOcastle->deactivate();
+      for (int i = 0; i<_enemyArray.size(); i++) {
+        removeChild(_enemyArray[i]->getIcon());
+      }
+		  _enemyArray.clear();
     }
 }

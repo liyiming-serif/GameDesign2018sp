@@ -28,6 +28,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "castle": {
+            "file":     "textures/castle.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "castle_basement": {
             "file":     "textures/Basement/BasementTower.png",
             "minfilter":"nearest",
@@ -70,13 +77,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "ballista_icon_selected": {
-            "file":     "textures/Ballista/BallistaIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "ballista_view": {
             "file":     "textures/Ballista/BallistaView.png",
             "minfilter":"nearest",
@@ -105,13 +105,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "lookout_icon_selected": {
-            "file":     "textures/Lookout/LookoutIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
 		"lookout_view": {
 			"file":     "textures/Lookout/LookoutView.png",
 			"minfilter":"nearest",
@@ -133,21 +126,7 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_icon_selected": {
-            "file":     "textures/Basement/RepairIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "mage_icon": {
-            "file":     "textures/Basement/MageIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "mage_icon_selected": {
             "file":     "textures/Basement/MageIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
@@ -161,8 +140,22 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "ammo_icon_selected": {
-            "file":     "textures/Basement/AmmoIcon.png",
+        "ammo_perfect": {
+            "file":     "textures/Basement/Perfect.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_okay": {
+            "file":     "textures/Basement/Okay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_bad": {
+            "file":     "textures/Basement/Bad.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -182,13 +175,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "catapult_icon_selected": {
-            "file":     "textures/Catapult/CatapultIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "oil_floor": {
             "file":     "textures/Oil/OilFloor.png",
             "minfilter":"nearest",
@@ -197,13 +183,6 @@
             "wrapT":    "clamp"
         },
         "oil_icon": {
-            "file":     "textures/Oil/OilIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "oil_icon_selected": {
             "file":     "textures/Oil/OilIcon.png",
             "minfilter":"nearest",
             "magfilter":"linear",
@@ -253,91 +232,91 @@
             "wrapT":    "clamp"
         },
         "repair_background": {
-            "file":     "textures/Basement/BasementBackground.png",
+            "file":     "textures/Basement/RepairBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_wall_button": {
-            "file":     "textures/Basement/wallButton.png",
+        "repair_100": {
+            "file":     "textures/Basement/100.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_plain_wall": {
-            "file":     "textures/Basement/plainWall.png",
+        "repair_75": {
+            "file":     "textures/Basement/75.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_north_wall": {
-            "file":     "textures/Basement/northWall.png",
+        "repair_50": {
+            "file":     "textures/Basement/50.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_northeast_wall": {
-            "file":     "textures/Basement/northeastWall.png",
+        "repair_25": {
+            "file":     "textures/Basement/25.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_southeast_wall": {
-            "file":     "textures/Basement/southeastWall.png",
+        "repair_transparent": {
+            "file":     "textures/Basement/transparent.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_south_wall": {
-            "file":     "textures/Basement/southWall.png",
+        "mage_background": {
+            "file":     "textures/Basement/MageBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_southwest_wall": {
-            "file":     "textures/Basement/southwestWall.png",
+        "ammo_background": {
+            "file":     "textures/Basement/AmmoBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_northwest_wall": {
-            "file":     "textures/Basement/northwestWall.png",
+        "oil_background": {
+            "file":     "textures/Oil/OilBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_good": {
-            "file":     "textures/CastleHealth/healthGood.png",
+        "lobby_background": {
+            "file":     "textures/Lobby/LobbyBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_warning": {
-            "file":     "textures/CastleHealth/healthWarning.png",
+        "lobby_button": {
+            "file":     "textures/Lobby/LobbyButton.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "healthbar_low": {
-            "file":     "textures/CastleHealth/healthLow.png",
+        "create_button": {
+            "file":     "textures/Lobby/Create.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "health_frame": {
-            "file":     "textures/CastleHealth/frame.png",
+        "enter_button": {
+            "file":     "textures/Lobby/Enter.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -348,6 +327,10 @@
 		"charlemagne": {
 			"file":     "fonts/Charlemagne.ttf",
 			"size":     64
-		}
+		},
+        "langdon": {
+            "file":     "fonts/langdon.ttf",
+            "size":     64
+        }
 	}
 }

@@ -35,7 +35,7 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 
 		//initialize the box2d obstacle
 		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
-		setAngle(dir);
+		setAngle(0);
 		setLinearVelocity(cos(dir)*BASE_SPEED,sin(dir)*BASE_SPEED);
     }
     return true;

@@ -9,6 +9,7 @@
 #ifndef RepairScene_h
 #define RepairScene_h
 
+#include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 
@@ -27,22 +28,54 @@ protected:
     std::shared_ptr<cugl::FadeIn> _wallFadeIN;
     std::shared_ptr<cugl::FadeOut> _wallFadeOUT;
     
-    std::shared_ptr<PolygonNode> plain_floor;
-    std::shared_ptr<PolygonNode> northWall_floor;
-    std::shared_ptr<PolygonNode> northeastWall_floor;
-    std::shared_ptr<PolygonNode> southeastWall_floor;
-    std::shared_ptr<PolygonNode> southWall_floor;
-    std::shared_ptr<PolygonNode> southwestWall_floor;
-    std::shared_ptr<PolygonNode> northwestWall_floor;
+    std::shared_ptr<PolygonNode> N_100;
+    std::shared_ptr<PolygonNode> NE_100;
+    std::shared_ptr<PolygonNode> NW_100;
+    std::shared_ptr<PolygonNode> S_100;
+    std::shared_ptr<PolygonNode> SE_100;
+    std::shared_ptr<PolygonNode> SW_100;
+    
+    std::shared_ptr<PolygonNode> N_75;
+    std::shared_ptr<PolygonNode> NE_75;
+    std::shared_ptr<PolygonNode> NW_75;
+    std::shared_ptr<PolygonNode> S_75;
+    std::shared_ptr<PolygonNode> SE_75;
+    std::shared_ptr<PolygonNode> SW_75;
+    
+    std::shared_ptr<PolygonNode> N_50;
+    std::shared_ptr<PolygonNode> NE_50;
+    std::shared_ptr<PolygonNode> NW_50;
+    std::shared_ptr<PolygonNode> S_50;
+    std::shared_ptr<PolygonNode> SE_50;
+    std::shared_ptr<PolygonNode> SW_50;
+    
+    std::shared_ptr<PolygonNode> N_25;
+    std::shared_ptr<PolygonNode> NE_25;
+    std::shared_ptr<PolygonNode> NW_25;
+    std::shared_ptr<PolygonNode> S_25;
+    std::shared_ptr<PolygonNode> SE_25;
+    std::shared_ptr<PolygonNode> SW_25;
+
 
     
-    std::shared_ptr<cugl::Button> _overworld_button3;
+    std::shared_ptr<cugl::Button> _repairTOcastle;
     std::shared_ptr<cugl::Button> _northWallButton;
     std::shared_ptr<cugl::Button> _northeastWallButton;
     std::shared_ptr<cugl::Button> _southeastWallButton;
     std::shared_ptr<cugl::Button> _southWallButton;
     std::shared_ptr<cugl::Button> _southwestWallButton;
     std::shared_ptr<cugl::Button> _northwestWallButton;
+    
+    /** Reference to the label */
+    std::shared_ptr<cugl::Label> _northText;
+    std::shared_ptr<cugl::Label> _northeastText;
+    std::shared_ptr<cugl::Label> _southeastText;
+    std::shared_ptr<cugl::Label> _southText;
+    std::shared_ptr<cugl::Label> _southwestText;
+    std::shared_ptr<cugl::Label> _northwestText;
+    
+    std::shared_ptr<Texture> image_2;
+    
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Node>  _buttons;
@@ -87,7 +120,7 @@ public:
      */
     void doFadeOut(const std::shared_ptr<cugl::FadeOut>& action, std::string direction);
     
-    std::shared_ptr<cugl::PolygonNode> getWall(std::string direction);
+    std::shared_ptr<cugl::Button> getWall(std::string direction);
 };
 
 

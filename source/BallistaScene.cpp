@@ -6,6 +6,11 @@
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
+#define REPAIR      4
+#define MENU        5
+#define AMMO        6
+#define MAGE        7
+#define OIL         8
 #define DRAW_SCALE 32
 
 using namespace cugl;
@@ -43,37 +48,34 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Get the ballista image and attach it to a polygon obj. (no model yet)
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("ballista");
     _ballista = PolygonNode::allocWithTexture(texture);
-    _ballista->setScale(1.0f); // Magic number to rescale asset
+    _ballista->setScale(.4f); // Magic number to rescale asset
     _ballista->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballista->setPosition(760,225);
+    _ballista->setPosition(_size.width/2,_background->getContentHeight()/10);
+    _ballista->setAngle(M_PI/2);
 
 
-    // Create the OVERWORLD button.  A button has an up image and a down image
-    std::shared_ptr<Texture> overworld_up   = _assets->get<Texture>("ballista_floor");
-    std::shared_ptr<Texture> overworld_down = _assets->get<Texture>("ballista_floor");
-    
-  
-    _overworld_button = Button::alloc(PolygonNode::allocWithTexture(overworld_up),
-                                      PolygonNode::allocWithTexture(overworld_down));
-    _overworld_button->setScale(0.1f); // Magic number to rescale asset
+    // Create the back button.  A button has an up image and a down image
+    std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
+    _ballistaTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
+    _ballistaTOcastle->setScale(.8f); // Magic number to rescale asset
 
     // Create a callback function for the OVERWORLD button
-    _overworld_button->setName("overworld");
-    _overworld_button->setListener([=] (const std::string& name, bool down) {
+    _ballistaTOcastle->setName("ballistaTOcastle");
+    _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
         if (!down) {
             switchscene = OVERWORLD;
         }
     });
 
     // Position the OVERWORLD button in the bottom left
-    _overworld_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _overworld_button->setPosition(100,80);
+    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballistaTOcastle->setPosition(100,80);
     
 
     // Add children to the scene graph
     addChild(_background);
     addChild(_ballista);
-    addChild(_overworld_button);
+    addChild(_ballistaTOcastle);
 
     // Create the arrows set
     _arrows.clear();
@@ -84,7 +86,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	activateWorldCollisions();
 
     // We can only activate a button AFTER it is added to a scene
-     _overworld_button->activate(25);
+     _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
 
     return true;
 }
@@ -105,13 +107,14 @@ void BallistaScene::dispose() {
 }
 
 void BallistaScene::update(float deltaTime){
+
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
         gameModel._enemyArrayGroundN[i][0] += 0.5;
     }
     if(gameModel._newSpawn.size()>0){
         std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._newSpawn[0], gameModel._newSpawn[1]),
-                                      0, gameModel._newSpawn[2], gameModel._newSpawn[3], DRAW_SCALE,_assets);
+                                      -M_PI/2, gameModel._newSpawn[2], gameModel._newSpawn[3], DRAW_SCALE,_assets);
         if(e != nullptr) {
             _enemyArray.push_back(e);
             _world->addObstacle(e);
@@ -127,6 +130,7 @@ void BallistaScene::update(float deltaTime){
     if(input.justReleased()){
         // Allocate a new arrow in memory
         std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),DRAW_SCALE,_assets);
+        
         if(a != nullptr) {
             _arrows.insert(a);
             _world->addObstacle(a);
@@ -219,10 +223,10 @@ void BallistaScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        _overworld_button->activate(25);
+        _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
     }
     else{
-        _overworld_button->deactivate();
+        _ballistaTOcastle->deactivate();
     }
 }
 

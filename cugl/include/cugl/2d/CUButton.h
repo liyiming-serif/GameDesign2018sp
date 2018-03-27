@@ -376,6 +376,10 @@ public:
      */
     virtual void doLayout() override;
     
+    void setUp (std::shared_ptr<Node> up) {
+        _upnode = up;
+    }
+    
 #pragma mark Button State
     /**
      * Returns true if this button contains the given screen point

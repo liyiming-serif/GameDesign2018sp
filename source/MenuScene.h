@@ -9,6 +9,7 @@
 #ifndef MenuScene_h
 #define MenuScene_h
 
+#include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 
@@ -20,6 +21,7 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _playButton;
+    std::shared_ptr<cugl::Button> _lobbyButton;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     

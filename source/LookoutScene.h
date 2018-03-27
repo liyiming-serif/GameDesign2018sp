@@ -7,6 +7,7 @@
 
 #include "GameModel.h"
 #include "EnemyModel.h"
+#include "InputController.h"
 #include <cugl/cugl.h>
 #include <vector>
 
@@ -17,7 +18,7 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
-    std::shared_ptr<cugl::Button> _overworld_button2;
+    std::shared_ptr<cugl::Button> _lookoutTOcastle;
 
     std::shared_ptr<cugl::PolygonNode> _background;
 

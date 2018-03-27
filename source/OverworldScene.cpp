@@ -12,6 +12,10 @@
 #define OVERWORLD   2
 #define LOOKOUT     3
 #define REPAIR      4
+#define MENU        5
+#define AMMO        6
+#define MAGE        7
+#define OIL         8
 #define DRAW_SCALE 32
 
 
@@ -115,44 +119,72 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 // CREATES THE FLOORS
     
     // Basement Floor
-    std::shared_ptr<Texture> basementFloor_texture  = _assets->get<Texture>("basement_floor");
-    std::shared_ptr<PolygonNode> basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
-    basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-    basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    basement_floor->setPosition(_size.width/2.14,-4*_size.height);
+        std::shared_ptr<Texture> basementFloor_texture  = _assets->get<Texture>("basement_floor");
+        std::shared_ptr<PolygonNode> basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
+        basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
+        basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+        basement_floor->setPosition(_size.width/2.14,-4*_size.height);
     
     
-    // Create the Basement Buttons
-    std::shared_ptr<Texture> repair_up   = _assets->get<Texture>("repair_icon");
-    std::shared_ptr<Texture> repair_down = _assets->get<Texture>("repair_icon_selected");
-    _repair_button = Button::alloc(PolygonNode::allocWithTexture(repair_up),
-                                   PolygonNode::allocWithTexture(repair_down));
-    
-    
-    // Create a callback function for the Basement buttons
-    _repair_button->setName("repair");
-    _repair_button->setListener([=] (const std::string& name, bool down) {
-        // Only go to lookout when the button is released
-        if (!down) {
-            switchscene = REPAIR;
-        }
-    });
-    
-    //Positions the Basement Buttons
-    //Basement Floor Center
-    float centerX = basement_floor->getContentSize().width/2;
-    float centerY = basement_floor->getContentSize().height/2;
-    _repair_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
-    _repair_button->setAnchor(Vec2::ANCHOR_CENTER);
-    _repair_button->setPosition(centerX,centerY);
+        // Create the Basement Buttons
+        std::shared_ptr<Texture> repair_up   = _assets->get<Texture>("repair_icon");
+        _repair_button = Button::alloc(PolygonNode::allocWithTexture(repair_up));
+        std::shared_ptr<Texture> ammo_up   = _assets->get<Texture>("ammo_icon");
+        _ammo_button = Button::alloc(PolygonNode::allocWithTexture(ammo_up));
+        std::shared_ptr<Texture> mage_up   = _assets->get<Texture>("mage_icon");
+        _mage_button = Button::alloc(PolygonNode::allocWithTexture(mage_up));
     
     
     
-    //Adds the button to the Scene Graph
-    basement_floor->addChild(_repair_button);
+        // Create a callback function for the Basement buttons
+        _repair_button->setName("repair");
+        _repair_button->setListener([=] (const std::string& name, bool down) {
+            // Only go to lookout when the button is released
+            if (!down) {
+                switchscene = REPAIR;
+            }
+        });
+        _ammo_button->setName("ammo");
+        _ammo_button->setListener([=] (const std::string& name, bool down) {
+            // Only go to lookout when the button is released
+            if (!down) {
+                switchscene = AMMO;
+            }
+        });
+        _mage_button->setName("mage");
+        _mage_button->setListener([=] (const std::string& name, bool down) {
+            // Only go to lookout when the button is released
+            if (!down) {
+                switchscene = MAGE;
+            }
+        });
     
-    //Adds the Basement Floor to the castle
-    _levels->addChild(basement_floor);
+        //Positions the Basement Buttons
+        //Basement Floor Center
+        float centerX = basement_floor->getContentSize().width/2;
+        float centerY = basement_floor->getContentSize().height/2;
+        _repair_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
+        _repair_button->setAnchor(Vec2::ANCHOR_CENTER);
+        _repair_button->setPosition(centerX-.23*basement_floor->getContentWidth(),centerY);
+    
+        _ammo_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
+        _ammo_button->setAnchor(Vec2::ANCHOR_CENTER);
+        _ammo_button->setPosition(centerX+.12*basement_floor->getContentWidth(),centerY+.19*basement_floor->getContentHeight());
+    
+        _mage_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
+        _mage_button->setAnchor(Vec2::ANCHOR_CENTER);
+        _mage_button->setPosition(centerX+.12*basement_floor->getContentWidth(),centerY-.19*basement_floor->getContentHeight());
+
+    
+    
+    
+        //Adds the button to the Scene Graph
+        basement_floor->addChild(_repair_button);
+        basement_floor->addChild(_ammo_button);
+        basement_floor->addChild(_mage_button);
+    
+        //Adds the Basement Floor to the castle
+        _levels->addChild(basement_floor);
     
     
     // Catapult Floor
@@ -165,23 +197,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             // Create the Catapult Buttons
                 std::shared_ptr<Texture> image_up   = _assets->get<Texture>("catapult_icon");
-                std::shared_ptr<Texture> image_down = _assets->get<Texture>("catapult_icon_selected");
-                _catapultNorth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-                _catapultNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                              PolygonNode::allocWithTexture(image_down));
-               _catapultEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                         PolygonNode::allocWithTexture(image_down));
-                _catapultSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                              PolygonNode::allocWithTexture(image_down));
-                _catapultSouth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-                _catapultSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                              PolygonNode::allocWithTexture(image_down));
-                _catapultWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                         PolygonNode::allocWithTexture(image_down));
-                _catapultNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                              PolygonNode::allocWithTexture(image_down));
+                _catapultNorth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultSouth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+                _catapultNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
     
     
             // Create a callback function for the Catapult button
@@ -193,6 +216,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _catapultNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _catapultNorth->setAnchor(Vec2::ANCHOR_CENTER);
             _catapultNorth->setPosition(centerX,centerY+.27*catapult_floor->getContentHeight());
+            
     
             _catapultNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _catapultNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
@@ -244,59 +268,60 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         // Create the Oil Buttons
             image_up   = _assets->get<Texture>("oil_icon");
-            image_down = _assets->get<Texture>("oil_icon_selected");
-            _oilNorth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-            _oilNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _oilEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-            _oilSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _oilSouth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-            _oilSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _oilWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-            _oilNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
+            _oilNorth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilSouth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _oilNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
     
         // Create a callback function for the Oil button
     
+            _oilNorth->setName("oilNorth");
+            _oilNorth->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = OIL;
+                    direction = 1;
+                    CULog("OIL");
+                }
+            });
+    
         //Positions the Oil Buttons
-        //Oil Floor Center
-        centerX = oil_floor->getContentSize().width/2;
-        centerY = oil_floor->getContentSize().height/2;
+            //Oil Floor Center
+            centerX = oil_floor->getContentSize().width/2;
+            centerY = oil_floor->getContentSize().height/2;
     
-        _oilNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorth->setPosition(centerX,centerY+.27*oil_floor->getContentHeight());
+            _oilNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorth->setPosition(centerX,centerY+.27*oil_floor->getContentHeight());
     
-        _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
-        _oilNorthEast->setAngle(-M_PI/3);
+            _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthEast->setAngle(-M_PI/3);
     
-        _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
-        _oilSouthEast->setAngle(-2*M_PI/3);
+            _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthEast->setAngle(-2*M_PI/3);
     
-        _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouth->setPosition(centerX,centerY-.27*oil_floor->getContentHeight());
-        _oilSouth->setAngle(-3*M_PI/3);
+            _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouth->setPosition(centerX,centerY-.27*oil_floor->getContentHeight());
+            _oilSouth->setAngle(-3*M_PI/3);
     
-        _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
-        _oilSouthWest->setAngle(-4*M_PI/3);
+            _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthWest->setAngle(-4*M_PI/3);
     
-        _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
-        _oilNorthWest->setAngle(M_PI/3);
+            _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthWest->setAngle(M_PI/3);
     
         //Adds the buttons to the Scene Graph
         oil_floor->addChild(_oilNorth);
@@ -322,26 +347,17 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Creates Ballista buttons
             image_up   = _assets->get<Texture>("ballista_icon");
-            image_down = _assets->get<Texture>("ballista_icon_selected");
-            _ballistaNorth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-            _ballistaNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _ballistaEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-            _ballistaSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _ballistaSouth = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                           PolygonNode::allocWithTexture(image_down));
-            _ballistaSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
-            _ballistaWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                          PolygonNode::allocWithTexture(image_down));
-            _ballistaNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up),
-                                               PolygonNode::allocWithTexture(image_down));
+            _ballistaNorth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaSouth = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
+            _ballistaNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
     
         // Create a callback function for the Ballista buttons
-            _ballistaNorth->setName("ballista");
+            _ballistaNorth->setName("ballistaNorth");
             _ballistaNorth->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -349,7 +365,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 1;
                 }
             });
-            _ballistaNorthEast->setName("ballista");
+            _ballistaNorthEast->setName("ballistaNortheast");
             _ballistaNorthEast->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -357,7 +373,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                      direction = 2;
                 }
             });
-            _ballistaSouthEast->setName("ballista");
+            _ballistaSouthEast->setName("ballistaSoutheast");
             _ballistaSouthEast->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -365,7 +381,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 3;
                 }
             });
-            _ballistaSouth->setName("ballista");
+            _ballistaSouth->setName("ballistaSouth");
             _ballistaSouth->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -373,7 +389,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 4;
                 }
             });
-            _ballistaSouthWest->setName("ballista");
+            _ballistaSouthWest->setName("ballistaSouthwest");
             _ballistaSouthWest->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -381,7 +397,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 5;
                 }
             });
-            _ballistaNorthWest->setName("ballista");
+            _ballistaNorthWest->setName("ballistaNorthwest");
             _ballistaNorthWest->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -450,9 +466,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Create the Lookout button
     std::shared_ptr<Texture> lookout_up   = _assets->get<Texture>("lookout_icon");
-    std::shared_ptr<Texture> lookout_down = _assets->get<Texture>("lookout_icon_selected");
-    _lookout_button = Button::alloc(PolygonNode::allocWithTexture(lookout_up),
-                                    PolygonNode::allocWithTexture(lookout_down));
+    _lookout_button = Button::alloc(PolygonNode::allocWithTexture(lookout_up));
     _lookout_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
     
     // Create a callback function for the lookout button
@@ -597,13 +611,25 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // We can only activate a button AFTER it is added to a scene
-    _ballistaNorth->activate(200); _ballistaNorthEast->activate(3); _ballistaSouthEast->activate(4);
-    _ballistaSouth->activate(5); _ballistaSouthWest->activate(6); _ballistaNorthWest->activate(7);
-    _lookout_button->activate(8);
-    _quitButton->activate(9);
-//    _up_button->activate(10);
-//    _down_button->activate(11);
-    _repair_button->activate(13);
+    _quitButton->activate(input.generateKey("quitButton"));
+    
+    _lookout_button->activate(input.generateKey("lookout_button"));
+    
+    _oilNorth->activate(input.generateKey("oilNorth"));
+    
+    _ballistaNorth->activate(input.generateKey("ballistaNorth"));
+	_ballistaNorthEast->activate(input.generateKey("ballistaNorthEast"));
+	_ballistaSouthEast->activate(input.generateKey("ballistaSouthEast"));
+    _ballistaSouth->activate(input.generateKey("ballistaSouth"));
+	_ballistaSouthWest->activate(input.generateKey("ballistaSouthWest"));
+	_ballistaNorthWest->activate(input.generateKey("ballistaNorthWest"));
+
+    _repair_button->activate(input.generateKey("repair_button"));
+    _ammo_button->activate(input.generateKey("ammo_button"));
+    _mage_button->activate(input.generateKey("mage_button"));
+    
+    //    _up_button->activate(10);
+    //    _down_button->activate(11);
     
     return true;
 }
@@ -700,15 +726,43 @@ void OverworldScene::setActive(bool active) {
     _active = active;
     switchscene = 0;
     if(active){
-        _quitButton->activate(2);
-        _ballistaNorth->activate(30);
-        _lookout_button->activate(8);
+        _quitButton->activate(input.findKey("quitButton"));
+        
+        _lookout_button->activate(input.findKey("lookout_button"));
+        
+        _oilNorth->activate(input.findKey("oilNorth"));
+        
+        _ballistaNorth->activate(input.findKey("ballistaNorth"));
+        _ballistaNorthEast->activate(input.findKey("ballistaNorthEast"));
+        _ballistaNorthWest->activate(input.findKey("ballistaNorthWest"));
+        _ballistaSouth->activate(input.findKey("ballistaSouth"));
+        _ballistaSouthEast->activate(input.findKey("ballistaSouthEast"));
+        _ballistaSouthWest->activate(input.findKey("ballistaSouthWest"));
+    
+        _repair_button->activate(input.findKey("repair_button"));
+        _mage_button->activate(input.findKey("mage_button"));
+        _ammo_button->activate(input.findKey("ammo_button"));
+        
         Application::get()->setClearColor(Color4(132,180,113,255));
     }
     else{
         _quitButton->deactivate();
-        _ballistaNorth->deactivate();
+        
         _lookout_button->deactivate();
+        
+        _oilNorth->deactivate();
+        
+        _ballistaNorth->deactivate();
+        _ballistaNorthEast->deactivate();
+        _ballistaNorthWest->deactivate();
+        _ballistaSouth->deactivate();
+        _ballistaSouthEast->deactivate();
+        _ballistaSouthWest->deactivate();
+        
+        _repair_button->deactivate();
+        _mage_button->deactivate();
+        _ammo_button->deactivate();
+
     }
 }
 

@@ -18,6 +18,7 @@
 #ifndef LoadingScene_h
 #define LoadingScene_h
 
+#include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 
