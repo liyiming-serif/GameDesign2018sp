@@ -15,6 +15,7 @@ using namespace cugl;
 
 bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<AssetManager>& assets){
 
+	_dir = dir;
 	_drawScale = drawScale;
 
 	//regular enemies, type 1
@@ -42,6 +43,7 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 }
 
 void EnemyModel::update(float deltaTime) {
+    setLinearVelocity(cos(_dir)*BASE_SPEED,sin(_dir)*BASE_SPEED);
     Obstacle::update(deltaTime);
     if (_node != nullptr) {
         _node->setPosition(getPosition()*_drawScale);

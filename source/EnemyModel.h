@@ -16,6 +16,7 @@ private:
 
 public:
 
+    float _dir;
     //constructors
     EnemyModel(void) : BoxObstacle() { }
 

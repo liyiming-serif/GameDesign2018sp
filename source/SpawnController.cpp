@@ -16,9 +16,9 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
     _totalTime = 0;
 
     //temporarily fill in the enemyArray, will read from JSON later
-    std::vector<float> enemy = {100.0, 500.0, 1.0, 1.0, 360.0, 1.0};
-    std::vector<float> enemy2 = {500.0, 500.0, 1.0, 1.0, 420.0, 1.0};
-    std::vector<float> enemy3 = {950.0, 500.0, 1.0, 1.0, 420.0, 1.0};
+    std::vector<float> enemy = {100.0, 500.0, 1.0, 2.0, 360.0, 1.0};
+    std::vector<float> enemy2 = {500.0, 500.0, 1.0, 2.0, 420.0, 1.0};
+    std::vector<float> enemy3 = {950.0, 500.0, 1.0, 2.0, 420.0, 1.0};
     _enemyArray.push_back(enemy);
     _enemyArray.push_back(enemy2);
     _enemyArray.push_back(enemy3);
