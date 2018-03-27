@@ -52,7 +52,13 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
 
-    direction = 0;
+    std::vector<std::vector<float>> temp;
+    std::vector<int> temp2;
+    for(int i = 0; i<6; i++){
+        gameModel._enemyArrayMaster.push_back(temp);
+        gameModel._enemiesToFreeMaster.push_back(temp2);
+    }
+    direction = -1;
     switchscene = 0;
     
     // Set background color
@@ -284,7 +290,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = OIL;
-                    direction = 1;
+                    direction = 0;
                     CULog("OIL");
                 }
             });
@@ -362,7 +368,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 1;
+                    direction = 0;
                 }
             });
             _ballistaNorthEast->setName("ballistaNortheast");
@@ -370,7 +376,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                     direction = 2;
+                     direction = 1;
                 }
             });
             _ballistaSouthEast->setName("ballistaSoutheast");
@@ -378,7 +384,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 3;
+                    direction = 2;
                 }
             });
             _ballistaSouth->setName("ballistaSouth");
@@ -386,7 +392,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 4;
+                    direction = 3;
                 }
             });
             _ballistaSouthWest->setName("ballistaSouthwest");
@@ -394,7 +400,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 5;
+                    direction = 4;
                 }
             });
             _ballistaNorthWest->setName("ballistaNorthwest");
@@ -402,7 +408,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 6;
+                    direction = 5;
                 }
             });
     
@@ -700,9 +706,12 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
 
 void OverworldScene::update(float timestep){
     //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
-        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
+        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+            gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+        }
     }
+
 	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
 		//Moving down
 		OverworldScene::doMove(_movedn, currentCastleFloor);

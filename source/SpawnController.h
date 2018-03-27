@@ -30,7 +30,8 @@ protected:
 
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
-    //2D vector, each element has {xCoord, yCoord, type, health, spawnTime}
+    //for the sector, 0.0 = N, 1.0 = NE, 5.0 = NW (going clockwise)
+    //2D vector, each element has {xCoord, yCoord, type, health, spawnTime, sector}
     std::vector<std::vector<float>> _enemyArray;
 
 public:

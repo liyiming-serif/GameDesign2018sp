@@ -29,7 +29,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         return false;
     }
 
-    _spawnTimer = 180;
+    _direction = -1;
 
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -85,18 +85,6 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
 	activateWorldCollisions();
 
-	//create all the enemies here from gameModel
-	_enemyArray.clear();
-	for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++) {
-		std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[i][0], gameModel._enemyArrayGroundN[i][1]),
-			0, gameModel._enemyArrayGroundN[i][2], gameModel._enemyArrayGroundN[i][3], DRAW_SCALE, _assets);
-		if (e != nullptr) {
-			_enemyArray.push_back(e);
-			_world->addObstacle(e);
-			addChild(e->getNode());
-		}
-	}
-
     // We can only activate a button AFTER it is added to a scene
      _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
 
@@ -118,13 +106,16 @@ void BallistaScene::dispose() {
     }
 }
 
-void BallistaScene::update(float deltaTime){
-
+void BallistaScene::update(float deltaTime, int direction){
+    _direction = direction;
     //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
-        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
+        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+            gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+        }
     }
-    if(gameModel._newSpawn.size()>0){
+
+    if(gameModel._newSpawn.size()>0 && (int)(gameModel._newSpawn[4]) == direction){
         std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._newSpawn[0], gameModel._newSpawn[1]),
                                       -M_PI/2, gameModel._newSpawn[2], gameModel._newSpawn[3], DRAW_SCALE,_assets);
         if(e != nullptr) {
@@ -179,8 +170,8 @@ void BallistaScene::update(float deltaTime){
 		}
 		if (!bounds.contains(e->getPosition())) {
 			_enemiesToFree.push_back(it);
-			gameModel._enemiesToFree.push_back(it);
-			gameModel.changeWallHealth(5, -9);
+			gameModel._enemiesToFreeMaster[(direction)].push_back(it);
+			gameModel.changeWallHealth((int)(direction), -9);
 		}
 	}
 	// Delete the enemies here because you can't remove elements while iterating
@@ -191,10 +182,10 @@ void BallistaScene::update(float deltaTime){
 		_enemyArray.erase(_enemyArray.begin() + _enemiesToFree[i]);
 	}
 	_enemiesToFree.clear();
-	for (int i = 0; i<gameModel._enemiesToFree.size(); i++){
-	    gameModel._enemyArrayGroundN.erase(gameModel._enemyArrayGroundN.begin() + gameModel._enemiesToFree[i]);
+	for (int i = 0; i<gameModel._enemiesToFreeMaster[(direction)].size(); i++){
+	    gameModel._enemyArrayMaster[(direction)].erase(gameModel._enemyArrayMaster[(direction)].begin() + gameModel._enemiesToFreeMaster[(direction)][i]);
 	}
-	gameModel._enemiesToFree.clear();
+	gameModel._enemiesToFreeMaster[(direction)].clear();
 
     //crank the physics engine
     _world->update(deltaTime);
@@ -202,8 +193,8 @@ void BallistaScene::update(float deltaTime){
 }
 
 //Pause or Resume
-void BallistaScene::setActive(bool active){
-
+void BallistaScene::setActive(bool active, int direction){
+    _direction = direction;
     _active = active;
     switchscene = 0;
 
@@ -225,11 +216,11 @@ void BallistaScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
-
+        _enemyArray.clear();
 		//create all the enemies here from gameModel
-		for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++) {
-			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[i][0], gameModel._enemyArrayGroundN[i][1]),
-				0, gameModel._enemyArrayGroundN[i][2], gameModel._enemyArrayGroundN[i][3], DRAW_SCALE, _assets);
+		for (int i = 0; i<gameModel._enemyArrayMaster[(direction)].size(); i++) {
+			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayMaster[(direction)][i][0], gameModel._enemyArrayMaster[(direction)][i][1]),
+				-M_PI/2, gameModel._enemyArrayMaster[(direction)][i][2], gameModel._enemyArrayMaster[(direction)][i][3], DRAW_SCALE, _assets);
 			if (e != nullptr) {
 				_enemyArray.push_back(e);
 				_world->addObstacle(e);
@@ -238,6 +229,7 @@ void BallistaScene::setActive(bool active){
 		}
     }
     else{
+    //TODO: NEED TO REMOVE JUST ENEMY CHILDREN NODES
         _ballistaTOcastle->deactivate();
 		_enemyArray.clear();
 		_enemiesToFree.clear();
@@ -269,7 +261,7 @@ void BallistaScene::beginContact(b2Contact* contact) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
 			_enemiesToFree.push_back(it);
-			gameModel._enemiesToFree.push_back(it);
+            gameModel._enemiesToFreeMaster[(_direction)].push_back(it);
 			break;
 		}
 	}

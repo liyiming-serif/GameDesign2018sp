@@ -90,6 +90,8 @@ void CastleApp::onStartup() {
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
 
+    _direction = -1;
+
     Application::onStartup(); // YOU MUST END with call to parent
 
 }
@@ -150,7 +152,7 @@ void CastleApp::update(float timestep) {
     } else if (!_loaded) {
         _loadingScene.dispose(); // Disables the input listeners in this mode
         _ballistaScene.init(_assets);
-        _ballistaScene.setActive(false);
+        _ballistaScene.setActive(false, 0);
         _lookoutScene.init(_assets);
         _lookoutScene.setActive(false);
         _repairScene.init(_assets);
@@ -186,10 +188,10 @@ void CastleApp::update(float timestep) {
             }
             else if(_currscene==BALLISTA){
             //later on, use _direction to determine array
-                _ballistaScene.update(timestep);
+                _ballistaScene.update(timestep, _direction);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
-                    _ballistaScene.setActive(false);
+                    _ballistaScene.setActive(false, 0);
                 }
             }
             else if(_currscene==LOOKOUT){
@@ -238,7 +240,7 @@ void CastleApp::update(float timestep) {
             gameModel.update(timestep);
         }
     }
-    
+    CULog("direction: %d", _direction);
     //refresh the input controller
 	input.update(timestep);
 
@@ -259,7 +261,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _overworldScene.setActive(true);
             break;
         case BALLISTA:
-            _ballistaScene.setActive(true);
+            _ballistaScene.setActive(true, _direction);
             break;
         case LOOKOUT:
             _lookoutScene.setActive(true);

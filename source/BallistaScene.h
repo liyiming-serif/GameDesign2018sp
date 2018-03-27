@@ -20,7 +20,7 @@ class BallistaScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 
-    int _spawnTimer;
+    int _direction;
 
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -51,10 +51,10 @@ public:
     ~BallistaScene() {dispose();}
 
     // Gameplay
-    void update(float deltaTime);
+    void update(float deltaTime, int direction);
 
     //Pause or Resume
-    void setActive(bool active);
+    void setActive(bool active, int direction);
     int switchscene;
 
 	//Call to activate collisions for this world

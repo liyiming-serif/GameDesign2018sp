@@ -51,8 +51,8 @@ void GameModel::dispose() {
     //    _world = nullptr;
     //}
     _assets = nullptr;
-    _enemyArrayGroundN.clear();
-	_enemiesToFree.clear();
+    _enemyArrayMaster.clear();
+    _enemiesToFreeMaster.clear();
 }
 
 void GameModel::update(float deltaTime){
