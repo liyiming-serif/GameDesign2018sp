@@ -237,10 +237,14 @@ void BallistaScene::setActive(bool active, int direction){
 		}
     }
     else{
-    //TODO: NEED TO REMOVE JUST ENEMY CHILDREN NODES
+        for(int i = 0; i<_enemyArray.size(); i++){
+            removeChild(_enemyArray[i]->getNode());
+            _world->removeObstacle(_enemyArray[i].get());
+        }
         _ballistaTOcastle->deactivate();
 		_enemyArray.clear();
 		_enemiesToFree.clear();
+
     }
 }
 
@@ -251,15 +255,14 @@ void BallistaScene::activateWorldCollisions() {
 	};
 }
 
-//FIX BUG WITH TWO ARROWS COLLIDING
-//HAVE TO IMPLEMENT HEALTH LATER
+//TODO: DISABLE PHYSICS ENGINE DURING COLLISIONS
 void BallistaScene::beginContact(b2Contact* contact) {
 	b2Body* body1 = contact->GetFixtureA()->GetBody();
 	b2Body* body2 = contact->GetFixtureB()->GetBody();
 
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
 		std::shared_ptr<ArrowModel> a = *it;
-		if (body1->GetUserData() == a.get() || body2->GetUserData() == a.get()) {
+		if ((body1->GetUserData() == a.get() || body2->GetUserData() == a.get())) {
 			_arrowsToFree.insert(a);
 			break;
 		}
@@ -268,9 +271,15 @@ void BallistaScene::beginContact(b2Contact* contact) {
 	for (int it = 0; it<_enemyArray.size(); it++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
-			_enemiesToFree.push_back(it);
-            gameModel._enemiesToFreeMaster[(_direction)].push_back(it);
-			break;
+			if(gameModel._enemyArrayMaster[_direction][it][3] <= 1){
+				_enemiesToFree.push_back(it);
+				gameModel._enemiesToFreeMaster[(_direction)].push_back(it);
+				break;
+			}
+			else{
+				gameModel._enemyArrayMaster[_direction][it][3]--;
+			}
+
 		}
 	}
 }
