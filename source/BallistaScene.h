@@ -6,6 +6,7 @@
 #define BUILD_ANDROID_BALLISTASCENE_H
 #include <cugl/cugl.h>
 #include "ArrowModel.h"
+#include "BallistaModel.h"
 #include "InputController.h"
 #include "GameModel.h"
 #include <set>
@@ -31,7 +32,7 @@ protected:
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
 
     // Models
-    std::shared_ptr<cugl::PolygonNode> _ballista;
+    std::shared_ptr<BallistaModel> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Button> _ballistaTOcastle;
 

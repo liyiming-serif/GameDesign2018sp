@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\source\AmmoScene.h" />
     <ClInclude Include="..\..\source\ArrowModel.h" />
+    <ClInclude Include="..\..\source\BallistaModel.h" />
     <ClInclude Include="..\..\source\BallistaScene.h" />
     <ClInclude Include="..\..\source\CastleApp.h" />
     <ClInclude Include="..\..\source\EnemyModel.h" />
@@ -205,6 +206,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\source\AmmoScene.cpp" />
     <ClCompile Include="..\..\source\ArrowModel.cpp" />
+    <ClCompile Include="..\..\source\BallistaModel.cpp" />
     <ClCompile Include="..\..\source\BallistaScene.cpp" />
     <ClCompile Include="..\..\source\CastleApp.cpp" />
     <ClCompile Include="..\..\source\EnemyModel.cpp" />

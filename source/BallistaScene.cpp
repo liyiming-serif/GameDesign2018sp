@@ -45,14 +45,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
 
-    // Get the ballista image and attach it to a polygon obj. (no model yet)
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("ballista");
-    _ballista = PolygonNode::allocWithTexture(texture);
-    _ballista->setScale(.4f); // Magic number to rescale asset
-    _ballista->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballista->setPosition(_size.width/2,_background->getContentHeight()/10);
-    _ballista->setAngle(M_PI/2);
-
+    // Get the ballista image and attach it to the animated model
+	_ballista = BallistaModel::alloc(Vec2(_size.width / 2, _background->getContentHeight() / 10),_assets);
 
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -74,7 +68,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Add children to the scene graph
     addChild(_background);
-    addChild(_ballista);
+	if (_ballista != nullptr) {
+		addChild(_ballista->getNode());
+	}
     addChild(_ballistaTOcastle);
 
     // Create the arrows set
@@ -98,6 +94,7 @@ void BallistaScene::dispose() {
             _world = nullptr;
         }
         removeAllChildren();
+		_ballista = nullptr;
         _arrows.clear();
 		_arrowsToFree.clear();
         _active = false;
@@ -122,20 +119,31 @@ void BallistaScene::update(float deltaTime){
 
 	// Poll inputs
     if(input.isPressed()){
-        Vec2 pointdir = _ballista->getPosition() - screenToWorldCoords(input.pointerPos());
-        _ballista->setAngle(pointdir.getAngle());
+		if (_ballista->isReadyToFire) {
+			Vec2 pointdir = screenToWorldCoords(input.dTouch())-screenToWorldCoords(input.pointerPos());
+			_ballista->setAngle(pointdir.getAngle());
+			_ballista->setPower(2.0f*pointdir.length() / (float)DRAW_SCALE, false);
+		}
     }
     if(input.justReleased()){
-        // Allocate a new arrow in memory
-        std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),_ballista->getAngle(),DRAW_SCALE,_assets);
-        
-        if(a != nullptr) {
-            _arrows.insert(a);
-            _world->addObstacle(a);
-            addChild(a->getNode());
-			CULog("%d\n", _arrows.size());
-        }
+		if (_ballista->isReadyToFire) {
+			// Fire ballista
+			_ballista->setPower(0.0f, true);
+			_ballista->isReadyToFire = false;
+
+			// Allocate a new arrow in memory
+			std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
+
+			if (a != nullptr) {
+				_arrows.insert(a);
+				_world->addObstacle(a);
+				addChild(a->getNode());
+				CULog("%d\n", _arrows.size());
+			}
+		}
     }
+
+	_ballista->update(deltaTime);
 
     // Update arrows and mark out of bound ones for deletion
     Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);

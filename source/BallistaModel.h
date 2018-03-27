@@ -40,7 +40,7 @@ public:
 	void setAngle(float angle);
 
 	float getPower() { return _power; }
-	void setPower(float power);
+	void setPower(float power, bool instantaneous);
 
 	cugl::Vec2 getPosition() { return getNode()->getPosition(); }
 
