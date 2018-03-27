@@ -41,6 +41,8 @@ public:
 
     ~EnemyModel() {dispose();}
 
+    int getDamage(int type);
+
 
 protected:
     //private

@@ -54,3 +54,10 @@ void EnemyModel::dispose(){
     _node = nullptr;
 	_icon = nullptr;
 }
+
+int EnemyModel::getDamage(int type){
+    if(type == 1){
+        return 9;
+    }
+    else return 0;
+}
