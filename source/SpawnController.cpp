@@ -25,17 +25,14 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
 }
 
 void SpawnController::update(float deltaTime) {
-    CULog("total Time: %d", _totalTime);
     _totalTime++;
     if(_currSpawnIndex != -1){
         if(_enemyArray[_currSpawnIndex][4]<_totalTime){
-        CULog("SPAWNING SPAWNING");
         //we need to spawn one
             std::vector<float> enemy = {_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1],
                                         _enemyArray[_currSpawnIndex][2], _enemyArray[_currSpawnIndex][3]};
             gameModel._enemyArrayGroundN.push_back(enemy);
             gameModel._newSpawn = enemy;
-            CULog("GameModel array size: %d", gameModel._enemyArrayGroundN.size());
 
             if(_currSpawnIndex != _enemyArray.size()-1){
             //still have more enemies to spawn
@@ -45,7 +42,6 @@ void SpawnController::update(float deltaTime) {
             //done spawning
                 _currSpawnIndex = -1;
             }
-        CULog("currSpawnIndex: %d", _currSpawnIndex);
         }
     }
 }

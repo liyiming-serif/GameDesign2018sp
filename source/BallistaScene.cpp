@@ -105,22 +105,6 @@ void BallistaScene::dispose() {
 }
 
 void BallistaScene::update(float deltaTime){
-/* HOPEFULLY OBSOLETE SPAWNING CODE
-    if(_spawnTimer == 0){
-        //testing
-        std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(0, rand()%(int)(_size.height)), 0, 1, DRAW_SCALE,_assets);
-        if(e != nullptr) {
-            gameModel._enemyArrayGroundN.insert(e);
-            _world->addObstacle(e);
-            addChild(e->getNode());
-            CULog("enemy added");
-        }
-        _spawnTimer = 120;
-    }
-    else{
-        _spawnTimer--;
-    }
-    */
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
         gameModel._enemyArrayGroundN[i][0] += 0.5;
@@ -132,7 +116,6 @@ void BallistaScene::update(float deltaTime){
             _enemyArray.push_back(e);
             _world->addObstacle(e);
             addChild(e->getNode());
-            CULog("enemy added");
         }
     }
     gameModel._newSpawn.clear();
@@ -148,7 +131,6 @@ void BallistaScene::update(float deltaTime){
             _arrows.insert(a);
             _world->addObstacle(a);
             addChild(a->getNode());
-			CULog("%d\n", _arrows.size());
         }
     }
 
@@ -170,7 +152,6 @@ void BallistaScene::update(float deltaTime){
 		_world->removeObstacle(a.get());
 		removeChild(a->getNode());
 		_arrows.erase(a);
-		CULog("%d\n", _arrows.size());
 	}
 	_arrowsToFree.clear();
 
@@ -178,22 +159,13 @@ void BallistaScene::update(float deltaTime){
 	for (int it = 0; it < _enemyArray.size(); it++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[it];
 		if (e != nullptr) {
-		    CULog("start");
-		    CULog("before");
-		    CULog("X coord: %d", e->getX());
-		    CULog("Y coord: %d", e->getY());
 			e->update(deltaTime);
-			CULog("after");
-            CULog("X coord: %d", e->getX());
-            CULog("Y coord: %d", e->getY());
-            CULog("end");
 		}
 		if (!bounds.contains(e->getPosition())) {
 			_enemiesToFree.push_back(it);
 			gameModel._enemiesToFree.push_back(it);
 		}
 	}
-    CULog("BEFORE, Enemies to Free size: %d, GAMEMODEL Enemies to Free size: %d", _enemiesToFree.size(), gameModel._enemiesToFree.size());
 	// Delete the enemies here because you can't remove elements while iterating
 	for (int i = 0; i<_enemiesToFree.size(); i++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[_enemiesToFree[i]];
@@ -201,13 +173,10 @@ void BallistaScene::update(float deltaTime){
 		removeChild(e->getNode());
 		_enemyArray.erase(_enemyArray.begin() + _enemiesToFree[i]);
 		gameModel.changeWallHealth(5, -9);
-		CULog("Num enemies left: %d\n", _enemyArray.size());
 	}
 	_enemiesToFree.clear();
-	CULog("AFTER, Enemies to Free size: %d, GAMEMODEL Enemies to Free size: %d", _enemiesToFree.size(), gameModel._enemiesToFree.size());
 	for (int i = 0; i<gameModel._enemiesToFree.size(); i++){
 	    gameModel._enemyArrayGroundN.erase(gameModel._enemyArrayGroundN.begin() + gameModel._enemiesToFree[i]);
-	    CULog("erased from gameModel");
 	}
 	gameModel._enemiesToFree.clear();
 
@@ -221,8 +190,6 @@ void BallistaScene::setActive(bool active){
 
     _active = active;
     switchscene = 0;
-    CULog("ballistaScene setActive");
-    CULog("array size: %d", gameModel._enemyArrayGroundN.size());
 
     //create all the enemies here from gameModel
     for (int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
@@ -232,7 +199,6 @@ void BallistaScene::setActive(bool active){
             _enemyArray.push_back(e);
             _world->addObstacle(e);
             addChild(e->getNode());
-            CULog("enemy added");
         }
     }
 
