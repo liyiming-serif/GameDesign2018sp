@@ -4,7 +4,7 @@
 
 #include "EnemyModel.h"
 
-#define BASE_SPEED 3
+#define BASE_SPEED 0.75
 
 /*
 * ENEMY TYPES:
@@ -13,13 +13,12 @@
 
 using namespace cugl;
 
-bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::shared_ptr<AssetManager>& assets){
+bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<AssetManager>& assets){
 
 	_drawScale = drawScale;
 
 	//regular enemies, type 1
     if(type == 1){
-		CULog("type 1");
 		//create the scene node
 		_node = nullptr;
 		std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");

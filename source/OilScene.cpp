@@ -42,10 +42,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("oil_background");
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(0.5625f); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(0,0);
     addChild(_background);
-    
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     

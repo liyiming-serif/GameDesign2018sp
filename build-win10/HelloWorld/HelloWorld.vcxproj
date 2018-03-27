@@ -201,6 +201,7 @@
     <ClInclude Include="..\..\source\OilScene.h" />
     <ClInclude Include="..\..\source\OverworldScene.h" />
     <ClInclude Include="..\..\source\RepairScene.h" />
+    <ClInclude Include="..\..\source\SpawnController.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +222,7 @@
     <ClCompile Include="..\..\source\OilScene.cpp" />
     <ClCompile Include="..\..\source\OverworldScene.cpp" />
     <ClCompile Include="..\..\source\RepairScene.cpp" />
+    <ClCompile Include="..\..\source\SpawnController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />

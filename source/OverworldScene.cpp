@@ -15,6 +15,7 @@
 #define MENU        5
 #define AMMO        6
 #define MAGE        7
+#define OIL         8
 #define DRAW_SCALE 32
 
 
@@ -278,39 +279,49 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         // Create a callback function for the Oil button
     
+            _oilNorth->setName("oilNorth");
+            _oilNorth->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = OIL;
+                    direction = 1;
+                    CULog("OIL");
+                }
+            });
+    
         //Positions the Oil Buttons
-        //Oil Floor Center
-        centerX = oil_floor->getContentSize().width/2;
-        centerY = oil_floor->getContentSize().height/2;
+            //Oil Floor Center
+            centerX = oil_floor->getContentSize().width/2;
+            centerY = oil_floor->getContentSize().height/2;
     
-        _oilNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorth->setPosition(centerX,centerY+.27*oil_floor->getContentHeight());
+            _oilNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorth->setPosition(centerX,centerY+.27*oil_floor->getContentHeight());
     
-        _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
-        _oilNorthEast->setAngle(-M_PI/3);
+            _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthEast->setAngle(-M_PI/3);
     
-        _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
-        _oilSouthEast->setAngle(-2*M_PI/3);
+            _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthEast->setAngle(-2*M_PI/3);
     
-        _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouth->setPosition(centerX,centerY-.27*oil_floor->getContentHeight());
-        _oilSouth->setAngle(-3*M_PI/3);
+            _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouth->setPosition(centerX,centerY-.27*oil_floor->getContentHeight());
+            _oilSouth->setAngle(-3*M_PI/3);
     
-        _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilSouthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
-        _oilSouthWest->setAngle(-4*M_PI/3);
+            _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilSouthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthWest->setAngle(-4*M_PI/3);
     
-        _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-        _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
-        _oilNorthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
-        _oilNorthWest->setAngle(M_PI/3);
+            _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
+            _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
+            _oilNorthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthWest->setAngle(M_PI/3);
     
         //Adds the buttons to the Scene Graph
         oil_floor->addChild(_oilNorth);
@@ -346,7 +357,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _ballistaNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
     
         // Create a callback function for the Ballista buttons
-            _ballistaNorth->setName("ballista");
+            _ballistaNorth->setName("ballistaNorth");
             _ballistaNorth->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -354,7 +365,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 1;
                 }
             });
-            _ballistaNorthEast->setName("ballista");
+            _ballistaNorthEast->setName("ballistaNortheast");
             _ballistaNorthEast->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -362,7 +373,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                      direction = 2;
                 }
             });
-            _ballistaSouthEast->setName("ballista");
+            _ballistaSouthEast->setName("ballistaSoutheast");
             _ballistaSouthEast->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -370,7 +381,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 3;
                 }
             });
-            _ballistaSouth->setName("ballista");
+            _ballistaSouth->setName("ballistaSouth");
             _ballistaSouth->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -378,7 +389,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 4;
                 }
             });
-            _ballistaSouthWest->setName("ballista");
+            _ballistaSouthWest->setName("ballistaSouthwest");
             _ballistaSouthWest->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -386,7 +397,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 5;
                 }
             });
-            _ballistaNorthWest->setName("ballista");
+            _ballistaNorthWest->setName("ballistaNorthwest");
             _ballistaNorthWest->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
@@ -600,20 +611,25 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // We can only activate a button AFTER it is added to a scene
+    _quitButton->activate(input.generateKey("quitButton"));
+    
+    _lookout_button->activate(input.generateKey("lookout_button"));
+    
+    _oilNorth->activate(input.generateKey("oilNorth"));
+    
     _ballistaNorth->activate(input.generateKey("ballistaNorth"));
 	_ballistaNorthEast->activate(input.generateKey("ballistaNorthEast"));
 	_ballistaSouthEast->activate(input.generateKey("ballistaSouthEast"));
     _ballistaSouth->activate(input.generateKey("ballistaSouth"));
 	_ballistaSouthWest->activate(input.generateKey("ballistaSouthWest"));
 	_ballistaNorthWest->activate(input.generateKey("ballistaNorthWest"));
-    _lookout_button->activate(input.generateKey("lookout_button"));
-    _quitButton->activate(input.generateKey("quitButton"));
-//    _up_button->activate(10);
-//    _down_button->activate(11);
 
     _repair_button->activate(input.generateKey("repair_button"));
     _ammo_button->activate(input.generateKey("ammo_button"));
     _mage_button->activate(input.generateKey("mage_button"));
+    
+    //    _up_button->activate(10);
+    //    _down_button->activate(11);
     
     return true;
 }
@@ -683,6 +699,10 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
 
 
 void OverworldScene::update(float timestep){
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayGroundN.size(); i++){
+        gameModel._enemyArrayGroundN[i][0] += 0.5;
+    }
 	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
 		//Moving down
 		OverworldScene::doMove(_movedn, currentCastleFloor);
@@ -707,14 +727,42 @@ void OverworldScene::setActive(bool active) {
     switchscene = 0;
     if(active){
         _quitButton->activate(input.findKey("quitButton"));
-        _ballistaNorth->activate(input.findKey("ballistaNorth"));
+        
         _lookout_button->activate(input.findKey("lookout_button"));
+        
+        _oilNorth->activate(input.findKey("oilNorth"));
+        
+        _ballistaNorth->activate(input.findKey("ballistaNorth"));
+        _ballistaNorthEast->activate(input.findKey("ballistaNorthEast"));
+        _ballistaNorthWest->activate(input.findKey("ballistaNorthWest"));
+        _ballistaSouth->activate(input.findKey("ballistaSouth"));
+        _ballistaSouthEast->activate(input.findKey("ballistaSouthEast"));
+        _ballistaSouthWest->activate(input.findKey("ballistaSouthWest"));
+    
+        _repair_button->activate(input.findKey("repair_button"));
+        _mage_button->activate(input.findKey("mage_button"));
+        _ammo_button->activate(input.findKey("ammo_button"));
+        
         Application::get()->setClearColor(Color4(132,180,113,255));
     }
     else{
         _quitButton->deactivate();
-        _ballistaNorth->deactivate();
+        
         _lookout_button->deactivate();
+        
+        _oilNorth->deactivate();
+        
+        _ballistaNorth->deactivate();
+        _ballistaNorthEast->deactivate();
+        _ballistaNorthWest->deactivate();
+        _ballistaSouth->deactivate();
+        _ballistaSouthEast->deactivate();
+        _ballistaSouthWest->deactivate();
+        
+        _repair_button->deactivate();
+        _mage_button->deactivate();
+        _ammo_button->deactivate();
+
     }
 }
 
