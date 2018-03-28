@@ -312,6 +312,8 @@ void BallistaScene::setActive(bool active, int direction){
 		std::shared_ptr<ArrowModel> a = *it;
 		_world->removeObstacle(a.get());
 		removeChild(a->getNode());
+		//refund their arrows
+		gameModel.setArrowAmmo(0, gameModel.getArrowAmmo(0) + 1);
 	}
     _arrows.clear();
 	for (auto it = _arrowsToFree.begin(); it != _arrowsToFree.end(); it++) {

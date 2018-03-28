@@ -143,7 +143,7 @@ std::string GameModel::getStateChange() {
         _tmpHealth[i] = _castleHealth[i] - _prevCastleHealth[i];
         _tmpHealthString += " " + to_string(_tmpHealth[i]);
     }
-    std::string _tmpAvatarString = "Avatar " + to_string(_playerAvatars[_playerID]);
+    std::string _tmpAvatarString = "Avatar 0";
     return to_string(_playerID) + "|" + _tmpHealthString + "|" + _tmpAvatarString;
 }
 
