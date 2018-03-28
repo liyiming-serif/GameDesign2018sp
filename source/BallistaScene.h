@@ -42,6 +42,9 @@ protected:
     std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
     std::vector<int> _enemiesToFree;
 
+    //text
+    std::shared_ptr<cugl::Label> _ammoText;
+
 public:
     // Constructors
     BallistaScene() : Scene() {}
