@@ -70,7 +70,11 @@ private:
 
     void updateState(const char* read_byte_buffer);
 
+    void updateState();
+
     char* return_buffer(const std::string& string);
+
+    char* random_buffer();
 
     //TODO: Make sure JNI wrapper code is correct
     char* readNetwork() {

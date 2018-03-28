@@ -4,6 +4,7 @@
 
 #include <cugl/cugl.h>
 #include "GameModel.h"
+#include <cmath>
 #include "CastleApp.h"
 
 #define DRAW_SCALE 12
@@ -24,12 +25,12 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     _spawnTimer = 360;
 
-    int sum = 0;
+    int sum = 50;
 
     for (int i = 0; i < 6; ++i) {
         _castleHealth[i] = sum;
         _prevCastleHealth[i] = sum;
-        sum +=1;
+        sum +=10;
     }
 
     // Create the physics world
@@ -85,18 +86,19 @@ void GameModel::update(float deltaTime){
 	//}
 	//_enemiesToFree.clear();
     if (networked) {
-        if (clock == 100) {
+        if (clock == 300) {
             const char *write_byte_buffer = return_buffer(getStateChange());
             //TODO: Write to network
-            CULog("%s \n", write_byte_buffer);
-            CULog("updating");
+            CULog("State Change %s \n", write_byte_buffer);
             //TODO: Read from network
             //const char *read_byte_buffer = readNetwork();
+            const char *read_byte_buffer = random_buffer();
+            CULog("RandNet State Change %s \n", read_byte_buffer);
             //TODO: Agree on state changes
-            //updateState(read_byte_buffer);
+            updateState(read_byte_buffer);
             clock = 0;
             delete[] write_byte_buffer;
-            //delete[] read_byte_buffer;
+            delete[] read_byte_buffer;
         } else {
             clock++;
         }
@@ -141,9 +143,59 @@ std::string GameModel::getStateChange() {
 }
 
 void GameModel::updateState(const char* read_byte_buffer) {
+    char* copy = strdup(read_byte_buffer);
+    const char s[2] = "|";
+    char *token;
+    char* castleHealthToken;
+    char* playerIDToken;
+    char* playerAvatarToken;
+    char* ammoToken;
+    char* enemyToken;
+    int section = 0;
+    token = strtok(copy, s);
+    while (token != NULL) {
+        if (section == 0) {
+            playerIDToken = token;
+        } else if (section == 1) {
+            castleHealthToken = token;
+        } else if (section == 2) {
+            playerAvatarToken = token;
+        } else if (section == 3) {
+            ammoToken = token;
+        } else if (section == 4) {
+            enemyToken = token;
+        }
+        token = strtok(NULL,s);
+        section++;
+    }
+
+
+    int castleHealthUpdate[6];
+    token = strtok(castleHealthToken, " ");
+    int i = 0;
+    while (token != NULL) {
+        if (i == 0) {
+            token = strtok(NULL, " ");
+        } else {
+            castleHealthUpdate[i-1] = std::stoi(token);
+            token = strtok(NULL, " ");
+        }
+        i++;
+    }
     for (int i = 0; i < 6; ++i) {
+        changeWallHealth(i, castleHealthUpdate[i]);
         _prevCastleHealth[i] = _castleHealth[i];
     }
+    free(copy);
+}
+
+char* GameModel::random_buffer() {
+    std::string tmp_string = "0|Health";
+    for (int i = 0; i < 6; ++i) {
+        tmp_string += " " + to_string(rand()%20 - 10);
+    }
+    tmp_string += "|Avatar 0";
+    return return_buffer(tmp_string);
 }
 
 char* GameModel::return_buffer(const std::string& string)
