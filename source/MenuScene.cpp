@@ -70,7 +70,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     _lobbyButton = Button::alloc(PolygonNode::allocWithTexture(lobby_up));
-    _lobbyButton->setScale(0.6f); // Magic number to rescale asset
+    _lobbyButton->setScale(0.475f); // Magic number to rescale asset
     
     // Create a callback function for the lobby button
     _lobbyButton->setName("lobby");
@@ -85,13 +85,13 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the play button in the bottom left
     _playButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _playButton->setPosition(150,130);
+    _playButton->setPosition(115,130);
     
     
     
     // Position the lobby button in the bottom right
     _lobbyButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _lobbyButton->setPosition(600,450);
+    _lobbyButton->setPosition(350,130);
     
     // Add the logo and button to the scene graph
     addChild(_lobbyButton);

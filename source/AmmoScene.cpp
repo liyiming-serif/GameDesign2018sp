@@ -31,6 +31,7 @@ using namespace cugl;
 #define DISTANCE 920
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define FONT    _assets->get<Font>("langdon")
 
 bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -83,9 +84,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         }
     });
     
-        _moveup_J = MoveTo::alloc(Vec2(700,650),DURATION);
-        _moveup_O = MoveTo::alloc(Vec2(700,650),DURATION/2);
-        _moveup_B = MoveTo::alloc(Vec2(700,650),DURATION/5);
+        _moveup_J = MoveTo::alloc(Vec2(700,650),DURATION/3);
+        _moveup_O = MoveTo::alloc(Vec2(700,650),DURATION/3);
+        _moveup_B = MoveTo::alloc(Vec2(700,650),DURATION/3);
     
     // Create the fire button.  A button has an up image and a down image
     std::shared_ptr<Texture> tex   = _assets->get<Texture>("ammo_icon");
@@ -112,7 +113,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             
 
             
-            if (fabs(pos-_size.width/2)< .05*_size.width) {
+            if (fabs(pos-_size.width/2)< .1*_size.width) {
                 CULog("jackpot");
                 std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
                 _jackpot = PolygonNode::allocWithTexture(perf);
@@ -122,8 +123,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_J, _jackpot);
                 CULog("do move");
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+50);
             }
-            else if (fabs(pos-_size.width/2)< .2*_size.width ) {
+            else if (fabs(pos-_size.width/2)< .4*_size.width ) {
                 CULog("okay");
                 std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
                 _jackpot = PolygonNode::allocWithTexture(okay);
@@ -132,8 +134,8 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _jackpot->setPosition(700,300);
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_O, _jackpot);
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+30);
             }
-            
             else {
                 CULog("bad");
                 std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
@@ -143,6 +145,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _jackpot->setPosition(700,300);
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_B, _jackpot);
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+10);
             }
 
             
@@ -170,6 +173,12 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,57),DURATION);
     _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,57),DURATION);
 
+    _ammoText =Label::alloc((std::string) "                                              ", FONT);
+    addChild(_ammoText);
+    _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _ammoText->setPosition(_size.width - _size.width/8, _size.height - _size.height/8);
+    _ammoText->setForeground(cugl::Color4(0,0,0,255));
+
     
     return true;
 }
@@ -188,6 +197,7 @@ void AmmoScene::dispose() {
 
 void AmmoScene::update(float timestep){
     //moves enemies
+    _ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
     for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
         for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
             if(gameModel._enemyArrayMaster[i][j][1] < 85){

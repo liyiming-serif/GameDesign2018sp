@@ -37,6 +37,9 @@ protected:
     std::shared_ptr<cugl::MoveTo> _moveup_J;
     std::shared_ptr<cugl::MoveTo> _moveup_O;
     std::shared_ptr<cugl::MoveTo> _moveup_B;
+
+    //text
+    std::shared_ptr<cugl::Label> _ammoText;
     
     bool move_direction;
     

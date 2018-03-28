@@ -13,6 +13,7 @@
 #include "InputController.h"
 #include "GameModel.h"
 #include <cugl/cugl.h>
+#include <jni.h>
 
 class LobbyScene : public cugl::Scene{
 protected:
@@ -22,11 +23,18 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _menuButton;
-     std::shared_ptr<cugl::Button> _createButton;
-     std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::Button> _createButton;
+    std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::PolygonNode> _avatar1;
+    std::shared_ptr<cugl::PolygonNode> _avatar2;
+    std::shared_ptr<cugl::Button> _avatar3;
+    std::shared_ptr<cugl::Button> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
-    
+    std::shared_ptr<cugl::PolygonNode> _player1;
+    std::shared_ptr<cugl::PolygonNode> _player2;
+    std::shared_ptr<cugl::PolygonNode> _waiting;
+
     
     
 public:
@@ -44,6 +52,40 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+    void setupBluetoothServer() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothServer",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
+
+    void setupBluetoothClient() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothClient",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
 };
 
 

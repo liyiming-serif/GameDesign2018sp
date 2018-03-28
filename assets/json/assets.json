@@ -363,6 +363,55 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
+        },
+        "avatar_1": {
+            "file":     "textures/Lobby/Avatar1.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "avatar_2": {
+          "file":     "textures/Lobby/Avatar2.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "avatar_3": {
+          "file":     "textures/Lobby/Avatar3.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "avatar_4": {
+          "file":     "textures/Lobby/Avatar4.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "player_1": {
+          "file":     "textures/Lobby/Player1.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "player_2": {
+          "file":     "textures/Lobby/Player2.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "waiting": {
+          "file":     "textures/Lobby/Waiting.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
         }
 	},
 	"fonts": {
