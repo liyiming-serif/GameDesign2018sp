@@ -54,7 +54,7 @@ public:
     }
 
     void setArrowAmmo(int type, int amount) {
-        _arrowAmmo[type] += amount;
+        _arrowAmmo[type] = amount;
     }
 
 };

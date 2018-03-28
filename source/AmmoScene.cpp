@@ -122,6 +122,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_J, _jackpot);
                 CULog("do move");
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+50);
             }
             else if (fabs(pos-_size.width/2)< .2*_size.width ) {
                 CULog("okay");
@@ -132,6 +133,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _jackpot->setPosition(700,300);
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_O, _jackpot);
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+30);
             }
             
             else {
@@ -143,6 +145,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _jackpot->setPosition(700,300);
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_B, _jackpot);
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+10);
             }
 
             

@@ -144,14 +144,17 @@ void BallistaScene::update(float deltaTime, int direction){
 			_ballista->setPower(0.0f, true);
 			_ballista->isReadyToFire = false;
 
-			// Allocate a new arrow in memory
-			std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
+            if (gameModel.getArrowAmmo(0)>0) {
+                // Allocate a new arrow in memory
+                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
 
-			if (a != nullptr) {
-				_arrows.insert(a);
-				_world->addObstacle(a);
-				addChild(a->getNode());
-			}
+                if (a != nullptr) {
+                    _arrows.insert(a);
+                    _world->addObstacle(a);
+                    addChild(a->getNode());
+                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)-1);
+                }
+            }
 		}
     }
 
