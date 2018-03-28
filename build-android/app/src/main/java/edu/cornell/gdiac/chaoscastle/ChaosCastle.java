@@ -37,6 +37,14 @@ public class ChaosCastle extends SDLActivity {
 		registerReceiver(mReceiver, filter);
 	}
 
+	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
+	private static native void readNetwork(byte[] byte_buffer);
+
+	//TODO: Use this method to write to the writing-connected thread (might need to be native function)
+	public void writeNetwork(byte[] byte_buffer) {
+		return;
+	}
+
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();

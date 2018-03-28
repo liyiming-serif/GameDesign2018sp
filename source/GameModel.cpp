@@ -15,10 +15,8 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     // Set display size
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
-    _networkStateOutPath = Application::get()->getSaveDirectory() + "networkStateOutgoing.txt";
-    _networkStateInPath = Application::get()->getSaveDirectory() + "networkStateIncoming.txt";
-    _networkJSONWriter = TextWriter::alloc(_networkStateOutPath);
-    _networkJSONReader = TextReader::alloc(_networkStateOutPath);
+    clock = 0;
+    networked = true;
 
 
 
@@ -86,9 +84,23 @@ void GameModel::update(float deltaTime){
 	//	CULog("%d\n", _enemyArrayGroundN.size());
 	//}
 	//_enemiesToFree.clear();
-    _networkJSONWriter->write(getStateChange());
-    CULog("updating");
-    updateState();
+    if (networked) {
+        if (clock == 100) {
+            const char *write_byte_buffer = return_buffer(getStateChange());
+            //TODO: Write to network
+            CULog("%s \n", write_byte_buffer);
+            CULog("updating");
+            //TODO: Read from network
+            //const char *read_byte_buffer = readNetwork();
+            //TODO: Agree on state changes
+            //updateState(read_byte_buffer);
+            clock = 0;
+            delete[] write_byte_buffer;
+            //delete[] read_byte_buffer;
+        } else {
+            clock++;
+        }
+    }
 }
 
 int GameModel::getWallHealth(int wall) {
@@ -118,23 +130,39 @@ void GameModel::setPlayerAvatar(int player, int avatar) {
 }
 
 std::string GameModel::getStateChange() {
+    std::string _tmpHealthString = "Health";
     int _tmpHealth[6];
     for (int i = 0; i < 6; ++i) {
         _tmpHealth[i] = _castleHealth[i] - _prevCastleHealth[i];
+        _tmpHealthString += " " + to_string(_tmpHealth[i]);
     }
-    std::string _tmpHealthString = "{ Health: " + to_string(_tmpHealth, 6) + "}";
-    std::string _tmpAvatarString = "{ Avatars: " + to_string(_playerAvatars,6) + "}";
-    return _tmpHealthString + ", " + _tmpAvatarString;
+    std::string _tmpAvatarString = "Avatar " + to_string(_playerAvatars[_playerID]);
+    return to_string(_playerID) + "|" + _tmpHealthString + "|" + _tmpAvatarString;
 }
 
-void GameModel::updateState() {
-    std::string _tmpStateString = _networkJSONReader->readLine();
-    const char *cstr = _tmpStateString.c_str();
-    CULog("% \n", cstr);
+void GameModel::updateState(const char* read_byte_buffer) {
     for (int i = 0; i < 6; ++i) {
         _prevCastleHealth[i] = _castleHealth[i];
     }
 }
 
+char* GameModel::return_buffer(const std::string& string)
+{
+    char* return_string = new char[string.length() + 1];
+    strcpy(return_string, string.c_str());
+    return return_string;
+}
 
+JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
+        (JNIEnv *env, jclass clazz, jbyteArray array) {
+    jbyte* buffer = env->GetByteArrayElements(array, NULL);
+    jsize size = env->GetArrayLength(array);
+    char *byte_buffer = new char[size];
+
+    for(int i = 0; i < size; i++) {
+        byte_buffer[i] = buffer[i];
+    }
+    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+    return byte_buffer;
+}
 
