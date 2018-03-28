@@ -18,6 +18,7 @@ using namespace cugl;
 InputController::InputController() :
         _active(false),
         _pointerVel(0,0),
+		_dTouch(0,0),
         _justPressed(false),
         _justReleased(false),
         _isPressed(false),
@@ -94,6 +95,7 @@ void InputController::dispose(){
 void InputController::clear() {
     _pointerVel.set(0,0);
     _pointerPos.set(0,0);
+	_dTouch.set(0, 0);
     _justPressed = false;
     _justReleased = false;
     _isPressed = false;
@@ -103,6 +105,7 @@ void InputController::clear() {
 
 void InputController::touchBeginCB(const TouchEvent &event, bool focus) {
     _justPressed = true;
+	_dTouch.set(event.position);
     _pointerPos.set(event.position);
     _isPressed = true;
 }
@@ -119,12 +122,14 @@ void InputController::touchDragCB(const TouchEvent &event, const Vec2 &previous,
 void InputController::touchReleaseCB(const TouchEvent &event, bool focus) {
     _justReleased = true;
     _pointerPos.set(event.position);
+	_dTouch.set(0, 0);
     _isPressed = false;
 }
 
 void InputController::mouseDownCB(const MouseEvent& event, Uint8 clicks, bool focus){
     _justPressed = true;
     _pointerPos.set(event.position);
+	_dTouch.set(event.position);
     _isPressed = true;
 }
 
@@ -139,6 +144,7 @@ void InputController::mouseDragCB(const MouseEvent& event, const Vec2& previous,
 void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focus){
     _justReleased = true;
     _pointerPos.set(event.position);
+	_dTouch.set(0, 0);
     _isPressed = false;
 }
 

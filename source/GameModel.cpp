@@ -2,7 +2,9 @@
 // Created by Josh on 3/15/2018.
 //
 
+
 #include <cugl/cugl.h>
+#include <stdlib.h>
 #include "GameModel.h"
 #include <cmath>
 #include "CastleApp.h"
@@ -32,6 +34,8 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
         _prevCastleHealth[i] = sum;
         sum +=10;
     }
+    _castleHealth[0] = 10;
+    _castleHealth[3] = 10;
 
     // Create the physics world
     //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
@@ -59,8 +63,8 @@ void GameModel::dispose() {
     //    _world = nullptr;
     //}
     _assets = nullptr;
-    _enemyArrayGroundN.clear();
-	_enemiesToFree.clear();
+    _enemyArrayMaster.clear();
+    _enemiesToFreeMaster.clear();
 }
 
 void GameModel::update(float deltaTime){
@@ -103,6 +107,7 @@ void GameModel::update(float deltaTime){
             clock++;
         }
     }
+	//update positions
 }
 
 int GameModel::getWallHealth(int wall) {

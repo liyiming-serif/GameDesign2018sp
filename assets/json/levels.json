@@ -1,0 +1,136 @@
+{
+	"one" : {
+		"level1" : {
+			"enemies" : {
+				"spawn1" : {
+					"name" : "skeleton",
+					"spawn_time" : 300,
+					"xCoord" : 100,
+					"yCoord" : 500,
+					"sector" : 0
+				},
+				"spawn2" : {
+					"name" : "skeleton",
+					"spawn_time" : 300,
+					"xCoord" : 500,
+					"yCoord" : 500,
+					"sector" : 0
+				},
+				"spawn3" : {
+					"name" : "skeleton",
+					"spawn_time" : 300,
+					"xCoord" : 950,
+					"yCoord" : 500,
+					"sector" : 0
+				},
+				"spawn4" : {
+					"name" : "skeleton",
+					"spawn_time" : 600,
+					"xCoord" : 300,
+					"yCoord" : 500,
+					"sector" : 3
+				},
+				"spawn5" : {
+					"name" : "skeleton",
+					"spawn_time" : 600,
+					"xCoord" : 700,
+					"yCoord" : 500,
+					"sector" : 3
+				},
+				"spawn6" : {
+					"name" : "skeleton",
+					"spawn_time" : 1200,
+					"xCoord" : 400,
+					"yCoord" : 500,
+					"sector" : 0
+				},
+				"spawn7" : {
+					"name" : "skeleton",
+					"spawn_time" : 1300,
+					"xCoord" : 650,
+					"yCoord" : 500,
+					"sector" : 1
+				},
+				"spawn8" : {
+					"name" : "skeleton",
+					"spawn_time" : 1400,
+					"xCoord" : 200,
+					"yCoord" : 500,
+					"sector" : 2
+				},
+				"spawn9" : {
+					"name" : "skeleton",
+					"spawn_time" : 1500,
+					"xCoord" : 700,
+					"yCoord" : 500,
+					"sector" : 3
+				},
+				"spawn10" : {
+					"name" : "skeleton",
+					"spawn_time" : 1600,
+					"xCoord" : 350,
+					"yCoord" : 500,
+					"sector" : 4
+				},
+				"spawn11" : {
+					"name" : "skeleton",
+					"spawn_time" : 1700,
+					"xCoord" : 800,
+					"yCoord" : 500,
+					"sector" : 5
+				},
+				"spawn12" : {
+					"name" : "skeleton",
+					"spawn_time" : 2200,
+					"xCoord" : 200,
+					"yCoord" : 500,
+					"sector" : 2
+				},
+				"spawn13" : {
+					"name" : "skeleton",
+					"spawn_time" : 2200,
+					"xCoord" : 550,
+					"yCoord" : 500,
+					"sector" : 2
+				},
+				"spawn14" : {
+					"name" : "skeleton",
+					"spawn_time" : 2200,
+					"xCoord" : 800,
+					"yCoord" : 500,
+					"sector" : 2
+				},
+				"spawn15" : {
+					"name" : "skeleton",
+					"spawn_time" : 2500,
+					"xCoord" : 400,
+					"yCoord" : 500,
+					"sector" : 5
+				},
+				"spawn16" : {
+					"name" : "skeleton",
+					"spawn_time" : 2500,
+					"xCoord" : 800,
+					"yCoord" : 500,
+					"sector" : 5
+				},
+				"spawn17" : {
+					"name" : "skeleton",
+					"spawn_time" : 3000,
+					"xCoord" : 900,
+					"yCoord" : 500,
+					"sector" : 1 
+				},
+			},
+			"rooms_unlocked" : {
+				"lookout" : true,
+				"ballista" : true,
+				"catapult" : true,
+				"oil" : true,
+				"wizard" : true,
+				"blacksmith" : true,
+				"ammo" : true
+			}
+		}
+	}
+}

@@ -42,10 +42,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("oil_background");
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(0.5625f); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(0,0);
     addChild(_background);
-    
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     
@@ -89,7 +86,28 @@ void OilScene::dispose() {
 }
 
 void OilScene::update(float timestep){
-    
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
+        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+            if(gameModel._enemyArrayMaster[i][j][1] < 85){
+                //remove
+                gameModel._enemiesToFreeMaster[i].push_back(j);
+                gameModel.changeWallHealth(i, -9);
+            }
+            else{
+                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+            }
+        }
+    }
+	//delete enemies here to not disrupt iterator
+	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
+		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
+			if (j<gameModel._enemyArrayMaster[i].size()) {
+				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+			}
+		}
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
 }
 
 

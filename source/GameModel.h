@@ -10,8 +10,10 @@
 
 #include <cugl/cugl.h>
 #include <set>
-#include <Array>
+
 #include <jni.h>
+#include <array>
+#include <vector>
 #include "EnemyModel.h"
 
 class GameModel {
@@ -24,8 +26,11 @@ protected:
     int _prevCastleHealth[6];
     int _spawnTimer;
     cugl::Size _size;
+
     int clock;
     bool networked;
+    int _arrowAmmo[2];
+
 
 public:
 
@@ -35,8 +40,12 @@ public:
     bool init(const std::shared_ptr<cugl::AssetManager> &assets);
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
+
     std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
     std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
+    //2D vector, each element has {xCoord, yCoord, type, remaining health}
+    std::vector<std::vector<std::vector<float>>> _enemyArrayMaster;
+    std::vector<std::vector<int>> _enemiesToFreeMaster;
 
     // Destructors
     void dispose();
@@ -110,6 +119,20 @@ private:
         // Free local references
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(clazz);
+    int getArrowAmmo(int type) {
+        return _arrowAmmo[type];
+    }
+
+    void setArrowAmmo(int type, int amount) {
+        if (_arrowAmmo[type] + amount > 99) {
+            _arrowAmmo[type] = 99;
+        }
+        else if (_arrowAmmo[type] + amount < 0) {
+            _arrowAmmo[type] = 0;
+        }
+        else {
+            _arrowAmmo[type] += amount;
+        }
     }
 
 };

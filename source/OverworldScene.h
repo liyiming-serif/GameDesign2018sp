@@ -103,7 +103,7 @@ public:
     cugl::Vec2 castleOrigin;
     int currentCastleFloor;
 
-    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SE
+    //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
     
     

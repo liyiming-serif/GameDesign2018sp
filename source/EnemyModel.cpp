@@ -4,7 +4,7 @@
 
 #include "EnemyModel.h"
 
-#define BASE_SPEED 3
+#define BASE_SPEED 0
 
 /*
 * ENEMY TYPES:
@@ -13,26 +13,19 @@
 
 using namespace cugl;
 
-bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::shared_ptr<AssetManager>& assets){
+bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<AssetManager>& assets){
 
+	_dir = dir;
 	_drawScale = drawScale;
 
 	//regular enemies, type 1
     if(type == 1){
-		CULog("type 1");
 		//create the scene node
 		_node = nullptr;
 		std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");
 		_node = PolygonNode::allocWithTexture(texture);
 		_node->setScale(0.3);
 		_node->setAnchor(Vec2::ANCHOR_CENTER);
-
-		//create the scene node
-		_icon = nullptr;
-		std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
-		_icon = PolygonNode::allocWithTexture(texture2);
-		_icon->setScale(0.3);
-		_icon->setAnchor(Vec2::ANCHOR_CENTER);
 
 		//initialize the box2d obstacle
 		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
@@ -43,20 +36,22 @@ bool EnemyModel::init(Vec2 pos, float dir, int type, int drawScale, const std::s
 }
 
 void EnemyModel::update(float deltaTime) {
+    setLinearVelocity(cos(_dir)*BASE_SPEED,sin(_dir)*BASE_SPEED);
     Obstacle::update(deltaTime);
     if (_node != nullptr) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
     }
-	if (_icon != nullptr) {
-		Vec2 pos = getPosition()*_drawScale/3;
-		_icon->setPosition(180+pos.x, 288+pos.y);
-		_icon->setAngle(getAngle());
-	}
 }
 
 void EnemyModel::dispose(){
     CULog("enemy destroyed");
     _node = nullptr;
-	_icon = nullptr;
+}
+
+int EnemyModel::getDamage(int type){
+    if(type == 1){
+        return 9;
+    }
+    else return 0;
 }

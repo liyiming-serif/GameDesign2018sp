@@ -42,6 +42,7 @@
 #include "LobbyScene.h"
 #include "InputController.h"
 #include "GameModel.h"
+#include "SpawnController.h"
 
 /**
  * Class for a simple Hello World style application
@@ -83,7 +84,10 @@ protected:
 
     
     //controls enemies
-    GameModel _gameModel;
+    GameModel gameModel;
+
+    //controls spawns
+    SpawnController _spawnController;
     
 
     //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SW

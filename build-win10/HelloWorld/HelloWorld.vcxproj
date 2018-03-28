@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\source\AmmoScene.h" />
     <ClInclude Include="..\..\source\ArrowModel.h" />
+    <ClInclude Include="..\..\source\BallistaModel.h" />
     <ClInclude Include="..\..\source\BallistaScene.h" />
     <ClInclude Include="..\..\source\CastleApp.h" />
     <ClInclude Include="..\..\source\EnemyModel.h" />
@@ -200,11 +201,13 @@
     <ClInclude Include="..\..\source\OilScene.h" />
     <ClInclude Include="..\..\source\OverworldScene.h" />
     <ClInclude Include="..\..\source\RepairScene.h" />
+    <ClInclude Include="..\..\source\SpawnController.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\AmmoScene.cpp" />
     <ClCompile Include="..\..\source\ArrowModel.cpp" />
+    <ClCompile Include="..\..\source\BallistaModel.cpp" />
     <ClCompile Include="..\..\source\BallistaScene.cpp" />
     <ClCompile Include="..\..\source\CastleApp.cpp" />
     <ClCompile Include="..\..\source\EnemyModel.cpp" />
@@ -219,6 +222,7 @@
     <ClCompile Include="..\..\source\OilScene.cpp" />
     <ClCompile Include="..\..\source\OverworldScene.cpp" />
     <ClCompile Include="..\..\source\RepairScene.cpp" />
+    <ClCompile Include="..\..\source\SpawnController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />

@@ -28,13 +28,34 @@ protected:
     std::shared_ptr<cugl::FadeIn> _wallFadeIN;
     std::shared_ptr<cugl::FadeOut> _wallFadeOUT;
     
-    std::shared_ptr<PolygonNode> plain_floor;
-    std::shared_ptr<PolygonNode> northWall_floor;
-    std::shared_ptr<PolygonNode> northeastWall_floor;
-    std::shared_ptr<PolygonNode> southeastWall_floor;
-    std::shared_ptr<PolygonNode> southWall_floor;
-    std::shared_ptr<PolygonNode> southwestWall_floor;
-    std::shared_ptr<PolygonNode> northwestWall_floor;
+    std::shared_ptr<PolygonNode> N_100;
+    std::shared_ptr<PolygonNode> NE_100;
+    std::shared_ptr<PolygonNode> NW_100;
+    std::shared_ptr<PolygonNode> S_100;
+    std::shared_ptr<PolygonNode> SE_100;
+    std::shared_ptr<PolygonNode> SW_100;
+    
+    std::shared_ptr<PolygonNode> N_75;
+    std::shared_ptr<PolygonNode> NE_75;
+    std::shared_ptr<PolygonNode> NW_75;
+    std::shared_ptr<PolygonNode> S_75;
+    std::shared_ptr<PolygonNode> SE_75;
+    std::shared_ptr<PolygonNode> SW_75;
+    
+    std::shared_ptr<PolygonNode> N_50;
+    std::shared_ptr<PolygonNode> NE_50;
+    std::shared_ptr<PolygonNode> NW_50;
+    std::shared_ptr<PolygonNode> S_50;
+    std::shared_ptr<PolygonNode> SE_50;
+    std::shared_ptr<PolygonNode> SW_50;
+    
+    std::shared_ptr<PolygonNode> N_25;
+    std::shared_ptr<PolygonNode> NE_25;
+    std::shared_ptr<PolygonNode> NW_25;
+    std::shared_ptr<PolygonNode> S_25;
+    std::shared_ptr<PolygonNode> SE_25;
+    std::shared_ptr<PolygonNode> SW_25;
+
 
     
     std::shared_ptr<cugl::Button> _repairTOcastle;

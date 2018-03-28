@@ -140,6 +140,27 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "ammo_perfect": {
+            "file":     "textures/Basement/Perfect.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_okay": {
+            "file":     "textures/Basement/Okay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_bad": {
+            "file":     "textures/Basement/Bad.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "catapult_floor": {
             "file":     "textures/Catapult/CatapultFloor.png",
             "minfilter":"nearest",
@@ -217,8 +238,36 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "repair_wall_button": {
-            "file":     "textures/Basement/wallButton.png",
+        "repair_100": {
+            "file":     "textures/Basement/100.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_75": {
+            "file":     "textures/Basement/75.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_50": {
+            "file":     "textures/Basement/50.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_25": {
+            "file":     "textures/Basement/25.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "repair_transparent": {
+            "file":     "textures/Basement/transparent.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -272,6 +321,55 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
+        },
+        "avatar_1": {
+            "file":     "textures/Lobby/Avatar1.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "avatar_2": {
+          "file":     "textures/Lobby/Avatar2.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "avatar_3": {
+          "file":     "textures/Lobby/Avatar3.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "avatar_4": {
+          "file":     "textures/Lobby/Avatar4.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "player_1": {
+          "file":     "textures/Lobby/Player1.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "player_2": {
+          "file":     "textures/Lobby/Player2.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
+        },
+        "waiting": {
+          "file":     "textures/Lobby/Waiting.png",
+          "minfilter":"nearest",
+          "magfilter":"linear",
+          "wrapS":    "clamp",
+          "wrapT":    "clamp"
         }
 	},
 	"fonts": {

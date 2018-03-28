@@ -6,9 +6,12 @@
 #define BUILD_ANDROID_BALLISTASCENE_H
 #include <cugl/cugl.h>
 #include "ArrowModel.h"
+#include "BallistaModel.h"
 #include "InputController.h"
+#include "EnemyModel.h"
 #include "GameModel.h"
 #include <set>
+#include <vector>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/Contacts/b2Contact.h>
@@ -18,7 +21,7 @@ class BallistaScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 
-    int _spawnTimer;
+    int _direction;
 
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -31,9 +34,15 @@ protected:
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
 
     // Models
-    std::shared_ptr<cugl::PolygonNode> _ballista;
+    std::shared_ptr<BallistaModel> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Button> _ballistaTOcastle;
+
+    //enemies
+    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
+
+    //text
+    std::shared_ptr<cugl::Label> _ammoText;
 
 public:
     // Constructors
@@ -45,10 +54,12 @@ public:
     ~BallistaScene() {dispose();}
 
     // Gameplay
-    void update(float deltaTime);
+    void update(float deltaTime, int direction);
+
+	void updateEnemyModels(int direction);
 
     //Pause or Resume
-    void setActive(bool active);
+    void setActive(bool active, int direction);
     int switchscene;
 
 	//Call to activate collisions for this world

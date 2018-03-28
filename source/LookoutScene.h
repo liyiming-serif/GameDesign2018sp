@@ -6,8 +6,10 @@
 #define BUILD_ANDROID_LOOKOUTSCENE_H
 
 #include "GameModel.h"
+#include "EnemyModel.h"
 #include "InputController.h"
 #include <cugl/cugl.h>
+#include <vector>
 
 class LookoutScene : public cugl::Scene{
 protected:
@@ -20,7 +22,9 @@ protected:
 
     std::shared_ptr<cugl::PolygonNode> _background;
 
+	std::shared_ptr<cugl::Texture> _enemyIcon;
 
+    std::vector<std::shared_ptr<cugl::Node>> _enemyMarkers;
 
 public:
     // Constructors
@@ -33,6 +37,8 @@ public:
 
     // Gameplay
     void update(float timestep);
+
+	void updateEnemyMarkers();
 
     //Pause or Resume
     void setActive(bool active);
