@@ -16,6 +16,7 @@ private:
 
 public:
 
+    float _dir;
     //constructors
     EnemyModel(void) : BoxObstacle() { }
 
@@ -39,6 +40,8 @@ public:
     void dispose();
 
     ~EnemyModel() {dispose();}
+
+    int getDamage(int type);
 
 
 protected:

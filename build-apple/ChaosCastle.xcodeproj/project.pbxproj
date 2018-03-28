@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		A949992420683B1800A0D1C0 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
+		A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
+		A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
+		A949993F206B27FE00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
+		A9499940206B27FF00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
+		A9499941206B280A00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
+		A9499942206B280B00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
 		A979457320537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
 		A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
 		A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
@@ -139,6 +145,10 @@
 /* Begin PBXFileReference section */
 		A949991F20683B1700A0D1C0 /* LobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
 		A949992320683B1700A0D1C0 /* LobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
+		A9499933206B27DD00A0D1C0 /* SpawnController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnController.cpp; sourceTree = "<group>"; };
+		A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BallistaModel.cpp; sourceTree = "<group>"; };
+		A949993A206B27DE00A0D1C0 /* SpawnController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnController.h; sourceTree = "<group>"; };
+		A949993B206B27DE00A0D1C0 /* BallistaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallistaModel.h; sourceTree = "<group>"; };
 		A979457120537A97006DB3E3 /* RepairScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RepairScene.cpp; sourceTree = "<group>"; };
 		A979457220537A97006DB3E3 /* RepairScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RepairScene.h; sourceTree = "<group>"; };
 		A9AA6114204A19BC00940276 /* LookoutScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LookoutScene.cpp; sourceTree = "<group>"; };
@@ -398,6 +408,10 @@
 				A9E863872059C59400166C6F /* InputController.h */,
 				EB2BE9B31D74952A002FE78B /* CastleApp.h */,
 				EB2BE9B21D74952A002FE78B /* CastleApp.cpp */,
+				A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */,
+				A949993B206B27DE00A0D1C0 /* BallistaModel.h */,
+				A9499933206B27DD00A0D1C0 /* SpawnController.cpp */,
+				A949993A206B27DE00A0D1C0 /* SpawnController.h */,
 				A9E86367205965D300166C6F /* LoadingScene.cpp */,
 				A9E86368205965D300166C6F /* LoadingScene.h */,
 				A9E863CA206483A000166C6F /* OilScene.cpp */,
@@ -601,6 +615,7 @@
 			files = (
 				A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */,
 				EB0FF61D2016F06000517030 /* main.cpp in Sources */,
+				A9499942206B280B00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C920647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C420647B3E00166C6F /* MageScene.cpp in Sources */,
 				A9E863CE206483A000166C6F /* OilScene.cpp in Sources */,
@@ -608,6 +623,7 @@
 				A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */,
 				A9E8638E205B584400166C6F /* InputController.cpp in Sources */,
 				A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */,
+				A9499940206B27FF00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB0FF61E2016F06000517030 /* CastleApp.cpp in Sources */,
 				A9E8636B205965D300166C6F /* LoadingScene.cpp in Sources */,
 				A9AA6118204A19C600940276 /* LookoutScene.cpp in Sources */,
@@ -621,6 +637,7 @@
 			files = (
 				A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
+				A9499941206B280A00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C820647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C320647B3E00166C6F /* MageScene.cpp in Sources */,
 				A9E863CD206483A000166C6F /* OilScene.cpp in Sources */,
@@ -628,6 +645,7 @@
 				A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */,
 				A9E8638D205B584400166C6F /* InputController.cpp in Sources */,
 				A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */,
+				A949993F206B27FE00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB7454AF1D74D891002FBAE6 /* CastleApp.cpp in Sources */,
 				A9E8636A205965D300166C6F /* LoadingScene.cpp in Sources */,
 				A9AA6117204A19C500940276 /* LookoutScene.cpp in Sources */,
@@ -649,7 +667,9 @@
 				A9E863C720647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863BA2061A06000166C6F /* GameModel.cpp in Sources */,
 				A979457320537A97006DB3E3 /* RepairScene.cpp in Sources */,
+				A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */,
 				A9E863CC206483A000166C6F /* OilScene.cpp in Sources */,
+				A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */,
 				A9E86369205965D300166C6F /* LoadingScene.cpp in Sources */,
 				A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */,

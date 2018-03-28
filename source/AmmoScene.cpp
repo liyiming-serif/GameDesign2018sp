@@ -65,7 +65,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cursor = PolygonNode::allocWithTexture(icon);
     _cursor->setScale(.5f); // Magic number to rescale asset
     _cursor->setAnchor(Vec2::ANCHOR_CENTER);
-    _cursor->setPosition(_cursor->getWidth()/2,_cursor->getHeight()/2);
+    _cursor->setPosition(_cursor->getWidth()/2,57);
     addChild(_cursor);
     
     // Create the back button.  A button has an up image and a down image
@@ -156,7 +156,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoTOcastle->setPosition(100,500);
     
     _hammer->setAnchor(Vec2::ANCHOR_CENTER);
-    _hammer->setPosition(_size.width/2,200);
+    _hammer->setPosition(_size.width/2,300);
     
     // Add the logo and button to the scene graph
     addChild(_ammoTOcastle);
@@ -167,8 +167,8 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hammer->activate(input.generateKey("hammer"));
     
     
-    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,_cursor->getHeight()/2),DURATION);
-    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,_cursor->getHeight()/2),DURATION);
+    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,57),DURATION);
+    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,57),DURATION);
 
     
     return true;
@@ -187,6 +187,20 @@ void AmmoScene::dispose() {
 }
 
 void AmmoScene::update(float timestep){
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
+        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+            if(gameModel._enemyArrayMaster[i][j][1] < 85){
+                //remove
+                gameModel._enemiesToFreeMaster[i].push_back(j);
+                gameModel.changeWallHealth(i, -9);
+            }
+            else{
+                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+            }
+        }
+    }
+
     // Animate
     if (move_direction  && !_actions->isActive(ACT_KEY)){
         doMove(_moveright);
