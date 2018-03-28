@@ -21,7 +21,7 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     clock = 0;
     networked = true;
 
-
+    _arrowAmmo[0] = 30;
 
     _assets = assets;
 
@@ -210,16 +210,16 @@ char* GameModel::return_buffer(const std::string& string)
     return return_string;
 }
 
-JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
-        (JNIEnv *env, jclass clazz, jbyteArray array) {
-    jbyte* buffer = env->GetByteArrayElements(array, NULL);
-    jsize size = env->GetArrayLength(array);
-    char *byte_buffer = new char[size];
-
-    for(int i = 0; i < size; i++) {
-        byte_buffer[i] = buffer[i];
-    }
-    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
-    return byte_buffer;
-}
+//JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
+//        (JNIEnv *env, jclass clazz, jbyteArray array) {
+//    jbyte* buffer = env->GetByteArrayElements(array, NULL);
+//    jsize size = env->GetArrayLength(array);
+//    char *byte_buffer = new char[size];
+//
+//    for(int i = 0; i < size; i++) {
+//        byte_buffer[i] = buffer[i];
+//    }
+//    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+//    return byte_buffer;
+//}
 

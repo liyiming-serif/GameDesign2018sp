@@ -11,7 +11,7 @@
 #include <cugl/cugl.h>
 #include <set>
 
-#include <jni.h>
+//#include <jni.h>
 #include <array>
 #include <vector>
 #include "EnemyModel.h"
@@ -101,40 +101,40 @@ private:
     char* random_buffer();
 
     //TODO: Make sure JNI wrapper code is correct
-    char* readNetwork() {
-        // Set up parameters for JNI call
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-        jobject activity = (jobject)SDL_AndroidGetActivity();
-
-        jclass clazz(env->GetObjectClass(activity));
-        jmethodID method_id = env->GetMethodID(clazz, "readNetwork",
-                                               "()V");
-
-        // Call the Java method
-        env->CallVoidMethod(activity, method_id);
-
-        // Free local references
-        env->DeleteLocalRef(activity);
-        env->DeleteLocalRef(clazz);
-    }
-
-    //TODO: Make sure JNI wrapper code is correct
-    void writeNetwork(char* byte_buffer) {
-        // Set up parameters for JNI call
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
-        jobject activity = (jobject) SDL_AndroidGetActivity();
-
-        jclass clazz(env->GetObjectClass(activity));
-        jmethodID method_id = env->GetMethodID(clazz, "writeNetwork",
-                                               "()V");
-
-        // Call the Java method
-        env->CallVoidMethod(activity, method_id);
-
-        // Free local references
-        env->DeleteLocalRef(activity);
-        env->DeleteLocalRef(clazz);
-    }
+//    char* readNetwork() {
+//        // Set up parameters for JNI call
+//        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+//        jobject activity = (jobject)SDL_AndroidGetActivity();
+//
+//        jclass clazz(env->GetObjectClass(activity));
+//        jmethodID method_id = env->GetMethodID(clazz, "readNetwork",
+//                                               "()V");
+//
+//        // Call the Java method
+//        env->CallVoidMethod(activity, method_id);
+//
+//        // Free local references
+//        env->DeleteLocalRef(activity);
+//        env->DeleteLocalRef(clazz);
+//    }
+//
+//    //TODO: Make sure JNI wrapper code is correct
+//    void writeNetwork(char* byte_buffer) {
+//        // Set up parameters for JNI call
+//        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+//        jobject activity = (jobject) SDL_AndroidGetActivity();
+//
+//        jclass clazz(env->GetObjectClass(activity));
+//        jmethodID method_id = env->GetMethodID(clazz, "writeNetwork",
+//                                               "()V");
+//
+//        // Call the Java method
+//        env->CallVoidMethod(activity, method_id);
+//
+//        // Free local references
+//        env->DeleteLocalRef(activity);
+//        env->DeleteLocalRef(clazz);
+//    }
 
 };
 

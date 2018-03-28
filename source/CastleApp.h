@@ -91,7 +91,7 @@ protected:
     SpawnController _spawnController;
     
 
-    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 NW
+    //0 no direction, 0 N, 1 NW, 2 SW, 3 S, 4 SE, 5 NE
     int _direction;
     int _currscene;
     

@@ -368,39 +368,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 1;
-                }
-            });
-            _ballistaNorthEast->setName("ballistaNortheast");
-            _ballistaNorthEast->setListener([=] (const std::string& name, bool down) {
-                // Only switch scenes when the button is released
-                if (!down) {
-                    switchscene = BALLISTA;
-                     direction = 2;
-                }
-            });
-            _ballistaSouthEast->setName("ballistaSoutheast");
-            _ballistaSouthEast->setListener([=] (const std::string& name, bool down) {
-                // Only switch scenes when the button is released
-                if (!down) {
-                    switchscene = BALLISTA;
-                    direction = 3;
-                }
-            });
-            _ballistaSouth->setName("ballistaSouth");
-            _ballistaSouth->setListener([=] (const std::string& name, bool down) {
-                // Only switch scenes when the button is released
-                if (!down) {
-                    switchscene = BALLISTA;
-                    direction = 4;
-                }
-            });
-            _ballistaSouthWest->setName("ballistaSouthwest");
-            _ballistaSouthWest->setListener([=] (const std::string& name, bool down) {
-                // Only switch scenes when the button is released
-                if (!down) {
-                    switchscene = BALLISTA;
-                    direction = 5;
+                    direction = 0;
                 }
             });
             _ballistaNorthWest->setName("ballistaNorthwest");
@@ -408,9 +376,44 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 6;
+                    direction = 1;
                 }
             });
+            _ballistaSouthWest->setName("ballistaSouthwest");
+            _ballistaSouthWest->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = BALLISTA;
+                    direction = 2;
+                }
+            });
+            _ballistaSouth->setName("ballistaSouth");
+            _ballistaSouth->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = BALLISTA;
+                    direction = 3;
+                }
+            });
+            _ballistaSouthEast->setName("ballistaSoutheast");
+            _ballistaSouthEast->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = BALLISTA;
+                    direction = 4;
+                }
+            });
+            _ballistaNorthEast->setName("ballistaNortheast");
+            _ballistaNorthEast->setListener([=] (const std::string& name, bool down) {
+                // Only switch scenes when the button is released
+                if (!down) {
+                    switchscene = BALLISTA;
+                     direction = 5;
+                }
+            });
+
+
+
     
         //Positions the Ballista buttons
             //Ballista Floor Center

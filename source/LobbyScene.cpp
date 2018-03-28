@@ -121,7 +121,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             CULog("create");
 
-            setupBluetoothServer();
+           // setupBluetoothServer();
             _createButton->deactivate();
             _enterButton->deactivate();
             _createButton->setVisible(false);
@@ -146,7 +146,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             CULog("enter");
-            setupBluetoothClient();
+           // setupBluetoothClient();
             _createButton->deactivate();
             _enterButton->deactivate();
             _createButton->setVisible(false);

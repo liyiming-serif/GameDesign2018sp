@@ -145,7 +145,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
     _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(_size.width - _size.width/8, _size.height/8);
+    _ammoText->setPosition(700, 400);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
 
     return true;
@@ -173,23 +173,23 @@ void BallistaScene::setCompass(int direction){
     S_compass->setVisible(false);
     SE_compass->setVisible(false);
     SW_compass->setVisible(false);
-    if (direction == 1) {
+    if (direction == 0) {
         N_compass->setVisible(true);
     }
+    else if (direction == 1){
+        NW_compass->setVisible(true);
+    }
     else if (direction == 2){
-        NE_compass->setVisible(true);
-    }
-    else if (direction == 3){
-        SE_compass->setVisible(true);
-    }
-    else if (direction == 4){
-        S_compass->setVisible(true);
-    }
-    else if (direction == 5){
         SW_compass->setVisible(true);
     }
-    else if (direction == 6){
-        NW_compass->setVisible(true);
+    else if (direction == 3){
+        S_compass->setVisible(true);
+    }
+    else if (direction == 4){
+        SE_compass->setVisible(true);
+    }
+    else if (direction == 5){
+        NE_compass->setVisible(true);
     }
 }
 
