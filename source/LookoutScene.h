@@ -22,9 +22,9 @@ protected:
 
     std::shared_ptr<cugl::PolygonNode> _background;
 
-    //std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
+	std::shared_ptr<cugl::Texture> _enemyIcon;
 
-
+    std::vector<std::shared_ptr<cugl::Node>> _enemyMarkers;
 
 public:
     // Constructors
@@ -37,6 +37,8 @@ public:
 
     // Gameplay
     void update(float timestep);
+
+	void updateEnemyMarkers();
 
     //Pause or Resume
     void setActive(bool active);
