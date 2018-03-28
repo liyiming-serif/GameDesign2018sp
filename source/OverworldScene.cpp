@@ -376,7 +376,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                     direction = 1;
+                     direction = 5;
                 }
             });
             _ballistaSouthEast->setName("ballistaSoutheast");
@@ -384,7 +384,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 2;
+                    direction = 4;
                 }
             });
             _ballistaSouth->setName("ballistaSouth");
@@ -400,7 +400,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 4;
+                    direction = 2;
                 }
             });
             _ballistaNorthWest->setName("ballistaNorthwest");
@@ -408,7 +408,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = BALLISTA;
-                    direction = 5;
+                    direction = 1;
                 }
             });
     
