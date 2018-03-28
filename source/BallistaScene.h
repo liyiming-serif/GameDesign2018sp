@@ -40,7 +40,6 @@ protected:
 
     //enemies
     std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
-    std::vector<int> _enemiesToFree;
 
 public:
     // Constructors
@@ -53,6 +52,8 @@ public:
 
     // Gameplay
     void update(float deltaTime, int direction);
+
+	void updateEnemyModels(int direction);
 
     //Pause or Resume
     void setActive(bool active, int direction);
