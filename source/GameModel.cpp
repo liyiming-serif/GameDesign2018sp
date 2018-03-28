@@ -21,9 +21,10 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     int sum = 0;
 
     for (int i = 0; i < 6; ++i) {
-        _castleHealth[i] = sum;
-        sum +=1;
+        _castleHealth[i] = 75;
     }
+    _castleHealth[0] = 10;
+    _castleHealth[3] = 10;
 
     // Create the physics world
     //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);

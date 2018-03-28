@@ -40,7 +40,6 @@ protected:
 
     //enemies
     std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
-    std::vector<int> _enemiesToFree;
 
     //text
     std::shared_ptr<cugl::Label> _ammoText;
@@ -56,6 +55,8 @@ public:
 
     // Gameplay
     void update(float deltaTime, int direction);
+
+	void updateEnemyModels(int direction);
 
     //Pause or Resume
     void setActive(bool active, int direction);

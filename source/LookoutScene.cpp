@@ -45,6 +45,19 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
 
+	//allocate an enemy icon, but don't add it yet
+	_enemyIcon = _assets->get<Texture>("skeletonIcon");
+	//initiallize lanes for displaying enemies.
+	for (int i = 0; i < 6; i++) {
+		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
+		ecanvas->setAnchor(Vec2(0.5f,-0.3f));
+		ecanvas->setPosition(_size.width / 2, _size.height / 2);
+		ecanvas->setAngle(i * 2 * M_PI / 6);
+		ecanvas->setScale(0.1f,0.4f);
+		addChild(ecanvas);
+		_enemyMarkers.push_back(ecanvas);
+	}
+
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _lookoutTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
@@ -76,28 +89,60 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 void LookoutScene::dispose() {
     if (_active) {
+		for (int i = 0; i < _enemyMarkers.size(); i++) {
+			_enemyMarkers[i]->removeAllChildren();
+		}
         removeAllChildren();
         _assets = nullptr;
         _lookoutTOcastle = nullptr;
         _background = nullptr;
         _active = false;
+		_enemyIcon = nullptr;
+		_enemyMarkers.clear();
     }
 }
 
 void LookoutScene::update(float timestep){
-    //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-            if(gameModel._enemyArrayMaster[i][j][1] < 85){
-                //remove
-                gameModel._enemiesToFreeMaster[i].push_back(j);
-                gameModel.changeWallHealth(i, -9);
-            }
-            else{
-                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-            }
-        }
-    }
+	//moves enemies and marks out of bounds ones for deletion
+	for (int i = 0; i<gameModel._enemyArrayMaster.size(); i++) {
+		for (int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++) {
+			if (gameModel._enemyArrayMaster[i][j][1] < 85) {
+				//remove
+				gameModel._enemiesToFreeMaster[i].push_back(j);
+				gameModel.changeWallHealth(i, -9);
+			}
+			else {
+				gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+			}
+		}
+	}
+	//delete enemies here to not disrupt iterator
+	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
+		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
+			if (j<gameModel._enemyArrayMaster[i].size()) {
+				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+			}
+		}
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
+	updateEnemyMarkers();
+}
+
+void LookoutScene::updateEnemyMarkers() {
+	//clear enemy lanes
+	for (int i = 0; i < _enemyMarkers.size(); i++) {
+		_enemyMarkers[i]->removeAllChildren();
+	}
+
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		//add enemies by direction
+		for (int j = 0; j < gameModel._enemyArrayMaster[i].size(); j++) {
+			std::shared_ptr<PolygonNode> e = PolygonNode::allocWithTexture(_enemyIcon);
+			e->setAnchor(Vec2::ANCHOR_CENTER);
+			e->setPosition(gameModel._enemyArrayMaster[i][j][0],gameModel._enemyArrayMaster[i][j][1]);
+			_enemyMarkers[i]->addChild(e);
+		}
+	}
 }
 
 //Pause or Resume
@@ -108,19 +153,12 @@ void LookoutScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
-		//for (int it = 0; it < gameModel._enemyArrayGroundN.size(); it++) {
-		////instead of creating enemy, can we just place icon?
-		//	std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayGroundN[it][1], gameModel._enemyArrayGroundN[it][2]),
-  //                                                0, gameModel._enemyArrayGroundN[it][3], gameModel._enemyArrayGroundN[it][4], 32,_assets);
-		//	_enemyArray.push_back(e);
-		//	addChild(e->getIcon());
-		//}
     }
     else{
         _lookoutTOcastle->deactivate();
-		//for (int i = 0; i<_enemyArray.size(); i++) {
-		//	removeChild(_enemyArray[i]->getIcon());
-		//}
-		//_enemyArray.clear();
+
+		for (int i = 0; i < _enemyMarkers.size(); i++) {
+			_enemyMarkers[i]->removeAllChildren();
+		}
     }
 }

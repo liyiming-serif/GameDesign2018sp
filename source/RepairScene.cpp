@@ -102,8 +102,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NE");
                 _new_wall = "NE";
-                gameModel.changeWallHealth(1, 2);
-                _northeastText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+                gameModel.changeWallHealth(5, 2);
+                _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
             }
         });
     
@@ -114,8 +114,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SE");
                 _new_wall = "SE";
-                gameModel.changeWallHealth(2, 2);
-                _southeastText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+                gameModel.changeWallHealth(4, 2);
+                _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
 
             }
         });
@@ -135,8 +135,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("SW");
 				_new_wall = "SW";
-                gameModel.changeWallHealth(4, 2);
-                _southwestText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+                gameModel.changeWallHealth(2, 2);
+                _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
             }
         });
         _northwestWallButton->setName("fade in NW");
@@ -145,8 +145,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 CULog("NW");
 				_new_wall = "NW";
-                gameModel.changeWallHealth(5, 2);
-                _northwestText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+                gameModel.changeWallHealth(1, 2);
+                _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
             }
         });
     
@@ -518,6 +518,15 @@ void RepairScene::update(float timestep){
             }
         }
     }
+	//delete enemies here to not disrupt iterator
+	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
+		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
+			if (j<gameModel._enemyArrayMaster[i].size()) {
+				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+			}
+		}
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
 
     // Animate
     _actions->update(timestep);
@@ -526,11 +535,11 @@ void RepairScene::update(float timestep){
     
 
         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
-        _northeastText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
-        _southeastText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+        _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+        _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
-        _southwestText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
-        _northwestText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+        _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+        _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
     
     std::shared_ptr<Texture> image   = _assets->get<Texture>("castle");
 
@@ -571,7 +580,7 @@ void RepairScene::update(float timestep){
     
 
     
-        _curr_wall_health = gameModel.getWallHealth(1);
+        _curr_wall_health = gameModel.getWallHealth(5);
         if (_curr_wall_health < 25){
             _northeastText->setPosition(170,80);
             NE_25->setVisible(true);
@@ -607,7 +616,7 @@ void RepairScene::update(float timestep){
     
 
     
-        _curr_wall_health = gameModel.getWallHealth(2);
+        _curr_wall_health = gameModel.getWallHealth(4);
         if (_curr_wall_health < 25){
             _southeastText->setPosition(140,80);
             SE_25->setVisible(true);
@@ -676,7 +685,7 @@ void RepairScene::update(float timestep){
         }
 
 
-        _curr_wall_health = gameModel.getWallHealth(4);
+        _curr_wall_health = gameModel.getWallHealth(2);
         if (_curr_wall_health < 25){
             _southwestText->setPosition(140,80);
             SW_25->setVisible(true);
@@ -710,7 +719,7 @@ void RepairScene::update(float timestep){
             }
         }
 
-        _curr_wall_health = gameModel.getWallHealth(5);
+        _curr_wall_health = gameModel.getWallHealth(1);
         if (_curr_wall_health < 25){
             _northwestText->setPosition(170,80);
             NW_25->setVisible(true);
