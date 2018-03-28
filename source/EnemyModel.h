@@ -34,7 +34,6 @@ public:
 
     // Assume assets are already loaded, and _node is immutable after init
     const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; };
-	const std::shared_ptr<cugl::PolygonNode> getIcon() const { return _icon; };
 
     //destructors
     void dispose();
@@ -49,9 +48,6 @@ protected:
 
     //This is the root scene node that corresponds to this model.
     std::shared_ptr<cugl::PolygonNode> _node;
-
-	//Overworld icon for the enemy in lookout
-	std::shared_ptr<cugl::PolygonNode> _icon;
 
 	//pixels per meter measurement. obstacle world * _drawScale = screen size
 	int _drawScale;

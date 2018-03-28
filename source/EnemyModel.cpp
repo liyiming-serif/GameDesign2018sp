@@ -4,7 +4,7 @@
 
 #include "EnemyModel.h"
 
-#define BASE_SPEED 0.75
+#define BASE_SPEED 0
 
 /*
 * ENEMY TYPES:
@@ -42,17 +42,11 @@ void EnemyModel::update(float deltaTime) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
     }
-	if (_icon != nullptr) {
-		Vec2 pos = getPosition()*_drawScale/3;
-		_icon->setPosition(180+pos.x, 288+pos.y);
-		_icon->setAngle(getAngle());
-	}
 }
 
 void EnemyModel::dispose(){
     CULog("enemy destroyed");
     _node = nullptr;
-	_icon = nullptr;
 }
 
 int EnemyModel::getDamage(int type){
