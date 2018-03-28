@@ -173,7 +173,9 @@ void BallistaScene::update(float deltaTime, int direction){
 	//delete enemies here to not disrupt iterator
 	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
 		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
-			gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+			if(j<gameModel._enemyArrayMaster[i].size()){
+				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+			}
 		}
 		gameModel._enemiesToFreeMaster[i].clear();
 	}
