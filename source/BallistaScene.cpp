@@ -12,6 +12,7 @@
 #define MAGE        7
 #define OIL         8
 #define DRAW_SCALE 32
+#define FONT    _assets->get<Font>("langdon")
 
 using namespace cugl;
 
@@ -37,6 +38,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the assets
     switchscene = 0;
     _assets = assets;
+
 
     // Set the background image
     std::shared_ptr<Texture> bktexture  = _assets->get<Texture>("ballista_view");
@@ -87,6 +89,12 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
      _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
 
+    _ammoText =Label::alloc((std::string) "                                              ", FONT);
+    addChild(_ammoText);
+    _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _ammoText->setPosition(_size.width - _size.width/8, _size.height/8);
+    _ammoText->setForeground(cugl::Color4(0,0,0,255));
+
     return true;
 }
 
@@ -107,6 +115,7 @@ void BallistaScene::dispose() {
 
 void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
+	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
 
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
@@ -136,14 +145,17 @@ void BallistaScene::update(float deltaTime, int direction){
 			_ballista->setPower(0.0f, true);
 			_ballista->isReadyToFire = false;
 
-			// Allocate a new arrow in memory
-			std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
+            if (gameModel.getArrowAmmo(0)>0) {
+                // Allocate a new arrow in memory
+                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
 
-			if (a != nullptr) {
-				_arrows.insert(a);
-				_world->addObstacle(a);
-				addChild(a->getNode());
-			}
+                if (a != nullptr) {
+                    _arrows.insert(a);
+                    _world->addObstacle(a);
+                    addChild(a->getNode());
+                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)-1);
+                }
+            }
 		}
     }
 

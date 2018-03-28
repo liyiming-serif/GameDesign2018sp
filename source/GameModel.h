@@ -21,6 +21,7 @@ protected:
     int _castleHealth[6];
     int _spawnTimer;
     cugl::Size _size;
+    int _arrowAmmo[2];
 
 public:
 
@@ -46,6 +47,22 @@ public:
     int getWallHealth(int wall);
 
     void changeWallHealth(int wall, int damage);
+
+    int getArrowAmmo(int type) {
+        return _arrowAmmo[type];
+    }
+
+    void setArrowAmmo(int type, int amount) {
+        if (_arrowAmmo[type] + amount > 99) {
+            _arrowAmmo[type] = 99;
+        }
+        else if (_arrowAmmo[type] + amount < 0) {
+            _arrowAmmo[type] = 0;
+        }
+        else {
+            _arrowAmmo[type] += amount;
+        }
+    }
 
 };
 
