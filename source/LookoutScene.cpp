@@ -101,7 +101,7 @@ void LookoutScene::dispose() {
 }
 
 void LookoutScene::update(float timestep){
-	//moves enemies
+	//moves enemies and marks out of bounds ones for deletion
 	for (int i = 0; i<gameModel._enemyArrayMaster.size(); i++) {
 		for (int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++) {
 			if (gameModel._enemyArrayMaster[i][j][1] < 85) {
@@ -114,7 +114,13 @@ void LookoutScene::update(float timestep){
 			}
 		}
 	}
-
+	//delete enemies here to not disrupt iterator
+	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
+		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
+			gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
+		}
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
 	updateEnemyMarkers();
 }
 
