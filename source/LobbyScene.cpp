@@ -66,6 +66,46 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             switchscene = MENU;
         }
     });
+
+    std::shared_ptr<Texture> tex_p1   = _assets->get<Texture>("player_1");
+    _player1 = PolygonNode::allocWithTexture(tex_p1);
+    _player1->setScale(.75f); // Magic number to rescale asset
+    _player1->setAnchor(Vec2::ANCHOR_CENTER);
+    _player1->setPosition(_size.width/4, _size.height/4);
+    addChild(_player1);
+    _player1->setVisible(false);
+
+    std::shared_ptr<Texture> tex_p2   = _assets->get<Texture>("player_2");
+    _player2 = PolygonNode::allocWithTexture(tex_p2);
+    _player2->setScale(1.7f); // Magic number to rescale asset
+    _player2->setAnchor(Vec2::ANCHOR_CENTER);
+    _player2->setPosition(_size.width - _size.width/4, _size.height/4);
+    addChild(_player2);
+    _player2->setVisible(false);
+
+    std::shared_ptr<Texture> tex_w   = _assets->get<Texture>("waiting");
+    _waiting = PolygonNode::allocWithTexture(tex_w);
+    _waiting->setScale(1.0f); // Magic number to rescale asset
+    _waiting->setAnchor(Vec2::ANCHOR_CENTER);
+    _waiting->setPosition(_size.width - _size.width/4,_size.height - _size.height/6 - _size.height/7);
+    addChild(_waiting);
+    _waiting->setVisible(false);
+
+    std::shared_ptr<Texture> tex_a1   = _assets->get<Texture>("avatar_1");
+    _avatar1 = PolygonNode::allocWithTexture(tex_a1);
+    _avatar1->setScale(1.0f); // Magic number to rescale asset
+    _avatar1->setAnchor(Vec2::ANCHOR_CENTER);
+    _avatar1->setPosition(_size.width/4,_size.height - _size.height/3);
+    addChild(_avatar1);
+    _avatar1->setVisible(false);
+
+    std::shared_ptr<Texture> tex_a2   = _assets->get<Texture>("avatar_2");
+    _avatar2 = PolygonNode::allocWithTexture(tex_a2);
+    _avatar2->setScale(1.0f); // Magic number to rescale asset
+    _avatar2->setAnchor(Vec2::ANCHOR_CENTER);
+    _avatar2->setPosition(_size.width - _size.width/4,_size.height - _size.height/6 - _size.height/8);
+    addChild(_avatar2);
+    _avatar2->setVisible(false);
     
     
     // Create the join button.  A button has an up image and a down image
@@ -79,6 +119,14 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             CULog("create");
+            _createButton->deactivate();
+            _enterButton->deactivate();
+            _createButton->setVisible(false);
+            _enterButton->setVisible(false);
+            _player1->setVisible(true);
+            _player2->setVisible(true);
+            _waiting->setVisible(true);
+            _avatar1->setVisible(true);
         }
     });
     
@@ -95,6 +143,14 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             CULog("enter");
+            _createButton->deactivate();
+            _enterButton->deactivate();
+            _createButton->setVisible(false);
+            _enterButton->setVisible(false);
+            _player1->setVisible(true);
+            _player2->setVisible(true);
+            _avatar1->setVisible(true);
+            _avatar2->setVisible(true);
         }
     });
     

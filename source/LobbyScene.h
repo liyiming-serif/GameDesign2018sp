@@ -22,11 +22,18 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _menuButton;
-     std::shared_ptr<cugl::Button> _createButton;
-     std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::Button> _createButton;
+    std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::PolygonNode> _avatar1;
+    std::shared_ptr<cugl::PolygonNode> _avatar2;
+    std::shared_ptr<cugl::Button> _avatar3;
+    std::shared_ptr<cugl::Button> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
-    
+    std::shared_ptr<cugl::PolygonNode> _player1;
+    std::shared_ptr<cugl::PolygonNode> _player2;
+    std::shared_ptr<cugl::PolygonNode> _waiting;
+
     
     
 public:
