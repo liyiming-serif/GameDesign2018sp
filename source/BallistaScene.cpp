@@ -105,6 +105,7 @@ void BallistaScene::dispose() {
 
 void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
+
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
 		for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
@@ -193,15 +194,17 @@ void BallistaScene::update(float deltaTime, int direction){
 	// Delete the enemies here because you can't remove elements while iterating
 	for (int i = 0; i<_enemiesToFree.size(); i++) {
 		std::shared_ptr<EnemyModel> e = _enemyArray[_enemiesToFree[i]];
-		_world->removeObstacle(e.get());
+		if(_world->inBounds(e.get())){
+			_world->removeObstacle(e.get());
+		}
 		removeChild(e->getNode());
 		_enemyArray.erase(_enemyArray.begin() + _enemiesToFree[i]);
 	}
 	_enemiesToFree.clear();
-	for (int i = 0; i<gameModel._enemiesToFreeMaster[(direction)].size(); i++){
-	    gameModel._enemyArrayMaster[(direction)].erase(gameModel._enemyArrayMaster[(direction)].begin() + gameModel._enemiesToFreeMaster[(direction)][i]);
-	}
-	gameModel._enemiesToFreeMaster[(direction)].clear();
+    for (int i = 0; i<gameModel._enemiesToFreeMaster[(direction)].size(); i++){
+        gameModel._enemyArrayMaster[(direction)].erase(gameModel._enemyArrayMaster[(direction)].begin() + gameModel._enemiesToFreeMaster[(direction)][i]);
+    }
+    gameModel._enemiesToFreeMaster[(direction)].clear();
 
     //crank the physics engine
     _world->update(deltaTime);
@@ -232,7 +235,6 @@ void BallistaScene::setActive(bool active, int direction){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
-        _enemyArray.clear();
 		//create all the enemies here from gameModel
 		for (int i = 0; i<gameModel._enemyArrayMaster[(direction)].size(); i++) {
 			std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayMaster[(direction)][i][0], gameModel._enemyArrayMaster[(direction)][i][1]),
@@ -246,8 +248,11 @@ void BallistaScene::setActive(bool active, int direction){
     }
     else{
         for(int i = 0; i<_enemyArray.size(); i++){
+        	CULog("break");
+        	if(_world->inBounds(_enemyArray[i].get())){
+            	_world->removeObstacle(_enemyArray[i].get());
+            }
             removeChild(_enemyArray[i]->getNode());
-            _world->removeObstacle(_enemyArray[i].get());
         }
         _ballistaTOcastle->deactivate();
 		_enemyArray.clear();

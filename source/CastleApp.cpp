@@ -191,7 +191,7 @@ void CastleApp::update(float timestep) {
                 _ballistaScene.update(timestep, _direction);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
-                    _ballistaScene.setActive(false, 0);
+                    _ballistaScene.setActive(false, _direction);
                 }
             }
             else if(_currscene==LOOKOUT){
