@@ -70,7 +70,8 @@ protected:
     bool _loaded;
 
     /** First scene graph to load. */
-    MenuScene _menuScene; 
+    MenuScene _menuScene;
+    LobbyScene _lobbyScene;
     
     /**  scene graph to load. */
     BallistaScene _ballistaScene;
@@ -80,7 +81,7 @@ protected:
     MageScene _mageScene;
     AmmoScene _ammoScene;
     OilScene _oilScene;
-    LobbyScene _lobbyScene;
+
 
     
     //controls enemies
@@ -90,7 +91,7 @@ protected:
     SpawnController _spawnController;
     
 
-    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 SW
+    //0 no direction, 1 N, 2 NE, 3 SE, 4 S, 5 SW, 6 NW
     int _direction;
     int _currscene;
     

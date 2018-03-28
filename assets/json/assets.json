@@ -91,6 +91,48 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "N_compass": {
+            "file":     "textures/Compass/N_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "NE_compass": {
+            "file":     "textures/Compass/NE_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "NW_compass": {
+            "file":     "textures/Compass/NW_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "S_compass": {
+            "file":     "textures/Compass/S_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "SE_compass": {
+            "file":     "textures/Compass/SE_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "SW_compass": {
+            "file":     "textures/Compass/SW_compass.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "lookout_floor": {
             "file":     "textures/Lookout/LookoutFloor.png",
             "minfilter":"nearest",

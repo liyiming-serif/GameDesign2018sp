@@ -37,6 +37,15 @@ protected:
     std::shared_ptr<BallistaModel> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Button> _ballistaTOcastle;
+    
+    std::shared_ptr<cugl::PolygonNode> N_compass;
+    std::shared_ptr<cugl::PolygonNode> NE_compass;
+    std::shared_ptr<cugl::PolygonNode> NW_compass;
+    std::shared_ptr<cugl::PolygonNode> S_compass;
+    std::shared_ptr<cugl::PolygonNode> SE_compass;
+    std::shared_ptr<cugl::PolygonNode> SW_compass;
+    
+    
 
     //enemies
     std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
@@ -64,6 +73,9 @@ public:
 
 	//Collision Callbacks
 	void beginContact(b2Contact* contact);
+    
+    //Sets the compass image based on the direction input
+    void setCompass (int direction);
 
 };
 
