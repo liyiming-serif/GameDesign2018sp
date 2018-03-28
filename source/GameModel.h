@@ -73,6 +73,21 @@ public:
     void setNetworked(bool networked) {
         this->networked = networked;
     }
+    int getArrowAmmo(int type) {
+        return _arrowAmmo[type];
+    }
+
+    void setArrowAmmo(int type, int amount) {
+        if (_arrowAmmo[type] + amount > 99) {
+            _arrowAmmo[type] = 99;
+        }
+        else if (_arrowAmmo[type] + amount < 0) {
+            _arrowAmmo[type] = 0;
+        }
+        else {
+            _arrowAmmo[type] += amount;
+        }
+    }
 
 private:
     std::string getStateChange();
@@ -106,8 +121,8 @@ private:
     //TODO: Make sure JNI wrapper code is correct
     void writeNetwork(char* byte_buffer) {
         // Set up parameters for JNI call
-        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-        jobject activity = (jobject)SDL_AndroidGetActivity();
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
 
         jclass clazz(env->GetObjectClass(activity));
         jmethodID method_id = env->GetMethodID(clazz, "writeNetwork",
@@ -119,20 +134,6 @@ private:
         // Free local references
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(clazz);
-    int getArrowAmmo(int type) {
-        return _arrowAmmo[type];
-    }
-
-    void setArrowAmmo(int type, int amount) {
-        if (_arrowAmmo[type] + amount > 99) {
-            _arrowAmmo[type] = 99;
-        }
-        else if (_arrowAmmo[type] + amount < 0) {
-            _arrowAmmo[type] = 0;
-        }
-        else {
-            _arrowAmmo[type] += amount;
-        }
     }
 
 };
