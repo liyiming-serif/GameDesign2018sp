@@ -49,9 +49,10 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	_enemyIcon = _assets->get<Texture>("skeletonIcon");
 	//initiallize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
-		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithPosition(_size.width/2, _size.height/2);
+		std::shared_ptr<cugl::Node> ecanvas = Node::alloc();
 		ecanvas->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
-		ecanvas->setAngle(i * 2 * M_PI / 6 - M_PI / 2);
+		ecanvas->setPosition(_size.width / 2, _size.height / 2);
+		ecanvas->setAngle(i * 2 * M_PI / 6);
 		addChild(ecanvas);
 		_enemyMarkers.push_back(ecanvas);
 	}
