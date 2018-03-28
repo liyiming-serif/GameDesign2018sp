@@ -15,6 +15,7 @@ using namespace cugl;
 
 bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<AssetManager>& assets){
 
+	_dir = dir;
 	_drawScale = drawScale;
 
 	//regular enemies, type 1
@@ -26,13 +27,6 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 		_node->setScale(0.3);
 		_node->setAnchor(Vec2::ANCHOR_CENTER);
 
-		//create the scene node
-		_icon = nullptr;
-		std::shared_ptr<Texture> texture2 = assets->get<Texture>("skeletonIcon");
-		_icon = PolygonNode::allocWithTexture(texture2);
-		_icon->setScale(0.3);
-		_icon->setAnchor(Vec2::ANCHOR_CENTER);
-
 		//initialize the box2d obstacle
 		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
 		setAngle(0);
@@ -42,6 +36,7 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 }
 
 void EnemyModel::update(float deltaTime) {
+    setLinearVelocity(cos(_dir)*BASE_SPEED,sin(_dir)*BASE_SPEED);
     Obstacle::update(deltaTime);
     if (_node != nullptr) {
         _node->setPosition(getPosition()*_drawScale);
@@ -58,4 +53,11 @@ void EnemyModel::dispose(){
     CULog("enemy destroyed");
     _node = nullptr;
 	_icon = nullptr;
+}
+
+int EnemyModel::getDamage(int type){
+    if(type == 1){
+        return 9;
+    }
+    else return 0;
 }

@@ -187,6 +187,20 @@ void AmmoScene::dispose() {
 }
 
 void AmmoScene::update(float timestep){
+    //moves enemies
+    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
+        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
+            if(gameModel._enemyArrayMaster[i][j][1] < 85){
+                //remove
+                gameModel._enemiesToFreeMaster[i].push_back(j);
+                gameModel.changeWallHealth(i, -9);
+            }
+            else{
+                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
+            }
+        }
+    }
+
     // Animate
     if (move_direction  && !_actions->isActive(ACT_KEY)){
         doMove(_moveright);
