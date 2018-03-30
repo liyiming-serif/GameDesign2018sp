@@ -37,58 +37,17 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
     _castleHealth[0] = 10;
     _castleHealth[3] = 10;
 
-    // Create the physics world
-    //_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
-
-
-    //testing enemy code
-    /*
-        std::shared_ptr<EnemyModel> enemy1 = EnemyModel::alloc(Vec2(200, 200), 0, 1, DRAW_SCALE, _assets);
-            if(enemy1 != nullptr) {
-                _enemyArrayGroundN.insert(enemy1);
-                _world->addObstacle(enemy1);
-            }
-        std::shared_ptr<EnemyModel> enemy2 = EnemyModel::alloc(Vec2(200, 400), 0, 1, DRAW_SCALE, _assets);
-            if(enemy2 != nullptr) {
-                _enemyArrayGroundN.insert(enemy2);
-                _world->addObstacle(enemy2);
-            }
-            */
     return true;
 }
 
 void GameModel::dispose() {
-    //if (_world != nullptr) {
-    //    _world->clear();
-    //    _world = nullptr;
-    //}
     _assets = nullptr;
     _enemyArrayMaster.clear();
     _enemiesToFreeMaster.clear();
 }
 
 void GameModel::update(float deltaTime){
-	//// Update enemies and mark out of bound ones for deletion
-	//Rect bounds(Vec2::ZERO, _size / DRAW_SCALE);
-	//for (auto it = _enemyArrayGroundN.begin(); it != _enemyArrayGroundN.end(); it++) {
-	//	std::shared_ptr<EnemyModel> e = *it;
-	//	if (e != nullptr) {
-	//		e->update(deltaTime);
-	//	}
-	//	if (!bounds.contains(e->getPosition())) {
-	//		_enemiesToFree.insert(e);
-	//	}
-	//}
 
-	//// Delete the arrows here because you can't remove elements while iterating
-	//for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
-	//	std::shared_ptr<EnemyModel> e = *it;
-	//	_world->removeObstacle(e.get());
-	//	removeChild(e->getNode());
-	//	_enemyArrayGroundN.erase(e);
-	//	CULog("%d\n", _enemyArrayGroundN.size());
-	//}
-	//_enemiesToFree.clear();
     if (networked) {
         if (clock == 300) {
             const char *write_byte_buffer = return_buffer(getStateChange());
@@ -107,7 +66,6 @@ void GameModel::update(float deltaTime){
             clock++;
         }
     }
-	//update positions
 }
 
 int GameModel::getWallHealth(int wall) {
@@ -210,16 +168,17 @@ char* GameModel::return_buffer(const std::string& string)
     return return_string;
 }
 
-//JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
-//        (JNIEnv *env, jclass clazz, jbyteArray array) {
-//    jbyte* buffer = env->GetByteArrayElements(array, NULL);
-//    jsize size = env->GetArrayLength(array);
-//    char *byte_buffer = new char[size];
-//
-//    for(int i = 0; i < size; i++) {
-//        byte_buffer[i] = buffer[i];
-//    }
-//    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
-//    return byte_buffer;
-//}
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
+        (JNIEnv *env, jclass clazz, jbyteArray array) {
+    jbyte* buffer = env->GetByteArrayElements(array, NULL);
+    jsize size = env->GetArrayLength(array);
+    char *byte_buffer = new char[size];
 
+    for(int i = 0; i < size; i++) {
+        byte_buffer[i] = buffer[i];
+    }
+    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+    return byte_buffer;
+}
+#endif
