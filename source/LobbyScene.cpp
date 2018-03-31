@@ -63,7 +63,6 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _menuButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("go to menu");
             switchscene = MENU;
         }
     });
@@ -145,7 +144,6 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _enterButton->setName("enter");
     _enterButton->setListener([=] (const std::string& name, bool down) {
         if (!down) {
-            CULog("enter");
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
             setupBluetoothClient();
 #endif
@@ -213,7 +211,6 @@ void LobbyScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
         _menuButton->activate(input.findKey("menuButton"));
 		if (!_deactivateCreate) {
 			_createButton->activate(input.findKey("createButton"));

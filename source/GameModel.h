@@ -12,7 +12,7 @@
 #include <set>
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
-//#include <jni.h>
+#include <jni.h>
 #endif
 #include <array>
 #include <vector>

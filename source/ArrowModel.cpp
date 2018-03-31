@@ -33,6 +33,5 @@ void ArrowModel::update(float deltaTime) {
 }
 
 void ArrowModel::dispose(){
-    CULog("Arrow destroyed!");
     _node = nullptr;
 }

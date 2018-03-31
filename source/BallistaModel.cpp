@@ -111,7 +111,6 @@ void BallistaModel::setPower(float power, bool instantaneous) {
 }
 
 void BallistaModel::dispose() {
-	CULog("Ballista destroyed!");
 	_node = nullptr;
 }
 

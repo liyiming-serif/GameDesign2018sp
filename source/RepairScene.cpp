@@ -89,7 +89,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                 CULog("N");
                 _new_wall = "N";
                 gameModel.changeWallHealth(0, 2);
                 _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
@@ -100,7 +99,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                CULog("NE");
                 _new_wall = "NE";
                 gameModel.changeWallHealth(5, 2);
                 _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
@@ -112,7 +110,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                CULog("SE");
                 _new_wall = "SE";
                 gameModel.changeWallHealth(4, 2);
                 _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
@@ -123,7 +120,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                CULog("S");
                 _new_wall = "S";
                 gameModel.changeWallHealth(3, 2);
                 _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
@@ -133,7 +129,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                CULog("SW");
 				_new_wall = "SW";
                 gameModel.changeWallHealth(2, 2);
                 _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
@@ -143,7 +138,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
-                CULog("NW");
 				_new_wall = "NW";
                 gameModel.changeWallHealth(1, 2);
                 _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
@@ -452,7 +446,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _repairTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("in repair");
+
             switchscene = OVERWORLD;
         }
     });

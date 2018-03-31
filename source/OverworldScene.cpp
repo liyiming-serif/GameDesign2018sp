@@ -291,7 +291,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 if (!down) {
                     switchscene = OIL;
                     direction = 0;
-                    CULog("OIL");
                 }
             });
     
@@ -518,70 +517,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     
-    
-//    //FLOOR NAVIGATION
-//    std::shared_ptr<Texture> floor_up   = _assets->get<Texture>("up");
-//    std::shared_ptr<Texture> floor_down = _assets->get<Texture>("down");
-//    _up_button = Button::alloc(PolygonNode::allocWithTexture(floor_up),
-//                               PolygonNode::allocWithTexture(floor_up));
-//    _down_button = Button::alloc(PolygonNode::allocWithTexture(floor_down),
-//                                 PolygonNode::allocWithTexture(floor_down));
-//    
-//    // Create a callback function for the MOVE UP button
-//    _up_button->setName("lookout");
-//    _up_button->setListener([=] (const std::string& name, bool down) {
-//        // Only go to lookout when the button is released
-//        if (!down && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
-//            CULog("Move Up");
-//            CULog("curent floor");
-//            CULog("%d/n",currentCastleFloor);
-//            OverworldScene::doMove(_moveup, currentCastleFloor);
-//            CULog("fade out");
-//            CULog("%d/n",currentCastleFloor);
-//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-//            CULog("fade in");
-//            CULog("%d/n",currentCastleFloor+1);
-//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor+1);
-//            currentCastleFloor += 1;
-//            CULog("current floor");
-//            CULog("%d/n",currentCastleFloor);
-//        }
-//    });
-//    
-//    
-//    // Create a callback function for the MOVE DOWN button
-//    _down_button->setName("lookout");
-//    _down_button->setListener([=] (const std::string& name, bool down) {
-//        // Only go to lookout when the button is released
-//        if (!down && currentCastleFloor>0  && !_actions->isActive(ACT_KEY)) {
-//            CULog("Move Down");
-//            CULog("curent floor");
-//            CULog("%d/n",currentCastleFloor);
-//            OverworldScene::doMove(_movedn, currentCastleFloor);
-//            CULog("fade out");
-//            CULog("%d/n",currentCastleFloor);
-//            OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-//            CULog("fade in");
-//            CULog("%d/n",currentCastleFloor-1);
-//            OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor-1);
-//            currentCastleFloor -= 1;
-//            CULog("current floor");
-//            CULog("%d/n",currentCastleFloor);
-//        }
-//    });
-//    
-//    _up_button->setScale(0.1f); // Magic number to rescale asset
-//    _up_button->setAnchor(Vec2::ANCHOR_CENTER);
-//    _up_button->setPosition(-60,50);
-//    
-//    _down_button->setScale(0.1f); // Magic number to rescale asset
-//    _down_button->setAnchor(Vec2::ANCHOR_CENTER);
-//    _down_button->setPosition(-60,-50);
-//    
-//    _background->addChild(_up_button);
-//    _background->addChild(_down_button);
-    
-    
     // Create the quit button.  A button has an up image and a down image
     std::shared_ptr<Texture> up   = _assets->get<Texture>("close-normal");
     std::shared_ptr<Texture> down = _assets->get<Texture>("close-selected");
@@ -600,7 +535,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _quitButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("Goodbye!");
             Application::get()->quit();
         }
     });
@@ -666,7 +600,6 @@ void OverworldScene::resetCastle(){
 
 
 void OverworldScene::doMove(const std::shared_ptr<MoveBy>& action, int floor) {
-    CULog("Do move");
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
     _actions->activate(ACT_KEY, action, _levels, fcn);
 }
@@ -691,7 +624,6 @@ std::shared_ptr<cugl::PolygonNode> OverworldScene::getTowerView(int floor) {
 }
 
 void OverworldScene::doFadeIn(const std::shared_ptr<FadeIn>& action, int floor) {
-    CULog("Do fade in");
     std::shared_ptr<cugl::PolygonNode> _curr_castle_floor;
     _curr_castle_floor = OverworldScene::getTowerView(floor);
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
@@ -699,7 +631,6 @@ void OverworldScene::doFadeIn(const std::shared_ptr<FadeIn>& action, int floor) 
 }
 
 void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor) {
-    CULog("Do fade out");
     std::shared_ptr<cugl::PolygonNode> _curr_castle_floor;
     _curr_castle_floor = OverworldScene::getTowerView(floor);
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);

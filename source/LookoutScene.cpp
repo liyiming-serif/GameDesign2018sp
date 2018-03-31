@@ -68,7 +68,6 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lookoutTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("at lookout");
             switchscene = OVERWORLD;
         }
     });
