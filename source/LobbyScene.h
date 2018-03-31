@@ -27,6 +27,8 @@ protected:
     std::shared_ptr<cugl::Button> _menuButton;
     std::shared_ptr<cugl::Button> _createButton;
     std::shared_ptr<cugl::Button> _enterButton;
+	bool _deactivateCreate;
+	bool _deactivateEnter;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
     std::shared_ptr<cugl::PolygonNode> _avatar2;
     std::shared_ptr<cugl::Button> _avatar3;
