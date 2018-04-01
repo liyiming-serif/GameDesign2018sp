@@ -1,10 +1,21 @@
-# GameDesign2018sp
-Advanced game design project for group 3.
-
-
 # Game Design Group 3 Spring 2018
-
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
+
+## Alpha release notes
+Chaos Castle requires no additional configuration. Build and run this project as you would 'HelloWorld' for Android, Apple, and Windows.
+
+### Changes and Notes
+Only the **north** oil button will take you to the oil scene. This is because we are planning to refactor how we consider directions in the Beta release.
+
+Fire the ballista by dragging anywhere on the screen in the opposite direction.
+
+In the Ammunition Room, tap the large ammo button in the center to make arrows, the closer the slider gets to the center, the more arrows you make (think of how you attack in Undertale). The slider does move, it just has a slow start.
+
+
+### Known Issues
+Working bluetooth code is on a separate development branch that Ashton has demoed separately to Walker. **Do not click the "Lobby" button on Android builds** as it will crash the app.
+
+We are getting rid of the catapult role, though the castle still has a catapult floor as the art assets have not yet been updated.
 
 
 ## Git Usage
