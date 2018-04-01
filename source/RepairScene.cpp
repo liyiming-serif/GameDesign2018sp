@@ -463,6 +463,11 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
     _repairTOcastle->activate(input.generateKey("repairTOcastle"));
     
+	// set initial castle health
+	for (int i = 0; i < 6; i++) {
+		gameModel.changeWallHealth(i, 100);
+	}
+
     return true;
 }
 
