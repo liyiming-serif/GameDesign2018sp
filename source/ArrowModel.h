@@ -27,13 +27,13 @@ public:
     ArrowModel(void) : CapsuleObstacle() { }
 
     //Alloc calls init, and returns a reference to this arrow. In scene controllers, call alloc.
-    static std::shared_ptr<ArrowModel> alloc(cugl::Vec2 pos, float dir, int drawScale,
+    static std::shared_ptr<ArrowModel> alloc(cugl::Vec2 pos, float speed, float dir, int drawScale,
                                              const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<ArrowModel> ref = std::make_shared<ArrowModel>();
-        return (ref->init(pos, dir, drawScale, assets) ? ref : nullptr);
+        return (ref->init(pos, speed, dir, drawScale, assets) ? ref : nullptr);
     }
 
-    bool init(cugl::Vec2 pos, float dir, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(cugl::Vec2 pos, float speed, float dir, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
 
 
     /**
