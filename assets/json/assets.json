@@ -419,8 +419,8 @@
 			"file":     "fonts/Charlemagne.ttf",
 			"size":     64
 		},
-        "langdon": {
-            "file":     "fonts/langdon.ttf",
+        "futura": {
+            "file":     "fonts/Futura.ttf",
             "size":     64
         }
 	}

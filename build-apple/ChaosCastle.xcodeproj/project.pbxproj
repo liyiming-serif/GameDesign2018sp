@@ -23,6 +23,12 @@
 		A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
 		A9AA6117204A19C500940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
 		A9AA6118204A19C600940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
+		A9B5BCA0206E99DD00984595 /* GameModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B32061A05F00166C6F /* GameModel.cpp */; };
+		A9B5BCA4206E99DE00984595 /* GameModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B32061A05F00166C6F /* GameModel.cpp */; };
+		A9B5BCA5206E9ACA00984595 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
+		A9B5BCA6206E9ACB00984595 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
+		A9B5BCA7206E9AF400984595 /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B92061A06000166C6F /* EnemyModel.cpp */; };
+		A9B5BCA8206E9AF400984595 /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B92061A06000166C6F /* EnemyModel.cpp */; };
 		A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B61F2048F1C30036047B /* BallistaScene.cpp */; };
 		A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
 		A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
@@ -621,7 +627,10 @@
 				A9E863CE206483A000166C6F /* OilScene.cpp in Sources */,
 				A9B9B6292048F26D0036047B /* OverworldScene.cpp in Sources */,
 				A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */,
+				A9B5BCA6206E9ACB00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638E205B584400166C6F /* InputController.cpp in Sources */,
+				A9B5BCA8206E9AF400984595 /* EnemyModel.cpp in Sources */,
+				A9B5BCA4206E99DE00984595 /* GameModel.cpp in Sources */,
 				A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */,
 				A9499940206B27FF00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB0FF61E2016F06000517030 /* CastleApp.cpp in Sources */,
@@ -643,7 +652,10 @@
 				A9E863CD206483A000166C6F /* OilScene.cpp in Sources */,
 				A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */,
 				A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */,
+				A9B5BCA5206E9ACA00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638D205B584400166C6F /* InputController.cpp in Sources */,
+				A9B5BCA7206E9AF400984595 /* EnemyModel.cpp in Sources */,
+				A9B5BCA0206E99DD00984595 /* GameModel.cpp in Sources */,
 				A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */,
 				A949993F206B27FE00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB7454AF1D74D891002FBAE6 /* CastleApp.cpp in Sources */,

@@ -37,7 +37,7 @@ using namespace std;
 
 #define UP  _assets->get<Texture>("ammo_icon")
 
-#define FONT    _assets->get<Font>("langdon")
+#define FONT    _assets->get<Font>("futura")
 
 bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -546,17 +546,17 @@ void RepairScene::update(float timestep){
 
         _curr_wall_health = gameModel.getWallHealth(0);
         if (_curr_wall_health < 25){
-            _northText->setPosition(170,80);
+            _northText->setPosition(275,80);
             N_25->setVisible(true);
             N_50->setVisible(false);
             N_75->setVisible(false);
             N_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _northText->setPosition(190,80);
+                _northText->setPosition(290,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _northText->setPosition(170,80);
+            _northText->setPosition(275,80);
             N_25->setVisible(false);
             N_50->setVisible(false);
             N_75->setVisible(false);
@@ -574,7 +574,7 @@ void RepairScene::update(float timestep){
             N_75->setVisible(false);
             N_100->setVisible(true);
             if (_curr_wall_health == 100){
-                 _northText->setPosition(150,80);
+                 _northText->setPosition(260,80);
             }
         }
     
@@ -582,17 +582,17 @@ void RepairScene::update(float timestep){
     
         _curr_wall_health = gameModel.getWallHealth(5);
         if (_curr_wall_health < 25){
-            _northeastText->setPosition(170,80);
+            _northeastText->setPosition(275,80);
             NE_25->setVisible(true);
             NE_50->setVisible(false);
             NE_75->setVisible(false);
             NE_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _northeastText->setPosition(190,80);
+                _northeastText->setPosition(290,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _northeastText->setPosition(170,80);
+            _northeastText->setPosition(275,80);
             NE_25->setVisible(false);
             NE_50->setVisible(false);
             NE_75->setVisible(false);
@@ -610,7 +610,7 @@ void RepairScene::update(float timestep){
             NE_75->setVisible(false);
             NE_100->setVisible(true);
             if (_curr_wall_health == 100){
-                _northeastText->setPosition(150,80);
+                _northeastText->setPosition(260,80);
             }
         }
     
@@ -618,17 +618,17 @@ void RepairScene::update(float timestep){
     
         _curr_wall_health = gameModel.getWallHealth(4);
         if (_curr_wall_health < 25){
-            _southeastText->setPosition(140,80);
+            _southeastText->setPosition(35,80);
             SE_25->setVisible(true);
             SE_50->setVisible(false);
             SE_75->setVisible(false);
             SE_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _southeastText->setPosition(120,80);
+                _southeastText->setPosition(20,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _southeastText->setPosition(140,80);
+            _southeastText->setPosition(35,80);
             SE_25->setVisible(false);
             SE_50->setVisible(false);
             SE_75->setVisible(false);
@@ -646,23 +646,23 @@ void RepairScene::update(float timestep){
             SE_75->setVisible(false);
             SE_100->setVisible(true);
             if (_curr_wall_health == 100){
-                _southeastText->setPosition(160,80);
+                _southeastText->setPosition(50,80);
             }
         }
 
         _curr_wall_health = gameModel.getWallHealth(3);
         if (_curr_wall_health < 25){
-            _southText->setPosition(140,80);
+            _southText->setPosition(35,80);
             S_25->setVisible(true);
             S_50->setVisible(false);
             S_75->setVisible(false);
             S_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _southText->setPosition(120,80);
+                _southText->setPosition(20,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _southText->setPosition(140,80);
+            _southText->setPosition(35,80);
             S_25->setVisible(false);
             S_50->setVisible(false);
             S_75->setVisible(false);
@@ -680,24 +680,24 @@ void RepairScene::update(float timestep){
             S_75->setVisible(false);
             S_100->setVisible(true);
             if (_curr_wall_health == 100){
-                _southText->setPosition(160,80);
+                _southText->setPosition(50,80);
             }
         }
 
 
         _curr_wall_health = gameModel.getWallHealth(2);
         if (_curr_wall_health < 25){
-            _southwestText->setPosition(140,80);
+            _southwestText->setPosition(35,80);
             SW_25->setVisible(true);
             SW_50->setVisible(false);
             SW_75->setVisible(false);
             SW_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _southwestText->setPosition(120,80);
+                _southwestText->setPosition(20,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _southwestText->setPosition(140,80);
+            _southwestText->setPosition(35,80);
             SW_25->setVisible(false);
             SW_50->setVisible(false);
             SW_75->setVisible(false);
@@ -715,23 +715,23 @@ void RepairScene::update(float timestep){
             SW_75->setVisible(false);
             SW_100->setVisible(true);
             if (_curr_wall_health == 100){
-                _southwestText->setPosition(160,80);
+                _southwestText->setPosition(50,80);
             }
         }
 
         _curr_wall_health = gameModel.getWallHealth(1);
         if (_curr_wall_health < 25){
-            _northwestText->setPosition(170,80);
+            _northwestText->setPosition(275,80);
             NW_25->setVisible(true);
             NW_50->setVisible(false);
             NW_75->setVisible(false);
             NW_100->setVisible(false);
             if (_curr_wall_health < 10){
-                _northwestText->setPosition(190,80);
+                _northwestText->setPosition(290,80);
             }
         }
         else if (_curr_wall_health < 75){
-            _northwestText->setPosition(170,80);
+            _northwestText->setPosition(275,80);
             NW_25->setVisible(false);
             NW_50->setVisible(false);
             NW_75->setVisible(false);
@@ -749,7 +749,7 @@ void RepairScene::update(float timestep){
             NW_75->setVisible(false);
             NW_100->setVisible(true);
             if (_curr_wall_health == 100){
-                _northwestText->setPosition(150,80);
+                _northwestText->setPosition(250,80);
             }
         }
 }
