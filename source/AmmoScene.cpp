@@ -24,6 +24,8 @@ using namespace cugl;
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
+#define LOBBY       10
 
 
 /** Define the time settings for animation */

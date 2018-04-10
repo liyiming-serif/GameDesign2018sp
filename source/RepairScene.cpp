@@ -24,6 +24,8 @@ using namespace std;
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
+#define LOBBY       10
 
 #define FLOOR_SCALE .54f
 #define BUTTON_SCALE 1.255f

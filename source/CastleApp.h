@@ -32,6 +32,7 @@
 #include <cugl/cugl.h>
 #include "LoadingScene.h"
 #include "MenuScene.h"
+#include "LevelselectScene.h"
 #include "BallistaScene.h"
 #include "OverworldScene.h"
 #include "LookoutScene.h"
@@ -72,6 +73,7 @@ protected:
     /** First scene graph to load. */
     MenuScene _menuScene;
     LobbyScene _lobbyScene;
+    LevelselectScene _levelScene;
     
     /**  scene graph to load. */
     BallistaScene _ballistaScene;
@@ -90,10 +92,12 @@ protected:
     //controls spawns
     SpawnController _spawnController;
     
-
+    
+    int _mode;
     //0 no direction, 0 N, 1 NW, 2 SW, 3 S, 4 SE, 5 NE
     int _direction;
     int _currscene;
+    int _oilDirection;
     
 public:
     /**

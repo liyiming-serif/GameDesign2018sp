@@ -23,6 +23,7 @@ using namespace cugl;
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
 #define LOBBY       10
 
 bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
@@ -54,13 +55,13 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(_size.width/2,_size.height/2);
     
     // Create the back button.  A button has an up image and a down image
-    std::shared_ptr<Texture> menu_tex   = _assets->get<Texture>("lobby_button");
-    _menuButton = Button::alloc(PolygonNode::allocWithTexture(menu_tex));
-    _menuButton->setScale(.2f); // Magic number to rescale asset
+    std::shared_ptr<Texture> menu_tex   = _assets->get<Texture>("back");
+    _backButton = Button::alloc(PolygonNode::allocWithTexture(menu_tex));
+    _backButton->setScale(.6f); // Magic number to rescale asset
 
     // Create a callback function for the OVERWORLD button
-    _menuButton->setName("menu");
-    _menuButton->setListener([=] (const std::string& name, bool down) {
+    _backButton->setName("menu");
+    _backButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
             switchscene = MENU;
@@ -116,6 +117,23 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _createButton = Button::alloc(PolygonNode::allocWithTexture(tex_1));
     _createButton->setScale(.5f); // Magic number to rescale asset
     
+    
+    // Create the play button.  A button has an up image and a down image
+    std::shared_ptr<Texture> play_up   = _assets->get<Texture>("levels");
+    
+    _levelsButton = Button::alloc(PolygonNode::allocWithTexture(play_up));
+    _levelsButton->setScale(0.6f); // Magic number to rescale asset
+    
+    // Create a callback function for the play button
+    _levelsButton->setName("play");
+    _levelsButton->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            switchscene = LEVELS;
+        }
+    });
+    
+    
     // Create a callback function for HOST
     _createButton->setName("create");
     _createButton->setListener([=] (const std::string& name, bool down) {
@@ -160,8 +178,8 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // Position the overworld button in the bottom left
-    _menuButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _menuButton->setPosition(80,40);
+    _backButton->setAnchor(Vec2::ANCHOR_CENTER);
+    _backButton->setPosition(100,500);
     
     _createButton->setAnchor(Vec2::ANCHOR_CENTER);
     _createButton->setPosition(300,300);
@@ -169,15 +187,20 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _enterButton->setAnchor(Vec2::ANCHOR_CENTER);
     _enterButton->setPosition(700,300);
     
+    _levelsButton->setAnchor(Vec2::ANCHOR_CENTER);
+    _levelsButton->setPosition(700,130);
+    
     // Add the logo and button to the scene graph
-    addChild(_menuButton);
+    addChild(_backButton);
     addChild(_createButton);
     addChild(_enterButton);
+    addChild(_levelsButton);
     
     // We can only activate a button AFTER it is added to a scene
-    _menuButton->activate(input.generateKey("menuButton"));
+    _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
     _enterButton->activate(input.generateKey("enterButton"));
+    _levelsButton->activate(input.generateKey("levelsMULTIButton"));
     
     return true;
 }
@@ -186,7 +209,7 @@ void LobbyScene::dispose() {
     if (_active) {
         removeAllChildren();
         _assets = nullptr;
-        _menuButton = nullptr;
+        _backButton = nullptr;
         _createButton = nullptr;
         _enterButton = nullptr;
         _background = nullptr;
@@ -211,7 +234,8 @@ void LobbyScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        _menuButton->activate(input.findKey("menuButton"));
+        _backButton->activate(input.findKey("backMULTIButton"));
+        _levelsButton->activate(input.findKey("levelsMULTIButton"));
 		if (!_deactivateCreate) {
 			_createButton->activate(input.findKey("createButton"));
 		}
@@ -220,8 +244,9 @@ void LobbyScene::setActive(bool active){
 		}
     }
     else{
-        _menuButton->deactivate();
+        _backButton->deactivate();
         _createButton->deactivate();
         _enterButton->deactivate();
+        _levelsButton->deactivate();
     }
 }
