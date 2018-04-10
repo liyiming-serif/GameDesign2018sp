@@ -34,13 +34,7 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
         _prevCastleHealth[i] = sum;
         sum +=10;
     }
-//    _castleHealth[0] = 90;
-//    _prevCastleHealth[0] = 90;
-//    _castleHealth[1] = 90;
-//    _castleHealth[2] = 90;
-//    _castleHealth[3] = 90;
-//    _castleHealth[4] = 90;
-//    _castleHealth[5] = 90;
+
     
     
 

@@ -572,6 +572,7 @@ void RepairScene::update(float timestep){
             N_50->setVisible(false);
             N_75->setVisible(false);
             N_100->setVisible(true);
+            _northText->setPosition(275,80);
             if (_curr_wall_health == 100){
                  _northText->setPosition(260,80);
             }
@@ -608,6 +609,7 @@ void RepairScene::update(float timestep){
             NE_50->setVisible(false);
             NE_75->setVisible(false);
             NE_100->setVisible(true);
+            _northeastText->setPosition(275,80);
             if (_curr_wall_health == 100){
                 _northeastText->setPosition(260,80);
             }
@@ -644,6 +646,7 @@ void RepairScene::update(float timestep){
             SE_50->setVisible(false);
             SE_75->setVisible(false);
             SE_100->setVisible(true);
+            _southeastText->setPosition(35,80);
             if (_curr_wall_health == 100){
                 _southeastText->setPosition(50,80);
             }
@@ -678,6 +681,7 @@ void RepairScene::update(float timestep){
             S_50->setVisible(false);
             S_75->setVisible(false);
             S_100->setVisible(true);
+            _southText->setPosition(35,80);
             if (_curr_wall_health == 100){
                 _southText->setPosition(50,80);
             }
@@ -713,6 +717,7 @@ void RepairScene::update(float timestep){
             SW_50->setVisible(false);
             SW_75->setVisible(false);
             SW_100->setVisible(true);
+            _southwestText->setPosition(35,80);
             if (_curr_wall_health == 100){
                 _southwestText->setPosition(50,80);
             }
@@ -747,8 +752,9 @@ void RepairScene::update(float timestep){
             NW_50->setVisible(false);
             NW_75->setVisible(false);
             NW_100->setVisible(true);
+            _northwestText->setPosition(275,80);
             if (_curr_wall_health == 100){
-                _northwestText->setPosition(250,80);
+                _northwestText->setPosition(260,80);
             }
         }
 }
