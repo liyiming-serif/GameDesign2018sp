@@ -45,7 +45,6 @@ void EnemyModel::update(float deltaTime) {
 }
 
 void EnemyModel::dispose(){
-    CULog("enemy destroyed");
     _node = nullptr;
 }
 

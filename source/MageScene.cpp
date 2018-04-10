@@ -60,7 +60,6 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _mageTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("in mage room");
             switchscene = OVERWORLD;
         }
     });

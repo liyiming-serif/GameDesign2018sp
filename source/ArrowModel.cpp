@@ -4,11 +4,9 @@
 
 #include "ArrowModel.h"
 
-#define ARROW_SPEED 12
-
 using namespace cugl;
 
-bool ArrowModel::init(Vec2 pos, float dir, int drawScale, const std::shared_ptr<AssetManager>& assets){
+bool ArrowModel::init(Vec2 pos, float speed, float dir, int drawScale, const std::shared_ptr<AssetManager>& assets){
 	//_drawScale is pixels per meter (meter is for box2d)
 	_drawScale = drawScale;
     //create the scene node
@@ -20,7 +18,7 @@ bool ArrowModel::init(Vec2 pos, float dir, int drawScale, const std::shared_ptr<
     //initialize the box2d obstacle
     CapsuleObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
     setAngle(dir);
-    setLinearVelocity(cos(dir)*ARROW_SPEED,sin(dir)*ARROW_SPEED);
+    setLinearVelocity(cos(dir)*speed,sin(dir)*speed);
     return true;
 }
 
@@ -33,6 +31,5 @@ void ArrowModel::update(float deltaTime) {
 }
 
 void ArrowModel::dispose(){
-    CULog("Arrow destroyed!");
     _node = nullptr;
 }

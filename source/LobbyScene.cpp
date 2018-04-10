@@ -63,7 +63,6 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _menuButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("go to menu");
             switchscene = MENU;
         }
     });
@@ -108,22 +107,24 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_avatar2);
     _avatar2->setVisible(false);
     
-    
-    // Create the join button.  A button has an up image and a down image
+    //markers to deactivate the networking buttons
+	_deactivateCreate = false;
+	_deactivateEnter = false;
+
+    // Create the HOST button.  A button has an up image and a down image
     std::shared_ptr<Texture> tex_1   = _assets->get<Texture>("create_button");
     _createButton = Button::alloc(PolygonNode::allocWithTexture(tex_1));
     _createButton->setScale(.5f); // Magic number to rescale asset
     
-    // Create a callback function for the button
+    // Create a callback function for HOST
     _createButton->setName("create");
     _createButton->setListener([=] (const std::string& name, bool down) {
-        // Only quit when the button is released
         if (!down) {
-            CULog("create");
-
-           // setupBluetoothServer();
-            _createButton->deactivate();
-            _enterButton->deactivate();
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+			setupBluetoothServer();
+#endif
+			_deactivateCreate = true;
+			_deactivateEnter = true;
             _createButton->setVisible(false);
             _enterButton->setVisible(false);
             _player1->setVisible(true);
@@ -134,21 +135,20 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     
-    
-    // Create the  button.  A button has an up image and a down image
+    // Create the JOIN button.  A button has an up image and a down image
     std::shared_ptr<Texture> tex_2   = _assets->get<Texture>("enter_button");
     _enterButton = Button::alloc(PolygonNode::allocWithTexture(tex_2));
     _enterButton->setScale(.5f); // Magic number to rescale asset
     
-    // Create a callback function for the  button
+    // Create a callback function for the JOIN button
     _enterButton->setName("enter");
     _enterButton->setListener([=] (const std::string& name, bool down) {
-        // Only quit when the button is released
         if (!down) {
-            CULog("enter");
-           // setupBluetoothClient();
-            _createButton->deactivate();
-            _enterButton->deactivate();
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+            setupBluetoothClient();
+#endif
+			_deactivateCreate = true;
+			_deactivateEnter = true;
             _createButton->setVisible(false);
             _enterButton->setVisible(false);
             _player1->setVisible(true);
@@ -195,7 +195,12 @@ void LobbyScene::dispose() {
 }
 
 void LobbyScene::update(float timestep){
-    
+	if (_deactivateCreate) {
+		_createButton->deactivate();
+	}
+	if (_deactivateEnter) {
+		_enterButton->deactivate();
+	}
 }
 
 
@@ -206,10 +211,13 @@ void LobbyScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
         _menuButton->activate(input.findKey("menuButton"));
-        _createButton->activate(input.findKey("createButton"));
-        _enterButton->activate(input.findKey("enterButton"));
+		if (!_deactivateCreate) {
+			_createButton->activate(input.findKey("createButton"));
+		}
+		if (!_deactivateEnter) {
+			_enterButton->activate(input.findKey("enterButton"));
+		}
     }
     else{
         _menuButton->deactivate();

@@ -16,6 +16,8 @@
 
 #define BUTTON_SCALE 1.0f
 
+#define BALLISTA_MIN_POWER 9.0f
+
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
@@ -51,6 +53,21 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Get the ballista image and attach it to the animated model
 	_ballista = BallistaModel::alloc(Vec2(_size.width / 2, _background->getContentHeight() / 10),_assets);
+
+	// initialize, but don't add input dragging UI assets
+	_dpOrange = _assets->get<Texture>("drag-point-short");
+	_dlOrange = _assets->get<Texture>("drag-line-short");
+	_dpBlue = _assets->get<Texture>("drag-point");
+	_dlBlue = _assets->get<Texture>("drag-line");
+
+	_dragStart = AnimationNode::alloc(_dpOrange, 1, 4);
+	_dragStart->setFrame(0);
+	_dragStart->setAnchor(Vec2::ANCHOR_CENTER);
+	_dragLine = PolygonNode::allocWithTexture(_dlOrange);
+	_dragLine->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+	_dragEnd = AnimationNode::alloc(_dpOrange, 1, 4);
+	_dragEnd->setFrame(0);
+	_dragEnd->setAnchor(Vec2::ANCHOR_CENTER);
 
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -158,6 +175,13 @@ void BallistaScene::dispose() {
             _world = nullptr;
         }
         removeAllChildren();
+		_dragStart = nullptr;
+		_dragLine = nullptr;
+		_dragEnd = nullptr;
+		_dpOrange = nullptr;
+		_dlOrange = nullptr;
+		_dpBlue = nullptr;
+		_dlBlue = nullptr;
 		_ballista = nullptr;
         _arrows.clear();
 		_arrowsToFree.clear();
@@ -212,22 +236,47 @@ void BallistaScene::update(float deltaTime, int direction){
 	}
 
 	// Poll inputs
+	if (input.justPressed()) {
+		addChild(_dragStart);
+		addChild(_dragLine);
+		addChild(_dragEnd);
+
+		_dragStart->setPosition(screenToWorldCoords(input.dTouch()));
+		_dragLine->setPosition(screenToWorldCoords(input.dTouch()));
+	}
     if(input.isPressed()){
 		if (_ballista->isReadyToFire) {
 			Vec2 pointdir = screenToWorldCoords(input.dTouch())-screenToWorldCoords(input.pointerPos());
 			_ballista->setAngle(pointdir.getAngle());
 			_ballista->setPower(2.0f*pointdir.length() / (float)DRAW_SCALE, false);
+
+			//drag UI
+			_dragStart->setFrame((_dragStart->getFrame() + 1)%_dragStart->getSize());
+			_dragEnd->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
+
+			_dragEnd->setPosition(screenToWorldCoords(input.pointerPos()));
+			_dragLine->setAngle(pointdir.getAngle()+M_PI);
+			_dragLine->setScale(pointdir.length()/36.0f,1.0f);
+			if(_ballista->getPower() < BALLISTA_MIN_POWER) { //not enough power to fire ballista
+				_dragStart->setTexture(_dpOrange);
+				_dragLine->setTexture(_dlOrange);
+				_dragEnd->setTexture(_dpOrange);
+			}
+			else {
+				_dragStart->setTexture(_dpBlue);
+				_dragLine->setTexture(_dlBlue);
+				_dragEnd->setTexture(_dpBlue);
+			}
 		}
     }
     if(input.justReleased()){
+		removeChild(_dragStart);
+		removeChild(_dragLine);
+		removeChild(_dragEnd);
 		if (_ballista->isReadyToFire) {
-			// Fire ballista
-			_ballista->setPower(0.0f, true);
-			_ballista->isReadyToFire = false;
-
-            if (gameModel.getArrowAmmo(0)>0) {
+            if (gameModel.getArrowAmmo(0)>0 && _ballista->getPower()>=BALLISTA_MIN_POWER) {
                 // Allocate a new arrow in memory
-                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getAngle(), DRAW_SCALE, _assets);
+                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getPower(), _ballista->getAngle(), DRAW_SCALE, _assets);
 
                 if (a != nullptr) {
                     _arrows.insert(a);
@@ -236,6 +285,9 @@ void BallistaScene::update(float deltaTime, int direction){
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)-1);
                 }
             }
+			// Fire ballista
+			_ballista->setPower(0.0f, true);
+			_ballista->isReadyToFire = false;
 		}
     }
 

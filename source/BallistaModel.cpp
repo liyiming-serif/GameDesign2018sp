@@ -4,12 +4,12 @@
 
 #include "BallistaModel.h"
 
-#define MIN_ANGLE 5.0f/4.0f*M_PI
-#define MAX_ANGLE 7.0f/4.0f*M_PI
-#define TURN_SPEED M_PI/10.0f
+#define MIN_ANGLE M_PI*11.0f/12.0f //165 degrees
+#define MAX_ANGLE M_PI/12.0f //15 degrees
+#define TURN_SPEED M_PI/20.0f
 
 #define MAX_POWER 18.0f
-#define PULLBACK_SPEED 2.0f
+#define PULLBACK_SPEED 1.0f
 
 #define NUM_ROWS 3
 #define NUM_COLS 5
@@ -86,8 +86,11 @@ void BallistaModel::setAngle(float angle) {
 	//clamp angle so it can't fire backwards
 	float minAngleDiff = angleDifference(MIN_ANGLE, angle);
 	float maxAngleDiff = angleDifference(MAX_ANGLE, angle);
-	if (minAngleDiff > 0 && maxAngleDiff < 0) {
-		angle = (minAngleDiff<maxAngleDiff) ? MIN_ANGLE : MAX_ANGLE;
+	if (minAngleDiff < 0 && maxAngleDiff > 0) {
+		
+	}
+	else {
+		angle = (abs(minAngleDiff)<abs(maxAngleDiff)) ? MIN_ANGLE : MAX_ANGLE;
 	}
 
 	//gradually rotate ballista
@@ -111,7 +114,6 @@ void BallistaModel::setPower(float power, bool instantaneous) {
 }
 
 void BallistaModel::dispose() {
-	CULog("Ballista destroyed!");
 	_node = nullptr;
 }
 

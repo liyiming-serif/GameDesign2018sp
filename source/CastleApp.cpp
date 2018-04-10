@@ -240,7 +240,6 @@ void CastleApp::update(float timestep) {
             gameModel.update(timestep);
         }
     }
-    CULog("direction: %d", _direction);
     //refresh the input controller
 	input.update(timestep);
 

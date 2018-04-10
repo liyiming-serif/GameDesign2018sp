@@ -59,7 +59,6 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _playButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("Play!");
             switchscene = OVERWORLD;
         }
     });
@@ -77,7 +76,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lobbyButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("Play!");
+
             switchscene = LOBBY;
         }
     });

@@ -45,7 +45,15 @@ protected:
     std::shared_ptr<cugl::PolygonNode> SE_compass;
     std::shared_ptr<cugl::PolygonNode> SW_compass;
     
-    
+    // Dragging UI
+	std::shared_ptr<cugl::Texture> _dpOrange;
+	std::shared_ptr<cugl::Texture> _dlOrange;
+	std::shared_ptr<cugl::Texture> _dpBlue;
+	std::shared_ptr<cugl::Texture> _dlBlue;
+
+	std::shared_ptr<cugl::AnimationNode> _dragStart;
+	std::shared_ptr<cugl::AnimationNode> _dragEnd;
+	std::shared_ptr<cugl::PolygonNode> _dragLine;
 
     //enemies
     std::vector<std::shared_ptr<EnemyModel>> _enemyArray;

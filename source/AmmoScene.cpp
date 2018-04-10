@@ -79,7 +79,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            CULog("at ammo room");
             switchscene = OVERWORLD;
         }
     });
@@ -179,7 +178,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setPosition(_size.width - _size.width/8, _size.height - _size.height/8);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
 
-    
+    //initialize ammo count
+	gameModel.setArrowAmmo(0, 30);
+
     return true;
 }
 
@@ -261,7 +262,6 @@ void AmmoScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
-        CULog("over here now");
         _ammoTOcastle->activate(input.findKey("ammoTOcastle"));
         _hammer->activate(input.findKey("hammer"));
     }
