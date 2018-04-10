@@ -25,6 +25,13 @@ protected:
     
     std::shared_ptr<cugl::PolygonNode> _background;
     
+    std::shared_ptr<cugl::PolygonNode> N_compass;
+    std::shared_ptr<cugl::PolygonNode> NE_compass;
+    std::shared_ptr<cugl::PolygonNode> NW_compass;
+    std::shared_ptr<cugl::PolygonNode> S_compass;
+    std::shared_ptr<cugl::PolygonNode> SE_compass;
+    std::shared_ptr<cugl::PolygonNode> SW_compass;
+    
     
     
 public:
@@ -42,6 +49,9 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+    
+    //Sets the compass image based on the direction input
+    void setCompass (int direction);
 };
 
 

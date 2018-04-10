@@ -16,6 +16,8 @@
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
+#define LOBBY       10
 #define DRAW_SCALE 32
 
 
@@ -60,6 +62,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
     direction = -1;
     switchscene = 0;
+    oilDirection = -1;
     
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -290,7 +293,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = OIL;
-                    direction = 0;
+                    oilDirection = 0;
                 }
             });
     
@@ -540,6 +543,25 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     
+    std::shared_ptr<Texture> menu_tex   = _assets->get<Texture>("menu");
+    _menuButton = Button::alloc(PolygonNode::allocWithTexture(menu_tex));
+    
+    // Position the button in the bottom right corner
+    _menuButton->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _menuButton->setPosition(0+5,_size.height-5);
+    _menuButton->setScale(.5f);
+    
+    
+    // Create a callback function for the button
+    _menuButton->setName("menu");
+    _menuButton->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            switchscene = MENU;
+        }
+    });
+    
+    
     
     
     
@@ -547,6 +569,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the background to the scene graph
     addChild(_background);
     addChild(_quitButton);
+    addChild(_menuButton);
 
     
     
@@ -555,6 +578,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // We can only activate a button AFTER it is added to a scene
     _quitButton->activate(input.generateKey("quitButton"));
+    _menuButton->activate(input.generateKey("menuButton"));
     
     _lookout_button->activate(input.generateKey("lookout_button"));
     
@@ -686,6 +710,7 @@ void OverworldScene::setActive(bool active) {
     switchscene = 0;
     if(active){
         _quitButton->activate(input.findKey("quitButton"));
+        _menuButton->activate(input.findKey("menuButton"));
         
         _lookout_button->activate(input.findKey("lookout_button"));
         
