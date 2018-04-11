@@ -7,14 +7,13 @@
 using namespace cugl;
 
 #define SWIPE_SENSITIVITY 30
-#define TILT_SENSITIVITY 1.5f
 #define LISTENER_KEY 1
 
 #define RESET_KEY KeyCode::R
 #define DEBUG_KEY KeyCode::D
 #define TILT_KEY KeyCode::ARROW_UP
-#define KEYBOARD_MAX_TILT 135.0f
-#define KEYBOARD_TILT_SENSITIVITY 5.0f
+#define KEYBOARD_MAX_TILT 1.0f
+#define KEYBOARD_TILT_SENSITIVITY 0.02f
 
 /**
  * Creates a new input controller.
@@ -89,15 +88,9 @@ bool InputController::init(){
 void InputController::pollInputs() {
 #ifdef CU_TOUCH_SCREEN
 	Accelerometer* acc = Input::get<Accelerometer>();
-	if (acc == nullptr) {
-		throw "Accelerometer unavailable";
-	}
-	_oilTilt = std::fmax(acc->getAccelerationY(), 0);
+	_oilTilt = std::fmax(-acc->getAccelerationY(), 0);
 #else
 	Keyboard* keys = Input::get<Keyboard>();
-	if (keys == nullptr) {
-		throw "Keyboard disabled";
-	}
 	if (keys->keyDown(TILT_KEY)) {
 		_oilTilt = std::fmin(_oilTilt+KEYBOARD_TILT_SENSITIVITY,KEYBOARD_MAX_TILT);
 	}

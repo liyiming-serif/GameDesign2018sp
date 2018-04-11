@@ -165,6 +165,8 @@ void OilScene::setCompass(int direction){
 }
 
 void OilScene::update(float timestep){
+	input.pollInputs();
+	CULog("Oil tilt level: %f", input.oilTilt());
     //moves enemies
     for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
         for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
@@ -187,6 +189,7 @@ void OilScene::update(float timestep){
 		}
 		gameModel._enemiesToFreeMaster[i].clear();
 	}
+	input.update(timestep);
 }
 
 
