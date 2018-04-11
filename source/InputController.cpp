@@ -7,7 +7,14 @@
 using namespace cugl;
 
 #define SWIPE_SENSITIVITY 30
+#define TILT_SENSITIVITY 1.5f
 #define LISTENER_KEY 1
+
+#define RESET_KEY KeyCode::R
+#define DEBUG_KEY KeyCode::D
+#define TILT_KEY KeyCode::ARROW_UP
+#define KEYBOARD_MAX_TILT 135.0f
+#define KEYBOARD_TILT_SENSITIVITY 5.0f
 
 /**
  * Creates a new input controller.
@@ -24,16 +31,25 @@ InputController::InputController() :
         _isPressed(false),
         _pointerPos(0,0),
         _vScrolling(0),
+		_oilTilt(0.0),
 		_currMaxKey(2){
 }
 
 /**
- * Install listeners and alloc any memory.
+ * Install listeners and enable control schemes.
+ * Either enable Mouse+Keyboard or Touch+Accelerometer
  * @return true if properly initiallized
  */
 bool InputController::init(){
     bool success = true;
 #ifdef CU_TOUCH_SCREEN
+	// ACCELEROMETER CONTROLS
+	success = Input::activate<Accelerometer>();
+	if (!success) {
+		throw "Accelerometer not detected :(";
+	}
+
+	// TOUCH CONTROLS
     Touchscreen* touch = Input::get<Touchscreen>();
 
     touch->addBeginListener(LISTENER_KEY,[=](const TouchEvent& event, bool focus) {
@@ -46,6 +62,12 @@ bool InputController::init(){
         this->touchReleaseCB(event, focus);
     });
 #else
+	//KEYBOARD CONTROLS
+	success = Input::activate<Keyboard>();
+	if (!success) {
+		throw "Keyboard not detected :(";
+	}
+
     //MOUSE CONTROLS
 	Mouse* mouse = Input::get<Mouse>();
 
@@ -60,8 +82,29 @@ bool InputController::init(){
 		this->mouseDragCB(event, previous, focus);
 	});
 #endif
-    _active = true;
+    _active = success;
     return success;
+}
+
+void InputController::pollInputs() {
+#ifdef CU_TOUCH_SCREEN
+	Accelerometer* acc = Input::get<Accelerometer>();
+	if (acc == nullptr) {
+		throw "Accelerometer unavailable";
+	}
+	_oilTilt = std::fmax(acc->getAccelerationY(), 0);
+#else
+	Keyboard* keys = Input::get<Keyboard>();
+	if (keys == nullptr) {
+		throw "Keyboard disabled";
+	}
+	if (keys->keyDown(TILT_KEY)) {
+		_oilTilt = std::fmin(_oilTilt+KEYBOARD_TILT_SENSITIVITY,KEYBOARD_MAX_TILT);
+	}
+	else {
+		_oilTilt = std::fmax(_oilTilt - KEYBOARD_TILT_SENSITIVITY, 0);
+	}
+#endif
 }
 
 void InputController::update(float deltaTime) {
@@ -72,17 +115,20 @@ void InputController::update(float deltaTime) {
 }
 
 /**
- * More of a disable function. Only uninstalls listeners, but doesn't disable input.
+ * Uninstalls listeners from primary input; deactivates aux input.
  */
 void InputController::dispose(){
     if (_active) {
 #ifdef CU_TOUCH_SCREEN
+		//TOUCH+ACCELEROMETER INPUT
+		Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
         touch->removeBeginListener(LISTENER_KEY);
         touch->removeEndListener(LISTENER_KEY);
         touch->removeMotionListener(LISTENER_KEY);
 #else
-        //MOUSE INPUT
+        //MOUSE+KEYBOARD INPUT
+		Input::deactivate<Keyboard>();
         Mouse* mouse = Input::get<Mouse>();
 		mouse->removePressListener(LISTENER_KEY);
 		mouse->removeReleaseListener(LISTENER_KEY);
@@ -100,6 +146,7 @@ void InputController::clear() {
     _justReleased = false;
     _isPressed = false;
     _vScrolling = 0;
+	_oilTilt = 0.0;
 	_currMaxKey = 0;
 }
 
