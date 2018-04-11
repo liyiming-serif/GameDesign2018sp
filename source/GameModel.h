@@ -34,6 +34,9 @@ protected:
     int _arrowAmmo[2];
 
 
+	//oil cooldown manager. Ready when == 0 for a particular wall
+	std::vector<int> _oilCooldown;
+
 public:
 
     // Constructors
@@ -90,6 +93,13 @@ public:
             _arrowAmmo[type] = amount;
         }
     }
+
+	void resetOilCooldown(int wall);
+
+	int getOilCooldown(int wall) {
+		assert(wall < _oilCooldown.size());
+		return _oilCooldown[wall];
+	}
 
 private:
     std::string getStateChange();

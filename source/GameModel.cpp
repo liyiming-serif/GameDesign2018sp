@@ -12,6 +12,8 @@
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
+#define OIL_COOLDOWN 420
+
 using namespace cugl;
 
 bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
