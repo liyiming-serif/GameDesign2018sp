@@ -45,7 +45,7 @@ protected:
 
     //buttons
     std::shared_ptr<cugl::Button> _quitButton;
-    std::shared_ptr<cugl::Button> _resetButton;
+    std::shared_ptr<cugl::Button> _menuButton;
     //Ballista Buttons
         std::shared_ptr<cugl::Button> _ballistaNorth;
         std::shared_ptr<cugl::Button> _ballistaNorthEast;
@@ -105,6 +105,7 @@ public:
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
+    int oilDirection;
     
     
     /**

@@ -11,8 +11,10 @@
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
+#define LOBBY       10
 #define DRAW_SCALE 32
-#define FONT    _assets->get<Font>("langdon")
+#define FONT    _assets->get<Font>("futura")
 
 #define BUTTON_SCALE 1.0f
 

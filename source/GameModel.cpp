@@ -29,15 +29,16 @@ bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
 
     _spawnTimer = 360;
 
-    int sum = 50;
+    int sum = 10;
 
     for (int i = 0; i < 6; ++i) {
         _castleHealth[i] = sum;
         _prevCastleHealth[i] = sum;
         sum +=10;
     }
-    _castleHealth[0] = 10;
-    _castleHealth[3] = 10;
+
+    
+    
 
     return true;
 }

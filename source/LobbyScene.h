@@ -24,9 +24,10 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    std::shared_ptr<cugl::Button> _menuButton;
+    std::shared_ptr<cugl::Button> _backButton;
     std::shared_ptr<cugl::Button> _createButton;
     std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::Button> _levelsButton;
 	bool _deactivateCreate;
 	bool _deactivateEnter;
     std::shared_ptr<cugl::PolygonNode> _avatar1;

@@ -38,6 +38,7 @@
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
 #define LOBBY       10
 
 
@@ -111,6 +112,7 @@ void CastleApp::onShutdown() {
     // Delete all smart pointers
     _menuScene.dispose();
     _loadingScene.dispose();
+    _levelScene.dispose();
     _overworldScene.dispose();
     _ballistaScene.dispose();
     _lookoutScene.dispose();
@@ -167,6 +169,8 @@ void CastleApp::update(float timestep) {
         _oilScene.setActive(false);
         _lobbyScene.init(_assets);
         _lobbyScene.setActive(false);
+        _levelScene.init(_assets);
+        _levelScene.setActive(false,0);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -176,6 +180,20 @@ void CastleApp::update(float timestep) {
             if(_menuScene.switchscene!=0){
                 swapscenes(_menuScene.switchscene, 0);
                 _menuScene.setActive(false);
+            }
+        }
+        else if(_currscene==LOBBY){
+            _lobbyScene.update(timestep);
+            if(_lobbyScene.switchscene!=0){
+                swapscenes(_lobbyScene.switchscene, 0);
+                _lobbyScene.setActive(false);
+            }
+        }
+        else if(_currscene==LEVELS){
+            _levelScene.update(timestep);
+            if(_levelScene.switchscene!=0){
+                swapscenes(_levelScene.switchscene, 0);
+                _levelScene.setActive(false, _direction);
             }
         }
         else{
@@ -229,13 +247,6 @@ void CastleApp::update(float timestep) {
                     _oilScene.setActive(false);
                 }
             }
-            else if(_currscene==LOBBY){
-                _lobbyScene.update(timestep);
-                if(_lobbyScene.switchscene!=0){
-                    swapscenes(_lobbyScene.switchscene, 0);
-                    _lobbyScene.setActive(false);
-                }
-            }
             _spawnController.update(timestep);
             gameModel.update(timestep);
         }
@@ -247,10 +258,9 @@ void CastleApp::update(float timestep) {
 
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
-	if (_currscene == MENU && nextscene == OVERWORLD) {
+	if (_currscene == LEVELS && nextscene == OVERWORLD) {
 		gameModel.init(_assets);
 		_spawnController.init(_assets);
-
 	}
     switch(nextscene){
         case MENU:
@@ -280,6 +290,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
         case LOBBY:
             _lobbyScene.setActive(true);
             break;
+        case LEVELS:
+        _levelScene.setActive(true,_direction);
+        break;
     }
     _currscene = nextscene;
 }
@@ -324,6 +337,9 @@ void CastleApp::draw() {
         }
         else if(_currscene==LOBBY){
             _lobbyScene.render(_batch);
+        }
+        else if(_currscene==LEVELS){
+            _levelScene.render(_batch);
         }
     }
 }

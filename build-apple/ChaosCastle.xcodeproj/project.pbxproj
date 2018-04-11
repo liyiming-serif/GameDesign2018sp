@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A91CBDD8207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
+		A91CBDD9207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
+		A91CBDDA207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
 		A949992420683B1800A0D1C0 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
 		A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
 		A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
@@ -23,6 +26,12 @@
 		A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
 		A9AA6117204A19C500940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
 		A9AA6118204A19C600940276 /* LookoutScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6114204A19BC00940276 /* LookoutScene.cpp */; };
+		A9B5BCA0206E99DD00984595 /* GameModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B32061A05F00166C6F /* GameModel.cpp */; };
+		A9B5BCA4206E99DE00984595 /* GameModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B32061A05F00166C6F /* GameModel.cpp */; };
+		A9B5BCA5206E9ACA00984595 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
+		A9B5BCA6206E9ACB00984595 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
+		A9B5BCA7206E9AF400984595 /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B92061A06000166C6F /* EnemyModel.cpp */; };
+		A9B5BCA8206E9AF400984595 /* EnemyModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9E863B92061A06000166C6F /* EnemyModel.cpp */; };
 		A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B61F2048F1C30036047B /* BallistaScene.cpp */; };
 		A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
 		A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9B9B6252048F26D0036047B /* OverworldScene.cpp */; };
@@ -143,6 +152,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A91CBDD6207D33F000351862 /* LevelselectScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LevelselectScene.cpp; sourceTree = "<group>"; };
+		A91CBDD7207D33F000351862 /* LevelselectScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelselectScene.h; sourceTree = "<group>"; };
 		A949991F20683B1700A0D1C0 /* LobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
 		A949992320683B1700A0D1C0 /* LobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		A9499933206B27DD00A0D1C0 /* SpawnController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnController.cpp; sourceTree = "<group>"; };
@@ -402,40 +413,42 @@
 			isa = PBXGroup;
 			children = (
 				EB2BE9B41D74952A002FE78B /* main.cpp */,
-				A9E863862059C59400166C6F /* ArrowModel.cpp */,
-				A9E863822059C59400166C6F /* ArrowModel.h */,
-				A9E863882059C59500166C6F /* InputController.cpp */,
-				A9E863872059C59400166C6F /* InputController.h */,
 				EB2BE9B31D74952A002FE78B /* CastleApp.h */,
 				EB2BE9B21D74952A002FE78B /* CastleApp.cpp */,
-				A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */,
-				A949993B206B27DE00A0D1C0 /* BallistaModel.h */,
+				A9E863882059C59500166C6F /* InputController.cpp */,
+				A9E863872059C59400166C6F /* InputController.h */,
 				A9499933206B27DD00A0D1C0 /* SpawnController.cpp */,
 				A949993A206B27DE00A0D1C0 /* SpawnController.h */,
 				A9E86367205965D300166C6F /* LoadingScene.cpp */,
 				A9E86368205965D300166C6F /* LoadingScene.h */,
+				A9E8635F2059645F00166C6F /* MenuScene.cpp */,
+				A9E863602059645F00166C6F /* MenuScene.h */,
+				A949992320683B1700A0D1C0 /* LobbyScene.cpp */,
+				A949991F20683B1700A0D1C0 /* LobbyScene.h */,
+				A91CBDD6207D33F000351862 /* LevelselectScene.cpp */,
+				A91CBDD7207D33F000351862 /* LevelselectScene.h */,
+				A9E863B32061A05F00166C6F /* GameModel.cpp */,
+				A9E863B82061A06000166C6F /* GameModel.h */,
+				A9E863862059C59400166C6F /* ArrowModel.cpp */,
+				A9E863822059C59400166C6F /* ArrowModel.h */,
+				A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */,
+				A949993B206B27DE00A0D1C0 /* BallistaModel.h */,
+				A9E863B92061A06000166C6F /* EnemyModel.cpp */,
+				A9E863B72061A05F00166C6F /* EnemyModel.h */,
+				A9B9B6252048F26D0036047B /* OverworldScene.cpp */,
+				A9B9B6262048F26D0036047B /* OverworldScene.h */,
+				A9AA6114204A19BC00940276 /* LookoutScene.cpp */,
+				A9AA6115204A19BC00940276 /* LookoutScene.h */,
+				A9B9B61F2048F1C30036047B /* BallistaScene.cpp */,
+				A9B9B6232048F1C30036047B /* BallistaScene.h */,
 				A9E863CA206483A000166C6F /* OilScene.cpp */,
 				A9E863CB206483A000166C6F /* OilScene.h */,
 				A9E863C520647EB400166C6F /* AmmoScene.cpp */,
 				A9E863C620647EB400166C6F /* AmmoScene.h */,
-				A9B9B6252048F26D0036047B /* OverworldScene.cpp */,
-				A9B9B6262048F26D0036047B /* OverworldScene.h */,
-				A949992320683B1700A0D1C0 /* LobbyScene.cpp */,
-				A949991F20683B1700A0D1C0 /* LobbyScene.h */,
-				A9E8635F2059645F00166C6F /* MenuScene.cpp */,
-				A9E863602059645F00166C6F /* MenuScene.h */,
-				A979457120537A97006DB3E3 /* RepairScene.cpp */,
-				A979457220537A97006DB3E3 /* RepairScene.h */,
 				A9E863C020647B3E00166C6F /* MageScene.cpp */,
 				A9E863C120647B3E00166C6F /* MageScene.h */,
-				A9B9B61F2048F1C30036047B /* BallistaScene.cpp */,
-				A9B9B6232048F1C30036047B /* BallistaScene.h */,
-				A9E863B92061A06000166C6F /* EnemyModel.cpp */,
-				A9E863B72061A05F00166C6F /* EnemyModel.h */,
-				A9E863B32061A05F00166C6F /* GameModel.cpp */,
-				A9E863B82061A06000166C6F /* GameModel.h */,
-				A9AA6114204A19BC00940276 /* LookoutScene.cpp */,
-				A9AA6115204A19BC00940276 /* LookoutScene.h */,
+				A979457120537A97006DB3E3 /* RepairScene.cpp */,
+				A979457220537A97006DB3E3 /* RepairScene.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -501,7 +514,7 @@
 		EBBF18891D74904A008E2001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Game Design Initiative at Cornell";
 				TargetAttributes = {
 					EB0FF5FB2016EF4F00517030 = {
@@ -621,8 +634,12 @@
 				A9E863CE206483A000166C6F /* OilScene.cpp in Sources */,
 				A9B9B6292048F26D0036047B /* OverworldScene.cpp in Sources */,
 				A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */,
+				A9B5BCA6206E9ACB00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638E205B584400166C6F /* InputController.cpp in Sources */,
+				A9B5BCA8206E9AF400984595 /* EnemyModel.cpp in Sources */,
+				A9B5BCA4206E99DE00984595 /* GameModel.cpp in Sources */,
 				A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */,
+				A91CBDDA207D33F000351862 /* LevelselectScene.cpp in Sources */,
 				A9499940206B27FF00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB0FF61E2016F06000517030 /* CastleApp.cpp in Sources */,
 				A9E8636B205965D300166C6F /* LoadingScene.cpp in Sources */,
@@ -643,8 +660,12 @@
 				A9E863CD206483A000166C6F /* OilScene.cpp in Sources */,
 				A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */,
 				A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */,
+				A9B5BCA5206E9ACA00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638D205B584400166C6F /* InputController.cpp in Sources */,
+				A9B5BCA7206E9AF400984595 /* EnemyModel.cpp in Sources */,
+				A9B5BCA0206E99DD00984595 /* GameModel.cpp in Sources */,
 				A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */,
+				A91CBDD9207D33F000351862 /* LevelselectScene.cpp in Sources */,
 				A949993F206B27FE00A0D1C0 /* SpawnController.cpp in Sources */,
 				EB7454AF1D74D891002FBAE6 /* CastleApp.cpp in Sources */,
 				A9E8636A205965D300166C6F /* LoadingScene.cpp in Sources */,
@@ -670,6 +691,7 @@
 				A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */,
 				A9E863CC206483A000166C6F /* OilScene.cpp in Sources */,
 				A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */,
+				A91CBDD8207D33F000351862 /* LevelselectScene.cpp in Sources */,
 				A9B9B6242048F1C30036047B /* BallistaScene.cpp in Sources */,
 				A9E86369205965D300166C6F /* LoadingScene.cpp in Sources */,
 				A9AA6116204A19BC00940276 /* LookoutScene.cpp in Sources */,
@@ -813,6 +835,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -820,6 +843,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -870,6 +894,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -877,6 +902,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -912,6 +938,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -925,6 +952,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Mac-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

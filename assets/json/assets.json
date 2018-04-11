@@ -1,7 +1,7 @@
 {
 	"textures": {
 		"claw": {
-			"file":     "textures/Claw.png",
+			"file":     "textures/Menu/Claw.png",
 			"minfilter":"nearest",
 			"magfilter":"linear",
 			"wrapS":    "clamp",
@@ -259,20 +259,6 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "up": {
-            "file":     "textures/Up.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "down": {
-            "file":     "textures/Down.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
 		"arrow": {
 			"file":     "textures/arrow.png",
 			"minfilter":"nearest",
@@ -281,7 +267,42 @@
 			"wrapT":    "clamp"
 		},
         "homepage": {
-            "file":     "textures/homepage.png",
+            "file":     "textures/Menu/homepage.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "single": {
+            "file":     "textures/Menu/single.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "multi": {
+            "file":     "textures/Menu/multi.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levels": {
+            "file":     "textures/Menu/menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "menu": {
+            "file":     "textures/Menu/menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "back": {
+            "file":     "textures/Menu/back.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -447,8 +468,8 @@
 			"file":     "fonts/Charlemagne.ttf",
 			"size":     64
 		},
-        "langdon": {
-            "file":     "fonts/langdon.ttf",
+        "futura": {
+            "file":     "fonts/Futura.ttf",
             "size":     64
         }
 	}

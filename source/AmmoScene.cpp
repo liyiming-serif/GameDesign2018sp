@@ -24,6 +24,8 @@ using namespace cugl;
 #define AMMO        6
 #define MAGE        7
 #define OIL         8
+#define LEVELS      9
+#define LOBBY       10
 
 
 /** Define the time settings for animation */
@@ -31,7 +33,7 @@ using namespace cugl;
 #define DISTANCE 920
 #define REPEATS  3
 #define ACT_KEY  "current"
-#define FONT    _assets->get<Font>("langdon")
+#define FONT    _assets->get<Font>("futura")
 
 bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
