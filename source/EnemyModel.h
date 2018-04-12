@@ -1,6 +1,10 @@
 //
 // EnemyModel.h
 //
+// EnemyModel is the PHYSICAL representation of an enemy in the oil or ballista
+// room. It links the physics engine with the scene graph and handles
+// collisions.
+//
 // Created by Josh on 3/14/2018.
 //
 
