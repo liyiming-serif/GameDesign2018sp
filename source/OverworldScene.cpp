@@ -62,7 +62,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     }
     direction = -1;
     switchscene = 0;
-    oilDirection = -1;
     
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -293,9 +292,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     switchscene = OIL;
-                    oilDirection = 0;
+                    direction = 0;
                 }
             });
+            //MAKE SURE TO CHANGE REST OF DIRECTIONS AS WELL FOR NEW BUTTONS
     
         //Positions the Oil Buttons
             //Oil Floor Center

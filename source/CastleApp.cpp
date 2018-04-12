@@ -167,11 +167,11 @@ void CastleApp::update(float timestep) {
         _ammoScene.init(_assets);
         _ammoScene.setActive(false);
         _oilScene.init(_assets);
-        _oilScene.setActive(false);
+        _oilScene.setActive(false, 0);
         _lobbyScene.init(_assets);
         _lobbyScene.setActive(false);
         _levelScene.init(_assets);
-        _levelScene.setActive(false,0);
+        _levelScene.setActive(false, 0);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -206,7 +206,6 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==BALLISTA){
-            //later on, use _direction to determine array
                 _ballistaScene.update(timestep, _direction);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
@@ -242,10 +241,10 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==OIL){
-                _oilScene.update(timestep);
+                _oilScene.update(timestep, _direction);
                 if(_oilScene.switchscene!=0){
                     swapscenes(_oilScene.switchscene, 0);
-                    _oilScene.setActive(false);
+                    _oilScene.setActive(false, _direction);
                 }
             }
             _spawnController.update(timestep);
@@ -292,7 +291,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _ammoScene.setActive(true);
             break;
         case OIL:
-            _oilScene.setActive(true);
+            _oilScene.setActive(true, _direction);
             break;
         case LOBBY:
             _lobbyScene.setActive(true);
