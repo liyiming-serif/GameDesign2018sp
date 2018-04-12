@@ -124,7 +124,7 @@ void LevelselectScene::update(float timestep){
 
 
 //Pause or Resume
-void LevelselectScene::setActive(bool active, int mode){
+void LevelselectScene::setActive(bool active, int players){
     _active = active;
     switchscene = 0;
     if(active){

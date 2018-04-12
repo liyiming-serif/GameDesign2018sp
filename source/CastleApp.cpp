@@ -92,6 +92,7 @@ void CastleApp::onStartup() {
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
 
     _direction = -1;
+    _players = -1;
 
     Application::onStartup(); // YOU MUST END with call to parent
 
@@ -262,6 +263,12 @@ void CastleApp::swapscenes(int nextscene, int direction){
 		gameModel.init(_assets);
 		_spawnController.init(_assets);
 	}
+	if (_currscene == MENU && nextscene == LEVELS){
+	    _players = 1;
+	}
+	if (_currscene == LOBBY && nextscene == LEVELS){
+	    _players = _lobbyScene.getNumPlayers();
+	}
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
@@ -291,7 +298,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _lobbyScene.setActive(true);
             break;
         case LEVELS:
-        _levelScene.setActive(true,_direction);
+        _levelScene.setActive(true, _players);
         break;
     }
     _currscene = nextscene;

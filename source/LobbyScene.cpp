@@ -226,6 +226,11 @@ void LobbyScene::update(float timestep){
 	}
 }
 
+int LobbyScene::getNumPlayers(){
+    //TODO: RETURN NUMBER OF PLAYERS
+    return 0;
+}
+
 
 //Pause or Resume
 void LobbyScene::setActive(bool active){

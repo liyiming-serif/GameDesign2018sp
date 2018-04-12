@@ -41,9 +41,8 @@ public:
     void update(float timestep);
     
     //Pause or Resume
-    void setActive(bool active, int mode);
+    void setActive(bool active, int players);
     int switchscene;
-    int mode;
 };
 
 #endif /* LevelselectScene_h */
