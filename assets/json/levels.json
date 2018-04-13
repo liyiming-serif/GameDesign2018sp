@@ -121,7 +121,7 @@
 					"xCoord" : 900,
 					"yCoord" : 500,
 					"sector" : 1 
-				},
+				}
 			},
 			"rooms_unlocked" : {
 				"lookout" : true,

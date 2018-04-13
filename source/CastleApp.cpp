@@ -88,10 +88,10 @@ void CastleApp::onStartup() {
     // Create a "loading" screen
     _loaded = false;
     _loadingScene.init(_assets);
-    
+    CULog("print");
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
-    _assets->loadAsync<JSONReader>("json/levels.json","levels",nullptr);
+    _assets->loadAsync<JSONReader>("levels", "json/levels.json", nullptr);
 
     _direction = -1;
     _players = -1;

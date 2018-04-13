@@ -61,13 +61,13 @@ public:
 	}
 
     //CONSTRUCTORS
-    JSONReader(void){};
+    JSONReader(){};
 
     virtual bool preload(const std::string& file) override;
     virtual bool preload(const std::shared_ptr<cugl::JsonValue>& json) override;
 
     //DESTRUCTORS
-    ~JSONReader() { dispose(); }
+    virtual ~JSONReader() { dispose(); }
 
     /**
      * Deactivates this jsonreader, releasing all listeners.
