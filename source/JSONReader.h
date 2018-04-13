@@ -13,8 +13,11 @@
 #include <cugl/cugl.h>
 #include <cugl/assets/CUJsonLoader.h>
 #include <vector>
+#include <cugl/assets/CUAsset.h>
 
-class JSONReader {
+using namespace cugl;
+
+class JSONReader : public Asset{
 private:
     /** Whether or not this input is active */
     bool _active;
@@ -31,12 +34,37 @@ protected:
 
 
 public:
-    //variables
+    /**
+	* Creates a new game level with no source file.
+	*
+	* The source file can be set at any time via the setFile() method. This method
+	* does NOT load the asset.  You must call the load() method to do that.
+	*
+	* @return  an autoreleased level file
+	*/
+	static std::shared_ptr<JSONReader> alloc() {
+		std::shared_ptr<JSONReader> result = std::make_shared<JSONReader>();
+		return (result->init("") ? result : nullptr);
+	}
+
+	/**
+	* Creates a new game level with the given source file.
+	*
+	* This method does NOT load the level. You must call the load() method to do that.
+	* This method returns false if file does not exist.
+	*
+	* @return  an autoreleased level file
+	*/
+	static std::shared_ptr<JSONReader> alloc(std::string file) {
+		std::shared_ptr<JSONReader> result = std::make_shared<JSONReader>();
+		return (result->init(file) ? result : nullptr);
+	}
 
     //CONSTRUCTORS
-    JSONReader(){};
+    JSONReader(void){};
 
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets, const std::string& file);
+    virtual bool preload(const std::string& file) override;
+    virtual bool preload(const std::shared_ptr<cugl::JsonValue>& json) override;
 
     //DESTRUCTORS
     ~JSONReader() { dispose(); }

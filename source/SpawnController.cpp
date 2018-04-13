@@ -9,48 +9,13 @@ using namespace cugl;
 /**
  * Creates a spawn controller
  */
-bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
+bool SpawnController::init(const std::shared_ptr<AssetManager>& assets, std::vector<std::vector<float>> initialEnemies){
     //when this equals -1, stop spawning
     _active = true;
     _currSpawnIndex = 0;
     _totalTime = 0;
 
-    //temporarily fill in the enemyArray, will read from JSON later
-    //XCoord, YCoord, Type, Health, SpawnTime, Sector
-    std::vector<float> enemy = {100.0, 500.0, 1.0, 1.0, 300.0, 0.0};
-    _enemyArray.push_back(enemy);
-    enemy = {500.0, 500.0, 1.0, 1.0, 300.0, 0.0};
-    _enemyArray.push_back(enemy);
-    enemy = {950.0, 500.0, 1.0, 1.0, 300.0, 0.0};
-    _enemyArray.push_back(enemy);
-    enemy = {300.0, 500.0, 1.0, 1.0, 600.0, 3.0};
-    _enemyArray.push_back(enemy);
-    enemy = {700.0, 500.0, 1.0, 1.0, 600.0, 3.0};
-    _enemyArray.push_back(enemy);
-    enemy = {400.0, 500.0, 1.0, 1.0, 1200.0, 0.0};
-    _enemyArray.push_back(enemy);
-    enemy = {650.0, 500.0, 1.0, 1.0, 1300.0, 1.0};
-    _enemyArray.push_back(enemy);
-    enemy = {200.0, 500.0, 1.0, 1.0, 1400.0, 2.0};
-    _enemyArray.push_back(enemy);
-    enemy = {700.0, 500.0, 1.0, 1.0, 1500.0, 3.0};
-    _enemyArray.push_back(enemy);
-    enemy = {350.0, 500.0, 1.0, 1.0, 1600.0, 4.0};
-    _enemyArray.push_back(enemy);
-    enemy = {800.0, 500.0, 1.0, 1.0, 1700.0, 5.0};
-    _enemyArray.push_back(enemy);
-    enemy = {200.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
-    _enemyArray.push_back(enemy);
-    enemy = {550.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
-    _enemyArray.push_back(enemy);
-    enemy = {800.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
-    _enemyArray.push_back(enemy);
-    enemy = {400.0, 500.0, 1.0, 1.0, 2500.0, 5.0};
-    _enemyArray.push_back(enemy);
-    enemy = {800.0, 500.0, 1.0, 1.0, 2500.0, 5.0};
-    _enemyArray.push_back(enemy);
-    enemy = {900.0, 500.0, 1.0, 2.0, 3000.0, 1.0};
-    _enemyArray.push_back(enemy);
+    _enemyArray = initialEnemies;
 
     return true;
 }

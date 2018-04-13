@@ -7,14 +7,21 @@
 using namespace cugl;
 
 /**
- * Creates a spawn controller
+ * Creates a JSONReader
  */
-bool JSONReader::init(const std::shared_ptr<AssetManager>& assets, const std::string& file){
+bool JSONReader::preload(const std::string& file){
     _active = true;
 
     _reader = JsonReader::allocWithAsset(file);
-    _json = _reader->readJson();
-    return true;
+    return preload(_reader->readJson());
+}
+
+bool JSONReader::preload(const std::shared_ptr<cugl::JsonValue>& json){
+    if (json == nullptr) {
+        CUAssertLog(false, "Failed to load level file");
+        return false;
+    }
+    _json = json;
 }
 
 void JSONReader::update(float deltaTime) {

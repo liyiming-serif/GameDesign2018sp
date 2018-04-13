@@ -80,6 +80,7 @@ void CastleApp::onStartup() {
     _assets->attach<Node>(SceneLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
     _assets->attach<Music>(MusicLoader::alloc()->getHook());
+    _assets->attach<JSONReader>(GenericLoader<JSONReader>::alloc()->getHook());
     
 //   From original code // This reads the given JSON file and uses it to load all other assets
 //    _assets->loadDirectory("json/assets.json");
@@ -90,6 +91,7 @@ void CastleApp::onStartup() {
     
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
+    _assets->loadAsync<JSONReader>("json/levels.json","levels",nullptr);
 
     _direction = -1;
     _players = -1;
@@ -258,15 +260,16 @@ void CastleApp::update(float timestep) {
 
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
+    if (_currscene == MENU && nextscene == LEVELS){
+        _players = 1;
+    }
+    if (_currscene == LOBBY && nextscene == LEVELS){
+        _players = _lobbyScene.getNumPlayers();
+    }
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
 		gameModel.init(_assets);
-		_spawnController.init(_assets);
-	}
-	if (_currscene == MENU && nextscene == LEVELS){
-	    _players = 1;
-	}
-	if (_currscene == LOBBY && nextscene == LEVELS){
-	    _players = _lobbyScene.getNumPlayers();
+		//TODO: replace 0 with level
+		_spawnController.init(_assets, _assets->get<JSONReader>("levels")->readJSON(_players, 1));
 	}
     switch(nextscene){
         case MENU:
