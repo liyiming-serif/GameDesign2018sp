@@ -1,0 +1,100 @@
+//
+// Created by Josh on 3/27/2018.
+//
+
+#include "JSONReader.h"
+
+using namespace cugl;
+
+/**
+ * Creates a spawn controller
+ */
+bool JSONReader::init(const std::shared_ptr<AssetManager>& assets, const std::string& file){
+    _active = true;
+
+    _reader = JsonReader::allocWithAsset(file);
+    _json = _reader->readJson();
+    return true;
+}
+
+void JSONReader::update(float deltaTime) {
+
+}
+
+std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
+    _enemyArray.clear();
+    if (_json == nullptr) {
+        CUAssertLog(false, "Failed to load level file");
+        return _enemyArray;
+    }
+    //parse number of players
+    if(players==1){
+        _modeJSON = _json->get("one");
+    }
+    else if(players==2){
+        _modeJSON = _json->get("two");
+    }
+    else if(players==3){
+        _modeJSON = _json->get("three");
+    }
+    else if(players==4){
+        _modeJSON = _json->get("four");
+    }
+    else if(players==5){
+        _modeJSON = _json->get("five");
+    }
+    else{
+        //players==6
+        _modeJSON = _json->get("six");
+    }
+    _levelJSON = _modeJSON->get("level" + std::to_string(level));
+
+    //read the actual level
+
+    _roomsJSON = _levelJSON->get("rooms_unlocked");
+    //need to iterate to find unlocked rooms and put data somewhere
+
+    _enemiesJSON = _levelJSON->get("enemies");
+    for(int i = 0; i<_enemiesJSON->getInt("numSpawn"); i++){
+        _singleEnemyJSON = _enemiesJSON->get("spawn" + std::to_string(i));
+        //get values and store this somewhere
+         _enemy = {
+         //XCoord
+         _singleEnemyJSON->getFloat("xCoord"),
+         //YCoord
+         _singleEnemyJSON->getFloat("yCoord"),
+         //Type
+         getType(_singleEnemyJSON->getString("name")),
+         //Health
+         getHealth(_singleEnemyJSON->getString("name")),
+         //SpawnTime
+         _singleEnemyJSON->getFloat("spawn_time"),
+         //Sector
+         _singleEnemyJSON->getFloat("sector")};
+
+         _enemyArray.push_back(_enemy);
+    }
+    return _enemyArray;
+}
+
+float JSONReader::getType(std::string name){
+    if(name=="skeleton"){
+        return 1.0;
+    }
+    else{
+        return 0.0;
+    }
+}
+
+float JSONReader::getHealth(std::string name){
+    if(name=="skeleton"){
+        return 1.0;
+    }
+    else{
+        return 0.0;
+    }
+}
+
+void JSONReader::dispose(){
+    _active = false;
+}
