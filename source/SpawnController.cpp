@@ -80,7 +80,14 @@ void SpawnController::update(float deltaTime) {
     if(_currSpawnIndex >= 0){
         if(_enemyArray[_currSpawnIndex][4]<_totalTime){
 			//we need to spawn one
-			std::string ekey = genRandName(ENEMY_NAME_LEN);
+
+			//keep generating ekey until we find a unique one
+			std::string ekey;
+			do {
+				ekey = genRandName(ENEMY_NAME_LEN);
+			} while (gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].find(ekey)
+				!= gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].end());
+
 			// Allocate a new EnemyDataModel in memory
 			std::shared_ptr<EnemyDataModel> e = EnemyDataModel::alloc(ekey,_enemyArray[_currSpawnIndex][3],
 				Vec2(_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1]),

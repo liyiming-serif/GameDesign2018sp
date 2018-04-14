@@ -35,6 +35,7 @@ public:
 		_pos.set(pos);
 		_type = type;
 		_wall = wall;
+		return true;
 	}
 	
 

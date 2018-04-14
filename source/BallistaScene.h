@@ -9,6 +9,7 @@
 #include "BallistaModel.h"
 #include "InputController.h"
 #include "EnemyModel.h"
+#include "EnemyDataModel.h"
 #include "GameModel.h"
 #include <set>
 #include <vector>
@@ -34,8 +35,8 @@ protected:
     std::set<std::shared_ptr<ArrowModel>> _arrows;
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
 	//enemies
-	std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
-	std::vector<std::shared_ptr<EnemyModel>> _enemiesToFree;
+	std::unordered_map<std::string,std::shared_ptr<EnemyModel>> _enemyArray;
+	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
     // Models
     std::shared_ptr<BallistaModel> _ballista;
@@ -74,7 +75,7 @@ public:
     // Gameplay
     void update(float deltaTime, int direction);
 
-	void updateEnemyModels(int direction);
+	void updateEnemyModels(float deltaTime, int direction);
 
     //Pause or Resume
     void setActive(bool active, int direction);
