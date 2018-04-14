@@ -30,8 +30,12 @@ protected:
     std::shared_ptr<cugl::ObstacleWorld> _world;
 
     // Memory Managers
+	//arrows
     std::set<std::shared_ptr<ArrowModel>> _arrows;
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
+	//enemies
+	std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
+	std::vector<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
     // Models
     std::shared_ptr<BallistaModel> _ballista;
@@ -54,9 +58,6 @@ protected:
 	std::shared_ptr<cugl::AnimationNode> _dragStart;
 	std::shared_ptr<cugl::AnimationNode> _dragEnd;
 	std::shared_ptr<cugl::PolygonNode> _dragLine;
-
-    //enemies
-    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
 
     //text
     std::shared_ptr<cugl::Label> _ammoText;

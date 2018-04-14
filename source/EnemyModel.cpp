@@ -6,6 +6,12 @@
 
 #define BASE_SPEED 0
 
+#define NUM_ROWS 4
+#define NUM_COLS 5
+
+#define WALK_FRAME_START 0
+#define DYING_FRAME_START 10
+
 /*
 * ENEMY TYPES:
 * 1 Regular
@@ -23,9 +29,11 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 		//create the scene node
 		_node = nullptr;
 		std::shared_ptr<Texture> texture  = assets->get<Texture>("skeleton");
-		_node = PolygonNode::allocWithTexture(texture);
+		_node = AnimationNode::alloc(texture, NUM_ROWS, NUM_COLS);
+		_node->setFrame(WALK_FRAME_START);
 		_node->setScale(0.3);
 		_node->setAnchor(Vec2::ANCHOR_CENTER);
+		_node->setPosition(pos);
 
 		//initialize the box2d obstacle
 		BoxObstacle::init(pos/_drawScale, Size(_node->getWidth()/_drawScale, _node->getHeight()/_drawScale));
@@ -36,11 +44,18 @@ bool EnemyModel::init(Vec2 pos, float dir, float type, float health, int drawSca
 }
 
 void EnemyModel::update(float deltaTime) {
+	//Physics
     setLinearVelocity(cos(_dir)*BASE_SPEED,sin(_dir)*BASE_SPEED);
     Obstacle::update(deltaTime);
+
+	//Drawing
     if (_node != nullptr) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
+
+		//Animation
+		unsigned int frame = _node->getFrame();
+		_node->setFrame((frame++)%DYING_FRAME_START);
     }
 }
 

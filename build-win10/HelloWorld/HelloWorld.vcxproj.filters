@@ -41,6 +41,7 @@
     <ClInclude Include="..\..\source\SpawnController.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\..\source\LevelselectScene.h" />
+    <ClInclude Include="..\..\source\EnemyDataModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />

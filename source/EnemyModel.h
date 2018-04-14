@@ -37,7 +37,7 @@ public:
     void update(float deltaTime) override;
 
     // Assume assets are already loaded, and _node is immutable after init
-    const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; };
+    const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; };
 
     //destructors
     void dispose();
@@ -51,7 +51,7 @@ protected:
     //private
 
     //This is the root scene node that corresponds to this model.
-    std::shared_ptr<cugl::PolygonNode> _node;
+    std::shared_ptr<cugl::AnimationNode> _node;
 
 	//pixels per meter measurement. obstacle world * _drawScale = screen size
 	int _drawScale;

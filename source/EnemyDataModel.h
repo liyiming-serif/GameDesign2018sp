@@ -24,12 +24,12 @@ public:
 	//CONSTRUCTORS
 	EnemyDataModel(void) {}
 	//TODO: read health and movement from an EnemyTypes.json
-	static std::shared_ptr<EnemyDataModel> alloc(std::string name, int health, cugl::Vec2 pos, int type, int wall) {
+	static std::shared_ptr<EnemyDataModel> alloc(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall) {
 		std::shared_ptr<EnemyDataModel> ref = std::make_shared<EnemyDataModel>();
 		return (ref->init(name, health, pos, type, wall) ? ref : nullptr);
 	}
 
-	bool init(std::string name, int health, cugl::Vec2 pos, int type, int wall) {
+	bool init(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall) {
 		_name = name;
 		_health = health;
 		_pos.set(pos);
@@ -47,18 +47,19 @@ public:
 
 
 	//GETTERS AND SETTERS
-	std::string getName() { return _name; }
+	const std::string& getName() const { return _name; }
 
-	int getHealth() { return _health; }
+	int getHealth() const { return _health; }
 	void setHealth(int health) { _health = health; }
 
-	cugl::Vec2 getPos() { return _pos; }
+	const cugl::Vec2& getPos() const { return _pos; }
+	void setPos(const cugl::Vec2& pos) { _pos.set(pos); }
 
-	int getType() { return _type; }
+	int getType() const { return _type; }
 
-	int getWall() { return _wall; }
+	int getWall() const { return _wall; }
 
-	std::string toString() {
+	const std::string& toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"
 			+std::to_string(_type)+":"+std::to_string(_wall);
 	}

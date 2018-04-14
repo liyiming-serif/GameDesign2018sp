@@ -16,18 +16,15 @@
 #endif
 #include <array>
 #include <vector>
+#include "EnemyDataModel.h"
 #include "EnemyModel.h"
 
 class GameModel {
 protected:
-    // asset manager
-    std::shared_ptr<cugl::AssetManager> _assets;
     int _castleHealth[6];
     int _playerAvatars[6];
     int _playerID;
     int _prevCastleHealth[6];
-    int _spawnTimer;
-    cugl::Size _size;
 
     int clock;
     bool networked;
@@ -42,15 +39,12 @@ public:
     // Constructors
     GameModel() {};
 
-    bool init(const std::shared_ptr<cugl::AssetManager> &assets);
+    bool init();
 
-    //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
-
-    std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
-    std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
-    //2D vector, each element has {xCoord, yCoord, type, remaining health}
-    std::vector<std::vector<std::vector<float>>> _enemyArrayMaster;
-    std::vector<std::vector<int>> _enemiesToFreeMaster;
+    //Keeps track of all enemies.
+	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
+    std::vector<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>> _enemyArrayMaster;
+    std::vector<std::vector<std::string>> _enemiesToFreeMaster;
 
     // Destructors
     void dispose();

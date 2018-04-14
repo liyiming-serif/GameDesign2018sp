@@ -190,6 +190,7 @@
     <ClInclude Include="..\..\source\BallistaModel.h" />
     <ClInclude Include="..\..\source\BallistaScene.h" />
     <ClInclude Include="..\..\source\CastleApp.h" />
+    <ClInclude Include="..\..\source\EnemyDataModel.h" />
     <ClInclude Include="..\..\source\EnemyModel.h" />
     <ClInclude Include="..\..\source\GameModel.h" />
     <ClInclude Include="..\..\source\InputController.h" />
