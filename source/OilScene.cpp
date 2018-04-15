@@ -76,15 +76,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _oilTOcastle->activate(input.generateKey("oilTOcastle"));
     
     
-    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("N_compass");
-    N_compass = PolygonNode::allocWithTexture(north_compass);
-    N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
-    N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(900,80);
-    addChild(N_compass);
-    N_compass->setVisible(false);
-    
-    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("NE_compass");
+    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("smallC");
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
@@ -92,35 +84,39 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("NW_compass");
+    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("smallC");
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
     NW_compass->setPosition(900,80);
+    NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
     
-    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("S_compass");
+    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("bigC");
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
     S_compass->setPosition(900,80);
+    S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("SE_compass");
+    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("smallC");
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
     SE_compass->setPosition(900,80);
+    SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("SW_compass");
+    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("smallC");
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
     SW_compass->setPosition(900,80);
+    SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
     

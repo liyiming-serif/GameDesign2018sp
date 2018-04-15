@@ -64,7 +64,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     
-    std::shared_ptr<Texture> icon  = _assets->get<Texture>("ammo_icon");
+    std::shared_ptr<Texture> icon  = _assets->get<Texture>("ammo_cursor");
     _cursor = PolygonNode::allocWithTexture(icon);
     _cursor->setScale(.5f); // Magic number to rescale asset
     _cursor->setAnchor(Vec2::ANCHOR_CENTER);
@@ -90,9 +90,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _moveup_B = MoveTo::alloc(Vec2(700,650),DURATION/3);
     
     // Create the fire button.  A button has an up image and a down image
-    std::shared_ptr<Texture> tex   = _assets->get<Texture>("ammo_icon");
+    std::shared_ptr<Texture> tex   = _assets->get<Texture>("ammo_button");
     _hammer = Button::alloc(PolygonNode::allocWithTexture(tex));
-    _hammer->setScale(.8f); // Magic number to rescale asset
+    _hammer->setScale(7.0f); // Magic number to rescale asset
     
     // Create a callback function for the back button
     _hammer->setName("hammer");
@@ -160,7 +160,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoTOcastle->setPosition(100,500);
     
     _hammer->setAnchor(Vec2::ANCHOR_CENTER);
-    _hammer->setPosition(_size.width/2,300);
+    _hammer->setPosition(_size.width/2,440);
     
     // Add the logo and button to the scene graph
     addChild(_ammoTOcastle);

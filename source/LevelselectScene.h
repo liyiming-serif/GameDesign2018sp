@@ -24,6 +24,32 @@ protected:
     std::shared_ptr<cugl::Button> _backButton;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    
+    std::shared_ptr<cugl::PolygonNode> _cloud1;
+    std::shared_ptr<cugl::PolygonNode> _cloud2;
+    std::shared_ptr<cugl::PolygonNode> _cloud3;
+    std::shared_ptr<cugl::PolygonNode> _cloud4;
+    std::shared_ptr<cugl::PolygonNode> _cloud5;
+    std::shared_ptr<cugl::PolygonNode> _cloud6;
+    
+    
+    /** Manager to process the animation actions */
+    std::shared_ptr<cugl::ActionManager> _actions;
+    
+    /** The movement actions */
+    std::shared_ptr<cugl::MoveTo> _move1;
+    std::shared_ptr<cugl::MoveTo> _move2;
+    std::shared_ptr<cugl::MoveTo> _move3;
+    std::shared_ptr<cugl::MoveTo> _move4;
+    std::shared_ptr<cugl::MoveTo> _move5;
+    std::shared_ptr<cugl::MoveTo> _move6;
+    
+    bool move1 = true;
+    bool move2 = true;
+    bool move3 = true;
+    bool move4 = true;
+    bool move5 = true;
+    bool move6 = true;
 
     
     
@@ -44,6 +70,48 @@ public:
     void setActive(bool active, int mode);
     int switchscene;
     int mode;
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove2(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove4(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove5(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
 };
 
 #endif /* LevelselectScene_h */
