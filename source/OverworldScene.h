@@ -37,7 +37,7 @@ protected:
     
     //castle views
     std::shared_ptr<cugl::PolygonNode> _castle_ballista;
-    std::shared_ptr<cugl::PolygonNode> _castle_catapult;
+    std::shared_ptr<cugl::PolygonNode> _castle_background;
     std::shared_ptr<cugl::PolygonNode> _castle_oil;
     std::shared_ptr<cugl::PolygonNode> _castle_lookout;
     std::shared_ptr<cugl::PolygonNode> _castle_basement;
@@ -82,6 +82,25 @@ protected:
     
     std::shared_ptr<cugl::Button> _up_button;
     std::shared_ptr<cugl::Button> _down_button;
+    
+    
+    
+    
+    
+    std::shared_ptr<cugl::PolygonNode> _cloud1;
+    std::shared_ptr<cugl::PolygonNode> _cloud2;
+    std::shared_ptr<cugl::PolygonNode> _cloud3;
+
+    
+    
+    /** The movement actions */
+    std::shared_ptr<cugl::MoveTo> _move1;
+    std::shared_ptr<cugl::MoveTo> _move2;
+    std::shared_ptr<cugl::MoveTo> _move3;
+
+
+    
+
 
 public:
     // Constructors
@@ -145,6 +164,28 @@ public:
     
     //void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
     
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove1(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove2(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+
 };
 
 

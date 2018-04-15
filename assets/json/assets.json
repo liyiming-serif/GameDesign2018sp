@@ -21,13 +21,6 @@
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
 		},
-        "castle_ballista": {
-            "file":     "textures/Ballista/BallistaTower.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "castle": {
             "file":     "textures/castle.png",
             "minfilter":"nearest",
@@ -35,29 +28,36 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "castle_basement": {
-            "file":     "textures/Basement/BasementTower.png",
+        "castle_ballista": {
+            "file":     "textures/Overworld/ballista.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "castle_catapult": {
-            "file":     "textures/Catapult/CatapultTower.png",
+        "castle_basement": {
+            "file":     "textures/Overworld/basement.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_background": {
+            "file":     "textures/Overworld/background.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
         "castle_oil": {
-            "file":     "textures/Oil/OilTower.png",
+            "file":     "textures/Overworld/oil.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
         "castle_lookout": {
-            "file":     "textures/Lookout/LookoutTower.png",
+            "file":     "textures/Overworld/lookout.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
