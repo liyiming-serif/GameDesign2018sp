@@ -119,43 +119,15 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "N_compass": {
-            "file":     "textures/Compass/N_compass.png",
+        "bigC": {
+            "file":     "textures/Compass/bigC.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "NE_compass": {
-            "file":     "textures/Compass/NE_compass.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "NW_compass": {
-            "file":     "textures/Compass/NW_compass.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "S_compass": {
-            "file":     "textures/Compass/S_compass.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "SE_compass": {
-            "file":     "textures/Compass/SE_compass.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "SW_compass": {
-            "file":     "textures/Compass/SW_compass.png",
+        "smallC": {
+            "file":     "textures/Compass/smallC.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -231,6 +203,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "ammo_button": {
+            "file":     "textures/Basement/transparent2.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ammo_cursor": {
+            "file":     "textures/Basement/Cursor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "catapult_floor": {
             "file":     "textures/Catapult/CatapultFloor.png",
             "minfilter":"nearest",
@@ -267,7 +253,49 @@
 			"wrapT":    "clamp"
 		},
         "homepage": {
-            "file":     "textures/Menu/homepage.png",
+            "file":     "textures/Menu/background.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "cloudS": {
+            "file":     "textures/Menu/cloudS.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "cloudM": {
+            "file":     "textures/Menu/cloudM.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "cloudL": {
+            "file":     "textures/Menu/cloudL.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "m_castle": {
+            "file":     "textures/Menu/castle.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "m_flag": {
+            "file":     "textures/Menu/flag.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "m_title": {
+            "file":     "textures/Menu/title.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
