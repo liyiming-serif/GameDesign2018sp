@@ -34,7 +34,7 @@ using namespace cugl;
 
 /** Define the time settings for animation */
 #define DURATION .7f
-//#define DURATION .3f
+#define DURATION2 20.0f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -80,18 +80,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _levels = Node::alloc();
     
     //Creates the tower views
+    // Background
+    std::shared_ptr<Texture> ca_back  = _assets->get<Texture>("castle_background");
+    _castle_background = PolygonNode::allocWithTexture(ca_back);
+    _castle_background->setScale(TOWER_SCALE); // Magic number to rescale asset
+    _castle_background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _castle_background->setPosition(-_size.width/2,0);
     // Ballista Floor
     std::shared_ptr<Texture> ca_texture_ballista  = _assets->get<Texture>("castle_ballista");
     _castle_ballista = PolygonNode::allocWithTexture(ca_texture_ballista);
     _castle_ballista->setScale(TOWER_SCALE); // Magic number to rescale asset
     _castle_ballista->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_ballista->setPosition(-_size.width/2,0);
-    // Catapult Floor
-    std::shared_ptr<Texture> ca_texture_catapult  = _assets->get<Texture>("castle_catapult");
-    _castle_catapult = PolygonNode::allocWithTexture(ca_texture_catapult);
-    _castle_catapult->setScale(TOWER_SCALE); // Magic number to rescale asset
-    _castle_catapult->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
-    _castle_catapult->setPosition(-_size.width/2,0);
     // Oil Floor
     std::shared_ptr<Texture> ca_texture_oil  = _assets->get<Texture>("castle_oil");
     _castle_oil = PolygonNode::allocWithTexture(ca_texture_oil);
@@ -111,18 +111,41 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_basement->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_basement->setPosition(-_size.width/2,0);
     //Adds Nodes to background and sets transparency
+    
+    
+     std::shared_ptr<Texture> c_1  = _assets->get<Texture>("cloudS");
+    _cloud1 = PolygonNode::allocWithTexture(c_1);
+    _cloud1->setScale(0.5625f); // Magic number to rescale asset
+    _cloud1->setAnchor(Vec2::ANCHOR_CENTER);
+    
+    _cloud2 = PolygonNode::allocWithTexture(c_1);
+    _cloud2->setScale(0.5625f); // Magic number to rescale asset
+    _cloud2->setAnchor(Vec2::ANCHOR_CENTER);
+    
+    _cloud3 = PolygonNode::allocWithTexture(c_1);
+    _cloud3->setScale(0.5625f); // Magic number to rescale asset
+    _cloud3->setAnchor(Vec2::ANCHOR_CENTER);
+    
+    
+
+    _background->addChild(_castle_background);
+    
+    _background->addChild(_cloud1);
+    _background->addChild(_cloud2);
+    _background->addChild(_cloud3);
+    
     _background->addChild(_castle_basement);
-    _background->addChild(_castle_catapult);
     _background->addChild(_castle_oil);
     _background->addChild(_castle_lookout);
     _background->addChild(_castle_ballista);
     _castle_ballista->setColor(Color4(255,255,255,0));
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
-    _castle_catapult->setColor(Color4(255,255,255,0));
     
     
-    currentCastleFloor = 4;
+    
+    
+    currentCastleFloor = 3;
     
 // CREATES THE FLOORS
     
@@ -131,7 +154,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<PolygonNode> basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
         basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        basement_floor->setPosition(_size.width/2.14,-4*_size.height);
+        basement_floor->setPosition(_size.width/2.14,-3*_size.height);
     
     
         // Create the Basement Buttons
@@ -193,76 +216,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Adds the Basement Floor to the castle
         _levels->addChild(basement_floor);
-    
-    
-    // Catapult Floor
-        std::shared_ptr<Texture> catapultFloor_texture  = _assets->get<Texture>("catapult_floor");
-        std::shared_ptr<PolygonNode> catapult_floor = PolygonNode::allocWithTexture(catapultFloor_texture);
-        catapult_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-        catapult_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        catapult_floor->setPosition(_size.width/2.14,-3*_size.height);
-    
-    
-            // Create the Catapult Buttons
-                std::shared_ptr<Texture> image_up   = _assets->get<Texture>("catapult_icon");
-                _catapultNorth = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultSouthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultSouth = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultSouthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
-                _catapultNorthWest = Button::alloc(PolygonNode::allocWithTexture(image_up));
-    
-    
-            // Create a callback function for the Catapult button
-    
-            //Positions the Catapult Buttons
-            //Catapult Floor Center
-            centerX = catapult_floor->getContentSize().width/2;
-            centerY = catapult_floor->getContentSize().height/2;
-            _catapultNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultNorth->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultNorth->setPosition(centerX,centerY+.27*catapult_floor->getContentHeight());
-            
-    
-            _catapultNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultNorthEast->setPosition(centerX+.24*catapult_floor->getContentWidth(),centerY+.13*catapult_floor->getContentHeight());
-            _catapultNorthEast->setAngle(-M_PI/3);
-    
-            _catapultSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultSouthEast->setPosition(centerX+.24*catapult_floor->getContentWidth(),centerY-.13*catapult_floor->getContentHeight());
-            _catapultSouthEast->setAngle(-2*M_PI/3);
-    
-            _catapultSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultSouth->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultSouth->setPosition(centerX,centerY-.27*catapult_floor->getContentHeight());
-            _catapultSouth->setAngle(-3*M_PI/3);
-    
-            _catapultSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultSouthWest->setPosition(centerX-.24*catapult_floor->getContentWidth(),centerY-.13*catapult_floor->getContentHeight());
-            _catapultSouthWest->setAngle(-4*M_PI/3);
-    
-            _catapultNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
-            _catapultNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _catapultNorthWest->setPosition(centerX-.24*catapult_floor->getContentWidth(),centerY+.13*catapult_floor->getContentHeight());
-            _catapultNorthWest->setAngle(M_PI/3);
-    
-            //Adds the buttons to the Scene Graph
-            catapult_floor->addChild(_catapultNorth);
-            catapult_floor->addChild(_catapultNorthEast);
-            catapult_floor->addChild(_catapultSouthEast);
-            catapult_floor->addChild(_catapultSouth);
-            catapult_floor->addChild(_catapultSouthWest);
-            catapult_floor->addChild(_catapultNorthWest);
-    
-        //Adds the Catapult Floor to the castle
-        _levels->addChild(catapult_floor);
-    
-    
+
     
     
     
@@ -271,11 +225,12 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<PolygonNode> oil_floor = PolygonNode::allocWithTexture(oilFloor_texture);
         oil_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         oil_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        oil_floor->setPosition(_size.width/2.14,-2*_size.height);
+        oil_floor->setPosition(_size.width/2.14,-_size.height);
     
     
         // Create the Oil Buttons
-            image_up   = _assets->get<Texture>("oil_icon");
+
+            std::shared_ptr<Texture> image_up   = _assets->get<Texture>("oil_icon");
             _oilNorth = Button::alloc(PolygonNode::allocWithTexture(image_up));
             _oilNorthEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
             _oilEast = Button::alloc(PolygonNode::allocWithTexture(image_up));
@@ -295,7 +250,47 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     direction = 0;
                 }
             });
-            //MAKE SURE TO CHANGE REST OF DIRECTIONS AS WELL FOR NEW BUTTONS
+        _oilNorthWest->setName("oilNorthwest");
+        _oilNorthWest->setListener([=] (const std::string& name, bool down) {
+            // Only switch scenes when the button is released
+            if (!down) {
+                switchscene = OIL;
+                direction = 1;
+            }
+        });
+        _oilSouthWest->setName("oilSouthwest");
+        _oilSouthWest->setListener([=] (const std::string& name, bool down) {
+            // Only switch scenes when the button is released
+            if (!down) {
+                switchscene = OIL;
+                direction = 2;
+            }
+        });
+        _oilSouth->setName("oilSouth");
+        _oilSouth->setListener([=] (const std::string& name, bool down) {
+            // Only switch scenes when the button is released
+            if (!down) {
+                switchscene = OIL;
+                direction = 3;
+            }
+        });
+        _oilSouthEast->setName("oilSoutheast");
+        _oilSouthEast->setListener([=] (const std::string& name, bool down) {
+            // Only switch scenes when the button is released
+            if (!down) {
+                switchscene = OIL;
+                direction = 4;
+            }
+        });
+        _oilNorthEast->setName("oilNortheast");
+        _oilNorthEast->setListener([=] (const std::string& name, bool down) {
+            // Only switch scenes when the button is released
+            if (!down) {
+                switchscene = OIL;
+                direction = 5;
+            }
+        });
+    
     
         //Positions the Oil Buttons
             //Oil Floor Center
@@ -351,7 +346,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<PolygonNode> ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture);
         ballista_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
         ballista_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        ballista_floor->setPosition(_size.width/2.14,-_size.height);
+        ballista_floor->setPosition(_size.width/2.14,-2*_size.height);
     
         //Creates Ballista buttons
             image_up   = _assets->get<Texture>("ballista_icon");
@@ -583,6 +578,11 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lookout_button->activate(input.generateKey("lookout_button"));
     
     _oilNorth->activate(input.generateKey("oilNorth"));
+    _oilNorthEast->activate(input.generateKey("oilNorthEast"));
+    _oilSouthEast->activate(input.generateKey("oilSouthEast"));
+    _oilSouth->activate(input.generateKey("oilSouth"));
+    _oilSouthWest->activate(input.generateKey("oilSouthWest"));
+    _oilNorthWest->activate(input.generateKey("oilNorthWest"));
     
     _ballistaNorth->activate(input.generateKey("ballistaNorth"));
 	_ballistaNorthEast->activate(input.generateKey("ballistaNorthEast"));
@@ -634,13 +634,10 @@ std::shared_ptr<cugl::PolygonNode> OverworldScene::getTowerView(int floor) {
         return _castle_basement;
     }
     else if (floor==1){
-        return _castle_catapult;
+        return _castle_ballista;
     }
     else if (floor==2){
         return _castle_oil;
-    }
-    else if (floor==3){
-        return _castle_ballista;
     }
     else {
         return _castle_lookout;
@@ -659,6 +656,21 @@ void OverworldScene::doFadeOut(const std::shared_ptr<FadeOut>& action, int floor
     _curr_castle_floor = OverworldScene::getTowerView(floor);
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
     _actions->activate(ACT_KEY+2, action, _curr_castle_floor, fcn);
+}
+
+void OverworldScene::doMove1(const std::shared_ptr<MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object) {
+    auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
+    _actions->activate(ACT_KEY+3, action, object, fcn);
+}
+
+void OverworldScene::doMove2(const std::shared_ptr<MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object) {
+    auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
+    _actions->activate(ACT_KEY+4, action, object, fcn);
+}
+
+void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object) {
+    auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
+    _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
 
@@ -693,13 +705,31 @@ void OverworldScene::update(float timestep){
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor - 1);
 		currentCastleFloor -= 1;
 	}
-	else if (input.vScrolling() > 0 && currentCastleFloor<4 && !_actions->isActive(ACT_KEY)) {
+	else if (input.vScrolling() > 0 && currentCastleFloor<3 && !_actions->isActive(ACT_KEY)) {
 		//Moving up
 		OverworldScene::doMove(_moveup, currentCastleFloor);
 		OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor + 1);
 		currentCastleFloor += 1;
 	}
+    
+    if (!_actions->isActive(ACT_KEY+3)){
+        _cloud1->setPosition(-700,200);
+        _move1 = MoveTo::alloc(Vec2(150,200),DURATION2);
+        doMove1(_move1, _cloud1);
+    }
+    
+    if (!_actions->isActive(ACT_KEY+4)){
+        _cloud2->setPosition(-1000,50);
+        _move2 = MoveTo::alloc(Vec2(200,50),DURATION2*1.3);
+        doMove2(_move2, _cloud2);
+    }
+    
+    if (!_actions->isActive(ACT_KEY+5)){
+        _cloud3->setPosition(-1200,-100);
+        _move3 = MoveTo::alloc(Vec2(400,-100),DURATION2*1.6);
+        doMove3(_move3, _cloud3);
+    }
 
 	// Animate
 	_actions->update(timestep);
@@ -715,6 +745,11 @@ void OverworldScene::setActive(bool active) {
         _lookout_button->activate(input.findKey("lookout_button"));
         
         _oilNorth->activate(input.findKey("oilNorth"));
+        _oilNorthEast->activate(input.findKey("oilNorthEast"));
+        _oilNorthWest->activate(input.findKey("oilNorthWest"));
+        _oilSouth->activate(input.findKey("oilSouth"));
+        _oilSouthEast->activate(input.findKey("oilSouthEast"));
+        _oilSouthWest->activate(input.findKey("oilSouthWest"));
         
         _ballistaNorth->activate(input.findKey("ballistaNorth"));
         _ballistaNorthEast->activate(input.findKey("ballistaNorthEast"));
@@ -727,7 +762,7 @@ void OverworldScene::setActive(bool active) {
         _mage_button->activate(input.findKey("mage_button"));
         _ammo_button->activate(input.findKey("ammo_button"));
         
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
     }
     else{
         _quitButton->deactivate();

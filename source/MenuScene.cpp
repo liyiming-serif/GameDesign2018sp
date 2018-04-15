@@ -47,6 +47,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Allocate the manager and the actions
     _actions = ActionManager::alloc();
     
+    players = -1;
     switchscene = 0;
     
     _assets = assets;
@@ -149,7 +150,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = LEVELS;
-
+            players = 1;
         }
     });
     

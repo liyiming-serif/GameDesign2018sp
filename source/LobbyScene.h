@@ -78,6 +78,8 @@ public:
     // Destructors
     void dispose();
     ~LobbyScene() {dispose();}
+
+    int players;
     
     // Gameplay
     void update(float timestep);

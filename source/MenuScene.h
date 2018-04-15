@@ -63,6 +63,8 @@ public:
     void dispose();
     ~MenuScene() {dispose();}
     
+    int players;
+    
     // Gameplay
     void update(float timestep);
     

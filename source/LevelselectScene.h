@@ -21,9 +21,13 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _playButton;
-    std::shared_ptr<cugl::Button> _backButton;
+    std::shared_ptr<cugl::Button> _backButtonSINGLE;
+    std::shared_ptr<cugl::Button> _backButtonMULTI;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    
+    std::shared_ptr<cugl::Node>  _single;
+    std::shared_ptr<cugl::Node>  _multi;
     
     std::shared_ptr<cugl::PolygonNode> _cloud1;
     std::shared_ptr<cugl::PolygonNode> _cloud2;
@@ -113,6 +117,8 @@ public:
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
 
+    //Sets the compass image based on the direction input
+    void setCanvas (int direction);
 };
 
 #endif /* LevelselectScene_h */
