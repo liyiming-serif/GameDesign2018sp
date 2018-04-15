@@ -219,6 +219,15 @@ void LevelselectScene::setCanvas(int direction){
     }
 }
 
+void LevelselectScene::setButtonActive ( std::shared_ptr<cugl::Button> button, std::string actKey){
+    if (button->getParent()->isVisible()) {
+        button->activate(input.findKey(actKey));
+    }
+    else {
+        button->deactivate();
+    }
+}
+
 void LevelselectScene::update(float timestep){
     
     // Animate
@@ -332,9 +341,9 @@ void LevelselectScene::setActive(bool active, int players){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         setCanvas(players);
+        setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
+        setButtonActive(_backButtonMULTI, "backButtonMULTI");
         _playButton->activate(input.findKey("playButton"));
-        _backButtonSINGLE->activate(input.findKey("backButtonSINGLE"));
-        _backButtonMULTI->activate(input.findKey("backButtonMULTI"));
     }
     else{
         _playButton->deactivate();
