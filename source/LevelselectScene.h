@@ -119,6 +119,7 @@ public:
 
     //Sets the compass image based on the direction input
     void setCanvas (int direction);
+    void setButtonActive ( std::shared_ptr<cugl::Button> button, std::string actKey);
 };
 
 #endif /* LevelselectScene_h */
