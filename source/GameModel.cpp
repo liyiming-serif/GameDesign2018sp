@@ -26,8 +26,12 @@ bool GameModel::init(){
 }
 
 void GameModel::dispose() {
-    _enemyArrayMaster.clear();
-    _enemiesToFreeMaster.clear();
+	for (int i = 0; i < _enemyArrayMaster.size(); i++) {
+		_enemyArrayMaster[i].clear();
+	}
+	for (int i = 0; i < _enemiesToFreeMaster.size(); i++) {
+		_enemiesToFreeMaster[i].clear();
+	}
 }
 
 void GameModel::update(float deltaTime){
@@ -70,9 +74,7 @@ void GameModel::update(float deltaTime){
 	//delete enemies here to not disrupt iterator
 	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
 		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
-			if (ekey<gameModel._enemyArrayMaster[wall].size()) {
-				gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
-			}
+			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
 		}
 		gameModel._enemiesToFreeMaster[wall].clear();
 	}

@@ -11,7 +11,7 @@ using namespace cugl;
 /**Helper function for generating random enemy keys
  * Source: Carl (stackoverflow)
  */
-const std::string& genRandName(int len)
+std::string genRandName(int len)
 {
 	auto randchar = []() -> char
 	{

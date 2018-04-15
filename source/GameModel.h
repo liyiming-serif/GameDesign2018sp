@@ -43,8 +43,8 @@ public:
 
     //Keeps track of all enemies.
 	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
-    std::vector<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>> _enemyArrayMaster;
-    std::vector<std::vector<std::string>> _enemiesToFreeMaster;
+    std::array<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>, 6> _enemyArrayMaster;
+    std::array<std::vector<std::string>, 6> _enemiesToFreeMaster;
 
     // Destructors
     void dispose();
