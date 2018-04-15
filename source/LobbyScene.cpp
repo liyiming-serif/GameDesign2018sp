@@ -389,6 +389,11 @@ void LobbyScene::doMove6(const std::shared_ptr<MoveTo>& action, std::shared_ptr<
     _actions->activate(ACT_KEY+6, action, object, fcn);
 }
 
+int LobbyScene::getNumPlayers(){
+    //TODO: RETURN NUMBER OF PLAYERS
+    return 0;
+}
+
 
 //Pause or Resume
 void LobbyScene::setActive(bool active){

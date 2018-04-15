@@ -81,6 +81,8 @@ public:
     
     // Gameplay
     void update(float timestep);
+
+    int getNumPlayers();
     
     //Pause or Resume
     void setActive(bool active);

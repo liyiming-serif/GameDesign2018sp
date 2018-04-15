@@ -92,6 +92,7 @@ void CastleApp::onStartup() {
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
 
     _direction = -1;
+    _players = -1;
 
     Application::onStartup(); // YOU MUST END with call to parent
 
@@ -166,11 +167,11 @@ void CastleApp::update(float timestep) {
         _ammoScene.init(_assets);
         _ammoScene.setActive(false);
         _oilScene.init(_assets);
-        _oilScene.setActive(false);
+        _oilScene.setActive(false, 0);
         _lobbyScene.init(_assets);
         _lobbyScene.setActive(false);
         _levelScene.init(_assets);
-        _levelScene.setActive(false,0);
+        _levelScene.setActive(false, 0);
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
@@ -205,7 +206,6 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==BALLISTA){
-            //later on, use _direction to determine array
                 _ballistaScene.update(timestep, _direction);
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
@@ -241,10 +241,10 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==OIL){
-                _oilScene.update(timestep);
+                _oilScene.update(timestep, _direction);
                 if(_oilScene.switchscene!=0){
                     swapscenes(_oilScene.switchscene, 0);
-                    _oilScene.setActive(false);
+                    _oilScene.setActive(false, _direction);
                 }
             }
             _spawnController.update(timestep);
@@ -261,6 +261,12 @@ void CastleApp::swapscenes(int nextscene, int direction){
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
 		gameModel.init(_assets);
 		_spawnController.init(_assets);
+	}
+	if (_currscene == MENU && nextscene == LEVELS){
+	    _players = 1;
+	}
+	if (_currscene == LOBBY && nextscene == LEVELS){
+	    _players = _lobbyScene.getNumPlayers();
 	}
     switch(nextscene){
         case MENU:
@@ -285,13 +291,13 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _ammoScene.setActive(true);
             break;
         case OIL:
-            _oilScene.setActive(true);
+            _oilScene.setActive(true, _direction);
             break;
         case LOBBY:
             _lobbyScene.setActive(true);
             break;
         case LEVELS:
-        _levelScene.setActive(true,_direction);
+        _levelScene.setActive(true, _players);
         break;
     }
     _currscene = nextscene;

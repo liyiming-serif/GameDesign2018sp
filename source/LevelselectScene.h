@@ -67,7 +67,7 @@ public:
     void update(float timestep);
     
     //Pause or Resume
-    void setActive(bool active, int mode);
+    void setActive(bool active, int players);
     int switchscene;
     int mode;
     
@@ -112,6 +112,7 @@ public:
      * @param action The move action
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+
 };
 
 #endif /* LevelselectScene_h */

@@ -44,10 +44,10 @@ public:
     ~OilScene() {dispose();}
     
     // Gameplay
-    void update(float timestep);
+    void update(float timestep, int direction);
     
     //Pause or Resume
-    void setActive(bool active);
+    void setActive(bool active, int direction);
     int switchscene;
     
     //Sets the compass image based on the direction input
