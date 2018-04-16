@@ -330,7 +330,7 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 			}
 		}
 		else {
-			i->second->setPosition(e->getPos());
+			i->second->setPosition(e->getPos()/DRAW_SCALE);
 			i->second->update(deltaTime);
 		}
 	}

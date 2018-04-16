@@ -57,7 +57,8 @@ void EnemyModel::update(float deltaTime) {
 
 		//Animation
 		unsigned int frame = _node->getFrame();
-		_node->setFrame((frame++)%DYING_FRAME_START);
+		frame++;
+		_node->setFrame((frame)%DYING_FRAME_START);
     }
 }
 

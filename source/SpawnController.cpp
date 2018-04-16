@@ -39,13 +39,13 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
     //XCoord, YCoord, Type, Health, SpawnTime, Sector
     std::vector<float> enemy = {100.0, 500.0, 1.0, 1.0, 300.0, 0.0};
     _enemyArray.push_back(enemy);
-    enemy = {500.0, 500.0, 1.0, 1.0, 300.0, 0.0};
+    enemy = {500.0, 500.0, 1.0, 1.0, 315.0, 0.0};
     _enemyArray.push_back(enemy);
-    enemy = {950.0, 500.0, 1.0, 1.0, 300.0, 0.0};
+    enemy = {950.0, 500.0, 1.0, 1.0, 330.0, 0.0};
     _enemyArray.push_back(enemy);
     enemy = {300.0, 500.0, 1.0, 1.0, 600.0, 3.0};
     _enemyArray.push_back(enemy);
-    enemy = {700.0, 500.0, 1.0, 1.0, 600.0, 3.0};
+    enemy = {700.0, 500.0, 1.0, 1.0, 615.0, 3.0};
     _enemyArray.push_back(enemy);
     enemy = {400.0, 500.0, 1.0, 1.0, 1200.0, 0.0};
     _enemyArray.push_back(enemy);
@@ -61,9 +61,9 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets){
     _enemyArray.push_back(enemy);
     enemy = {200.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
     _enemyArray.push_back(enemy);
-    enemy = {550.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
+    enemy = {550.0, 500.0, 1.0, 1.0, 2215.0, 2.0};
     _enemyArray.push_back(enemy);
-    enemy = {800.0, 500.0, 1.0, 1.0, 2200.0, 2.0};
+    enemy = {800.0, 500.0, 1.0, 1.0, 2230.0, 2.0};
     _enemyArray.push_back(enemy);
     enemy = {400.0, 500.0, 1.0, 1.0, 2500.0, 5.0};
     _enemyArray.push_back(enemy);
