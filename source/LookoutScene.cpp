@@ -63,7 +63,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _lookoutTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _lookoutTOcastle->setScale(.8f); // Magic number to rescale asset
+    _lookoutTOcastle->setScale(.6f); // Magic number to rescale asset
 
     // Create a callback function for the OVERWORLD button
     _lookoutTOcastle->setName("lookoutTOcastle");
@@ -76,8 +76,8 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 
     // Position the overworld button in the bottom left
-    _lookoutTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _lookoutTOcastle->setPosition(100,80);
+    _lookoutTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _lookoutTOcastle->setPosition(15,_size.height-18);
 
     // Add the logo and button to the scene graph
     addChild(_lookoutTOcastle);

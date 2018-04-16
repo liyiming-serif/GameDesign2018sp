@@ -82,9 +82,9 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the background image
     std::shared_ptr<Texture> texture_flag  = _assets->get<Texture>("m_flag");
     _flag = PolygonNode::allocWithTexture(texture_flag);
-    _flag->setScale(0.5625f); // Magic number to rescale asset
+    _flag->setScale(-0.5625f,0.5625f); // Magic number to rescale asset
     _flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
-    _flag->setPosition(_size.width-128,_castle->getHeight()-60);
+    _flag->setPosition(_size.width-60.5,_castle->getHeight()-57);
 
     
     
@@ -93,7 +93,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cloud1->setScale(0.5625f); // Magic number to rescale asset
     _cloud1->setAnchor(Vec2::ANCHOR_CENTER);
     _cloud1->setPosition(197,447);
-    _move1 = MoveTo::alloc(Vec2(1300,447),DURATION);
+    _move1 = MoveTo::alloc(Vec2(1300,447.2),DURATION);
     
      std::shared_ptr<Texture> c_2  = _assets->get<Texture>("cloudM");
     _cloud2 = PolygonNode::allocWithTexture(c_2);
@@ -114,7 +114,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cloud4->setScale(-0.783f, 0.783f); // Magic number to rescale asset
     _cloud4->setAnchor(Vec2::ANCHOR_CENTER);
     _cloud4->setPosition(740,285);
-    _move4 = MoveTo::alloc(Vec2(950,285),DURATION/4);
+    _move4 = MoveTo::alloc(Vec2(950,285.5),DURATION/4);
     
     _cloud5 = PolygonNode::allocWithTexture(c_3);
     _cloud5->setScale(0.43); // Magic number to rescale asset

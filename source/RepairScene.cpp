@@ -194,7 +194,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         _northeastWallButton->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _northeastWallButton->setAnchor(Vec2::ANCHOR_CENTER);
-        _northeastWallButton->setPosition(centerX+.11*_background->getContentWidth(),centerY+.11*_background->getContentHeight());
+        _northeastWallButton->setPosition(centerX+.11*_background->getContentWidth(),centerY+.112*_background->getContentHeight());
         _northeastWallButton->setAngle(-M_PI/3);
     
                 NE_100 = PolygonNode::allocWithTexture(repair_100);
@@ -409,7 +409,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _buttons = Node::alloc();
         _buttons->setScale(.5); // Magic number to rescale asset
         _buttons->setAnchor(Vec2::ANCHOR_CENTER);
-        _buttons->setPosition(15,-4);
+        _buttons->setPosition(30,2);
         addChild(_buttons);
     
     
@@ -441,7 +441,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
 
     _repairTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _repairTOcastle->setScale(0.8f); // Magic number to rescale asset
+    _repairTOcastle->setScale(0.6f); // Magic number to rescale asset
     
     // Create a callback function for the back button
     _repairTOcastle->setName("repairTOcastle");
@@ -456,8 +456,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the overworld button in the bottom right
     //Size bsize = overworld_up->getSize();
-    _repairTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _repairTOcastle->setPosition(_size.width-60,60);
+    _repairTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _repairTOcastle->setPosition(15,_size.height-18);
     
     // Add the logo and button to the scene graph
     addChild(_repairTOcastle);

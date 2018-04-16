@@ -86,6 +86,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_background->setScale(TOWER_SCALE); // Magic number to rescale asset
     _castle_background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_background->setPosition(-_size.width/2,0);
+    // Flag
+    std::shared_ptr<Texture> ca_flag  = _assets->get<Texture>("castle_flag_overworld");
+    _castle_flag = PolygonNode::allocWithTexture(ca_flag);
+    _castle_flag->setScale(-TOWER_SCALE,TOWER_SCALE); // Magic number to rescale asset
+    _castle_flag->setAnchor(Vec2::ANCHOR_CENTER);
+    _castle_flag->setPosition(-170,190);
+    // Black
+    std::shared_ptr<Texture> ca_black  = _assets->get<Texture>("castle_black");
+    _castle_black = PolygonNode::allocWithTexture(ca_black);
+    _castle_black->setScale(TOWER_SCALE); // Magic number to rescale asset
+    _castle_black->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _castle_black->setPosition(-_size.width/2,0);
     // Ballista Floor
     std::shared_ptr<Texture> ca_texture_ballista  = _assets->get<Texture>("castle_ballista");
     _castle_ballista = PolygonNode::allocWithTexture(ca_texture_ballista);
@@ -133,6 +145,9 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->addChild(_cloud1);
     _background->addChild(_cloud2);
     _background->addChild(_cloud3);
+    
+    _background->addChild(_castle_flag);
+    _background->addChild(_castle_black);
     
     _background->addChild(_castle_basement);
     _background->addChild(_castle_oil);
@@ -595,9 +610,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammo_button->activate(input.generateKey("ammo_button"));
     _mage_button->activate(input.generateKey("mage_button"));
     
-    //    _up_button->activate(10);
-    //    _down_button->activate(11);
-    
+
     return true;
 }
 
