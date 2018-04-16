@@ -37,6 +37,12 @@ protected:
     std::shared_ptr<cugl::MoveTo> _moveup_J;
     std::shared_ptr<cugl::MoveTo> _moveup_O;
     std::shared_ptr<cugl::MoveTo> _moveup_B;
+    
+    /** The animation */
+    std::shared_ptr<cugl::AnimationNode> _hammerAnim;
+    
+    /** The animation actions */
+    std::shared_ptr<cugl::Animate> _hammerAnimation;
 
     //text
     std::shared_ptr<cugl::Label> _ammoText;
@@ -77,6 +83,13 @@ public:
      * @param action The move action
      */
     void doMoveUp(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> jackpot);
+    
+    /**
+     * Performs a film strip action
+     *
+     * @param action The film strip action
+     */
+    void doStrip(const std::shared_ptr<cugl::Animate>& action);
 
 
 };

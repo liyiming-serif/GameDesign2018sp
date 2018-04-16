@@ -16,7 +16,7 @@
 #define DRAW_SCALE 32
 #define FONT    _assets->get<Font>("futura")
 
-#define BUTTON_SCALE 1.0f
+#define BUTTON_SCALE .8f
 
 #define BALLISTA_MIN_POWER 9.0f
 
@@ -74,8 +74,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _ballistaTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _ballistaTOcastle->setScale(.8f); // Magic number to rescale asset
-
+    
     // Create a callback function for the OVERWORLD button
     _ballistaTOcastle->setName("ballistaTOcastle");
     _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
@@ -85,8 +84,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
 
     // Position the OVERWORLD button in the bottom left
-    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballistaTOcastle->setPosition(100,80);
+    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _ballistaTOcastle->setPosition(15,_size.height-18);
+    _ballistaTOcastle->setScale(.6f);
     
 
     // Add children to the scene graph
@@ -112,51 +112,55 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
      _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
     
     
-    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("N_compass");
+    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("bigC");
     N_compass = PolygonNode::allocWithTexture(north_compass);
     N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(900,80);
+    N_compass->setPosition(950,80);
     addChild(N_compass);
     N_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("NE_compass");
+    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("smallC");
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NE_compass->setPosition(900,80);
+    NE_compass->setPosition(950,80);
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("NW_compass");
+    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("smallC");
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NW_compass->setPosition(900,80);
+    NW_compass->setPosition(950,80);
+    NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
     
-    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("S_compass");
+    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("bigC");
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    S_compass->setPosition(900,80);
+    S_compass->setPosition(950,80);
+    S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("SE_compass");
+    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("smallC");
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SE_compass->setPosition(900,80);
+    SE_compass->setPosition(950,80);
+    SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("SW_compass");
+    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("smallC");
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SW_compass->setPosition(900,80);
+    SW_compass->setPosition(950,80);
+    SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
     
@@ -165,8 +169,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
     _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(700, 400);
+    _ammoText->setPosition(620, 20);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
+    _ammoText->setScale(.5f);
 
     return true;
 }

@@ -53,8 +53,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _oilTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _oilTOcastle->setScale(.8f); // Magic number to rescale asset
-    
+   
     // Create a callback function for the OVERWORLD button
     _oilTOcastle->setName("oilTOcastle");
     _oilTOcastle->setListener([=] (const std::string& name, bool down) {
@@ -66,61 +65,66 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // Position the overworld button in the bottom left
-    _oilTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _oilTOcastle->setPosition(100,80);
+    _oilTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _oilTOcastle->setPosition(15,_size.height-18);
+    _oilTOcastle->setScale(.6f);
     
     // Add the logo and button to the scene graph
     addChild(_oilTOcastle);
     
     // We can only activate a button AFTER it is added to a scene
     _oilTOcastle->activate(input.generateKey("oilTOcastle"));
+   
     
-    
-    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("N_compass");
+    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("bigC");
     N_compass = PolygonNode::allocWithTexture(north_compass);
     N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(900,80);
+    N_compass->setPosition(950,80);
     addChild(N_compass);
     N_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("NE_compass");
+    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("smallC");
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NE_compass->setPosition(900,80);
+    NE_compass->setPosition(950,80);
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("NW_compass");
+    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("smallC");
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NW_compass->setPosition(900,80);
+    NW_compass->setPosition(950,80);
+    NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
     
-    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("S_compass");
+    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("bigC");
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    S_compass->setPosition(900,80);
+    S_compass->setPosition(950,80);
+    S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("SE_compass");
+    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("smallC");
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SE_compass->setPosition(900,80);
+    SE_compass->setPosition(950,80);
+    SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("SW_compass");
+    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("smallC");
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SW_compass->setPosition(900,80);
+    SW_compass->setPosition(950,80);
+    SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
     
@@ -164,7 +168,8 @@ void OilScene::setCompass(int direction){
     }
 }
 
-void OilScene::update(float timestep){
+
+void OilScene::update(float timestep, int direction){
 	input.pollInputs();
 
 	input.update(timestep);
@@ -172,13 +177,14 @@ void OilScene::update(float timestep){
 
 
 //Pause or Resume
-void OilScene::setActive(bool active){
+void OilScene::setActive(bool active, int direction){
     _active = active;
     switchscene = 0;
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _oilTOcastle->activate(input.findKey("oilTOcastle"));
+         OilScene::setCompass(direction);
     }
     else{
         _oilTOcastle->deactivate();
