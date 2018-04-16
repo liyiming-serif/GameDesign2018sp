@@ -36,8 +36,10 @@ protected:
     std::shared_ptr<cugl::Node>  _levels;
     
     //castle views
-    std::shared_ptr<cugl::PolygonNode> _castle_ballista;
     std::shared_ptr<cugl::PolygonNode> _castle_background;
+    std::shared_ptr<cugl::PolygonNode> _castle_flag;
+    std::shared_ptr<cugl::PolygonNode> _castle_black;
+    std::shared_ptr<cugl::PolygonNode> _castle_ballista;
     std::shared_ptr<cugl::PolygonNode> _castle_oil;
     std::shared_ptr<cugl::PolygonNode> _castle_lookout;
     std::shared_ptr<cugl::PolygonNode> _castle_basement;

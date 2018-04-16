@@ -74,8 +74,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _ballistaTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _ballistaTOcastle->setScale(.8f); // Magic number to rescale asset
-
+    
     // Create a callback function for the OVERWORLD button
     _ballistaTOcastle->setName("ballistaTOcastle");
     _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
@@ -85,8 +84,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
 
     // Position the OVERWORLD button in the bottom left
-    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballistaTOcastle->setPosition(100,80);
+    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _ballistaTOcastle->setPosition(15,_size.height-18);
+    _ballistaTOcastle->setScale(.6f);
     
 
     // Add children to the scene graph

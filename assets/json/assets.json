@@ -49,6 +49,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "castle_flag_overworld": {
+            "file":     "textures/Overworld/flag.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "castle_black": {
+            "file":     "textures/Overworld/black.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "castle_oil": {
             "file":     "textures/Overworld/oil.png",
             "minfilter":"nearest",
@@ -216,6 +230,9 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
+        },
+        "hammer_animation": {
+            "file":     "textures/Basement/repair_animation.png"
         },
         "catapult_floor": {
             "file":     "textures/Catapult/CatapultFloor.png",
