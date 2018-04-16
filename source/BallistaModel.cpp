@@ -43,7 +43,7 @@ float angleDifference(float a1, float a2) {
 	return da;
 }
 
-bool BallistaModel::init(cugl::Vec2 position, const std::shared_ptr<AssetManager>& assets) {
+bool BallistaModel::init(Vec2 position, const std::shared_ptr<AssetManager>& assets) {
 	//create the scene node
 	_node = nullptr;
 	std::shared_ptr<Texture> texture = assets->get<Texture>("ballista");

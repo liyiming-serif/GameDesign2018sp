@@ -43,7 +43,12 @@ protected:
     cugl::Vec2 _pointerPos;
 	cugl::Vec2 _dTouch;
     int _vScrolling;
+	float _oilTilt;
     /** Wizard spell gestures go here*/
+	/** Debug and reset toggle. */
+	bool _debugReleased;
+	bool _resetReleased;
+
 
 
 	// READ-ONLY BUTTON KEYGEN
@@ -53,17 +58,13 @@ protected:
 
 
 
-    /** Whether the debug toggle was chosen. */
-    bool _debugPressed;
-
-
-
 	//TOUCH CALLBACKS
 	void touchBeginCB(const cugl::TouchEvent& event, bool focus);
 
 	void touchDragCB(const cugl::TouchEvent& event, const cugl::Vec2& previous, bool focus);
 
 	void touchReleaseCB(const cugl::TouchEvent& event, bool focus);
+
 
 
 	//MOUSE CALLBACKS
@@ -96,6 +97,12 @@ public:
     //GAMEPLAY
     bool isActive( ) const { return _active; }
 
+	/**
+	 * Used to read non-callback inputs like keyboard and accelerometer.
+	 * Call this in your scene update FIRST.
+	 */
+	void pollInputs();
+
     /**
      * Resets single frame input results (e.g. justPressed, _pointerVel).
      * Call this update in your scene LAST.
@@ -119,7 +126,7 @@ public:
 
 
 
-    //INPUT RESULTS - This is what your scenes check for every update
+    //INPUT RESULT GETTERS - This is what your scenes check for every update
     //Check these BEFORE updating InputController.
     bool justPressed() {return _justPressed;}
 
@@ -132,6 +139,8 @@ public:
 	cugl::Vec2 dTouch() { return _dTouch; }
 
     int vScrolling() {return _vScrolling;}
+
+	float oilTilt() { return _oilTilt; }
 
     /**Wizard gestures go here*/
 

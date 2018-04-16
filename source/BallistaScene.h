@@ -9,6 +9,7 @@
 #include "BallistaModel.h"
 #include "InputController.h"
 #include "EnemyModel.h"
+#include "EnemyDataModel.h"
 #include "GameModel.h"
 #include <set>
 #include <vector>
@@ -30,8 +31,12 @@ protected:
     std::shared_ptr<cugl::ObstacleWorld> _world;
 
     // Memory Managers
+	//arrows
     std::set<std::shared_ptr<ArrowModel>> _arrows;
 	std::set<std::shared_ptr<ArrowModel>> _arrowsToFree;
+	//enemies
+	std::unordered_map<std::string,std::shared_ptr<EnemyModel>> _enemyArray;
+	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
     // Models
     std::shared_ptr<BallistaModel> _ballista;
@@ -55,9 +60,6 @@ protected:
 	std::shared_ptr<cugl::AnimationNode> _dragEnd;
 	std::shared_ptr<cugl::PolygonNode> _dragLine;
 
-    //enemies
-    std::vector<std::shared_ptr<EnemyModel>> _enemyArray;
-
     //text
     std::shared_ptr<cugl::Label> _ammoText;
 
@@ -73,7 +75,7 @@ public:
     // Gameplay
     void update(float deltaTime, int direction);
 
-	void updateEnemyModels(int direction);
+	void updateEnemyModels(float deltaTime, int direction);
 
     //Pause or Resume
     void setActive(bool active, int direction);

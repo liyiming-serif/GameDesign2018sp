@@ -2,49 +2,36 @@
 // Created by Josh on 3/15/2018.
 //
 
-
-#include <cugl/cugl.h>
-#include <stdlib.h>
 #include "GameModel.h"
-#include <cmath>
-#include "CastleApp.h"
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
+#define OIL_COOLDOWN 420
+
 using namespace cugl;
 
-bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
-    // Set display size
-    _size = Application::get()->getDisplaySize();
-    _size *= GAME_WIDTH/_size.width;
+bool GameModel::init(){
     clock = 0;
-    networked = true;
+    networked = false;
 
     _arrowAmmo[0] = 30;
 
-    _assets = assets;
-
-    _spawnTimer = 360;
-
-    int sum = 10;
-
     for (int i = 0; i < 6; ++i) {
-        _castleHealth[i] = sum;
-        _prevCastleHealth[i] = sum;
-        sum +=10;
+        _castleHealth[i] = 100;
+        _prevCastleHealth[i] = 100;
     }
-
-    
-    
 
     return true;
 }
 
 void GameModel::dispose() {
-    _assets = nullptr;
-    _enemyArrayMaster.clear();
-    _enemiesToFreeMaster.clear();
+	for (int i = 0; i < _enemyArrayMaster.size(); i++) {
+		_enemyArrayMaster[i].clear();
+	}
+	for (int i = 0; i < _enemiesToFreeMaster.size(); i++) {
+		_enemiesToFreeMaster[i].clear();
+	}
 }
 
 void GameModel::update(float deltaTime){
@@ -67,6 +54,30 @@ void GameModel::update(float deltaTime){
             clock++;
         }
     }
+
+	//update enemies
+	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
+		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
+			Vec2 pos = enemy.second->getPos();
+			if (pos.y < 85) {
+				//enemy collided with wall; mark for deletion
+				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
+				gameModel.changeWallHealth(wall, -9);
+			}
+			else {
+				// move enemy
+				enemy.second->setPos(Vec2(pos.x,pos.y-0.5f));
+			}
+		}
+	}
+
+	//delete enemies here to not disrupt iterator
+	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
+		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
+			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
+		}
+		gameModel._enemiesToFreeMaster[wall].clear();
+	}
 }
 
 int GameModel::getWallHealth(int wall) {

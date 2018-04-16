@@ -74,6 +74,8 @@ void CastleApp::onStartup() {
 #endif
 	input.init();
 
+	gameModel.init();
+
     // You have to attach the individual loaders for each asset type
     _assets->attach<Texture>(TextureLoader::alloc()->getHook());
     _assets->attach<Font>(FontLoader::alloc()->getHook());
@@ -150,9 +152,9 @@ void CastleApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void CastleApp::update(float timestep) {
-    if (!_loaded && _loadingScene.isActive()) {
+    if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
-    } else if (!_loaded) {
+    } else if (!_loaded) { //just finished loading
         _loadingScene.dispose(); // Disables the input listeners in this mode
         _ballistaScene.init(_assets);
         _ballistaScene.setActive(false, 0);
@@ -175,7 +177,7 @@ void CastleApp::update(float timestep) {
         _menuScene.init(_assets);
         _currscene=MENU;
         _loaded = true;
-    } else {
+    } else { //menu update loop
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){
@@ -197,7 +199,7 @@ void CastleApp::update(float timestep) {
                 _levelScene.setActive(false, _direction);
             }
         }
-        else{
+        else{ //gameplay update loop
             if(_currscene==OVERWORLD) {
                 _overworldScene.update(timestep);
                 if(_overworldScene.switchscene!=0){
@@ -259,7 +261,6 @@ void CastleApp::update(float timestep) {
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
-		gameModel.init(_assets);
 		_spawnController.init(_assets);
 	}
 	if (_currscene == MENU && nextscene == LEVELS){
@@ -297,8 +298,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _lobbyScene.setActive(true);
             break;
         case LEVELS:
-        _levelScene.setActive(true, _players);
-        break;
+			_levelScene.setActive(true,_players);
+			break;
     }
     _currscene = nextscene;
 }

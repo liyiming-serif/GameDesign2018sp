@@ -464,8 +464,8 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // We can only activate a button AFTER it is added to a scene
     _repairTOcastle->activate(input.generateKey("repairTOcastle"));
-    
-	// set initial castle health
+
+	//initiallize castle health values
 	for (int i = 0; i < 6; i++) {
 		gameModel.changeWallHealth(i, 100);
 	}
@@ -506,28 +506,6 @@ void RepairScene::dispose() {
 }
 
 void RepairScene::update(float timestep){
-    //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-            if(gameModel._enemyArrayMaster[i][j][1] < 85){
-                //remove
-                gameModel._enemiesToFreeMaster[i].push_back(j);
-                gameModel.changeWallHealth(i, -9);
-            }
-            else{
-                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-            }
-        }
-    }
-	//delete enemies here to not disrupt iterator
-	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
-		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
-			if (j<gameModel._enemyArrayMaster[i].size()) {
-				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
-			}
-		}
-		gameModel._enemiesToFreeMaster[i].clear();
-	}
 
     // Animate
     _actions->update(timestep);
