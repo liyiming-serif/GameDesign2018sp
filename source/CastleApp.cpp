@@ -152,6 +152,8 @@ void CastleApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void CastleApp::update(float timestep) {
+	input.pollInputs();
+
     if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
     } else if (!_loaded) { //just finished loading
