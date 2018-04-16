@@ -170,9 +170,7 @@ void OilScene::setCompass(int direction){
 
 
 void OilScene::update(float timestep, int direction){
-	input.pollInputs();
 
-	input.update(timestep);
 }
 
 
