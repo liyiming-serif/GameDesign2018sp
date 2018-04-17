@@ -1,13 +1,12 @@
 package edu.cornell.gdiac.chaoscastle;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayDeque;
 
 /**
  * Created by accoo on 3/15/2018.
@@ -19,9 +18,11 @@ public class BluetoothConnectedThread extends Thread {
     private final OutputStream mmOutStream;
     private byte[] mmBuffer; // mmBuffer store for the stream
     private final String TAG = "CONNECTED";
+    private ArrayDeque<String> gameStates;
 
     public BluetoothConnectedThread(BluetoothSocket socket) {
         mmSocket = socket;
+        gameStates = new ArrayDeque<String>();
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
 
@@ -43,24 +44,57 @@ public class BluetoothConnectedThread extends Thread {
     }
 
     public void run() {
-        mmBuffer = new byte[1024];
-        int numBytes; // bytes returned from read()
+        String gameState;
 
-        // Keep listening to the InputStream until an exception occurs.
+        // Keep listening for incoming game states until an exception occurs.
         while (true) {
-            try {
-                // Read from the InputStream.
-                numBytes = mmInStream.read(mmBuffer);
-                // Send the obtained bytes to the UI activity.
-//                Message readMsg = mHandler.obtainMessage(
-//                        MessageConstants.MESSAGE_READ, numBytes, -1,
-//                        mmBuffer);
-//                readMsg.sendToTarget();
-            } catch (IOException e) {
-                Log.d(TAG, "Input stream was disconnected", e);
+            // Read from the InputStream.
+            gameState = extractMessage();
+            if(gameState == null){
                 break;
             }
+            synchronized (this){
+                gameStates.add(gameState);
+            }
         }
+    }
+
+    /** Extracts FULL game state messsage; keeps reading
+     */
+    private String extractMessage(){
+        boolean success = true;
+        mmBuffer = new byte[1024]; //chunk
+        String acc = ""; //total
+        int len; //total length of message
+        int numBytes; //bytes returned from read
+        do{
+            try {
+                numBytes = mmInStream.read(mmBuffer);
+                acc += new String(mmBuffer, "UTF-8");
+                String delims = "[|]";
+                len = Integer.parseInt(acc.split(delims)[0]);
+            } catch (IOException e) {
+                Log.d(TAG, "Input stream was disconnected", e);
+                success = false;
+                break;
+            }
+        }while(acc.length()<len);
+
+        if(success) {
+            return acc;
+        }
+        else{
+            return null;
+        }
+    }
+
+    /**Call this from UI activity to poll the game state from this reader*/
+    public String dequeueState(){
+        String result;
+        synchronized (this){
+            result = gameStates.poll();
+        }
+        return result;
     }
 
     // Call this from the main activity to send data to the remote device.
@@ -68,21 +102,8 @@ public class BluetoothConnectedThread extends Thread {
         try {
             mmOutStream.write(bytes);
 
-            // Share the sent message with the UI activity.
-//            Message writtenMsg = mHandler.obtainMessage(
-//                    MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-//            writtenMsg.sendToTarget();
         } catch (IOException e) {
             Log.e(TAG, "Error occurred when sending data", e);
-
-            // Send a failure message back to the activity.
-//            Message writeErrorMsg =
-//                    mHandler.obtainMessage(MessageConstants.MESSAGE_TOAST);
-//            Bundle bundle = new Bundle();
-//            bundle.putString("toast",
-//                    "Couldn't send data to the other device");
-//            writeErrorMsg.setData(bundle);
-//            mHandler.sendMessage(writeErrorMsg);
         }
     }
 
