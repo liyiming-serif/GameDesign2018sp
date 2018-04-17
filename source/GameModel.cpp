@@ -22,6 +22,8 @@ bool GameModel::init(){
         _prevCastleHealth[i] = 100;
     }
 
+    _noPlayers = 1;
+
     return true;
 }
 
@@ -106,7 +108,7 @@ void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
 }
 
-std::string GameModel::getStateChange() {
+std::string GameModel::getStateChangeServer() {
     std::string _tmpHealthString = "Health";
     int _tmpHealth[6];
     for (int i = 0; i < 6; ++i) {
@@ -117,36 +119,59 @@ std::string GameModel::getStateChange() {
     return to_string(_playerID) + "|" + _tmpHealthString + "|" + _tmpAvatarString;
 }
 
-void GameModel::updateState(const char* read_byte_buffer) {
-    char* copy = strdup(read_byte_buffer);
-    const char s[2] = "|";
-    char *token;
-    char* castleHealthToken;
-    char* playerIDToken;
-    char* playerAvatarToken;
-    char* ammoToken;
-    char* enemyToken;
-    int section = 0;
-    token = strtok(copy, s);
-    while (token != NULL) {
-        if (section == 0) {
-            playerIDToken = token;
-        } else if (section == 1) {
-            castleHealthToken = token;
-        } else if (section == 2) {
-            playerAvatarToken = token;
-        } else if (section == 3) {
-            ammoToken = token;
-        } else if (section == 4) {
-            enemyToken = token;
-        }
-        token = strtok(NULL,s);
-        section++;
+char** GameModel::ConsumeStateServer() {
+    char *tmp[_noPlayers-1];
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tmp[i] = ConsumeState(i);
     }
+    return tmp;
+}
 
+char* GameModel::ConsumeStateClient() {
+    return readNetwork();
+}
+
+void GameModel::updateStateServer(char** ConsumedStates) {
+    char *tmpHealthChanges[_noPlayers-1];
+    char *tmpAmmoChanges[_noPlayers-1];
+    char *tmpEnemyChanges[_noPlayers-1];
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        char* copy = strdup(ConsumedStates[i]);
+        const char s[2] = "|";
+        char *token;
+        char* castleHealthToken;
+        char* playerInfoToken;
+        char* ammoToken;
+        char* enemyToken;
+        char* sizeToken;
+        char* oilToken;
+        int section = 0;
+        token = strtok(copy, s);
+        while (token != NULL) {
+            if (section == 0) {
+                sizeToken = token;
+            } else if (section == 1) {
+                castleHealthToken = token;
+            } else if (section == 2) {
+                enemyToken = token;
+            } else if (section == 3) {
+                ammoToken = token;
+            } else if (section == 4) {
+                playerInfoToken = token;
+            } else if (section == 5) {
+                oilToken = token;
+            }
+            token = strtok(NULL,s);
+            section++;
+        }
+        tmpAmmoChanges[i] = ammoToken;
+        tmpEnemyChanges[i] = enemyToken;
+        tmpHealthChanges[i] = castleHealthToken;
+    }
+    char* subtoken;
 
     int castleHealthUpdate[6];
-    token = strtok(castleHealthToken, " ");
+    subtoken = strtok(castleHealthToken, " ");
     int i = 0;
     while (token != NULL) {
         if (i == 0) {
