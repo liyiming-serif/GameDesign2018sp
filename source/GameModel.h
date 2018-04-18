@@ -22,13 +22,14 @@
 class GameModel {
 protected:
     int _castleHealth[6];
-    int _playerAvatars[6];
+    int _playerAvatars[];
+    int _playerRooms[];
     int _playerID;
     int _prevCastleHealth[6];
-
     int clock;
     int _noPlayers;
     bool networked;
+    bool isServer;
     int _arrowAmmo[2];
 
 
@@ -97,9 +98,9 @@ public:
 	}
 
 private:
-    std::string getStateChangeServer();
+    std::string produceStateChangeServer();
 
-    std::string getStateChangeClient();
+    std::string produceStateChangeClient();
 
     char** ConsumeStateServer();
 

@@ -6,6 +6,7 @@
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
+#define LOOKOUT_ROOM 0
 
 #define OIL_COOLDOWN 420
 
@@ -21,9 +22,13 @@ bool GameModel::init(){
         _castleHealth[i] = 100;
         _prevCastleHealth[i] = 100;
     }
-
     _noPlayers = 1;
-
+    _playerAvatars = new int[_noPlayers];
+    _playerRooms = new int[_noPlayers];
+    for (int i = 0; i < _noPlayers; ++i) {
+        _playerRooms[i] = 0;
+    }
+    isServer = true;
     return true;
 }
 
@@ -39,19 +44,37 @@ void GameModel::dispose() {
 void GameModel::update(float deltaTime){
 
     if (networked) {
-        if (clock == 300) {
-            const char *write_byte_buffer = return_buffer(getStateChange());
-            //TODO: Write to network
-            CULog("State Change %s \n", write_byte_buffer);
-            //TODO: Read from network
-            //const char *read_byte_buffer = readNetwork();
-            const char *read_byte_buffer = random_buffer();
-            CULog("RandNet State Change %s \n", read_byte_buffer);
-            //TODO: Agree on state changes
-            updateState(read_byte_buffer);
-            clock = 0;
-            delete[] write_byte_buffer;
-            delete[] read_byte_buffer;
+        if (clock == 200) {
+            if (isServer) {
+                //TODO: Read from network
+                //const char *read_byte_buffer = readNetwork();
+                char **read_buffers = ConsumeStateServer();
+                const char *read_byte_buffer = random_buffer();
+                CULog("RandNet State Change %s \n", read_byte_buffer);
+                updateStateServer(read_buffers);
+
+                const char *write_byte_buffer = return_buffer(produceStateChangeServer());
+                //TODO: Write to network
+                CULog("State Change %s \n", write_byte_buffer);
+
+                clock = 0;
+                delete[] write_byte_buffer;
+                delete[] read_buffers;
+            }
+            else {
+                const char *write_byte_buffer = return_buffer(produceStateChangeClient());
+                //TODO: Write to network
+                CULog("State Change %s \n", write_byte_buffer);
+                //TODO: Read from network
+                //const char *read_byte_buffer = readNetwork();
+                char *read_buffer = ConsumeStateClient();
+                const char *read_byte_buffer = random_buffer();
+                CULog("RandNet State Change %s \n", read_byte_buffer);
+                updateStateClient(read_buffer);
+                clock = 0;
+                delete[] write_byte_buffer;
+                delete[] read_buffer;
+            }
         } else {
             clock++;
         }
@@ -108,15 +131,37 @@ void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
 }
 
-std::string GameModel::getStateChangeServer() {
-    std::string _tmpHealthString = "Health";
-    int _tmpHealth[6];
+std::string GameModel::produceStateChangeServer() {
+    std::string _tmpHealthString = "";
+    std::string _tmpAmmoString = "";
+    std::string _tmpEnemyString = "";
+    std::string _tmpPlayerString = "";
+    std::string _tmpOilString = "";
+
     for (int i = 0; i < 6; ++i) {
-        _tmpHealth[i] = _castleHealth[i] - _prevCastleHealth[i];
-        _tmpHealthString += " " + to_string(_tmpHealth[i]);
+        _tmpHealthString+= to_string(_castleHealth[i]) + " ";
+        for (auto it = _enemyArrayMaster[i].begin(); it != _enemyArrayMaster[i].end(); ++it) {
+            _tmpEnemyString += it->second.toString() + " ";
+        }
+        _tmpOilString += to_string(_oilCooldown[i]) + " ";
     }
-    std::string _tmpAvatarString = "Avatar 0";
-    return to_string(_playerID) + "|" + _tmpHealthString + "|" + _tmpAvatarString;
+
+    for (int i = 0; i < 3; ++i) {
+        _tmpAmmoString += to_string(_arrowAmmo[i]) + " ";
+    }
+
+    for (int i = 0; i < _noPlayers; ++i) {
+        _tmpPlayerString += to_string(_playerAvatars[i]) + ":" + to_string(_playerRooms[i]) + " ";
+    }
+
+    //TODO: Game recovery state (currserver, gameclock, etc)
+    std::string premessage = _tmpHealthString + "|" + _tmpEnemyString + "|" +
+            _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
+
+    int premessageSize = premessage.length();
+    int postmessageSize = premessageSize + to_string(premessageSize).length();
+    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
+    return to_string(totalmessageSize) + "|" + premessage;
 }
 
 char** GameModel::ConsumeStateServer() {
@@ -366,7 +411,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
             enemySubToken = strtok(NULL, " :");
             strcpy(enemyDamage, enemySubToken);
             for (int j = 0; j<6; ++j) {
-                std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::const_iterator got = _enemyArrayMaster[j].find (enemyName);
+                std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = _enemyArrayMaster[j].find (enemyName);
 
                 if ( got == _enemyArrayMaster[j].end() )
                     std::cout << "not found";
