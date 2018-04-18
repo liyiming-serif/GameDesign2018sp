@@ -212,6 +212,7 @@
     <ClCompile Include="..\..\source\BallistaModel.cpp" />
     <ClCompile Include="..\..\source\BallistaScene.cpp" />
     <ClCompile Include="..\..\source\CastleApp.cpp" />
+    <ClCompile Include="..\..\source\EnemyDataModel.cpp" />
     <ClCompile Include="..\..\source\EnemyModel.cpp" />
     <ClCompile Include="..\..\source\GameModel.cpp" />
     <ClCompile Include="..\..\source\InputController.cpp" />
