@@ -27,12 +27,13 @@ protected:
     int _prevCastleHealth[6];
 
     int clock;
+    int _noPlayers;
     bool networked;
     int _arrowAmmo[2];
 
 
 	//oil cooldown manager. Ready when == 0 for a particular wall
-	std::vector<int> _oilCooldown;
+	int _oilCooldown[6];
 
 public:
 
@@ -91,16 +92,28 @@ public:
 	void resetOilCooldown(int wall);
 
 	int getOilCooldown(int wall) {
-		assert(wall < _oilCooldown.size());
+		assert(wall < 6);
 		return _oilCooldown[wall];
 	}
 
 private:
-    std::string getStateChange();
+    std::string getStateChangeServer();
 
-    void updateState(const char* read_byte_buffer);
+    std::string getStateChangeClient();
 
-    void updateState();
+    char** ConsumeStateServer();
+
+    char* ConsumeStateClient();
+
+    void updateStateServer(char** ConsumedStates);
+
+    void updateStateClient(const char* read_byte_buffer);
+
+    void aggregateCastleHealth(char** tmpCastleChanges);
+
+    void aggregateAmmo(char** tmpAmmoChanges);
+
+    void aggregateEnemies(char** tmpEnemyChanges);
 
     char* return_buffer(const std::string& string);
 

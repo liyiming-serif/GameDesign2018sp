@@ -22,6 +22,8 @@ bool GameModel::init(){
         _prevCastleHealth[i] = 100;
     }
 
+    _noPlayers = 1;
+
     return true;
 }
 
@@ -106,7 +108,7 @@ void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
 }
 
-std::string GameModel::getStateChange() {
+std::string GameModel::getStateChangeServer() {
     std::string _tmpHealthString = "Health";
     int _tmpHealth[6];
     for (int i = 0; i < 6; ++i) {
@@ -117,51 +119,265 @@ std::string GameModel::getStateChange() {
     return to_string(_playerID) + "|" + _tmpHealthString + "|" + _tmpAvatarString;
 }
 
-void GameModel::updateState(const char* read_byte_buffer) {
-    char* copy = strdup(read_byte_buffer);
-    const char s[2] = "|";
-    char *token;
-    char* castleHealthToken;
-    char* playerIDToken;
-    char* playerAvatarToken;
-    char* ammoToken;
-    char* enemyToken;
-    int section = 0;
-    token = strtok(copy, s);
-    while (token != NULL) {
-        if (section == 0) {
-            playerIDToken = token;
-        } else if (section == 1) {
-            castleHealthToken = token;
-        } else if (section == 2) {
-            playerAvatarToken = token;
-        } else if (section == 3) {
-            ammoToken = token;
-        } else if (section == 4) {
-            enemyToken = token;
+char** GameModel::ConsumeStateServer() {
+    char *tmp[_noPlayers-1];
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tmp[i] = ConsumeState(i);
+    }
+    return tmp;
+}
+
+char* GameModel::ConsumeStateClient() {
+    return readNetwork();
+}
+
+void GameModel::updateStateServer(char** ConsumedStates) {
+
+    // Break down all read states into component changes to apply
+    char *tmpHealthChanges[_noPlayers-1];
+    char *tmpAmmoChanges[_noPlayers-1];
+    char *tmpEnemyChanges[_noPlayers-1];
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        char* copy = strdup(ConsumedStates[i]);
+        const char s[2] = "|";
+        char *token;
+        char* castleHealthToken;
+        char* playerInfoToken;
+        char* ammoToken;
+        char* enemyToken;
+        char* sizeToken;
+        char* oilToken;
+        int section = 0;
+        token = strtok(copy, s);
+        while (token != NULL) {
+            if (section == 0) {
+                sizeToken = token;
+            } else if (section == 1) {
+                castleHealthToken = token;
+            } else if (section == 2) {
+                enemyToken = token;
+            } else if (section == 3) {
+                ammoToken = token;
+            } else if (section == 4) {
+                playerInfoToken = token;
+            } else if (section == 5) {
+                oilToken = token;
+            }
+            token = strtok(NULL,s);
+            section++;
         }
-        token = strtok(NULL,s);
-        section++;
+        tmpAmmoChanges[i] = ammoToken;
+        tmpEnemyChanges[i] = enemyToken;
+        tmpHealthChanges[i] = castleHealthToken;
+        free(copy);
     }
 
+    // Start aggregating castle health changes by wall
+    char* subtoken;
+    char* tmpHealthN[_noPlayers-1];
+    char* tmpHealthNW[_noPlayers-1];
+    char* tmpHealthSW[_noPlayers-1];
+    char* tmpHealthS[_noPlayers-1];
+    char* tmpHealthSE[_noPlayers-1];
+    char* tmpHealthNE[_noPlayers-1];
 
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        subtoken = strtok(tmpHealthChanges[i], " ");
+        int j = 0;
+        while (subtoken != NULL) {
+            if (j == 0) {
+                tmpHealthN[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            } else if (j == 1) {
+                tmpHealthNW[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            } else if (j == 2) {
+                tmpHealthSW[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            } else if (j == 3) {
+                tmpHealthS[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            } else if (j == 4) {
+                tmpHealthSE[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            } else if (j == 5) {
+                tmpHealthNE[i] = subtoken;
+                subtoken = strtok(NULL, " ");
+            }
+            j++;
+        }
+    }
+
+    // Optimistically apply new health as max of all wall healths (minus deltas), plus the sum of all deltas
     int castleHealthUpdate[6];
-    token = strtok(castleHealthToken, " ");
-    int i = 0;
-    while (token != NULL) {
-        if (i == 0) {
-            token = strtok(NULL, " ");
-        } else {
-            castleHealthUpdate[i-1] = std::stoi(token);
-            token = strtok(NULL, " ");
+    char* tottoken;
+    char* deltoken;
+
+    // North Wall
+    int currmax = 0;
+    int deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthN[i], ":");
+        deltoken = strtok(NULL, ":");
+        int repairdelt = std::stoi(deltoken);
+        int currplayerhealth = std::stoi(tottoken) - repairdelt;
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
         }
-        i++;
+        deltasum += repairdelt;
     }
+    if (getWallHealth(0) > currmax) {
+        currmax = getWallHealth(0);
+    }
+    castleHealthUpdate[0] = deltasum + currmax;
+
+    // NorthWest Wall
+    currmax = 0;
+    deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthNW[i], ":");
+        deltoken = strtok(NULL, ":");
+        int currplayerhealth = std::stoi(tottoken);
+        int repairdelt = std::stoi(deltoken);
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
+        }
+        deltasum += repairdelt;
+    }
+    if (getWallHealth(1) > currmax) {
+        currmax = getWallHealth(1);
+    }
+    castleHealthUpdate[1] = deltasum + currmax;
+
+    //SouthWest Wall
+    currmax = 0;
+    deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthSW[i], ":");
+        deltoken = strtok(NULL, ":");
+        int currplayerhealth = std::stoi(tottoken);
+        int repairdelt = std::stoi(deltoken);
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
+        }
+        deltasum += repairdelt;
+    }
+    if (getWallHealth(2) > currmax) {
+        currmax = getWallHealth(2);
+    }
+    castleHealthUpdate[2] = deltasum + currmax;
+
+    //South Wall
+    currmax = 0;
+    deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthS[i], ":");
+        deltoken = strtok(NULL, ":");
+        int currplayerhealth = std::stoi(tottoken);
+        int repairdelt = std::stoi(deltoken);
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
+        }
+        deltasum += repairdelt;
+    }
+    if (getWallHealth(3) > currmax) {
+        currmax = getWallHealth(3);
+    }
+    castleHealthUpdate[3] = deltasum + currmax;
+
+    // SouthEast Wall
+    currmax = 0;
+    deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthSE[i], ":");
+        deltoken = strtok(NULL, ":");
+        int currplayerhealth = std::stoi(tottoken);
+        int repairdelt = std::stoi(deltoken);
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
+        }
+        deltasum += repairdelt;
+    }
+    if (getWallHealth(4) > currmax) {
+        currmax = getWallHealth(4);
+    }
+    castleHealthUpdate[4] = deltasum + currmax;
+
+    // NorthEast Wall
+    currmax = 0;
+    deltasum = 0;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tottoken = strtok(tmpHealthNE[i], ":");
+        deltoken = strtok(NULL, ":");
+        int currplayerhealth = std::stoi(tottoken);
+        int repairdelt = std::stoi(deltoken);
+        if (currplayerhealth > currmax) {
+            currmax = currplayerhealth;
+        }
+        deltasum += repairdelt;
+    }
+    if (getWallHealth(5) > currmax) {
+        currmax = getWallHealth(5);
+    }
+    castleHealthUpdate[5] = deltasum + currmax;
+
+    // Apply castle health changes
     for (int i = 0; i < 6; ++i) {
         changeWallHealth(i, castleHealthUpdate[i]);
         _prevCastleHealth[i] = _castleHealth[i];
     }
-    free(copy);
+
+    // Sum all arrow changes
+    char* arrowsubtoken;
+    int deltaArrow1 = 0;
+    int deltaArrow2 = 0;
+    int deltaArrow3 = 0;
+
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        arrowsubtoken = strtok(tmpAmmoChanges[i], " ");
+        int j = 0;
+        while (arrowsubtoken != NULL) {
+            if (j == 0) {
+                deltaArrow1 += std::stoi(arrowsubtoken);
+                arrowsubtoken = strtok(NULL, " ");
+            } else if (j == 1) {
+                deltaArrow2 += std::stoi(arrowsubtoken);
+                arrowsubtoken = strtok(NULL, " ");
+            } else if (j == 2) {
+                deltaArrow3 += std::stoi(arrowsubtoken);
+                arrowsubtoken = strtok(NULL, " ");
+            }
+            j++;
+        }
+    }
+    setArrowAmmo(0, getArrowAmmo(0)+deltaArrow1);
+    setArrowAmmo(1, getArrowAmmo(1)+deltaArrow2);
+    setArrowAmmo(2, getArrowAmmo(2)+deltaArrow3);
+
+
+    // Apply all damage created by all players to the respective monsters
+    char* enemySubToken;
+    std::string enemyName;
+    char* enemyDamage;
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        enemySubToken = strtok(tmpEnemyChanges[i], " :");
+        while (enemySubToken != NULL) {
+            strcpy(enemyName, enemySubToken);
+            enemySubToken = strtok(NULL, " :");
+            strcpy(enemyDamage, enemySubToken);
+            for (int j = 0; j<6; ++j) {
+                std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::const_iterator got = _enemyArrayMaster[j].find (enemyName);
+
+                if ( got == _enemyArrayMaster[j].end() )
+                    std::cout << "not found";
+                else {
+                    std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
+                    thisEnemy.setHealth(thisEnemy.getHealth() + std::stoi(enemyDamage));
+                }
+            }
+            enemySubToken = strtok(NULL, " :");
+        }
+    }
 }
 
 char* GameModel::random_buffer() {
