@@ -188,8 +188,10 @@ void OilScene::update(float timestep, int direction){
 	}
 	float cooldown = (float)(gameModel.getOilCooldown(direction)) / (float)(OIL_COOLDOWN);
 	float tilt = std::fmin(input.oilTilt(), TIPPING_POINT) / TIPPING_POINT;
+  
 	//advance frame
 	_oil->update(cooldown, tilt);
+
 }
 
 
