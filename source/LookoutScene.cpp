@@ -52,7 +52,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	//initiallize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
 		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
-		ecanvas->setAnchor(Vec2(0.5f,-0.3f));
+		ecanvas->setAnchor(Vec2(0.5f,-0.5f));
 		ecanvas->setPosition(_size.width / 2, _size.height / 2);
 		ecanvas->setAngle(i * 2 * M_PI / 6);
 		ecanvas->setScale(0.1f,0.4f);
