@@ -43,7 +43,9 @@ protected:
     std::shared_ptr<cugl::PolygonNode> SE_compass;
     std::shared_ptr<cugl::PolygonNode> SW_compass;
     
-    
+	//helper functions for translating enemy y coords
+	bool inRange(float y);
+	float calcY(float y);
     
 public:
     // Constructors
@@ -56,7 +58,7 @@ public:
     
     // Gameplay
     void update(float timestep, int direction);
-	void updateEnemyModels(float deltaTime, int direction);
+	void updateEnemyModels(float timestep, int direction);
 
     //Pause or Resume
     void setActive(bool active, int direction);

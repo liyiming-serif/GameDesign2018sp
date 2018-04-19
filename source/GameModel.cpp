@@ -50,7 +50,7 @@ void GameModel::update(float deltaTime){
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
 			Vec2 pos = enemy.second->getPos();
-			if (pos.y < 85) {
+			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
 				gameModel.changeWallHealth(wall, -9);
