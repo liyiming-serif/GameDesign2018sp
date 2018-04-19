@@ -25,6 +25,9 @@ using namespace cugl;
 
 #define BUTTON_SCALE 1.0f
 
+#define OIL_COOLDOWN 420
+#define TIPPING_POINT 0.45f
+
 bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
@@ -49,6 +52,12 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_background);
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
+
+	// Set the oil model
+	_oil = OilModel::alloc(Vec2(_size.width / 2, _background->getContentHeight() / 10), _assets);
+	if (_oil != nullptr) {
+		addChild(_oil->getNode());
+	}
     
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -137,6 +146,7 @@ void OilScene::dispose() {
         _assets = nullptr;
         _oilTOcastle = nullptr;
         _background = nullptr;
+		_oil = nullptr;
         _active = false;
     }
 }
@@ -170,7 +180,16 @@ void OilScene::setCompass(int direction){
 
 
 void OilScene::update(float timestep, int direction){
-
+	//poll inputs
+	if (gameModel.getOilCooldown(direction) == 0 && input.oilTilt()>=TIPPING_POINT && !_oil->isReloading) {
+		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
+		_oil->isReloading = true;
+		CULog("spill!");
+	}
+	float cooldown = (float)(gameModel.getOilCooldown(direction)) / (float)(OIL_COOLDOWN);
+	float tilt = std::fmin(input.oilTilt(), TIPPING_POINT) / TIPPING_POINT;
+	//advance frame
+	_oil->update(cooldown, tilt);
 }
 
 
@@ -178,6 +197,7 @@ void OilScene::update(float timestep, int direction){
 void OilScene::setActive(bool active, int direction){
     _active = active;
     switchscene = 0;
+	_oil->isReloading = false;
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
