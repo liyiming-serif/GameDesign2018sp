@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include "InputController.h"
 #include "GameModel.h"
+#include "OilModel.h"
+#include "EnemyModel.h"
 #include <cugl/cugl.h>
 
 class OilScene : public cugl::Scene{
@@ -21,8 +23,17 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
+	// Physics manager
+	std::shared_ptr<cugl::ObstacleWorld> _world;
+
+	// Memory managers
+	//enemies
+	std::unordered_map<std::string, std::shared_ptr<EnemyModel>> _enemyArray;
+	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
+
+	//models
     std::shared_ptr<cugl::Button> _oilTOcastle;
-    
+	std::shared_ptr<OilModel> _oil;
     std::shared_ptr<cugl::PolygonNode> _background;
     
     std::shared_ptr<cugl::PolygonNode> N_compass;
@@ -45,7 +56,8 @@ public:
     
     // Gameplay
     void update(float timestep, int direction);
-    
+	void updateEnemyModels(float deltaTime, int direction);
+
     //Pause or Resume
     void setActive(bool active, int direction);
     int switchscene;

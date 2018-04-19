@@ -7,30 +7,21 @@
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
-#define OIL_COOLDOWN 420
-
 using namespace cugl;
 
 bool GameModel::init(){
     clock = 0;
     networked = false;
 
-    _arrowAmmo[0] = 30;
-
-    for (int i = 0; i < 6; ++i) {
-        _castleHealth[i] = 100;
-        _prevCastleHealth[i] = 100;
-    }
-
     return true;
 }
 
 void GameModel::dispose() {
-	for (int i = 0; i < _enemyArrayMaster.size(); i++) {
-		_enemyArrayMaster[i].clear();
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		gameModel._enemyArrayMaster[i].clear();
 	}
-	for (int i = 0; i < _enemiesToFreeMaster.size(); i++) {
-		_enemiesToFreeMaster[i].clear();
+	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
+		gameModel._enemiesToFreeMaster[i].clear();
 	}
 }
 
@@ -78,6 +69,16 @@ void GameModel::update(float deltaTime){
 		}
 		gameModel._enemiesToFreeMaster[wall].clear();
 	}
+
+	//decrease oil cooldown
+	for (int wall = 0; wall < 6; wall++) {
+		if (gameModel._oilCooldown[wall] > 0) {
+			gameModel._oilCooldown[wall] -= 1;
+		}
+		else {
+			gameModel._oilCooldown[wall] = 0;
+		}
+	}
 }
 
 int GameModel::getWallHealth(int wall) {
@@ -104,6 +105,15 @@ int GameModel::getPlayerAvatar(int player) {
 
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
+}
+
+void GameModel::setOilCooldown(int wall, int amount) {
+	if (amount >= 0) {
+		_oilCooldown[wall] = amount;
+	}
+	else {
+		_oilCooldown[wall] = 0;
+	}
 }
 
 std::string GameModel::getStateChange() {

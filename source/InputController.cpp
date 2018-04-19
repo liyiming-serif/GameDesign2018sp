@@ -13,7 +13,7 @@ using namespace cugl;
 #define DEBUG_KEY KeyCode::D
 #define TILT_KEY KeyCode::ARROW_UP
 #define KEYBOARD_MAX_TILT 1.0f
-#define KEYBOARD_TILT_SENSITIVITY 0.02f
+#define KEYBOARD_TILT_SENSITIVITY 0.01f
 
 /**
  * Creates a new input controller.

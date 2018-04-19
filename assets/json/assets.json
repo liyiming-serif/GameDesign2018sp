@@ -255,13 +255,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "oil_icon": {
-            "file":     "textures/Oil/OilIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
+    "oil_icon": {
+      "file": "textures/Oil/OilIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "oil_vat": {
+			"file":     "textures/Oil/oil-vat.png",
+			"minfilter":"nearest",
+			"magfilter":"linear",
+			"wrapS":    "clamp",
+			"wrapT":    "clamp"
+		},
 		"arrow": {
 			"file":     "textures/arrow.png",
 			"minfilter":"nearest",
