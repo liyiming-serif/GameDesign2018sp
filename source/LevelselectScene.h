@@ -20,7 +20,10 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    std::shared_ptr<cugl::Button> _playButton;
+    std::shared_ptr<cugl::Button> _level1;
+    std::shared_ptr<cugl::Button> _level2;
+    std::shared_ptr<cugl::Button> _level3;
+    std::shared_ptr<cugl::Button> _level4;
     std::shared_ptr<cugl::Button> _backButtonSINGLE;
     std::shared_ptr<cugl::Button> _backButtonMULTI;
     
@@ -59,6 +62,9 @@ protected:
     bool move4 = true;
     bool move5 = true;
     bool move6 = true;
+    
+    float lerp=0;
+    cugl::Color4 cloudC;
 
     
     
@@ -79,6 +85,7 @@ public:
     void setActive(bool active, int players);
     int switchscene;
     int mode;
+    int campaign;
     
     /**
      * Performs a move action
