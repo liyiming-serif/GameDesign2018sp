@@ -248,7 +248,7 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 		if (i == _enemyArray.end()) {
 			if (inRange(e->getPos().y)) {
 				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
-				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, -M_PI / 2, e->getType(), DRAW_SCALE, _assets);
+				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, e->getType(), DRAW_SCALE, _assets);
 				if (en != nullptr) {
 					_enemyArray[k] = en;
 					_world->addObstacle(en);
