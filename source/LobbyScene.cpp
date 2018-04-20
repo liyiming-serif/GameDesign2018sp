@@ -161,7 +161,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _createButton->setListener([=] (const std::string& name, bool down) {
                 if (!down) {
                     #if CU_PLATFORM == CU_PLATFORM_ANDROID
-                                setupBluetoothServer();
+//                                setupBluetoothServer();
                     #endif
                    LobbyScene::changeCanvas("avatar");
                     CULog("create");
@@ -175,7 +175,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _enterButton->setListener([=] (const std::string& name, bool down) {
                 if (!down) {
                 #if CU_PLATFORM == CU_PLATFORM_ANDROID
-                            setupBluetoothClient();
+//                            setupBluetoothClient();
                 #endif
                   LobbyScene::changeCanvas("avatar");
                      CULog("enter");
@@ -188,7 +188,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _enterButtonOne->setListener([=] (const std::string& name, bool down) {
                 if (!down) {
         #if CU_PLATFORM == CU_PLATFORM_ANDROID
-                    setupBluetoothClient();
+//                    setupBluetoothClient();
         #endif
                     LobbyScene::changeCanvas("avatar");
                     CULog("enterOne");
@@ -200,7 +200,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _enterButtonTwo->setListener([=] (const std::string& name, bool down) {
                 if (!down) {
                 #if CU_PLATFORM == CU_PLATFORM_ANDROID
-                            setupBluetoothClient();
+//                            setupBluetoothClient();
                 #endif
                     LobbyScene::changeCanvas("avatar");
                     CULog("enterTwo");

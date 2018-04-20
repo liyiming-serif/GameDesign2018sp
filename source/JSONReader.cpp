@@ -26,6 +26,7 @@ bool JSONReader::preload(const std::shared_ptr<cugl::JsonValue>& json){
         return false;
     }
     _json = json;
+    return true;
 }
 
 void JSONReader::update(float deltaTime) {

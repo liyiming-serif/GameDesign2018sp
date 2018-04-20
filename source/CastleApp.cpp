@@ -93,7 +93,7 @@ void CastleApp::onStartup() {
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     //TODO:FIX THIS AHHHHH
-    _assets->loadAsync<JSONReader>("levels", "json/levels.json", nullptr);
+    _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
     _players = -1;
     Application::onStartup(); // YOU MUST END with call to parent
@@ -270,7 +270,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
     }
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
 		//TODO: replace 0 with level
-		_spawnController.init(_assets, _assets->get<JSONReader>("levels")->readJSON(_players, _levelScene.level));
+		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
 	}
 	if (_currscene == MENU && nextscene == LEVELS){
 	    _players = 1;
