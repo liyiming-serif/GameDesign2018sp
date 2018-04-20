@@ -8,7 +8,6 @@
 
 #include "RepairScene.h"
 #include <string>
-#include "GameModel.h"
 
 using namespace cugl;
 using namespace std;
@@ -92,8 +91,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "N";
-                gameModel.changeWallHealth(0, 2);
-                _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(0, 2);
+                        _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(0,2);
+                        _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(0, 2);
+                    _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
+                }
             }
         });
     
@@ -102,8 +114,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "NE";
-                gameModel.changeWallHealth(5, 2);
-                _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(5, 2);
+                        _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(5,2);
+                        _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(5, 2);
+                    _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+                }
             }
         });
     
@@ -113,8 +138,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "SE";
-                gameModel.changeWallHealth(4, 2);
-                _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(4, 2);
+                        _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(4,2);
+                        _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(4, 2);
+                    _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+                }
 
             }
         });
@@ -123,8 +161,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "S";
-                gameModel.changeWallHealth(3, 2);
-                _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(3, 2);
+                        _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(3,2);
+                        _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(3, 2);
+                    _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
+                }
             }
         });
         _southwestWallButton->setName("fade in SW");
@@ -132,8 +183,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
 				_new_wall = "SW";
-                gameModel.changeWallHealth(2, 2);
-                _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(2, 2);
+                        _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(2,2);
+                        _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(2, 2);
+                    _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+                }
             }
         });
         _northwestWallButton->setName("fade in NW");
@@ -141,8 +205,21 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
 				_new_wall = "NW";
-                gameModel.changeWallHealth(1, 2);
-                _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+                if (gameModel.isNetworked()) {
+                    if (gameModel.isServer()) {
+                        gameModel.changeWallHealth(1, 2);
+                        _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+                    }
+                    else {
+                        gameModel.addDeltaHealth(1,2);
+                        _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
+                    }
+
+                }
+                else {
+                    gameModel.changeWallHealth(1, 2);
+                    _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+                }
             }
         });
     
@@ -465,11 +542,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
     _repairTOcastle->activate(input.generateKey("repairTOcastle"));
 
-	//initiallize castle health values
-	for (int i = 0; i < 6; i++) {
-		gameModel.changeWallHealth(i, 100);
-	}
-
     return true;
 }
 
@@ -511,15 +583,26 @@ void RepairScene::update(float timestep){
     _actions->update(timestep);
     int _curr_wall_health;
 
-    
-
+    if (gameModel.isNetworked() && !gameModel.isServer()) {
+    _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
+    _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
+    _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
+    _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
+    _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
+    _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
+    }
+    else {
         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
         _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
         _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
-    
+    }
+
+
+
+
     std::shared_ptr<Texture> image   = _assets->get<Texture>("castle");
 
 

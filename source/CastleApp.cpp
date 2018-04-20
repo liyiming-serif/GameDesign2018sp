@@ -277,24 +277,31 @@ void CastleApp::swapscenes(int nextscene, int direction){
             break;
         case OVERWORLD:
             _overworldScene.setActive(true);
+            gameModel.setCurrentRoom(0);
             break;
         case BALLISTA:
             _ballistaScene.setActive(true, _direction);
+            gameModel.setCurrentRoom(2+_direction);
             break;
         case LOOKOUT:
             _lookoutScene.setActive(true);
+            gameModel.setCurrentRoom(1);
             break;
         case REPAIR:
             _repairScene.setActive(true);
+            gameModel.setCurrentRoom(14);
             break;
         case MAGE:
             _mageScene.setActive(true);
+            gameModel.setCurrentRoom(16);
             break;
         case AMMO:
             _ammoScene.setActive(true);
+            gameModel.setCurrentRoom(15);
             break;
         case OIL:
             _oilScene.setActive(true, _direction);
+            gameModel.setCurrentRoom(8+_direction);
             break;
         case LOBBY:
             _lobbyScene.setActive(true);

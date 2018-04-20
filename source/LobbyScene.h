@@ -132,6 +132,9 @@ public:
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
 
+    //TODO: Close the accepted thread when game starts
+
+
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
     void setupBluetoothServer() {
         // Set up parameters for JNI call

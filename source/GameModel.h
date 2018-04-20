@@ -22,15 +22,19 @@
 class GameModel {
 protected:
     int _castleHealth[6];
-    int _playerAvatars[];
-    int _playerRooms[];
+    int* _playerAvatars;
+    int* _playerRooms;
     int _playerID;
-    int _prevCastleHealth[6];
+    int _deltaCastleHealth[6];
     int clock;
     int _noPlayers;
     bool networked;
-    bool isServer;
-    int _arrowAmmo[2];
+    bool server;
+    int _arrowAmmo[3];
+    std::string _enemyChanges;
+    int _oilPoured[6];
+    int _deltaAmmo[3];
+    int _currentRoom;
 
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];
@@ -67,17 +71,30 @@ public:
 
     void changeWallHealth(int wall, int damage);
 
+    void addDeltaHealth(int wall, int repair);
+
+    int getDeltaHealth(int wall);
+
     int getPlayerAvatar(int player);
 
     void setPlayerAvatar(int player, int avatar);
 
-    bool getNetworked() {
+    void addEnemyChange(std::string name, int damage);
+
+    void addDeltaAmmo(int type, int amt);
+
+    bool isNetworked() {
         return networked;
     }
 
     void setNetworked(bool networked) {
         this->networked = networked;
     }
+
+    bool isServer() {
+        return server;
+    }
+
     int getArrowAmmo(int type) {
         return _arrowAmmo[type];
     }
@@ -101,6 +118,14 @@ public:
 
 	void setOilCooldown(int wall, int amount);
 
+    void setOilPoured(int wall) {
+        _oilPoured[wall] = 1;
+    }
+
+    void setCurrentRoom(int room) {
+        _currentRoom = room;
+    }
+
 private:
     std::string produceStateChangeServer();
 
@@ -122,11 +147,13 @@ private:
 
     char* return_buffer(const std::string& string);
 
-    char* random_buffer();
+    char* random_buffer_client(int player);
+
+    char* random_buffer_server();
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
     //TODO: Make sure JNI wrapper code is correct
-    char* readNetwork() {
+    char* consumeState() {
         // Set up parameters for JNI call
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
         jobject activity = (jobject)SDL_AndroidGetActivity();
@@ -134,7 +161,6 @@ private:
         jclass clazz(env->GetObjectClass(activity));
         jmethodID method_id = env->GetMethodID(clazz, "readNetwork",
                                                "()V");
-
         // Call the Java method
         env->CallVoidMethod(activity, method_id);
 
@@ -144,7 +170,7 @@ private:
     }
 
     //TODO: Make sure JNI wrapper code is correct
-    void writeNetwork(char* byte_buffer) {
+    void sendState(char* byte_buffer) {
         // Set up parameters for JNI call
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         jobject activity = (jobject) SDL_AndroidGetActivity();

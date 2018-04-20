@@ -213,6 +213,9 @@ void OilScene::update(float timestep, int direction){
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
 		_oil->isReloading = true;
 		//OIL SPILT! Obliterate all enemies!
+        if (gameModel.isNetworked() && !gameModel.isServer()) {
+            gameModel.setOilPoured(direction);
+        }
 		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
 			std::shared_ptr<EnemyModel> e = epair.second;
 			std::string k = epair.first;

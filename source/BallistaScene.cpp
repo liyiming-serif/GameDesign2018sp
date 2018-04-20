@@ -293,6 +293,9 @@ void BallistaScene::update(float deltaTime, int direction){
                     _world->addObstacle(a);
                     addChild(a->getNode());
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)-1);
+					if (gameModel.isNetworked() && !gameModel.isServer()) {
+						gameModel.addDeltaAmmo(0,-1);
+					}
                 }
             }
 			// Fire ballista
@@ -459,6 +462,7 @@ void BallistaScene::beginContact(b2Contact* contact) {
 				else {
 					ed->setHealth(ed->getHealth()-1);
 				}
+				gameModel.addEnemyChange(ed->getName(), -1);
 			}
 			break;
 		}

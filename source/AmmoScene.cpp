@@ -137,6 +137,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 AmmoScene::doMoveUp(_moveup_J, _jackpot);
                 CULog("do move");
                 gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+50);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,50);
+                }
             }
             else if (fabs(pos-_size.width/2)< .2*_size.width ) {
                 CULog("okay");
@@ -148,6 +151,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_O, _jackpot);
                 gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+30);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,30);
+                }
             }
             else {
                 CULog("bad");
@@ -159,6 +165,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 addChild(_jackpot);
                 AmmoScene::doMoveUp(_moveup_B, _jackpot);
                 gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+10);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,10);
+                }
             }
             AmmoScene::doStrip(_hammerAnimation);
 
