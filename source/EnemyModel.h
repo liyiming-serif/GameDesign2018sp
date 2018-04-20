@@ -1,6 +1,10 @@
 //
 // EnemyModel.h
 //
+// EnemyModel is the PHYSICAL representation of an enemy in the oil or ballista
+// room. It links the physics engine with the scene graph and handles
+// collisions.
+//
 // Created by Josh on 3/14/2018.
 //
 
@@ -15,39 +19,43 @@ private:
     CU_DISALLOW_COPY_AND_ASSIGN(EnemyModel);
 
 public:
-
     float _dir;
-    //constructors
+    //CONSTRUCTORS
     EnemyModel(void) : BoxObstacle() { }
 
-    static std::shared_ptr<EnemyModel> alloc(cugl::Vec2 pos, float dir, float type, float health, int drawScale,
-                                             const std::shared_ptr<cugl::AssetManager>& assets) {
+    static std::shared_ptr<EnemyModel> alloc(std::string name, cugl::Vec2 pos,
+											float dir, float type, int drawScale,
+											const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<EnemyModel> ref = std::make_shared<EnemyModel>();
-        return (ref->init(pos, dir, type, health, drawScale, assets) ? ref : nullptr);
+        return (ref->init(name, pos, dir, type, drawScale, assets) ? ref : nullptr);
     }
 
-    bool init(cugl::Vec2 pos, float dir, float type, float health, int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(std::string name, cugl::Vec2 pos, float dir, float type,
+		int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
 
 
-    //methods
+    //GAMEPLAY
     void update(float deltaTime) override;
 
-    // Assume assets are already loaded, and _node is immutable after init
-    const std::shared_ptr<cugl::PolygonNode> getNode() const { return _node; };
+	int getDamage(int type);
 
-    //destructors
+    // Assume assets are already loaded, and _node is immutable after init
+    const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
+
+	const std::string getName() const { return _name; }
+
+    //DESTRUCTORS
     void dispose();
 
     ~EnemyModel() {dispose();}
 
-    int getDamage(int type);
-
 
 protected:
-    //private
+    //MEMBERS
+	std::string _name;
 
     //This is the root scene node that corresponds to this model.
-    std::shared_ptr<cugl::PolygonNode> _node;
+    std::shared_ptr<cugl::AnimationNode> _node;
 
 	//pixels per meter measurement. obstacle world * _drawScale = screen size
 	int _drawScale;

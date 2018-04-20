@@ -91,28 +91,6 @@ void MageScene::dispose() {
 }
 
 void MageScene::update(float timestep){
-    //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-            if(gameModel._enemyArrayMaster[i][j][1] < 85){
-                //remove
-                gameModel._enemiesToFreeMaster[i].push_back(j);
-                gameModel.changeWallHealth(i, -9);
-            }
-            else{
-                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-            }
-        }
-    }
-	//delete enemies here to not disrupt iterator
-	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
-		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
-			if (j<gameModel._enemyArrayMaster[i].size()) {
-				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
-			}
-		}
-		gameModel._enemiesToFreeMaster[i].clear();
-	}
 }
 
 

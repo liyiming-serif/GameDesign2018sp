@@ -54,12 +54,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
 
-    std::vector<std::vector<float>> temp;
-    std::vector<int> temp2;
-    for(int i = 0; i<6; i++){
-        gameModel._enemyArrayMaster.push_back(temp);
-        gameModel._enemiesToFreeMaster.push_back(temp2);
-    }
     direction = -1;
     switchscene = 0;
     
@@ -688,29 +682,7 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
 
 
 void OverworldScene::update(float timestep){
-    //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-        for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-            if(gameModel._enemyArrayMaster[i][j][1] < 85){
-                //remove
-                gameModel._enemiesToFreeMaster[i].push_back(j);
-                gameModel.changeWallHealth(i, -9);
-            }
-            else{
-                gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-            }
-        }
-    }
-	//delete enemies here to not disrupt iterator
-	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
-		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
-			if (j<gameModel._enemyArrayMaster[i].size()) {
-				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
-			}
-		}
-		gameModel._enemiesToFreeMaster[i].clear();
-	}
-
+	//poll inputs
 	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
 		//Moving down
 		OverworldScene::doMove(_movedn, currentCastleFloor);
