@@ -61,6 +61,8 @@ public:
 
     int getWallHealth(int wall);
 
+    void setWallHealth(int wall, int amt);
+
     void changeWallHealth(int wall, int damage);
 
     int getPlayerAvatar(int player);
