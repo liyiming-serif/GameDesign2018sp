@@ -6,6 +6,7 @@
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
+#define BASE_SPEED 0.5f/3
 
 using namespace cugl;
 
@@ -53,11 +54,11 @@ void GameModel::update(float deltaTime){
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
-				gameModel.changeWallHealth(wall, -9);
+				gameModel.changeWallHealth(wall, enemy.second->getDamage(enemy.second->getType()));
 			}
 			else {
 				// move enemy
-				enemy.second->setPos(Vec2(pos.x,pos.y-0.5f));
+				enemy.second->setPos(Vec2(pos.x,pos.y-(BASE_SPEED*enemy.second->getSpeed(enemy.second->getType(), 0))));
 			}
 		}
 	}

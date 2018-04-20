@@ -157,6 +157,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
+            level = 1;
         }
     });
     
@@ -171,6 +172,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
+            level = 2;
         }
     });
     
@@ -185,6 +187,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
+            level = 3;
         }
     });
     
@@ -199,6 +202,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
+            level = 4;
         }
     });
     

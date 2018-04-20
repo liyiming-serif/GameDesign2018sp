@@ -86,16 +86,16 @@ public:
 
 	int getDamage(int type){
 	    if(type==1){
-	        return 10;
+	        return -10;
 	    }
 	    else if(type==2){
-	        return 3;
+	        return -3;
 	    }
 	    else if(type==3||type==5){
-	        return 5;
+	        return -5;
 	    }
 	    else if(type==4){
-	        return 20;
+	        return -20;
 	    }
 	}
 
