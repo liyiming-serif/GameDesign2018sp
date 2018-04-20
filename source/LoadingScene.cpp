@@ -96,7 +96,6 @@ void LoadingScene::update(float progress) {
         if (_progress >= 1) {
             _progress = 1.0f;
             _button->setVisible(true);
-            _button->activate(input.generateKey("loading"));
         }
         _bar->setProgress(_progress);
     }

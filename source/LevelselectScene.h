@@ -25,6 +25,8 @@ protected:
     std::shared_ptr<cugl::Button> _backButtonMULTI;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _foreground;
+    std::shared_ptr<cugl::PolygonNode> _levels;
     
     std::shared_ptr<cugl::Node>  _single;
     std::shared_ptr<cugl::Node>  _multi;
@@ -47,6 +49,9 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move4;
     std::shared_ptr<cugl::MoveTo> _move5;
     std::shared_ptr<cugl::MoveTo> _move6;
+    
+    std::shared_ptr<cugl::MoveBy> _moveleft;
+    std::shared_ptr<cugl::MoveBy> _moveright;
     
     bool move1 = true;
     bool move2 = true;
@@ -116,6 +121,13 @@ public:
      * @param action The move action
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doScroll(const std::shared_ptr<cugl::MoveBy>& action);
 
     //Sets the compass image based on the direction input
     void setCanvas (int direction);

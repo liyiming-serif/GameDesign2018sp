@@ -27,6 +27,7 @@ using namespace cugl;
 
 
 #define DURATION 40.0f
+#define DURATION2 1.0f
 #define DISTANCE 920
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -55,16 +56,32 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
     
+    _moveleft = MoveBy::alloc(Vec2(-_size.width*1.06f,0),DURATION2);
+    _moveright = MoveBy::alloc(Vec2(_size.width*1.06f,0),DURATION2);
+    
     _single = Node::alloc();
     _multi = Node::alloc();
     
     // Set the background image
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("homepage");
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("levelpage_background");
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(0.5625f); // Magic number to rescale asset
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(_size.width/2,_size.height/2);
+    _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _background->setPosition(0,_size.height/2);
     addChild(_background);
+    
+    std::shared_ptr<Texture> texture_foreground  = _assets->get<Texture>("levelpage_foreground");
+    _foreground = PolygonNode::allocWithTexture(texture_foreground);
+    _foreground->setScale(0.55f); // Magic number to rescale asset
+    _foreground->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _foreground->setPosition(0,_size.height/2-8);
+    
+    std::shared_ptr<Texture> texture_levels  = _assets->get<Texture>("levelpage_levels");
+    _levels = PolygonNode::allocWithTexture(texture_levels);
+    _levels->setScale(0.5625f); // Magic number to rescale asset
+    _levels->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _levels->setPosition(0,_size.height/2);
+
 
     
     
@@ -74,6 +91,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cloud1->setAnchor(Vec2::ANCHOR_CENTER);
     _cloud1->setPosition(197,447);
     _move1 = MoveTo::alloc(Vec2(1300,447),DURATION);
+    _cloud1->setColor(Color4 (180,180,230,190));
     
     std::shared_ptr<Texture> c_2  = _assets->get<Texture>("cloudM");
     _cloud2 = PolygonNode::allocWithTexture(c_2);
@@ -115,6 +133,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_cloud4);
     addChild(_cloud5);
     addChild(_cloud6);
+    
+    addChild(_foreground);
+    _single->addChild(_levels);
+    
+    
+    
     
     // Create the play button.  A button has an up image and a down image
     std::shared_ptr<Texture> play_up   = _assets->get<Texture>("play");
@@ -296,6 +320,15 @@ void LevelselectScene::update(float timestep){
         doMove6(_move6, _cloud6);
     }
     
+    if (input.vScrolling() < 0 && !_actions->isActive(ACT_KEY+7)) {
+        LevelselectScene::doScroll(_moveleft);
+    }
+    else if (input.vScrolling() > 0 && !_actions->isActive(ACT_KEY+7)) {
+        LevelselectScene::doScroll(_moveright);
+    }
+    
+    
+    
     
     
     _actions->update(timestep);
@@ -329,6 +362,13 @@ void LevelselectScene::doMove5(const std::shared_ptr<MoveTo>& action, std::share
 void LevelselectScene::doMove6(const std::shared_ptr<MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object) {
     auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
     _actions->activate(ACT_KEY+6, action, object, fcn);
+}
+
+void LevelselectScene::doScroll(const std::shared_ptr<MoveBy>& action) {
+    auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
+    _actions->activate(ACT_KEY+7, action, _background, fcn);
+    _actions->activate(ACT_KEY+8, action, _foreground, fcn);
+    _actions->activate(ACT_KEY+9, action, _levels, fcn);
 }
 
 

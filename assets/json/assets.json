@@ -276,6 +276,27 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "levelpage_background": {
+            "file":     "textures/Menu/levels/background.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_foreground": {
+            "file":     "textures/Menu/levels/foreground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_levels": {
+            "file":     "textures/Menu/levels/button.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "cloudS": {
             "file":     "textures/Menu/cloudS.png",
             "minfilter":"nearest",
@@ -319,14 +340,14 @@
             "wrapT":    "clamp"
         },
         "single": {
-            "file":     "textures/Menu/single.png",
+            "file":     "textures/Menu/singleplayer.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
         "multi": {
-            "file":     "textures/Menu/multi.png",
+            "file":     "textures/Menu/multiplayer.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
