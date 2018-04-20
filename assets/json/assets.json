@@ -423,6 +423,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "flying": {
+            "file":     "textures/flying.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "repair_background": {
             "file":     "textures/Basement/RepairBackground.png",
             "minfilter":"nearest",

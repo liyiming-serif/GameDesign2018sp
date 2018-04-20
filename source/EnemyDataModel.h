@@ -19,6 +19,11 @@ protected:
 	cugl::Vec2 _pos;
 	int _type;
 	int _wall; //duplicate information to quickly construct enemy array from network
+	float _speed;
+	int _damage;
+	float _atkRange;
+	int _atkSpeed;
+	int _atkCounter;
 
 public:
 	//CONSTRUCTORS
@@ -29,14 +34,7 @@ public:
 		return (ref->init(name, health, pos, type, wall) ? ref : nullptr);
 	}
 
-	bool init(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall) {
-		_name = name;
-		_health = health;
-		_pos.set(pos);
-		_type = type;
-		_wall = wall;
-		return true;
-	}
+	bool init(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall);
 	
 
 	//DESTRUCTORS
@@ -60,44 +58,14 @@ public:
 
 	int getWall() const { return _wall; }
 
-    //health only matters for berserker
-	int getSpeed(int type, int health){
-	    if(type==1||type==2||type==3){
-            return 3;
-	    }
-	    else if(type==4){
-	        return 2;
-	    }
-	    else if(type==5){
-	        if(health==3){
-	            return 1;
-	        }
-	        else if(health==2){
-	            return 3;
-	        }
-	        else{
-	            return 6;
-	        }
-	    }
-	    else{
-	        return 0;
-	    }
-	}
+	int getSpeed();
 
-	int getDamage(int type){
-	    if(type==1){
-	        return 10;
-	    }
-	    else if(type==2){
-	        return 3;
-	    }
-	    else if(type==3||type==5){
-	        return 5;
-	    }
-	    else if(type==4){
-	        return 20;
-	    }
-	}
+	int getDamage();
+
+	int getAtkSpeed();
+
+	int getAtkCounter() { return _atkCounter; }
+	void setAtkCounter(int c) { _atkCounter = c; }
 
 	const std::string& toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"
