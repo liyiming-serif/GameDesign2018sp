@@ -20,10 +20,24 @@
 
 #define BALLISTA_MIN_POWER 9.0f
 
+#define BALLISTA_MAX_RANGE 640	//farthest enemy ballista scene can see
+#define BALLISTA_MIN_RANGE 192	//closest enemy ballista scene can see
+#define BALLISTA_END_ZONE 180	//enemies dissapear past this y-coord; set by castle wall art assets
+
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
 #define GAME_WIDTH 1024
+
+bool BallistaScene::inRange(float y) {
+	return BALLISTA_MIN_RANGE < y && y < BALLISTA_MAX_RANGE;
+}
+
+float BallistaScene::calcY(float y) {
+	int range = BALLISTA_MAX_RANGE - BALLISTA_MIN_RANGE;
+	int screen_range = _size.height - BALLISTA_END_ZONE;
+	return (y-BALLISTA_MIN_RANGE)/range*(screen_range)+BALLISTA_END_ZONE;
+}
 
 bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set display size
@@ -327,24 +341,28 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 		std::unordered_map<std::string, std::shared_ptr<EnemyModel>>::iterator i =
 			_enemyArray.find(k);
 		if (i == _enemyArray.end()) {
-			std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k,e->getPos(),-M_PI/2, e->getType(), DRAW_SCALE, _assets);
-			if (en != nullptr) {
-				_enemyArray[k] = en;
-				_world->addObstacle(en);
-				addChild(en->getNode());
+			if (inRange(e->getPos().y)) {
+				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
+				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, -M_PI / 2, e->getType(), DRAW_SCALE, _assets);
+				if (en != nullptr) {
+					_enemyArray[k] = en;
+					_world->addObstacle(en);
+					addChild(en->getNode());
+				}
 			}
 		}
 		else {
-			i->second->setPosition(e->getPos()/DRAW_SCALE);
+			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
+			i->second->setPosition(pos/DRAW_SCALE);
 			i->second->update(deltaTime);
 		}
 	}
 
-	//delete enemy models not found in the master 
+	//delete enemy models too close or not found in the master 
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> e : _enemyArray) {
 		std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
 			gameModel._enemyArrayMaster[direction].find(e.first);
-		if (i == gameModel._enemyArrayMaster[direction].end()) {
+		if (i == gameModel._enemyArrayMaster[direction].end() || !inRange(i->second->getPos().y)) {
 			//mark enemy models for deletion
 			_enemiesToFree.insert(e.second);
 		}
