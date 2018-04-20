@@ -2,49 +2,27 @@
 // Created by Josh on 3/15/2018.
 //
 
-
-#include <cugl/cugl.h>
-#include <stdlib.h>
 #include "GameModel.h"
-#include <cmath>
-#include "CastleApp.h"
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
 
 using namespace cugl;
 
-bool GameModel::init(const std::shared_ptr<AssetManager>& assets){
-    // Set display size
-    _size = Application::get()->getDisplaySize();
-    _size *= GAME_WIDTH/_size.width;
+bool GameModel::init(){
     clock = 0;
-    networked = true;
-
-    _arrowAmmo[0] = 30;
-
-    _assets = assets;
-
-    _spawnTimer = 360;
-
-    int sum = 10;
-
-    for (int i = 0; i < 6; ++i) {
-        _castleHealth[i] = sum;
-        _prevCastleHealth[i] = sum;
-        sum +=10;
-    }
-
-    
-    
+    networked = false;
 
     return true;
 }
 
 void GameModel::dispose() {
-    _assets = nullptr;
-    _enemyArrayMaster.clear();
-    _enemiesToFreeMaster.clear();
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		gameModel._enemyArrayMaster[i].clear();
+	}
+	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
 }
 
 void GameModel::update(float deltaTime){
@@ -67,6 +45,40 @@ void GameModel::update(float deltaTime){
             clock++;
         }
     }
+
+	//update enemies
+	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
+		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
+			Vec2 pos = enemy.second->getPos();
+			if (pos.y <= 0) {
+				//enemy collided with wall; mark for deletion
+				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
+				gameModel.changeWallHealth(wall, -9);
+			}
+			else {
+				// move enemy
+				enemy.second->setPos(Vec2(pos.x,pos.y-0.5f));
+			}
+		}
+	}
+
+	//delete enemies here to not disrupt iterator
+	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
+		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
+			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
+		}
+		gameModel._enemiesToFreeMaster[wall].clear();
+	}
+
+	//decrease oil cooldown
+	for (int wall = 0; wall < 6; wall++) {
+		if (gameModel._oilCooldown[wall] > 0) {
+			gameModel._oilCooldown[wall] -= 1;
+		}
+		else {
+			gameModel._oilCooldown[wall] = 0;
+		}
+	}
 }
 
 int GameModel::getWallHealth(int wall) {
@@ -93,6 +105,15 @@ int GameModel::getPlayerAvatar(int player) {
 
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
+}
+
+void GameModel::setOilCooldown(int wall, int amount) {
+	if (amount >= 0) {
+		_oilCooldown[wall] = amount;
+	}
+	else {
+		_oilCooldown[wall] = 0;
+	}
 }
 
 std::string GameModel::getStateChange() {

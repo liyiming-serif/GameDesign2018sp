@@ -13,6 +13,7 @@
 #include <cugl/cugl.h>
 #include <vector>
 #include "GameModel.h"
+#include "EnemyDataModel.h"
 
 class SpawnController {
 private:

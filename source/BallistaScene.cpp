@@ -16,14 +16,28 @@
 #define DRAW_SCALE 32
 #define FONT    _assets->get<Font>("futura")
 
-#define BUTTON_SCALE 1.0f
+#define BUTTON_SCALE .8f
 
 #define BALLISTA_MIN_POWER 9.0f
+
+#define BALLISTA_MAX_RANGE 640	//farthest enemy ballista scene can see
+#define BALLISTA_MIN_RANGE 192	//closest enemy ballista scene can see
+#define BALLISTA_END_ZONE 180	//enemies dissapear past this y-coord; set by castle wall art assets
 
 using namespace cugl;
 
 // This is adjusted by screen aspect ratio to get the height
 #define GAME_WIDTH 1024
+
+bool BallistaScene::inRange(float y) {
+	return BALLISTA_MIN_RANGE < y && y < BALLISTA_MAX_RANGE;
+}
+
+float BallistaScene::calcY(float y) {
+	int range = BALLISTA_MAX_RANGE - BALLISTA_MIN_RANGE;
+	int screen_range = _size.height - BALLISTA_END_ZONE;
+	return (y-BALLISTA_MIN_RANGE)/range*(screen_range)+BALLISTA_END_ZONE;
+}
 
 bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set display size
@@ -74,8 +88,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
     _ballistaTOcastle = Button::alloc(PolygonNode::allocWithTexture(castle));
-    _ballistaTOcastle->setScale(.8f); // Magic number to rescale asset
-
+    
     // Create a callback function for the OVERWORLD button
     _ballistaTOcastle->setName("ballistaTOcastle");
     _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
@@ -85,8 +98,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
 
     // Position the OVERWORLD button in the bottom left
-    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_CENTER);
-    _ballistaTOcastle->setPosition(100,80);
+    _ballistaTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
+    _ballistaTOcastle->setPosition(15,_size.height-18);
+    _ballistaTOcastle->setScale(.6f);
     
 
     // Add children to the scene graph
@@ -102,6 +116,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 	// Create the enemy set
 	_enemyArray.clear();
+	_enemiesToFree.clear();
 
     // Create the physics world
     _world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size/DRAW_SCALE),Vec2::ZERO);
@@ -111,51 +126,55 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
      _ballistaTOcastle->activate(input.generateKey("ballistaTOcastle"));
     
     
-    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("N_compass");
+    std::shared_ptr<Texture> north_compass  = _assets->get<Texture>("bigC");
     N_compass = PolygonNode::allocWithTexture(north_compass);
     N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(900,80);
+    N_compass->setPosition(950,80);
     addChild(N_compass);
     N_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("NE_compass");
+    std::shared_ptr<Texture> northeast_compass  = _assets->get<Texture>("smallC");
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NE_compass->setPosition(900,80);
+    NE_compass->setPosition(950,80);
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("NW_compass");
+    std::shared_ptr<Texture> northwest_compass  = _assets->get<Texture>("smallC");
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NW_compass->setPosition(900,80);
+    NW_compass->setPosition(950,80);
+    NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
     
-    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("S_compass");
+    std::shared_ptr<Texture> south_compass  = _assets->get<Texture>("bigC");
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    S_compass->setPosition(900,80);
+    S_compass->setPosition(950,80);
+    S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("SE_compass");
+    std::shared_ptr<Texture> southeast_compass  = _assets->get<Texture>("smallC");
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SE_compass->setPosition(900,80);
+    SE_compass->setPosition(950,80);
+    SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
     
-    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("SW_compass");
+    std::shared_ptr<Texture> southwest_compass  = _assets->get<Texture>("smallC");
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SW_compass->setPosition(900,80);
+    SW_compass->setPosition(950,80);
+    SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
     
@@ -164,8 +183,9 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
     _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(700, 400);
+    _ammoText->setPosition(620, 20);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
+    _ammoText->setScale(.5f);
 
     return true;
 }
@@ -189,6 +209,7 @@ void BallistaScene::dispose() {
 		_arrowsToFree.clear();
         _active = false;
         _enemyArray.clear();
+		_enemiesToFree.clear();
     }
 }
 
@@ -222,20 +243,6 @@ void BallistaScene::setCompass(int direction){
 void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
-
-    //moves enemies
-    for(int i = 0; i<gameModel._enemyArrayMaster.size(); i++){
-		for(int j = 0; j<gameModel._enemyArrayMaster[i].size(); j++){
-			if(gameModel._enemyArrayMaster[i][j][1] < 85){
-				//remove
-				gameModel._enemiesToFreeMaster[i].push_back(j);
-				gameModel.changeWallHealth(i, -9);
-			}
-			else{
-				gameModel._enemyArrayMaster[i][j][1] -= 0.5;
-			}
-		}
-	}
 
 	// Poll inputs
 	if (input.justPressed()) {
@@ -278,7 +285,8 @@ void BallistaScene::update(float deltaTime, int direction){
 		if (_ballista->isReadyToFire) {
             if (gameModel.getArrowAmmo(0)>0 && _ballista->getPower()>=BALLISTA_MIN_POWER) {
                 // Allocate a new arrow in memory
-                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(), _ballista->getPower(), _ballista->getAngle(), DRAW_SCALE, _assets);
+                std::shared_ptr<ArrowModel> a = ArrowModel::alloc(_ballista->getPosition(),
+					_ballista->getPower(), _ballista->getAngle(), DRAW_SCALE, _assets);
 
                 if (a != nullptr) {
                     _arrows.insert(a);
@@ -316,43 +324,57 @@ void BallistaScene::update(float deltaTime, int direction){
 	}
 	_arrowsToFree.clear();
 
-	//delete enemies here to not disrupt iterator
-	for (int i = 0; i<gameModel._enemiesToFreeMaster.size(); i++) {
-		for (int j = 0; j < gameModel._enemiesToFreeMaster[i].size(); j++) {
-			if(j<gameModel._enemyArrayMaster[i].size()){
-				gameModel._enemyArrayMaster[i].erase(gameModel._enemyArrayMaster[i].begin() + gameModel._enemiesToFreeMaster[i][j]);
-			}
-		}
-		gameModel._enemiesToFreeMaster[i].clear();
-	}
-
 	//reflect enemy changes in enemy models
-	updateEnemyModels(direction);
+	updateEnemyModels(deltaTime,direction);
 
     //crank the physics engine
     _world->update(deltaTime);
 
 }
 
-void BallistaScene::updateEnemyModels(int direction) {
-	//clear enemy models
-	for (int i = 0; i < _enemyArray.size(); i++) {
-		std::shared_ptr<EnemyModel> e = _enemyArray[i];
-		_world->removeObstacle(e.get());
-		removeChild(e->getNode());
-	}
-	_enemyArray.clear();
+void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
+	//add or update enemy models from master array
+	for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> epair : gameModel._enemyArrayMaster[direction]) {
+		std::string k = epair.first;
+		std::shared_ptr<EnemyDataModel> e = epair.second;
 
-	//refresh enemy models from the master array
-	for (int i = 0; i<gameModel._enemyArrayMaster[(direction)].size(); i++) {
-		std::shared_ptr<EnemyModel> e = EnemyModel::alloc(Vec2(gameModel._enemyArrayMaster[(direction)][i][0], gameModel._enemyArrayMaster[(direction)][i][1]),
-			-M_PI / 2, gameModel._enemyArrayMaster[(direction)][i][2], gameModel._enemyArrayMaster[(direction)][i][3], DRAW_SCALE, _assets);
-		if (e != nullptr) {
-			_enemyArray.push_back(e);
-			_world->addObstacle(e);
-			addChild(e->getNode());
+		std::unordered_map<std::string, std::shared_ptr<EnemyModel>>::iterator i =
+			_enemyArray.find(k);
+		if (i == _enemyArray.end()) {
+			if (inRange(e->getPos().y)) {
+				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
+				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, -M_PI / 2, e->getType(), DRAW_SCALE, _assets);
+				if (en != nullptr) {
+					_enemyArray[k] = en;
+					_world->addObstacle(en);
+					addChild(en->getNode());
+				}
+			}
+		}
+		else {
+			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
+			i->second->setPosition(pos/DRAW_SCALE);
+			i->second->update(deltaTime);
 		}
 	}
+
+	//delete enemy models too close or not found in the master 
+	for (std::pair<std::string, std::shared_ptr<EnemyModel>> e : _enemyArray) {
+		std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
+			gameModel._enemyArrayMaster[direction].find(e.first);
+		if (i == gameModel._enemyArrayMaster[direction].end() || !inRange(i->second->getPos().y)) {
+			//mark enemy models for deletion
+			_enemiesToFree.insert(e.second);
+		}
+	}
+	// Delete the enemies here because you can't remove elements while iterating
+	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
+		std::shared_ptr<EnemyModel> e = *it;
+		_world->removeObstacle(e.get());
+		removeChild(e->getNode());
+		_enemyArray.erase(e->getName());
+	}
+	_enemiesToFree.clear();
 }
 
 //Pause or Resume
@@ -361,7 +383,7 @@ void BallistaScene::setActive(bool active, int direction){
     _active = active;
     switchscene = 0;
 
-	//empty the arrow arrays to prevent data leeks
+	//empty the arrow arrays to prevent data leaks
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
 		std::shared_ptr<ArrowModel> a = *it;
 		_world->removeObstacle(a.get());
@@ -377,21 +399,28 @@ void BallistaScene::setActive(bool active, int direction){
 	}
 	_arrowsToFree.clear();
 
+	//empty the enemy arrays to prevent data leaks
+	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
+		std::shared_ptr<EnemyModel> e = epair.second;
+		_world->removeObstacle(e.get());
+		removeChild(e->getNode());
+	}
+	_enemyArray.clear();
+
+	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
+		std::shared_ptr<EnemyModel> e = *it;
+		_world->removeObstacle(e.get());
+		removeChild(e->getNode());
+		_enemyArray.erase(e->getName());
+	}
+	_enemiesToFree.clear();
+
     if(active){
-        // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
         BallistaScene::setCompass(direction);
     }
     else{
-		//clear enemy models
-		for (int i = 0; i < _enemyArray.size(); i++) {
-			std::shared_ptr<EnemyModel> e = _enemyArray[i];
-			_world->removeObstacle(e.get());
-			removeChild(e->getNode());
-		}
-		_enemyArray.clear();
-
         _ballistaTOcastle->deactivate();
     }
 }
@@ -416,17 +445,22 @@ void BallistaScene::beginContact(b2Contact* contact) {
 		}
 	}
 
-	for (int it = 0; it<_enemyArray.size(); it++) {
-		std::shared_ptr<EnemyModel> e = _enemyArray[it];
+	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
+		std::shared_ptr<EnemyModel> e = epair.second;
 		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
-			if(gameModel._enemyArrayMaster[_direction][it][3] <= 1){
-				gameModel._enemiesToFreeMaster[(_direction)].push_back(it);
-				break;
+			std::string k = epair.first;
+			std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
+				gameModel._enemyArrayMaster[_direction].find(k);
+			if (i != gameModel._enemyArrayMaster[_direction].end()) {
+				std::shared_ptr<EnemyDataModel> ed = i->second;
+				if (ed->getHealth() <= 1) {
+					gameModel._enemiesToFreeMaster[_direction].push_back(k);
+				}
+				else {
+					ed->setHealth(ed->getHealth()-1);
+				}
 			}
-			else{
-				gameModel._enemyArrayMaster[_direction][it][3]--;
-			}
-
+			break;
 		}
 	}
 }

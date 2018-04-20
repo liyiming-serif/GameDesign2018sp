@@ -38,8 +38,6 @@ public:
     // Gameplay
     void update(float timestep);
 
-	void updateEnemyMarkers();
-
     //Pause or Resume
     void setActive(bool active);
     int switchscene;

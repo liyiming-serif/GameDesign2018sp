@@ -16,38 +16,36 @@
 #endif
 #include <array>
 #include <vector>
+#include "EnemyDataModel.h"
 #include "EnemyModel.h"
 
 class GameModel {
 protected:
-    // asset manager
-    std::shared_ptr<cugl::AssetManager> _assets;
     int _castleHealth[6];
     int _playerAvatars[6];
     int _playerID;
     int _prevCastleHealth[6];
-    int _spawnTimer;
-    cugl::Size _size;
 
     int clock;
     bool networked;
     int _arrowAmmo[2];
 
+	//oil cooldown manager. Ready when == 0 for a particular wall
+	int _oilCooldown[6];
 
 public:
-
+	/**
+	 * NEED TO REFER TO GAMEMODEL OBJECT
+	 */
     // Constructors
     GameModel() {};
 
-    bool init(const std::shared_ptr<cugl::AssetManager> &assets);
+    bool init();
 
-    //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
-
-    std::set<std::shared_ptr<EnemyModel>> _enemyArrayGroundN;
-    std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
-    //2D vector, each element has {xCoord, yCoord, type, remaining health}
-    std::vector<std::vector<std::vector<float>>> _enemyArrayMaster;
-    std::vector<std::vector<int>> _enemiesToFreeMaster;
+    //Keeps track of all enemies.
+	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
+    std::array<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>, 6> _enemyArrayMaster;
+    std::array<std::vector<std::string>, 6> _enemiesToFreeMaster;
 
     // Destructors
     void dispose();
@@ -57,9 +55,10 @@ public:
     // Gameplay
     void update(float deltaTime);
 
-    // Physics manager
-    //std::shared_ptr<cugl::ObstacleWorld> _world;
 
+    /**
+	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT
+	 */
     int getWallHealth(int wall);
 
     void changeWallHealth(int wall, int damage);
@@ -90,6 +89,12 @@ public:
             _arrowAmmo[type] = amount;
         }
     }
+
+	int getOilCooldown(int wall) {
+		return _oilCooldown[wall];
+	}
+
+	void setOilCooldown(int wall, int amount);
 
 private:
     std::string getStateChange();
