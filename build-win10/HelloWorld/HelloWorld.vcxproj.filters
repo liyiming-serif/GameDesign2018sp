@@ -21,6 +21,7 @@
     <ClCompile Include="..\..\source\SpawnController.cpp" />
     <ClCompile Include="..\..\source\LevelselectScene.cpp" />
     <ClCompile Include="..\..\source\OilModel.cpp" />
+    <ClCompile Include="..\..\source\JSONReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\AmmoScene.h" />
@@ -44,6 +45,7 @@
     <ClInclude Include="..\..\source\LevelselectScene.h" />
     <ClInclude Include="..\..\source\EnemyDataModel.h" />
     <ClInclude Include="..\..\source\OilModel.h" />
+    <ClInclude Include="..\..\source\JSONReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />
