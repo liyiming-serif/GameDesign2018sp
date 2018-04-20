@@ -19,25 +19,22 @@ private:
     CU_DISALLOW_COPY_AND_ASSIGN(EnemyModel);
 
 public:
-    float _dir;
     //CONSTRUCTORS
     EnemyModel(void) : BoxObstacle() { }
 
     static std::shared_ptr<EnemyModel> alloc(std::string name, cugl::Vec2 pos,
-											float dir, float type, int drawScale,
+											int type, int drawScale,
 											const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<EnemyModel> ref = std::make_shared<EnemyModel>();
-        return (ref->init(name, pos, dir, type, drawScale, assets) ? ref : nullptr);
+        return (ref->init(name, pos, type, drawScale, assets) ? ref : nullptr);
     }
 
-    bool init(std::string name, cugl::Vec2 pos, float dir, float type,
+    bool init(std::string name, cugl::Vec2 pos, int type,
 		int drawScale, const std::shared_ptr<cugl::AssetManager>& assets);
 
 
     //GAMEPLAY
     void update(float deltaTime) override;
-
-	int getDamage(int type);
 
     // Assume assets are already loaded, and _node is immutable after init
     const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
@@ -51,6 +48,12 @@ public:
 
 
 protected:
+	//ANIMATION CONSTANTS
+	int _rows;
+	int _cols;
+	int _walkFrameStart;
+	int _dieFrameStart;
+
     //MEMBERS
 	std::string _name;
 

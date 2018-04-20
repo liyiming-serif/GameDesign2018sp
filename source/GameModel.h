@@ -42,6 +42,8 @@ public:
 
     bool init();
 
+    std::unordered_map<std::string, bool> _unlockedRooms;
+
     //Keeps track of all enemies.
 	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
     std::array<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>, 6> _enemyArrayMaster;

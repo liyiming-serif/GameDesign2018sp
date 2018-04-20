@@ -343,7 +343,7 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 		if (i == _enemyArray.end()) {
 			if (inRange(e->getPos().y)) {
 				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
-				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, -M_PI / 2, e->getType(), DRAW_SCALE, _assets);
+				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, e->getType(), DRAW_SCALE, _assets);
 				if (en != nullptr) {
 					_enemyArray[k] = en;
 					_world->addObstacle(en);
@@ -437,30 +437,34 @@ void BallistaScene::beginContact(b2Contact* contact) {
 	b2Body* body1 = contact->GetFixtureA()->GetBody();
 	b2Body* body2 = contact->GetFixtureB()->GetBody();
 
+	boolean contactWithArrow = false;
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
 		std::shared_ptr<ArrowModel> a = *it;
 		if ((body1->GetUserData() == a.get() || body2->GetUserData() == a.get())) {
 			_arrowsToFree.insert(a);
+			contactWithArrow = true;
 			break;
 		}
 	}
 
-	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
-		std::shared_ptr<EnemyModel> e = epair.second;
-		if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
-			std::string k = epair.first;
-			std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
-				gameModel._enemyArrayMaster[_direction].find(k);
-			if (i != gameModel._enemyArrayMaster[_direction].end()) {
-				std::shared_ptr<EnemyDataModel> ed = i->second;
-				if (ed->getHealth() <= 1) {
-					gameModel._enemiesToFreeMaster[_direction].push_back(k);
+	if (contactWithArrow) {
+		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
+			std::shared_ptr<EnemyModel> e = epair.second;
+			if (body1->GetUserData() == e.get() || body2->GetUserData() == e.get()) {
+				std::string k = epair.first;
+				std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
+					gameModel._enemyArrayMaster[_direction].find(k);
+				if (i != gameModel._enemyArrayMaster[_direction].end()) {
+					std::shared_ptr<EnemyDataModel> ed = i->second;
+					if (ed->getHealth() <= 1) {
+						gameModel._enemiesToFreeMaster[_direction].push_back(k);
+					}
+					else {
+						ed->setHealth(ed->getHealth() - 1);
+					}
 				}
-				else {
-					ed->setHealth(ed->getHealth()-1);
-				}
+				break;
 			}
-			break;
 		}
 	}
 }

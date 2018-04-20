@@ -92,7 +92,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "N";
-                gameModel.changeWallHealth(0, 2);
+                gameModel.changeWallHealth(0, 1);
                 _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
             }
         });
@@ -102,7 +102,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "NE";
-                gameModel.changeWallHealth(5, 2);
+                gameModel.changeWallHealth(5, 1);
                 _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
             }
         });
@@ -113,7 +113,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "SE";
-                gameModel.changeWallHealth(4, 2);
+                gameModel.changeWallHealth(4, 1);
                 _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
 
             }
@@ -123,7 +123,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
                 _new_wall = "S";
-                gameModel.changeWallHealth(3, 2);
+                gameModel.changeWallHealth(3, 1);
                 _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
             }
         });
@@ -132,7 +132,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
 				_new_wall = "SW";
-                gameModel.changeWallHealth(2, 2);
+                gameModel.changeWallHealth(2, 1);
                 _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
             }
         });
@@ -141,7 +141,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
 				_new_wall = "NW";
-                gameModel.changeWallHealth(1, 2);
+                gameModel.changeWallHealth(1, 1);
                 _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
             }
         });
