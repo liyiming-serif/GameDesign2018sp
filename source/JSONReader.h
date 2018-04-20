@@ -14,6 +14,7 @@
 #include <cugl/assets/CUJsonLoader.h>
 #include <vector>
 #include <cugl/assets/CUAsset.h>
+#include "GameModel.h"
 
 using namespace cugl;
 

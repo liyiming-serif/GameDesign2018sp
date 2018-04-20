@@ -86,6 +86,7 @@ public:
     int switchscene;
     int mode;
     int campaign;
+    int level;
     
     /**
      * Performs a move action

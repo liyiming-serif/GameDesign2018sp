@@ -62,6 +62,8 @@ public:
 
 	int getDamage();
 
+	int getAtkRange() { return _atkRange; }
+
 	int getAtkSpeed();
 
 	int getAtkCounter() { return _atkCounter; }

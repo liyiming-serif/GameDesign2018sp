@@ -63,7 +63,13 @@ std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
     //read the actual level
 
     _roomsJSON = _levelJSON->get("rooms_unlocked");
-    //need to iterate to find unlocked rooms and put data somewhere
+    gameModel._unlockedRooms["lookout"] = _roomsJSON->getBool("lookout");
+    gameModel._unlockedRooms["oil"] = _roomsJSON->getBool("oil");
+    gameModel._unlockedRooms["mage"] = _roomsJSON->getBool("mage");
+    gameModel._unlockedRooms["ballista"] = _roomsJSON->getBool("ballista");
+    gameModel._unlockedRooms["repair"] = _roomsJSON->getBool("repair");
+    gameModel._unlockedRooms["ammo"] = _roomsJSON->getBool("ammo");
+
 
     _enemiesJSON = _levelJSON->get("enemies");
     for(int i = 1; i<=_enemiesJSON->getInt("numSpawn"); i++){

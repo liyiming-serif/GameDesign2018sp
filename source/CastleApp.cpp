@@ -270,7 +270,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
     }
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
 		//TODO: replace 0 with level
-		_spawnController.init(_assets, _assets->get<JSONReader>("levels")->readJSON(_players, 2));
+		_spawnController.init(_assets, _assets->get<JSONReader>("levels")->readJSON(_players, _levelScene.level));
 	}
 	if (_currscene == MENU && nextscene == LEVELS){
 	    _players = 1;
