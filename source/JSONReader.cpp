@@ -88,18 +88,36 @@ std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
     return _enemyArray;
 }
 
-float JSONReader::getType(std::string name){
-    if(name=="skeleton"){
+float JSONReader::getHealth(std::string name){
+    if(name=="skeleton"||name=="archer"){
         return 1.0;
+    }
+    else if(name=="warrior"){
+        return 2.0;
+    }
+    else if(name=="reaper"||name=="berserker"){
+        return 3.0;
     }
     else{
         return 0.0;
     }
 }
 
-float JSONReader::getHealth(std::string name){
+float JSONReader::getType(std::string name){
     if(name=="skeleton"){
         return 1.0;
+    }
+    else if(name=="archer"){
+        return 2.0;
+    }
+    else if(name=="warrior"){
+        return 3.0;
+    }
+    else if(name=="reaper"){
+        return 4.0;
+    }
+    else if(name=="berserker"){
+        return 5.0;
     }
     else{
         return 0.0;

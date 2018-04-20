@@ -60,6 +60,45 @@ public:
 
 	int getWall() const { return _wall; }
 
+    //health only matters for berserker
+	int getSpeed(int type, int health){
+	    if(type==1||type==2||type==3){
+            return 3;
+	    }
+	    else if(type==4){
+	        return 2;
+	    }
+	    else if(type==5){
+	        if(health==3){
+	            return 1;
+	        }
+	        else if(health==2){
+	            return 3;
+	        }
+	        else{
+	            return 6;
+	        }
+	    }
+	    else{
+	        return 0;
+	    }
+	}
+
+	int getDamage(int type){
+	    if(type==1){
+	        return 10;
+	    }
+	    else if(type==2){
+	        return 3;
+	    }
+	    else if(type==3||type==5){
+	        return 5;
+	    }
+	    else if(type==4){
+	        return 20;
+	    }
+	}
+
 	const std::string& toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"
 			+std::to_string(_type)+":"+std::to_string(_wall);
