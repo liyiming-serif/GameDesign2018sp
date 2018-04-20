@@ -43,6 +43,7 @@ protected:
     cugl::Vec2 _pointerPos;
 	cugl::Vec2 _dTouch;
     int _vScrolling;
+	int _hScrolling;
 	float _oilTilt;
     /** Wizard spell gestures go here*/
 	/** Debug and reset toggle. */
@@ -139,6 +140,8 @@ public:
 	cugl::Vec2 dTouch() { return _dTouch; }
 
     int vScrolling() {return _vScrolling;}
+
+	int hScrolling() { return _hScrolling; }
 
 	float oilTilt() { return _oilTilt; }
 

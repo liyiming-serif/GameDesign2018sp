@@ -22,14 +22,15 @@ using namespace cugl;
  * object. This makes it safe to use this class without a pointer.
  */
 InputController::InputController() :
-        _active(false),
-        _pointerVel(0,0),
-		_dTouch(0,0),
-        _justPressed(false),
-        _justReleased(false),
-        _isPressed(false),
-        _pointerPos(0,0),
-        _vScrolling(0),
+		_active(false),
+		_pointerVel(0, 0),
+		_dTouch(0, 0),
+		_justPressed(false),
+		_justReleased(false),
+		_isPressed(false),
+		_pointerPos(0, 0),
+		_vScrolling(0),
+		_hScrolling(0),
 		_oilTilt(0.0),
 		_currMaxKey(2){
 }
@@ -105,6 +106,7 @@ void InputController::update(float deltaTime) {
     _justPressed = false;
     _justReleased = false;
     _vScrolling = 0;
+	_hScrolling = 0;
 }
 
 /**
@@ -139,6 +141,7 @@ void InputController::clear() {
     _justReleased = false;
     _isPressed = false;
     _vScrolling = 0;
+	_hScrolling = 0;
 	_oilTilt = 0.0;
 	_currMaxKey = 0;
 }
@@ -157,6 +160,9 @@ void InputController::touchDragCB(const TouchEvent &event, const Vec2 &previous,
     if(abs(_pointerVel.y) >= SWIPE_SENSITIVITY){
         _vScrolling = _pointerVel.y;
     }
+	if (abs(_pointerVel.x) >= SWIPE_SENSITIVITY) {
+		_hScrolling = _pointerVel.x;
+	}
 }
 
 void InputController::touchReleaseCB(const TouchEvent &event, bool focus) {
@@ -179,6 +185,9 @@ void InputController::mouseDragCB(const MouseEvent& event, const Vec2& previous,
     if(abs(_pointerVel.y) >= SWIPE_SENSITIVITY){
         _vScrolling = _pointerVel.y;
     }
+	if (abs(_pointerVel.x) >= SWIPE_SENSITIVITY) {
+		_hScrolling = _pointerVel.x;
+	}
 }
 
 void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focus){
