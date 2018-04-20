@@ -2,7 +2,7 @@
 	"one" : {
 		"level1" : {
 			"enemies" : {
-				"numSpawn" : 22,
+				"numSpawn" : 18,
 				"spawn1" : {
 					"name" : "skeleton",
 					"spawn_time" : 300,
@@ -127,7 +127,7 @@
 					"spawn_time" : 6900,
 					"xCoord" : 800,
 					"yCoord" : 500,
-					"sector" : 10
+					"sector" : 0
 				}
 			},
 			"rooms_unlocked" : {

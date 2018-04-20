@@ -66,24 +66,26 @@ std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
     //need to iterate to find unlocked rooms and put data somewhere
 
     _enemiesJSON = _levelJSON->get("enemies");
-    for(int i = 0; i<_enemiesJSON->getInt("numSpawn"); i++){
+    for(int i = 1; i<=_enemiesJSON->getInt("numSpawn"); i++){
         _singleEnemyJSON = _enemiesJSON->get("spawn" + std::to_string(i));
-        //get values and store this somewhere
-         _enemy = {
-         //XCoord
-         _singleEnemyJSON->getFloat("xCoord"),
-         //YCoord
-         _singleEnemyJSON->getFloat("yCoord"),
-         //Type
-         getType(_singleEnemyJSON->getString("name")),
-         //Health
-         getHealth(_singleEnemyJSON->getString("name")),
-         //SpawnTime
-         _singleEnemyJSON->getFloat("spawn_time"),
-         //Sector
-         _singleEnemyJSON->getFloat("sector")};
+		if (_singleEnemyJSON != nullptr) {
+			//get values and store this somewhere
+			_enemy = {
+				//XCoord
+				_singleEnemyJSON->getFloat("xCoord"),
+				//YCoord
+				_singleEnemyJSON->getFloat("yCoord"),
+				//Type
+				getType(_singleEnemyJSON->getString("name")),
+				//Health
+				getHealth(_singleEnemyJSON->getString("name")),
+				//SpawnTime
+				_singleEnemyJSON->getFloat("spawn_time"),
+				//Sector
+				_singleEnemyJSON->getFloat("sector") };
 
-         _enemyArray.push_back(_enemy);
+			_enemyArray.push_back(_enemy);
+		}
     }
     return _enemyArray;
 }

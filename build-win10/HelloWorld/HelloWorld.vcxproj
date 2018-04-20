@@ -194,6 +194,7 @@
     <ClInclude Include="..\..\source\EnemyModel.h" />
     <ClInclude Include="..\..\source\GameModel.h" />
     <ClInclude Include="..\..\source\InputController.h" />
+    <ClInclude Include="..\..\source\JSONReader.h" />
     <ClInclude Include="..\..\source\LevelselectScene.h" />
     <ClInclude Include="..\..\source\LoadingScene.h" />
     <ClInclude Include="..\..\source\LobbyScene.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="..\..\source\EnemyModel.cpp" />
     <ClCompile Include="..\..\source\GameModel.cpp" />
     <ClCompile Include="..\..\source\InputController.cpp" />
+    <ClCompile Include="..\..\source\JSONReader.cpp" />
     <ClCompile Include="..\..\source\LevelselectScene.cpp" />
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\LobbyScene.cpp" />
