@@ -173,14 +173,14 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // Position the play button in the bottom left
-    _levelsButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _levelsButton->setPosition(115,130);
+    _levelsButton->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _levelsButton->setPosition(15,200);
     
     
     
     // Position the lobby button in the bottom right
-    _lobbyButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _lobbyButton->setPosition(350,130);
+    _lobbyButton->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _lobbyButton->setPosition(15,100);
     
     // Add the logo and button to the scene graph
     addChild(_lobbyButton);
@@ -226,7 +226,6 @@ void MenuScene::update(float timestep){
     
     
     if (!_actions->isActive(ACT_KEY+2) && move2 ){
-        CULog("test");
         doMove2(_move2, _cloud2);
         move2=false;
     }
