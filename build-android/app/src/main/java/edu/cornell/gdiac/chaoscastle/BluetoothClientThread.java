@@ -16,12 +16,14 @@ import java.util.UUID;
 class BluetoothClientThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
-    public BluetoothSocket mmSocketFinal;
+
+    ChaosCastle parent;
+
     BluetoothAdapter mba = BluetoothAdapter.getDefaultAdapter();
     UUID MY_UUID = UUID.fromString("757b1a35-43e2-4f69-b882-7acf1c9c6c6a");
     private static final String TAG = "CLIENT";
 
-    public BluetoothClientThread(BluetoothDevice device) {
+    public BluetoothClientThread(BluetoothDevice device, ChaosCastle p) {
         // Use a temporary object that is later assigned to mmSocket
         // because mmSocket is final.
         BluetoothSocket tmp = null;
@@ -33,6 +35,7 @@ class BluetoothClientThread extends Thread {
         } catch (IOException e) {
             Log.e(TAG, "Socket's create() method failed", e);
         }
+        parent = p;
         mmSocket = tmp;
     }
 
@@ -57,7 +60,7 @@ class BluetoothClientThread extends Thread {
 
         // The connection attempt succeeded. Perform work associated with
         // the connection in a separate thread.
-        mmSocketFinal = mmSocket;
+        parent.connected(mmSocket);
         Log.d("CLIENT", "Connected to socket");
     }
 
