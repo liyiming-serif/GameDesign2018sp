@@ -155,30 +155,31 @@ void CastleApp::update(float timestep) {
 	input.pollInputs();
     if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
-    } else if (!_loaded) { //just finished loading
-        _loadingScene.dispose(); // Disables the input listeners in this mode
-        _ballistaScene.init(_assets);
-        _ballistaScene.setActive(false, 0);
-        _lookoutScene.init(_assets);
-        _lookoutScene.setActive(false);
-        _repairScene.init(_assets);
-        _repairScene.setActive(false);
-        _overworldScene.init(_assets);
-        _overworldScene.setActive(false);
-        _mageScene.init(_assets);
-        _mageScene.setActive(false);
-        _ammoScene.init(_assets);
-        _ammoScene.setActive(false);
-        _oilScene.init(_assets);
-        _oilScene.setActive(false, 0);
-        _lobbyScene.init(_assets);
-        _lobbyScene.setActive(false);
-        _levelScene.init(_assets);
-        _levelScene.setActive(false, 0);
-        _menuScene.init(_assets);
-        _currscene=MENU;
-        _loaded = true;
-    } else { //menu update loop
+        if (_loadingScene.isPending()){
+            _loadingScene.dispose(); // Disables the input listeners in this mode
+            _ballistaScene.init(_assets);
+            _ballistaScene.setActive(false, 0);
+            _lookoutScene.init(_assets);
+            _lookoutScene.setActive(false);
+            _repairScene.init(_assets);
+            _repairScene.setActive(false);
+            _overworldScene.init(_assets);
+            _overworldScene.setActive(false);
+            _mageScene.init(_assets);
+            _mageScene.setActive(false);
+            _ammoScene.init(_assets);
+            _ammoScene.setActive(false);
+            _oilScene.init(_assets);
+            _oilScene.setActive(false, 0);
+            _lobbyScene.init(_assets);
+            _lobbyScene.setActive(false);
+            _levelScene.init(_assets);
+            _levelScene.setActive(false, 0);
+            _menuScene.init(_assets);
+            _currscene=MENU;
+            _loaded=true;
+        }
+    } else {
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){

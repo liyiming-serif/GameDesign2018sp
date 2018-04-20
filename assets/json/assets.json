@@ -283,6 +283,55 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "levelpage_background": {
+            "file":     "textures/Menu/levels/background.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_foreground": {
+            "file":     "textures/Menu/levels/foreground.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_levels": {
+            "file":     "textures/Menu/levels/button.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_lvl1": {
+            "file":     "textures/Menu/levels/lvl1.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_lvl2": {
+            "file":     "textures/Menu/levels/lvl2.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_lvl3": {
+            "file":     "textures/Menu/levels/lvl3.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "levelpage_lvl4": {
+            "file":     "textures/Menu/levels/lvl4.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "cloudS": {
             "file":     "textures/Menu/cloudS.png",
             "minfilter":"nearest",
@@ -326,14 +375,14 @@
             "wrapT":    "clamp"
         },
         "single": {
-            "file":     "textures/Menu/single.png",
+            "file":     "textures/Menu/singleplayer.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
         "multi": {
-            "file":     "textures/Menu/multi.png",
+            "file":     "textures/Menu/multiplayer.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -452,14 +501,14 @@
             "wrapT":    "clamp"
         },
         "create_button": {
-            "file":     "textures/Lobby/Create.png",
+            "file":     "textures/Lobby/new/create.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
         "enter_button": {
-            "file":     "textures/Lobby/Enter.png",
+            "file":     "textures/Lobby/new/enter.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -513,6 +562,13 @@
           "magfilter":"linear",
           "wrapS":    "clamp",
           "wrapT":    "clamp"
+        },
+        "lobby_box": {
+            "file":     "textures/Lobby/new/box.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
         }
 	},
 	"fonts": {

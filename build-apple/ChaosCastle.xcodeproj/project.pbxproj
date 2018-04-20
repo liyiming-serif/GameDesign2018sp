@@ -10,6 +10,9 @@
 		A91CBDD8207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
 		A91CBDD9207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
 		A91CBDDA207D33F000351862 /* LevelselectScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A91CBDD6207D33F000351862 /* LevelselectScene.cpp */; };
+		A92C726D20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
+		A92C726E20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
+		A92C726F20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
 		A949992420683B1800A0D1C0 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
 		A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
 		A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
@@ -154,6 +157,8 @@
 /* Begin PBXFileReference section */
 		A91CBDD6207D33F000351862 /* LevelselectScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LevelselectScene.cpp; sourceTree = "<group>"; };
 		A91CBDD7207D33F000351862 /* LevelselectScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelselectScene.h; sourceTree = "<group>"; };
+		A92C726820896A89002CA320 /* OilModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OilModel.cpp; sourceTree = "<group>"; };
+		A92C726C20896A89002CA320 /* OilModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OilModel.h; sourceTree = "<group>"; };
 		A949991F20683B1700A0D1C0 /* LobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
 		A949992320683B1700A0D1C0 /* LobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		A9499933206B27DD00A0D1C0 /* SpawnController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnController.cpp; sourceTree = "<group>"; };
@@ -435,6 +440,8 @@
 				A949993B206B27DE00A0D1C0 /* BallistaModel.h */,
 				A9E863B92061A06000166C6F /* EnemyModel.cpp */,
 				A9E863B72061A05F00166C6F /* EnemyModel.h */,
+				A92C726820896A89002CA320 /* OilModel.cpp */,
+				A92C726C20896A89002CA320 /* OilModel.h */,
 				A9B9B6252048F26D0036047B /* OverworldScene.cpp */,
 				A9B9B6262048F26D0036047B /* OverworldScene.h */,
 				A9AA6114204A19BC00940276 /* LookoutScene.cpp */,
@@ -628,6 +635,7 @@
 			files = (
 				A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */,
 				EB0FF61D2016F06000517030 /* main.cpp in Sources */,
+				A92C726F20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9499942206B280B00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C920647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C420647B3E00166C6F /* MageScene.cpp in Sources */,
@@ -654,6 +662,7 @@
 			files = (
 				A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
+				A92C726E20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9499941206B280A00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C820647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C320647B3E00166C6F /* MageScene.cpp in Sources */,
@@ -680,6 +689,7 @@
 			files = (
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A92C726D20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9AA61132049AEE700940276 /* CastleApp.cpp in Sources */,
 				A9E863C220647B3E00166C6F /* MageScene.cpp in Sources */,
 				A9E863892059C59500166C6F /* ArrowModel.cpp in Sources */,
