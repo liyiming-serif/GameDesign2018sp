@@ -9,6 +9,10 @@ using namespace cugl;
 /**
  * Creates a JSONReader
  */
+JSONReader::JSONReader(void):Asset(){
+
+}
+
 bool JSONReader::preload(const std::string& file){
     _active = true;
 

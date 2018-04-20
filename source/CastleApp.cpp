@@ -90,14 +90,12 @@ void CastleApp::onStartup() {
     // Create a "loading" screen
     _loaded = false;
     _loadingScene.init(_assets);
-    CULog("print");
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
+    //TODO:FIX THIS AHHHHH
     _assets->loadAsync<JSONReader>("levels", "json/levels.json", nullptr);
-
     _direction = -1;
     _players = -1;
-
     Application::onStartup(); // YOU MUST END with call to parent
 
 }
@@ -155,7 +153,6 @@ void CastleApp::onShutdown() {
  */
 void CastleApp::update(float timestep) {
 	input.pollInputs();
-
     if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
     } else if (!_loaded) { //just finished loading
@@ -271,7 +268,6 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _players = _lobbyScene.getNumPlayers();
     }
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
-		gameModel.init(_assets);
 		//TODO: replace 0 with level
 		_spawnController.init(_assets, _assets->get<JSONReader>("levels")->readJSON(_players, 1));
 	}

@@ -61,7 +61,7 @@ public:
 	}
 
     //CONSTRUCTORS
-    JSONReader(){};
+    JSONReader();
 
     virtual bool preload(const std::string& file) override;
     virtual bool preload(const std::shared_ptr<cugl::JsonValue>& json) override;
