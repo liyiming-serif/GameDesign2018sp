@@ -8,7 +8,7 @@
 #define MAX_ANGLE M_PI/12.0f //15 degrees
 #define TURN_SPEED M_PI/20.0f
 
-#define MAX_POWER 18.0f
+#define MAX_POWER 24.0f
 #define PULLBACK_SPEED 1.0f
 
 #define NUM_ROWS 3

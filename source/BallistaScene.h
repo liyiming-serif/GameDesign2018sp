@@ -63,6 +63,10 @@ protected:
     //text
     std::shared_ptr<cugl::Label> _ammoText;
 
+	//helper method for translating enemy y coords
+	bool inRange(float y);
+	float calcY(float y);
+
 public:
     // Constructors
     BallistaScene() : Scene() {}

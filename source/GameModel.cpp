@@ -8,14 +8,11 @@
 #define GAME_WIDTH 1024
 #define LOOKOUT_ROOM 0
 
-#define OIL_COOLDOWN 420
-
 using namespace cugl;
 
 bool GameModel::init(){
     clock = 0;
     networked = false;
-
     _arrowAmmo[0] = 30;
 
     for (int i = 0; i < 6; ++i) {
@@ -33,11 +30,11 @@ bool GameModel::init(){
 }
 
 void GameModel::dispose() {
-	for (int i = 0; i < _enemyArrayMaster.size(); i++) {
-		_enemyArrayMaster[i].clear();
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		gameModel._enemyArrayMaster[i].clear();
 	}
-	for (int i = 0; i < _enemiesToFreeMaster.size(); i++) {
-		_enemiesToFreeMaster[i].clear();
+	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
+		gameModel._enemiesToFreeMaster[i].clear();
 	}
 }
 
@@ -84,7 +81,7 @@ void GameModel::update(float deltaTime){
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
 			Vec2 pos = enemy.second->getPos();
-			if (pos.y < 85) {
+			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
 				gameModel.changeWallHealth(wall, -9);
@@ -102,6 +99,16 @@ void GameModel::update(float deltaTime){
 			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
 		}
 		gameModel._enemiesToFreeMaster[wall].clear();
+	}
+
+	//decrease oil cooldown
+	for (int wall = 0; wall < 6; wall++) {
+		if (gameModel._oilCooldown[wall] > 0) {
+			gameModel._oilCooldown[wall] -= 1;
+		}
+		else {
+			gameModel._oilCooldown[wall] = 0;
+		}
 	}
 }
 
@@ -133,6 +140,15 @@ int GameModel::getPlayerAvatar(int player) {
 
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
+}
+
+void GameModel::setOilCooldown(int wall, int amount) {
+    if (amount >= 0) {
+        _oilCooldown[wall] = amount;
+    }
+    else {
+        _oilCooldown[wall] = 0;
+    }
 }
 
 std::string GameModel::produceStateChangeServer() {
