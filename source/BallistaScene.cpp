@@ -437,7 +437,7 @@ void BallistaScene::beginContact(b2Contact* contact) {
 	b2Body* body1 = contact->GetFixtureA()->GetBody();
 	b2Body* body2 = contact->GetFixtureB()->GetBody();
 
-	boolean contactWithArrow = false;
+	bool contactWithArrow = false;
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
 		std::shared_ptr<ArrowModel> a = *it;
 		if ((body1->GetUserData() == a.get() || body2->GetUserData() == a.get())) {
