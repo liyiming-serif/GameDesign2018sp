@@ -32,12 +32,13 @@ protected:
     bool isServer;
     int _arrowAmmo[2];
 
-
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];
 
 public:
-
+	/**
+	 * NEED TO REFER TO GAMEMODEL OBJECT
+	 */
     // Constructors
     GameModel() {};
 
@@ -56,9 +57,10 @@ public:
     // Gameplay
     void update(float deltaTime);
 
-    // Physics manager
-    //std::shared_ptr<cugl::ObstacleWorld> _world;
 
+    /**
+	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT
+	 */
     int getWallHealth(int wall);
 
     void setWallHealth(int wall, int amt);
@@ -92,12 +94,12 @@ public:
         }
     }
 
-	void resetOilCooldown(int wall);
-
 	int getOilCooldown(int wall) {
 		assert(wall < 6);
 		return _oilCooldown[wall];
 	}
+
+	void setOilCooldown(int wall, int amount);
 
 private:
     std::string produceStateChangeServer();
