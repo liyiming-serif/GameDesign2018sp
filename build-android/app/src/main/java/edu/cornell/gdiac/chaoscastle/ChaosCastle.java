@@ -45,7 +45,6 @@ public class ChaosCastle extends SDLActivity {
 	}
 
 	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
-	public static native void readNetwork(byte[] byte_buffer);
 
 	/** Call consumeState from C++ to get one COMPLETE game state
 	 *  from the bluetooth socket.
@@ -85,22 +84,25 @@ public class ChaosCastle extends SDLActivity {
 	/** Call consumeState from C++ to send one COMPLETE game state
 	 *  to the bluetooth socket.
 	 */
-	public void sendState(byte[] byte_buffer) {
+	public int sendState(byte[] byte_buffer) {
 	    if(isServer){
 	        synchronized (this) {
                 for (BluetoothConnectedThread b : bConnectedRing) {
                     b.write(byte_buffer);
+                    return 0;
                 }
             }
         }
         else {
             if (bConnected == null) {
-                return;
+                return 1;
             }
             synchronized (this) {
                 bConnected.write(byte_buffer);
+                return 0;
             }
         }
+        return 1;
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {

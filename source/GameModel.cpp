@@ -12,7 +12,7 @@ using namespace cugl;
 
 bool GameModel::init(){
     clock = 0;
-    gameModel.networked = true;
+    gameModel.networked = false;
     gameModel._arrowAmmo[0] = 30;
     gameModel._arrowAmmo[1] = 0;
     gameModel._arrowAmmo[2] = 0;
@@ -26,18 +26,18 @@ bool GameModel::init(){
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
-    _noPlayers = 4;
-    _playerAvatars = new int[_noPlayers];
-    _playerRooms = new int[_noPlayers];
+    gameModel._noPlayers = 1;
+    gameModel._playerAvatars = new int[_noPlayers];
+    gameModel._playerRooms = new int[_noPlayers];
     for (int i = 0; i < _noPlayers; ++i) {
-        _playerRooms[i] = 0;
+        gameModel._playerRooms[i] = 0;
     }
 
     _playerID = 0;
 
-    _currentRoom = 0;
+    gameModel._currentRoom = 0;
 
-    gameModel.server = true;
+    gameModel.server = false;
     return true;
 }
 
@@ -51,17 +51,19 @@ void GameModel::dispose() {
 }
 
 void GameModel::update(float deltaTime){
+    _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
         if (clock == 300) {
             if (gameModel.server) {
                 //TODO: Read from network
-                //const char *read_byte_buffer = readNetwork();
-                //char **read_buffers = ConsumeStateServer();
-                char *read_buffers[_noPlayers-1];
-                for (int k = 0; k < _noPlayers-1; ++k) {
-                    read_buffers[k] = random_buffer_client(k);
-                    CULog("RandNet State Change %d %s \n", k, read_buffers[k]);
-                }
+                const char *read_byte_buffer = consumeState();
+                //Prints the messages from the clients
+                char **read_buffers = ConsumeStateServer();
+//                char *read_buffers[_noPlayers-1];
+//                for (int k = 0; k < _noPlayers-1; ++k) {
+//                    read_buffers[k] = random_buffer_client(k);
+//                    CULog("RandNet State Change %d %s \n", k, read_buffers[k]);
+//                }
                 //CULog("RandNet State Change %s \n", read_byte_buffer);
                 updateStateServer(read_buffers);
 
@@ -75,16 +77,14 @@ void GameModel::update(float deltaTime){
             else {
                 const char *write_byte_buffer = return_buffer(produceStateChangeClient());
                 //TODO: Write to network
-                CULog("State Change %s \n", write_byte_buffer);
+                CULog("State Change: %s \n", write_byte_buffer);
                 //TODO: Read from network
-                //const char *read_byte_buffer = readNetwork();
-                //char *read_buffer = ConsumeStateClient();
-                const char *read_byte_buffer = random_buffer_server();
-                CULog("RandNet State Change %s \n", read_byte_buffer);
-                updateStateClient(read_byte_buffer);
+                char *read_buffer = ConsumeStateClient();
+                CULog("Read Server State: %s \n", read_buffer);
+                updateStateClient(read_buffer);
                 clock = 0;
                 delete[] write_byte_buffer;
-                delete[] read_byte_buffer;
+                delete[] read_buffer;
             }
         }
         else {
@@ -275,17 +275,18 @@ std::string GameModel::produceStateChangeClient() {
     return to_string(totalmessageSize) + "|" + premessage;
 }
 
-//char** GameModel::ConsumeStateServer() {
-//    char *tmp[_noPlayers-1];
-//    for (int i = 0; i < _noPlayers-1; ++i) {
-//        tmp[i] = ConsumeState();
-//    }
-//    return tmp;
-//}
+char** GameModel::ConsumeStateServer() {
+    char *tmp[_noPlayers-1];
+    for (int i = 0; i < _noPlayers-1; ++i) {
+        tmp[i] = consumeState();
+        CULog("State from Client %i: %s", i, tmp[i]);
+    }
+    return tmp;
+}
 
-//char* GameModel::ConsumeStateClient() {
-//    return ConsumeState();
-//}
+char* GameModel::ConsumeStateClient() {
+    return consumeState();
+}
 
 void GameModel::updateStateServer(char** ConsumedStates) {
 
@@ -785,17 +786,17 @@ char* GameModel::return_buffer(const std::string& string) {
     return return_string;
 }
 
-#if CU_PLATFORM == CU_PLATFORM_ANDROID
-JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
-        (JNIEnv *env, jclass clazz, jbyteArray array) {
-    jbyte* buffer = env->GetByteArrayElements(array, NULL);
-    jsize size = env->GetArrayLength(array);
-    char *byte_buffer = new char[size];
-
-    for(int i = 0; i < size; i++) {
-        byte_buffer[i] = buffer[i];
-    }
-    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
-    return byte_buffer;
-}
-#endif
+//#if CU_PLATFORM == CU_PLATFORM_ANDROID
+//JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
+//        (JNIEnv *env, jclass clazz, jbyteArray array) {
+//    jbyte* buffer = env->GetByteArrayElements(array, NULL);
+//    jsize size = env->GetArrayLength(array);
+//    char *byte_buffer = new char[size];
+//
+//    for(int i = 0; i < size; i++) {
+//        byte_buffer[i] = buffer[i];
+//    }
+//    env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+//    return byte_buffer;
+//}
+//#endif

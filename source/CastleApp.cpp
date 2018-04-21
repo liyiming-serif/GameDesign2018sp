@@ -263,13 +263,9 @@ void CastleApp::update(float timestep) {
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
-		_spawnController.init(_assets);
-	}
-	if (_currscene == MENU && nextscene == LEVELS){
-	    _players = 1;
-	}
-	if (_currscene == LOBBY && nextscene == LEVELS){
-	    _players = _lobbyScene.getNumPlayers();
+        if (gameModel.isServer() || !gameModel.isNetworked()) {
+            _spawnController.init(_assets);
+        }
 	}
     switch(nextscene){
         case MENU:
@@ -307,7 +303,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _lobbyScene.setActive(true);
             break;
         case LEVELS:
-			_levelScene.setActive(true,_players);
+			_levelScene.setActive(true,gameModel.getNoPlayers());
 			break;
     }
     _currscene = nextscene;

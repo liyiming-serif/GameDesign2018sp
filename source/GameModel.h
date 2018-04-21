@@ -77,6 +77,14 @@ public:
 
     int getPlayerAvatar(int player);
 
+    int getNoPlayers() {
+        return _noPlayers;
+    }
+
+    void setNoPlayers(int _noPlayers) {
+        this->_noPlayers = _noPlayers;
+    }
+
     void setPlayerAvatar(int player, int avatar);
 
     void addEnemyChange(std::string name, int damage);
@@ -93,6 +101,10 @@ public:
 
     bool isServer() {
         return server;
+    }
+
+    void setServer(bool server) {
+        this->server = server;
     }
 
     int getArrowAmmo(int type) {
@@ -160,31 +172,42 @@ private:
 
         jclass clazz(env->GetObjectClass(activity));
         jmethodID method_id = env->GetMethodID(clazz, "readNetwork",
-                                               "()V");
-        // Call the Java method
-        env->CallVoidMethod(activity, method_id);
+                                               "()[B");
+
+        jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
+
+        jbyte* buffer = env->GetByteArrayElements(array, NULL);
+        jsize size = env->GetArrayLength(array);
+        char *byte_buffer = new char[size];
+
+        for(int i = 0; i < size; i++) {
+            byte_buffer[i] = buffer[i];
+        }
+        env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
 
         // Free local references
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(clazz);
+        return byte_buffer;
     }
 
     //TODO: Make sure JNI wrapper code is correct
-    void sendState(char* byte_buffer) {
+    int sendState(char* byte_buffer) {
         // Set up parameters for JNI call
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         jobject activity = (jobject) SDL_AndroidGetActivity();
 
         jclass clazz(env->GetObjectClass(activity));
         jmethodID method_id = env->GetMethodID(clazz, "writeNetwork",
-                                               "()V");
+                                               "([B)I");
 
         // Call the Java method
-        env->CallVoidMethod(activity, method_id);
+        int response = env->CallIntMethod(activity, method_id, byte_buffer);
 
         // Free local references
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(clazz);
+        return response;
     }
 #endif
 };

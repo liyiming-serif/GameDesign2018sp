@@ -209,6 +209,10 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _player2->setVisible(true);
             _waiting->setVisible(true);
             _avatar1->setVisible(true);
+            gameModel.setServer(true);
+            gameModel.setNetworked(true);
+            gameModel.setNoPlayers(2);
+            gameModel.setPlayerAvatar(0, 1);
         }
     });
     
@@ -233,6 +237,10 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _player2->setVisible(true);
             _avatar1->setVisible(true);
             _avatar2->setVisible(true);
+
+            gameModel.setNetworked(true);
+            gameModel.setNoPlayers(2);
+            gameModel.setPlayerAvatar(1, 2);
         }
     });
     
