@@ -52,7 +52,7 @@ void GameModel::dispose() {
 
 void GameModel::update(float deltaTime){
     if (gameModel.networked) {
-        if (clock == 200) {
+        if (clock == 300) {
             if (gameModel.server) {
                 //TODO: Read from network
                 //const char *read_byte_buffer = readNetwork();
@@ -232,8 +232,8 @@ std::string GameModel::produceStateChangeServer() {
             _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
 
     int premessageSize = premessage.length();
-    int postmessageSize = premessageSize + to_string(premessageSize).length();
-    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
+    int messageSizeSize = to_string(premessageSize + to_string(premessageSize).length()).length();
+    int totalmessageSize = premessageSize + messageSizeSize;
     return to_string(totalmessageSize) + "|" + premessage;
 }
 

@@ -682,6 +682,9 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
 
 
 void OverworldScene::update(float timestep){
+
+    //TODO: Make the relevant buttons unclickable/covered in Avatars for networked game
+
 	//poll inputs
 	if (input.vScrolling() < 0 && currentCastleFloor>0 && !_actions->isActive(ACT_KEY)) {
 		//Moving down
