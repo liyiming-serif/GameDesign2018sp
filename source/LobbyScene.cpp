@@ -253,12 +253,6 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         }
     });
     
-    
-    // Create the JOIN button.  A button has an up image and a down image
-    std::shared_ptr<Texture> tex_2   = _assets->get<Texture>("enter_button");
-    _enterButton = Button::alloc(PolygonNode::allocWithTexture(tex_2));
-    _enterButton->setScale(.5f); // Magic number to rescale asset
-    
     // Create a callback function for the JOIN button
     _enterButton->setName("enter");
     _enterButton->setListener([=] (const std::string& name, bool down) {
