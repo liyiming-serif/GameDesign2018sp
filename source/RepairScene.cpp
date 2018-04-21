@@ -93,17 +93,17 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "N";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(0, 2);
+                        gameModel.changeWallHealth(0, 1);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(0,2);
+                        gameModel.addDeltaHealth(0,1);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(0, 2);
+                    gameModel.changeWallHealth(0, 1);
                     _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                 }
             }
@@ -116,17 +116,17 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "NE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(5, 2);
+                        gameModel.changeWallHealth(5, 1);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(5,2);
+                        gameModel.addDeltaHealth(5,1);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(5, 2);
+                    gameModel.changeWallHealth(5, 1);
                     _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                 }
             }
@@ -140,22 +140,22 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "SE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(4, 2);
+                        gameModel.changeWallHealth(4, 1);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(4,2);
+                        gameModel.addDeltaHealth(4,1);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(4, 2);
+                    gameModel.changeWallHealth(4, 1);
                     _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                 }
-
             }
         });
+
         _southWallButton->setName("fade in S");
         _southWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
@@ -163,17 +163,17 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "S";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(3, 2);
+                        gameModel.changeWallHealth(3, 1);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(3,2);
+                        gameModel.addDeltaHealth(3,1);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(3, 2);
+                    gameModel.changeWallHealth(3, 1);
                     _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                 }
             }
@@ -185,17 +185,17 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 				_new_wall = "SW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(2, 2);
+                        gameModel.changeWallHealth(2, 1);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(2,2);
+                        gameModel.addDeltaHealth(2,1);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(2, 2);
+                    gameModel.changeWallHealth(2, 1);
                     _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                 }
             }
@@ -207,17 +207,17 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 				_new_wall = "NW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
-                        gameModel.changeWallHealth(1, 2);
+                        gameModel.changeWallHealth(1, 1);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                     }
                     else {
-                        gameModel.addDeltaHealth(1,2);
+                        gameModel.addDeltaHealth(1,1);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(1, 2);
+                    gameModel.changeWallHealth(1, 1);
                     _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                 }
             }

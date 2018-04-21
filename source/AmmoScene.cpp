@@ -31,7 +31,7 @@ using namespace cugl;
 /** Define the time settings for animation */
 #define DURATION 3.0f
 #define DISTANCE 920
-#define REPEATS  2
+#define REPEATS  3
 #define ACT_KEY  "current"
 #define FONT    _assets->get<Font>("futura")
 
@@ -55,7 +55,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Allocate the manager and the actions
     _actions = ActionManager::alloc();
     
-    _hammerAnimation = Animate::alloc(0,14,DURATION,REPEATS);
+    _hammerAnimation = Animate::alloc(0,14,DURATION/3,REPEATS);
     
     _moveup_J = MoveTo::alloc(Vec2(700,650),DURATION/3);
     _moveup_O = MoveTo::alloc(Vec2(700,650),DURATION/3);
@@ -96,8 +96,8 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the hammer
     _hammerAnim = AnimationNode::alloc(_assets->get<Texture>("hammer_animation"), 3, 5);
     _hammerAnim->setAnchor(Vec2::ANCHOR_CENTER);
-    _hammerAnim->setScale(.6f);
-    _hammerAnim->setPosition(_size.width/2-70,_size.height/2+120);
+    _hammerAnim->setScale(.7f);
+    _hammerAnim->setPosition(_size.width/2-60,_size.height/2+130);
     _hammerAnim->setFrame(0);
     
 
@@ -111,20 +111,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hammer->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down && !_actions->isActive(ACT_KEY+1)) {
-//            CULog("NNNNNEEEEEEWWWWWWWW");
-//            CULog("Create Arrows!!");
-//            CULog("X Position");
-//            CULog("%f",_cursor->getPositionX());
             float pos = _cursor->getPositionX();
-            
-//            CULog("Bounds");
-//            CULog("%f",.05*_size.width);
-//            CULog("%f",.2*_size.width);
-//
-//            CULog("Place");
-//            CULog("%f",fabs(pos-_size.width/2));
-//
-
             
             if (fabs(pos-_size.width/2)< .05*_size.width) {
                 CULog("jackpot");
@@ -169,10 +156,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     gameModel.addDeltaAmmo(0,10);
                 }
             }
-            AmmoScene::doStrip(_hammerAnimation);
-
-            
-
+           
         }
     });
     
@@ -238,17 +222,13 @@ void AmmoScene::update(float timestep){
     if (!_actions->isActive(ACT_KEY+1)){
         _jackpot=nullptr;
         _hammer->activate(input.findKey("hammer"));
-       // _hammer->setDown(false);
     }
     if (_actions->isActive(ACT_KEY+1)){
         _hammer->deactivate();
-       // _hammer->setDown(true);
-        _hammerAnim->setFrame((_hammerAnim->getFrame()+1) % 15 );
-    }
-    else {
-         _hammerAnim->setFrame(0);
+        AmmoScene::doStrip(_hammerAnimation);
     }
     _actions->update(timestep);
+    _actions->pause(ACT_KEY+2);
 }
 
 void AmmoScene::doMove(const std::shared_ptr<MoveTo>& action) {
@@ -262,11 +242,7 @@ void AmmoScene::doMoveUp(const std::shared_ptr<MoveTo>& action, std::shared_ptr<
 }
 
 void AmmoScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
-    if (_actions->isActive(ACT_KEY+1)) {
-        CULog("You must wait for the animation to complete first");
-    } else {
-        _actions->activate(ACT_KEY+2, action, _hammerAnim);
-    }
+    _actions->activate(ACT_KEY+2, action, _hammerAnim);
     CULog("Doing the strip");
 }
 

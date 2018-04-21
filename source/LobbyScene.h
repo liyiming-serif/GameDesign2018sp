@@ -27,6 +27,8 @@ protected:
     std::shared_ptr<cugl::Button> _backButton;
     std::shared_ptr<cugl::Button> _createButton;
     std::shared_ptr<cugl::Button> _enterButton;
+    std::shared_ptr<cugl::Button> _enterButtonOne;
+    std::shared_ptr<cugl::Button> _enterButtonTwo;
     std::shared_ptr<cugl::Button> _levelsButton;
 	bool _deactivateCreate;
 	bool _deactivateEnter;
@@ -36,10 +38,13 @@ protected:
     std::shared_ptr<cugl::Button> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _box;
     std::shared_ptr<cugl::PolygonNode> _player1;
     std::shared_ptr<cugl::PolygonNode> _player2;
     std::shared_ptr<cugl::PolygonNode> _waiting;
     
+    std::shared_ptr<cugl::Node>  _lobby;
+    std::shared_ptr<cugl::Node>  _avatar;
     
     
     std::shared_ptr<cugl::PolygonNode> _cloud1;
@@ -131,6 +136,10 @@ public:
      * @param action The move action
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    void setButtonActive ( std::shared_ptr<cugl::Button> button, std::string actKey);
+    
+    void changeCanvas (std::string canvas);
 
     //TODO: Close the accepted thread when game starts
 

@@ -82,6 +82,7 @@ void CastleApp::onStartup() {
     _assets->attach<Node>(SceneLoader::alloc()->getHook());
     _assets->attach<Sound>(SoundLoader::alloc()->getHook());
     _assets->attach<Music>(MusicLoader::alloc()->getHook());
+    _assets->attach<JSONReader>(GenericLoader<JSONReader>::alloc()->getHook());
     
 //   From original code // This reads the given JSON file and uses it to load all other assets
 //    _assets->loadDirectory("json/assets.json");
@@ -89,13 +90,12 @@ void CastleApp::onStartup() {
     // Create a "loading" screen
     _loaded = false;
     _loadingScene.init(_assets);
-    
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
-
+    //TODO:FIX THIS AHHHHH
+    _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
     _players = -1;
-
     Application::onStartup(); // YOU MUST END with call to parent
 
 }
@@ -153,33 +153,33 @@ void CastleApp::onShutdown() {
  */
 void CastleApp::update(float timestep) {
 	input.pollInputs();
-
     if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
-    } else if (!_loaded) { //just finished loading
-        _loadingScene.dispose(); // Disables the input listeners in this mode
-        _ballistaScene.init(_assets);
-        _ballistaScene.setActive(false, 0);
-        _lookoutScene.init(_assets);
-        _lookoutScene.setActive(false);
-        _repairScene.init(_assets);
-        _repairScene.setActive(false);
-        _overworldScene.init(_assets);
-        _overworldScene.setActive(false);
-        _mageScene.init(_assets);
-        _mageScene.setActive(false);
-        _ammoScene.init(_assets);
-        _ammoScene.setActive(false);
-        _oilScene.init(_assets);
-        _oilScene.setActive(false, 0);
-        _lobbyScene.init(_assets);
-        _lobbyScene.setActive(false);
-        _levelScene.init(_assets);
-        _levelScene.setActive(false, 0);
-        _menuScene.init(_assets);
-        _currscene=MENU;
-        _loaded = true;
-    } else { //menu update loop
+        if (_loadingScene.isPending()){
+            _loadingScene.dispose(); // Disables the input listeners in this mode
+            _ballistaScene.init(_assets);
+            _ballistaScene.setActive(false, 0);
+            _lookoutScene.init(_assets);
+            _lookoutScene.setActive(false);
+            _repairScene.init(_assets);
+            _repairScene.setActive(false);
+            _overworldScene.init(_assets);
+            _overworldScene.setActive(false);
+            _mageScene.init(_assets);
+            _mageScene.setActive(false);
+            _ammoScene.init(_assets);
+            _ammoScene.setActive(false);
+            _oilScene.init(_assets);
+            _oilScene.setActive(false, 0);
+            _lobbyScene.init(_assets);
+            _lobbyScene.setActive(false);
+            _levelScene.init(_assets);
+            _levelScene.setActive(false, 0);
+            _menuScene.init(_assets);
+            _currscene=MENU;
+            _loaded=true;
+        }
+    } else {
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){
@@ -264,7 +264,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
         if (gameModel.isServer() || !gameModel.isNetworked()) {
-            _spawnController.init(_assets);
+            _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         }
 	}
     switch(nextscene){

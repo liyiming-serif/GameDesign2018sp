@@ -41,7 +41,7 @@ public:
     //CONSTRUCTORS
     SpawnController(){};
 
-    bool init(const std::shared_ptr<cugl::AssetManager>& assets);
+    bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::vector<std::vector<float>> initialEnemies);
 
 
 

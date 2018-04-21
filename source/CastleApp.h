@@ -44,6 +44,7 @@
 #include "InputController.h"
 #include "GameModel.h"
 #include "SpawnController.h"
+#include "JSONReader.h"
 
 /**
  * Class for a simple Hello World style application

@@ -6,6 +6,7 @@
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
+#define BASE_SPEED 0.5f/3
 
 
 using namespace cugl;
@@ -56,7 +57,6 @@ void GameModel::update(float deltaTime){
         if (clock == 300) {
             if (gameModel.server) {
                 //TODO: Read from network
-                const char *read_byte_buffer = consumeState();
                 //Prints the messages from the clients
                 char **read_buffers = ConsumeStateServer();
 //                char *read_buffers[_noPlayers-1];
@@ -99,12 +99,24 @@ void GameModel::update(float deltaTime){
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
-				gameModel.changeWallHealth(wall, -9);
-                gameModel.addEnemyChange(enemy.first, 0-enemy.second->getHealth());
+                if (enemy.second->getType() == 1) {
+                    gameModel.addEnemyChange(enemy.first, 0-enemy.second->getHealth());
+                }
+				gameModel.changeWallHealth(wall, -enemy.second->getDamage());
+			}
+			else if(pos.y>=enemy.second->getAtkRange()){
+				// move enemy
+				enemy.second->setPos(Vec2(pos.x,pos.y-(BASE_SPEED*enemy.second->getSpeed())));
 			}
 			else {
-				// move enemy
-				enemy.second->setPos(Vec2(pos.x,pos.y-0.5f));
+				// enemy in position; begin attacking
+				if (enemy.second->getAtkCounter() <= 0) {
+					gameModel.changeWallHealth(wall, -enemy.second->getDamage());
+					enemy.second->setAtkCounter(enemy.second->getAtkSpeed());
+				}
+				else {
+					enemy.second->setAtkCounter(enemy.second->getAtkCounter() - 1);
+				}
 			}
 		}
 	}

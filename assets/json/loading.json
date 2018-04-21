@@ -1,7 +1,7 @@
 {
 	"textures": {
 		"claw": {
-			"file":      "textures/Menu/homepage.png",
+			"file":      "textures/Menu/loading.png",
             "wrapS":     "clamp",
             "wrapT":     "clamp",
             "minfilter": "linear",
@@ -15,16 +15,16 @@
             "magfilter": "linear"
         },
         "progress": {
-            "file":      "textures/Menu/progressbar.png",
+            "file":      "textures/Menu/progressbar_new.png",
             "wrapS":     "clamp",
             "wrapT":     "clamp",
             "minfilter": "linear",
             "magfilter": "linear",
             "atlas":     {
-                "background" : [0,    5, 400, 35],
-                "foreground" : [16,  45, 384, 75],
-                "leftcap"    : [0,   45,  16, 75],
-                "rightcap"   : [384, 45, 400, 75]
+                "background" : [0,    0, 1000, 102],
+                "foreground" : [22,  137, 976, 240],
+                "leftcap"    : [0,   137,  22, 240],
+                "rightcap"   : [977, 137, 1000, 240]
             }
         }
 	},
@@ -48,7 +48,8 @@
                     "layout" : {
                         "x_anchor" : "center",
                         "y_anchor" : "center",
-                        "y_offset" : -0.438
+                        "y_offset" : -0.438,
+                        "x_offset" : 0.005
                     },
                     "children" : {
                         "play"  : {
@@ -63,7 +64,7 @@
                                 "pushable" : [0,100,29,171,100,200,171,171,200,100,171,29,100,0,29,29],
                                 "visible"  : false,
                                 "anchor"   : [0.5,0.5],
-                                "scale"    : 1.2
+                                "scale"    : 0.01
                             },
                             "layout" : {
                                 "x_anchor" : "center",
@@ -82,13 +83,14 @@
                         "background" : "progress_background",
                         "foreground" : "progress_foreground",
                         "left_cap"   : "progress_leftcap",
-                        "right_cap"  : "progress_rightcap"
+                        "right_cap"  : "progress_rightcap",
+                        "scale"    : [0.97,0.6]
                     },
                     "layout" : {
                         "x_anchor" : "center",
                         "y_anchor" : "bottom",
-                        "x_offset" :  -0.27,
-                        "y_offset" : 0.1
+                        "y_offset" : 0.1,
+                        "x_offset" : 0.0
                     }
                 }
             }

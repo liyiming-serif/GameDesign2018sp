@@ -19,6 +19,11 @@ protected:
 	cugl::Vec2 _pos;
 	int _type;
 	int _wall; //duplicate information to quickly construct enemy array from network
+	float _speed;
+	int _damage;
+	float _atkRange;
+	int _atkSpeed;
+	int _atkCounter;
 
 public:
 	//CONSTRUCTORS
@@ -29,14 +34,7 @@ public:
 		return (ref->init(name, health, pos, type, wall) ? ref : nullptr);
 	}
 
-	bool init(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall) {
-		_name = name;
-		_health = health;
-		_pos.set(pos);
-		_type = type;
-		_wall = wall;
-		return true;
-	}
+	bool init(const std::string& name, int health, const cugl::Vec2& pos, int type, int wall);
 	
 
 	//DESTRUCTORS
@@ -59,6 +57,17 @@ public:
 	int getType() const { return _type; }
 
 	int getWall() const { return _wall; }
+
+	int getSpeed();
+
+	int getDamage();
+
+	int getAtkRange() { return _atkRange; }
+
+	int getAtkSpeed();
+
+	int getAtkCounter() { return _atkCounter; }
+	void setAtkCounter(int c) { _atkCounter = c; }
 
 	const std::string& toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"

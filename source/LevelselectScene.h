@@ -20,11 +20,16 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    std::shared_ptr<cugl::Button> _playButton;
+    std::shared_ptr<cugl::Button> _level1;
+    std::shared_ptr<cugl::Button> _level2;
+    std::shared_ptr<cugl::Button> _level3;
+    std::shared_ptr<cugl::Button> _level4;
     std::shared_ptr<cugl::Button> _backButtonSINGLE;
     std::shared_ptr<cugl::Button> _backButtonMULTI;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _foreground;
+    std::shared_ptr<cugl::PolygonNode> _levels;
     
     std::shared_ptr<cugl::Node>  _single;
     std::shared_ptr<cugl::Node>  _multi;
@@ -48,12 +53,18 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move5;
     std::shared_ptr<cugl::MoveTo> _move6;
     
+    std::shared_ptr<cugl::MoveBy> _moveleft;
+    std::shared_ptr<cugl::MoveBy> _moveright;
+    
     bool move1 = true;
     bool move2 = true;
     bool move3 = true;
     bool move4 = true;
     bool move5 = true;
     bool move6 = true;
+    
+    float lerp=0;
+    cugl::Color4 cloudC;
 
     
     
@@ -74,6 +85,8 @@ public:
     void setActive(bool active, int players);
     int switchscene;
     int mode;
+    int campaign;
+    int level;
     
     /**
      * Performs a move action
@@ -116,6 +129,13 @@ public:
      * @param action The move action
      */
     void doMove6(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a move action
+     *
+     * @param action The move action
+     */
+    void doScroll(const std::shared_ptr<cugl::MoveBy>& action);
 
     //Sets the compass image based on the direction input
     void setCanvas (int direction);
