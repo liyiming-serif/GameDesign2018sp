@@ -275,6 +275,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         }
 	}
+    if (_currscene == MENU && nextscene == LOBBY) {
+        enableBluetooth();
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);

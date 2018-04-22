@@ -120,7 +120,7 @@ public class ChaosCastle extends SDLActivity {
 		}
 	};
 
-	public BluetoothAdapter enableBluetooth() {
+	public void enableBluetooth() {
 		BluetoothAdapter mba = BluetoothAdapter.getDefaultAdapter();
 		if (mba == null) {
 			System.out.print("Bluetooth Unavailable");
@@ -130,7 +130,6 @@ public class ChaosCastle extends SDLActivity {
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-		return mba;
 	}
 
 	public String[] getPairedDevicesString(BluetoothAdapter mba) {

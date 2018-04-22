@@ -19,6 +19,7 @@ class BluetoothServerThread extends Thread {
     ChaosCastle parent;
 
     BluetoothAdapter mba = BluetoothAdapter.getDefaultAdapter();
+
     UUID MY_UUID = UUID.fromString("757b1a35-43e2-4f69-b882-7acf1c9c6c6a");
     private static final String TAG = "SERVER";
 

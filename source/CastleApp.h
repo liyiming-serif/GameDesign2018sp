@@ -171,6 +171,24 @@ public:
      * at all. The default implmentation does nothing.
      */
     virtual void draw() override;
+
+    //TODO: Make sure JNI wrapper code is correct
+    void enableBluetooth() {
+        // Set up parameters for JNI call
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "enableBluetooth",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
     
 };
 
