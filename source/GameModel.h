@@ -173,7 +173,7 @@ private:
         jobject activity = (jobject)SDL_AndroidGetActivity();
 
         jclass clazz(env->GetObjectClass(activity));
-        jmethodID method_id = env->GetMethodID(clazz, "readNetwork",
+        jmethodID method_id = env->GetMethodID(clazz, "consumeState",
                                                "()[B");
 
         jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
@@ -200,7 +200,7 @@ private:
         jobject activity = (jobject) SDL_AndroidGetActivity();
 
         jclass clazz(env->GetObjectClass(activity));
-        jmethodID method_id = env->GetMethodID(clazz, "writeNetwork",
+        jmethodID method_id = env->GetMethodID(clazz, "sendState",
                                                "([B)I");
 
         // Call the Java method
