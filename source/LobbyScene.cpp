@@ -151,10 +151,10 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
             // Create a callback function for the JOIN button
-            _enterButtonOne->setName("enterOne");
+            //_enterButtonOne->setName("enterOne");
     
             // Create a callback function for the JOIN button
-            _enterButtonTwo->setName("enterTwo");
+            //_enterButtonTwo->setName("enterTwo");
     
     
     _createButton->setAnchor(Vec2::ANCHOR_CENTER);
@@ -163,11 +163,11 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _enterButton->setAnchor(Vec2::ANCHOR_CENTER);
     _enterButton->setPosition(_size.width/2, 470);
     
-    _enterButtonOne->setAnchor(Vec2::ANCHOR_CENTER);
-    _enterButtonOne->setPosition(_size.width/2, 300);
+    //_enterButtonOne->setAnchor(Vec2::ANCHOR_CENTER);
+    //_enterButtonOne->setPosition(_size.width/2, 300);
     
-    _enterButtonTwo->setAnchor(Vec2::ANCHOR_CENTER);
-    _enterButtonTwo->setPosition(_size.width/2, 200);
+    //_enterButtonTwo->setAnchor(Vec2::ANCHOR_CENTER);
+    //_enterButtonTwo->setPosition(_size.width/2, 200);
     
     
     
@@ -175,8 +175,8 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lobby->addChild(_box);
     _lobby->addChild(_createButton);
     _lobby->addChild(_enterButton);
-    _lobby->addChild(_enterButtonOne);
-    _lobby->addChild(_enterButtonTwo);
+    //_lobby->addChild(_enterButtonOne);
+    //_lobby->addChild(_enterButtonTwo);
     
     
 
@@ -285,8 +285,8 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
     _enterButton->activate(input.generateKey("enterButtonn"));
-    _enterButtonOne->activate(input.generateKey("enterButtonOne"));
-    _enterButtonTwo->activate(input.generateKey("enterButtonTwo"));
+    //_enterButtonOne->activate(input.generateKey("enterButtonOne"));
+    //_enterButtonTwo->activate(input.generateKey("enterButtonTwo"));
     _levelsButton->activate(input.generateKey("levelsMULTIButton"));
     
     return true;
@@ -299,7 +299,7 @@ void LobbyScene::dispose() {
         _backButton = nullptr;
         _createButton = nullptr;
         _enterButton = nullptr;
-        _enterButtonTwo = nullptr;
+        //_enterButtonTwo = nullptr;
         _background = nullptr;
         _cloud1 = nullptr;
         _cloud2 = nullptr;
@@ -381,8 +381,8 @@ void LobbyScene::update(float timestep){
     
     setButtonActive(_createButton,"createButton");
     setButtonActive(_enterButton,"enterButton");
-    setButtonActive(_enterButtonOne,"enterButtonOne");
-    setButtonActive(_enterButtonTwo,"enterButtonTwo");
+    //setButtonActive(_enterButtonOne,"enterButtonOne");
+    //setButtonActive(_enterButtonTwo,"enterButtonTwo");
 
     _actions->update(timestep);
 }
@@ -404,8 +404,8 @@ void LobbyScene::changeCanvas(std::string canvas) {
     if (canvas=="avatar"){
         _lobby->setVisible(false);
         _avatar->setVisible(true);
-       // _createButton->deactivate();
-       // _enterButton->deactivate();
+        _createButton->deactivate();
+        _enterButton->deactivate();
 //        _enterButtonOne->deactivate();
 //        _enterButtonTwo->deactivate();
         CULog("go to avatar");
@@ -465,14 +465,14 @@ void LobbyScene::setActive(bool active){
         _avatar->setVisible(false);
         _createButton->activate(input.findKey("createButton"));
         _enterButton->activate(input.findKey("enterButtonn"));
-        _enterButtonOne->activate(input.findKey("enterButtonOne"));
-        _enterButtonTwo->activate(input.findKey("enterButtonTwo"));
+        //_enterButtonOne->activate(input.findKey("enterButtonOne"));
+        //_enterButtonTwo->activate(input.findKey("enterButtonTwo"));
     }
     else{
         _backButton->deactivate();
         _createButton->deactivate();
         _enterButton->deactivate();
-        _enterButtonTwo->deactivate();
+        //_enterButtonTwo->deactivate();
         _levelsButton->deactivate();
     }
 }

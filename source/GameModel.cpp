@@ -39,6 +39,7 @@ bool GameModel::init(){
     gameModel._currentRoom = 0;
 
     gameModel.server = false;
+
     return true;
 }
 
