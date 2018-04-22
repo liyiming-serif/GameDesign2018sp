@@ -178,19 +178,29 @@ private:
 
         jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
 
-        jbyte* buffer = env->GetByteArrayElements(array, NULL);
-        jsize size = env->GetArrayLength(array);
-        char *byte_buffer = new char[size];
-
-        for(int i = 0; i < size; i++) {
-            byte_buffer[i] = buffer[i];
+        if (array == NULL) {
+            CULog("Read Byte Array is Null");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
         }
-        env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+        else {
+            jbyte* buffer = env->GetByteArrayElements(array, NULL);
+            jsize size = env->GetArrayLength(array);
+            char *byte_buffer = new char[size];
 
-        // Free local references
-        env->DeleteLocalRef(activity);
-        env->DeleteLocalRef(clazz);
-        return byte_buffer;
+            for(int i = 0; i < size; i++) {
+                byte_buffer[i] = buffer[i];
+            }
+            env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+
+            // Free local references
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return byte_buffer;
+        }
+
+
     }
 
     //TODO: Make sure JNI wrapper code is correct

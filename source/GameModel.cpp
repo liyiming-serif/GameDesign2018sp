@@ -89,7 +89,9 @@ void GameModel::update(float deltaTime){
                 //TODO: Read from network
                 char *read_buffer = ConsumeStateClient();
                 CULog("Read Server State: %s \n", read_buffer);
-                updateStateClient(read_buffer);
+                if (read_buffer != NULL) {
+                    updateStateClient(read_buffer);
+                }
                 clock = 0;
                 delete[] write_byte_buffer;
                 delete[] read_buffer;
@@ -311,45 +313,49 @@ char* GameModel::ConsumeStateClient() {
 void GameModel::updateStateServer(char** ConsumedStates) {
 
     // Break down all read states into component changes to apply
+    CULog("Breaking down ConsumedStates");
     char * tmpHealthChanges[_noPlayers-1];
     char * tmpAmmoChanges[_noPlayers-1];
     char * tmpEnemyChanges[_noPlayers-1];
     char * tmpPlayerChanges[_noPlayers-1];
     char * tmpOilChanges[_noPlayers-1];
     for (int i = 0; i < _noPlayers-1; ++i) {
-        char* copy = strdup(ConsumedStates[i]);
-        const char s[2] = "|";
-        char* token;
-        char* ammoToken;
-        char* enemyToken;
-        char* sizeToken;
-        char* oilToken;
-        char* playerInfoToken;
-        char* castleHealthToken;
-        int section = 0;
-        token = strtok(copy, s);
-        while (token != NULL) {
-            if (section == 0) {
-                sizeToken = strdup(token);
-            } else if (section == 1) {
-                tmpHealthChanges[i] = strdup(token);
-            } else if (section == 2) {
-                tmpEnemyChanges[i] = strdup(token);
-            } else if (section == 3) {
-                tmpAmmoChanges[i] = strdup(token);
-            } else if (section == 4) {
-                tmpPlayerChanges[i] = strdup(token);
-            } else if (section == 5) {
-                tmpOilChanges[i] = strdup(token);
+        if (ConsumedStates[i] != NULL) {
+            char* copy = strdup(ConsumedStates[i]);
+            const char s[2] = "|";
+            char* token;
+            char* ammoToken;
+            char* enemyToken;
+            char* sizeToken;
+            char* oilToken;
+            char* playerInfoToken;
+            char* castleHealthToken;
+            int section = 0;
+            token = strtok(copy, s);
+            while (token != NULL) {
+                if (section == 0) {
+                    sizeToken = strdup(token);
+                } else if (section == 1) {
+                    tmpHealthChanges[i] = strdup(token);
+                } else if (section == 2) {
+                    tmpEnemyChanges[i] = strdup(token);
+                } else if (section == 3) {
+                    tmpAmmoChanges[i] = strdup(token);
+                } else if (section == 4) {
+                    tmpPlayerChanges[i] = strdup(token);
+                } else if (section == 5) {
+                    tmpOilChanges[i] = strdup(token);
+                }
+                //CULog("RandNet Token %d %s \n", section, token);
+                token = strtok(NULL,s);
+                section++;
             }
-            //CULog("RandNet Token %d %s \n", section, token);
-            token = strtok(NULL,s);
-            section++;
+            free(copy);
         }
-        free(copy);
     }
 
     // Start aggregating castle health changes by wall
+    CULog("Aggregating Castle Health");
     char* subtoken;
     char* tmpHealthN[_noPlayers-1];
     char* tmpHealthNW[_noPlayers-1];
@@ -509,7 +515,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     int deltaArrow1 = 0;
     int deltaArrow2 = 0;
     int deltaArrow3 = 0;
-
+    CULog("Applying arrow changes");
     for (int i = 0; i < _noPlayers-1; ++i) {
         arrowsubtoken = strtok(tmpAmmoChanges[i], " ");
         int j = 0;
@@ -534,6 +540,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
 
 
     // Apply all damage created by all players to the respective monsters
+    CULog("Applying enemy changes");
     char* enemySubToken;
     char* enemyName;
     char* enemyDamage;

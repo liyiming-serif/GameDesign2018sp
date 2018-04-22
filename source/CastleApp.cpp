@@ -251,19 +251,15 @@ void CastleApp::update(float timestep) {
                     _mageScene.setActive(false);
                 }
             }
-            else if(_currscene==AMMO){
-                CULog("Ammo is updating");
+            else if(_currscene==AMMO) {
                 _ammoScene.update(timestep);
-                CULog("Ammo is updating");
                 if(_ammoScene.switchscene!=0){
                     swapscenes(_ammoScene.switchscene, 0);
                     _ammoScene.setActive(false);
                 }
             }
             else if(_currscene==OIL){
-                CULog("Oil is updating");
                 _oilScene.update(timestep, _direction);
-                CULog("Oil is updating");
                 if(_oilScene.switchscene!=0){
                     swapscenes(_oilScene.switchscene, 0);
                     _oilScene.setActive(false, _direction);
