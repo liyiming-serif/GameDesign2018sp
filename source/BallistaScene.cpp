@@ -79,11 +79,14 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	_dragStart = AnimationNode::alloc(_dpOrange, 1, 4);
 	_dragStart->setFrame(0);
 	_dragStart->setAnchor(Vec2::ANCHOR_CENTER);
+	_dragStart->setName("dragStart");
 	_dragLine = PolygonNode::allocWithTexture(_dlOrange);
 	_dragLine->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+	_dragLine->setName("dragLine");
 	_dragEnd = AnimationNode::alloc(_dpOrange, 1, 4);
 	_dragEnd->setFrame(0);
 	_dragEnd->setAnchor(Vec2::ANCHOR_CENTER);
+	_dragEnd->setName("dragEnd");
 
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -246,9 +249,15 @@ void BallistaScene::update(float deltaTime, int direction){
 
 	// Poll inputs
 	if (input.justPressed()) {
-		addChild(_dragStart);
-		addChild(_dragLine);
-		addChild(_dragEnd);
+		if (getChildByName("dragStart") == nullptr) {
+			addChild(_dragStart);
+		}
+		if (getChildByName("dragLine") == nullptr) {
+			addChild(_dragLine);
+		}
+		if (getChildByName("dragEnd") == nullptr) {
+			addChild(_dragEnd);
+		}
 
 		_dragStart->setPosition(screenToWorldCoords(input.dTouch()));
 		_dragLine->setPosition(screenToWorldCoords(input.dTouch()));
@@ -279,9 +288,16 @@ void BallistaScene::update(float deltaTime, int direction){
 		}
     }
     if(input.justReleased()){
-		removeChild(_dragStart);
-		removeChild(_dragLine);
-		removeChild(_dragEnd);
+		if (getChildByName("dragStart") != nullptr) {
+			removeChild(_dragStart);
+		}
+		if (getChildByName("dragLine") != nullptr) {
+			removeChild(_dragLine);
+		}
+		if (getChildByName("dragEnd") != nullptr) {
+			removeChild(_dragEnd);
+		}
+		
 		if (_ballista->isReadyToFire) {
             if (gameModel.getArrowAmmo(0)>0 && _ballista->getPower()>=BALLISTA_MIN_POWER) {
                 // Allocate a new arrow in memory

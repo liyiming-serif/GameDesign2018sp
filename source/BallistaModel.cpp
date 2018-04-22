@@ -9,7 +9,7 @@
 #define TURN_SPEED M_PI/20.0f
 
 #define MAX_POWER 24.0f
-#define PULLBACK_SPEED 1.0f
+#define PULLBACK_SPEED 3.0f
 
 #define NUM_ROWS 3
 #define NUM_COLS 5
