@@ -85,11 +85,14 @@ public class ChaosCastle extends SDLActivity {
 	 *  to the bluetooth socket.
 	 */
 	public int sendState(byte[] byte_buffer) {
+		int status = 0;
 	    if(isServer){
+	    	if(bConnectedRing==null || bConnectedRing.size()==0){
+	    		return 1;
+			}
 	        synchronized (this) {
                 for (BluetoothConnectedThread b : bConnectedRing) {
-                    b.write(byte_buffer);
-                    return 0;
+                    status = b.write(byte_buffer);
                 }
             }
         }
@@ -98,11 +101,10 @@ public class ChaosCastle extends SDLActivity {
                 return 1;
             }
             synchronized (this) {
-                bConnected.write(byte_buffer);
-                return 0;
+                status = bConnected.write(byte_buffer);
             }
         }
-        return 1;
+        return status;
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
