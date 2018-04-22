@@ -98,12 +98,13 @@ public class BluetoothConnectedThread extends Thread {
     }
 
     // Call this from the main activity to send data to the remote device.
-    public void write(byte[] bytes) {
+    public int write(byte[] bytes) {
         try {
             mmOutStream.write(bytes);
-
+            return 0;
         } catch (IOException e) {
             Log.e(TAG, "Error occurred when sending data", e);
+            return 1;
         }
     }
 
