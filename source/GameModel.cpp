@@ -199,19 +199,19 @@ void GameModel::setOilCooldown(int wall, int amount) {
 }
 
 void GameModel::addDeltaHealth(int wall, int repair) {
-    _deltaCastleHealth[wall] += repair;
+    gameModel._deltaCastleHealth[wall] += repair;
 }
 
 int GameModel::getDeltaHealth(int wall) {
-    return _deltaCastleHealth[wall];
+    return gameModel._deltaCastleHealth[wall];
 }
 
 void GameModel::addDeltaAmmo(int type, int amt) {
-    _deltaAmmo[type] += amt;
+    gameModel._deltaAmmo[type] += amt;
 }
 
 void GameModel::addEnemyChange(std::string name, int damage) {
-    _enemyChanges += name+ ":" + to_string(damage) + " ";
+    gameModel._enemyChanges += name+ ":" + to_string(damage) + " ";
 }
 
 std::string GameModel::produceStateChangeServer() {
@@ -233,12 +233,12 @@ std::string GameModel::produceStateChangeServer() {
         _tmpAmmoString += to_string(gameModel._arrowAmmo[i]) + " ";
     }
 
-    for (int i = 0; i < _noPlayers; ++i) {
+    for (int i = 0; i < gameModel._noPlayers; ++i) {
         if (i==0) {
-            _tmpPlayerString += to_string(_playerAvatars[i]) + ":" + to_string(_currentRoom) + " ";
+            _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._currentRoom) + " ";
         }
         else {
-            _tmpPlayerString += to_string(_playerAvatars[i]) + ":" + to_string(_playerRooms[i]) + " ";
+            _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._playerRooms[i]) + " ";
         }
 
     }
@@ -280,7 +280,7 @@ std::string GameModel::produceStateChangeClient() {
         gameModel._deltaAmmo[i] = 0;
     }
 
-    _tmpPlayerString += to_string(_playerAvatars[_playerID]) + ":" + to_string(_currentRoom);
+    _tmpPlayerString += to_string(gameModel._playerAvatars[gameModel._playerID]) + ":" + to_string(gameModel._currentRoom);
 
     _tmpHealthString.pop_back();
     _tmpAmmoString.pop_back();
@@ -298,8 +298,8 @@ std::string GameModel::produceStateChangeClient() {
 }
 
 char** GameModel::ConsumeStateServer() {
-    char *tmp[_noPlayers-1];
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    char *tmp[gameModel._noPlayers-1];
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tmp[i] = consumeState();
         CULog("State from Client %i: %s", i, tmp[i]);
     }
@@ -314,12 +314,12 @@ void GameModel::updateStateServer(char** ConsumedStates) {
 
     // Break down all read states into component changes to apply
     CULog("Breaking down ConsumedStates");
-    char * tmpHealthChanges[_noPlayers-1];
-    char * tmpAmmoChanges[_noPlayers-1];
-    char * tmpEnemyChanges[_noPlayers-1];
-    char * tmpPlayerChanges[_noPlayers-1];
-    char * tmpOilChanges[_noPlayers-1];
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    char * tmpHealthChanges[gameModel._noPlayers-1];
+    char * tmpAmmoChanges[gameModel._noPlayers-1];
+    char * tmpEnemyChanges[gameModel._noPlayers-1];
+    char * tmpPlayerChanges[gameModel._noPlayers-1];
+    char * tmpOilChanges[gameModel._noPlayers-1];
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (ConsumedStates[i] != NULL) {
             char* copy = strdup(ConsumedStates[i]);
             const char s[2] = "|";
@@ -357,14 +357,14 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // Start aggregating castle health changes by wall
     CULog("Aggregating Castle Health");
     char* subtoken;
-    char* tmpHealthN[_noPlayers-1];
-    char* tmpHealthNW[_noPlayers-1];
-    char* tmpHealthSW[_noPlayers-1];
-    char* tmpHealthS[_noPlayers-1];
-    char* tmpHealthSE[_noPlayers-1];
-    char* tmpHealthNE[_noPlayers-1];
+    char* tmpHealthN[gameModel._noPlayers-1];
+    char* tmpHealthNW[gameModel._noPlayers-1];
+    char* tmpHealthSW[gameModel._noPlayers-1];
+    char* tmpHealthS[gameModel._noPlayers-1];
+    char* tmpHealthSE[gameModel._noPlayers-1];
+    char* tmpHealthNE[gameModel._noPlayers-1];
 
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         subtoken = strtok(tmpHealthChanges[i], " ");
         int j = 0;
         while (subtoken != NULL) {
@@ -395,7 +395,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // North Wall
     int currmax = 0;
     int deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthN[i], ":");
         //CULog("RandNet Token %d %s \n", i, tottoken);
         deltoken = strtok(NULL, ":");
@@ -415,7 +415,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // NorthWest Wall
     currmax = 0;
     deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthNW[i], ":");
         deltoken = strtok(NULL, ":");
         int currplayerhealth = std::stoi(tottoken);
@@ -433,7 +433,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     //SouthWest Wall
     currmax = 0;
     deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthSW[i], ":");
         deltoken = strtok(NULL, ":");
         int currplayerhealth = std::stoi(tottoken);
@@ -451,7 +451,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     //South Wall
     currmax = 0;
     deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthS[i], ":");
         deltoken = strtok(NULL, ":");
         int currplayerhealth = std::stoi(tottoken);
@@ -469,7 +469,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // SouthEast Wall
     currmax = 0;
     deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthSE[i], ":");
         deltoken = strtok(NULL, ":");
         int currplayerhealth = std::stoi(tottoken);
@@ -487,7 +487,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // NorthEast Wall
     currmax = 0;
     deltasum = 0;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         tottoken = strtok(tmpHealthNE[i], ":");
         deltoken = strtok(NULL, ":");
         int currplayerhealth = std::stoi(tottoken);
@@ -516,7 +516,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     int deltaArrow2 = 0;
     int deltaArrow3 = 0;
     CULog("Applying arrow changes");
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         arrowsubtoken = strtok(tmpAmmoChanges[i], " ");
         int j = 0;
         while (arrowsubtoken != NULL) {
@@ -544,7 +544,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     char* enemySubToken;
     char* enemyName;
     char* enemyDamage;
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         enemySubToken = strtok(tmpEnemyChanges[i], " :");
         while (enemySubToken != NULL) {
             strcpy(enemyName, enemySubToken);
@@ -563,27 +563,27 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     }
 
     // Aggregate player info changes; if players occupy the same room and it's not overworld, kick player with higher ID
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         char *roomToken = strtok(tmpPlayerChanges[i], ":");
         int playerID = std::stoi(roomToken);
         roomToken = strtok(NULL, ":");
         int playerRoom = std::stoi(roomToken);
         bool occupied = false;
-        for (int j = 0; j < _noPlayers; ++j) {
-            if (playerRoom == _playerRooms[j]) {
+        for (int j = 0; j < gameModel._noPlayers; ++j) {
+            if (playerRoom == gameModel._playerRooms[j]) {
                 occupied = true;
             }
         }
         if (occupied) {
-            _playerRooms[playerID] = 0;
+            gameModel._playerRooms[playerID] = 0;
         } else {
-            _playerRooms[playerID] = playerRoom;
+            gameModel._playerRooms[playerID] = playerRoom;
         }
         free(tmpPlayerChanges[i]);
     }
 
     // Start oilcooldowns for all walls that have poured
-    for (int i = 0; i < _noPlayers-1; ++i) {
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         char* pourToken = strtok(tmpOilChanges[i], " ");
         int section = 0;
         while (pourToken != NULL) {
@@ -706,7 +706,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     char* playerRoom = strtok(playerInfoToken, " ");
     section = 0;
     while (playerRoom != NULL) {
-        _playerRooms[section] = std::stoi(playerRoom);
+        gameModel._playerRooms[section] = std::stoi(playerRoom);
         playerRoom = strtok(NULL, " ");
         section++;
     }
@@ -743,8 +743,8 @@ char* GameModel::random_buffer_client(int player) {
         _tmpOilString += to_string(randomoil) + " ";
     }
 
-    _tmpEnemyString += _enemyChanges + " ";
-    _enemyChanges = "";
+    _tmpEnemyString += gameModel._enemyChanges + " ";
+    gameModel._enemyChanges = "";
 
     for (int i = 0; i < 3; ++i) {
         _tmpAmmoString += to_string(rand()%10-5) + " ";
@@ -786,8 +786,8 @@ char* GameModel::random_buffer_server() {
         _tmpAmmoString += to_string(rand()%50) + " ";
     }
 
-    for (int i = 0; i < _noPlayers-1; ++i) {
-        _tmpPlayerString += to_string(_playerAvatars[i]) + ":" + to_string(rand()%17) + " ";
+    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
+        _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(rand()%17) + " ";
     }
 
     _tmpHealthString.pop_back();
