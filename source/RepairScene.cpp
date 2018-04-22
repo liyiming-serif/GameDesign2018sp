@@ -93,10 +93,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "N";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked SERVER in repair scene");
                         gameModel.changeWallHealth(0, 1);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(0,1);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
                     }
@@ -116,10 +118,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "NE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(5, 1);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(5,1);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
                     }
@@ -140,10 +144,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "SE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(4, 1);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(4,1);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
                     }
@@ -163,10 +169,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _new_wall = "S";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(3, 1);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(3,1);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
                     }
@@ -185,10 +193,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 				_new_wall = "SW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(2, 1);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(2,1);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
                     }
@@ -207,10 +217,12 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 				_new_wall = "NW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
+						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(1, 1);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                     }
                     else {
+						CULog("networked CLIENT in repair scene");
                         gameModel.addDeltaHealth(1,1);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
                     }
@@ -584,12 +596,13 @@ void RepairScene::update(float timestep){
     int _curr_wall_health;
 
     if (gameModel.isNetworked() && !gameModel.isServer()) {
-    _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
-    _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
-    _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
-    _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
-    _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
-    _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
+		CULog("networked CLIENT in repair scene");
+		_northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
+		_northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
+		_southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
+		_southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
+		_southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
+		_northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
     }
     else {
         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
