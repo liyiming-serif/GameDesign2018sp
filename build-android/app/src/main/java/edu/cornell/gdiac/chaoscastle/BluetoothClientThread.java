@@ -61,7 +61,6 @@ class BluetoothClientThread extends Thread {
         // The connection attempt succeeded. Perform work associated with
         // the connection in a separate thread.
         parent.connected(mmSocket);
-        Log.d("CLIENT", "Connected to socket");
     }
 
     // Closes the client socket and causes the thread to finish.

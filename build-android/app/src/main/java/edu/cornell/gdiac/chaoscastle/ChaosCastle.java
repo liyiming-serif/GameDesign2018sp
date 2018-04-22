@@ -218,6 +218,7 @@ public class ChaosCastle extends SDLActivity {
                 BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
                 bConnectedRing.add(b);
                 b.start();
+                Log.d("CONNECTED", "Connected Thread Starting");
             }
             return true;
         }
@@ -225,6 +226,7 @@ public class ChaosCastle extends SDLActivity {
             synchronized (this) {
                 bConnected = new BluetoothConnectedThread(mmSocket);
                 bConnected.start();
+				Log.d("CONNECTED", "Connected Thread Starting");
             }
             return true;
         }

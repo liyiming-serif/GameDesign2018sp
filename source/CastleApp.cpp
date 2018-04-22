@@ -314,7 +314,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _lobbyScene.setActive(true);
             break;
         case LEVELS:
-			_levelScene.setActive(true,gameModel.getNoPlayers());
+			_levelScene.setActive(true,1);
 			break;
     }
     _currscene = nextscene;
