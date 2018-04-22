@@ -269,7 +269,10 @@ void CastleApp::update(float timestep) {
                     _oilScene.setActive(false, _direction);
                 }
             }
-            _spawnController.update(timestep);
+            if (gameModel.isServer() || !gameModel.isNetworked()) {
+                _spawnController.update(timestep);
+            }
+
             gameModel.update(timestep);
         }
     }
@@ -282,7 +285,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
         if (gameModel.isServer() || !gameModel.isNetworked()) {
-            _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+            CULog("Trying to initialize spawn controller");
+            _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
             CULog("Setting spawnController up for the server");
         }
 	}
