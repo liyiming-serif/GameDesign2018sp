@@ -1,8 +1,29 @@
 # Game Design Group 3 Spring 2018
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
 
-## Alpha release notes
+## Closed Beta release notes
 Chaos Castle requires no additional configuration. Build and run this project as you would 'HelloWorld' for Android, Apple, and Windows.
+
+### Changes from Alpha
+All oil buttons are fully functional. Tilt your phone forward to spill oil and destroy all enemies in that direction. On Windows, hold the up arrow to simulate tilting forward; release to tilt back. Enemies that disappear from the range of the ballista appear in the oil scene.
+
+The first four levels are implemented and can be accessed through the level select menu.
+
+Flying enemies stay a distance away from the castle and attack at a range once they stop moving forward.
+
+### Networking
+This branch contains no networking functionality. Ashton's and Yiming's networking code is on a parallel branch and we'll demo to Walker on Monday.
+
+Establishing bluetooth connections are tested and proven to work; we are currently debugging sending and interpreting game states over the connection.
+
+
+### Known Issues
+The flying enemies are missing an attack animation, so it looks like the castle is taking chip damage (every 75 frames) once they stop moving.
+
+Ballista, oil, and enemy art assets are jittery because the animation strips are not perfectly aligned; this is not because of physics.
+
+
+## Alpha release notes
 
 ### Changes and Notes
 Only the **north** oil button will take you to the oil scene. This is because we are planning to refactor how we consider directions in the Beta release.
