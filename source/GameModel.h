@@ -81,8 +81,8 @@ public:
     }
 
     void setArrowAmmo(int type, int amount) {
-        if (amount > 99) {
-            _arrowAmmo[type] = 99;
+        if (amount > 909) {
+            _arrowAmmo[type] = 999;
         }
         else if (amount < 0) {
             _arrowAmmo[type] = 0;
