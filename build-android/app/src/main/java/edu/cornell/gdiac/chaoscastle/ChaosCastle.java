@@ -199,7 +199,8 @@ public class ChaosCastle extends SDLActivity {
 	}
 
 	public void setupBluetoothClient() {
-		Set<BluetoothDevice> newDevices = getPairedDevices(mba);
+		Set<BluetoothDevice> newDevices = getPairedDevices(BluetoothAdapter.getDefaultAdapter());
+		Log.e("CLIENT","about to pair devices");
 		BluetoothDevice[] newDevicesArray = newDevices.toArray(new BluetoothDevice[1]);
 		Log.d("CLIENT", "Bluetooth Device Paired " +newDevicesArray[0].getName());
 		bClient = new BluetoothClientThread(newDevicesArray[0], this);
