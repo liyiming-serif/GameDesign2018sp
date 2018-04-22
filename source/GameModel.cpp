@@ -28,13 +28,13 @@ bool GameModel::init(){
         gameModel._oilCooldown[i] = 0;
     }
     gameModel._noPlayers = 1;
-    gameModel._playerAvatars = new int[_noPlayers];
-    gameModel._playerRooms = new int[_noPlayers];
-    for (int i = 0; i < _noPlayers; ++i) {
+    gameModel._playerAvatars = new int[gameModel._noPlayers];
+    gameModel._playerRooms = new int[gameModel._noPlayers];
+    for (int i = 0; i < gameModel._noPlayers; ++i) {
         gameModel._playerRooms[i] = 0;
     }
 
-    _playerID = 0;
+    gameModel._playerID = 0;
 
     gameModel._currentRoom = 0;
 
