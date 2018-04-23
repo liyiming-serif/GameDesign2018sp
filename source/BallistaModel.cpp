@@ -11,12 +11,13 @@
 #define MAX_POWER 24.0f
 #define PULLBACK_SPEED 3.0f
 
-#define NUM_ROWS 5
+#define NUM_ROWS 7
 #define NUM_COLS 5
 
 #define IDLE_FRAME_START 0
 #define AIMING_FRAME_START 10
 #define FIRING_FRAME_START 20
+#define RECOIL_SPEED 0.5f
 
 using namespace cugl;
 
@@ -75,10 +76,12 @@ void BallistaModel::update(float deltaTime, bool hasAmmo) {
 			if (frame < FIRING_FRAME_START) {
 				//just fired
 				frame = FIRING_FRAME_START;
+				_interFrame = frame;
 			}
 			else {
 				//recoiling from fire
-				frame++;
+				_interFrame += RECOIL_SPEED;
+				frame = floor(_interFrame);
 			}
 			//finish recoiling
 			if (frame >= _node->getSize()) {

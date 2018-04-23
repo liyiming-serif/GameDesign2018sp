@@ -67,5 +67,7 @@ protected:
 
 	float _power;
 
+	float _interFrame;
+
 };
 #endif //BUILD_ANDROID_BALLISTAMODEL_H

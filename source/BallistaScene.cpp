@@ -265,28 +265,28 @@ void BallistaScene::update(float deltaTime, int direction){
 		_dragLine->setPosition(screenToWorldCoords(input.dTouch()));
 	}
     if(input.isPressed()){
+		Vec2 pointdir = screenToWorldCoords(input.dTouch()) - screenToWorldCoords(input.pointerPos());
 		if (_ballista->isReadyToFire) {
-			Vec2 pointdir = screenToWorldCoords(input.dTouch())-screenToWorldCoords(input.pointerPos());
 			_ballista->setAngle(pointdir.getAngle());
 			_ballista->setPower(2.0f*pointdir.length() / (float)DRAW_SCALE, false);
+		}
 
-			//drag UI
-			_dragStart->setFrame((_dragStart->getFrame() + 1)%_dragStart->getSize());
-			_dragEnd->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
+		//drag UI
+		_dragStart->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
+		_dragEnd->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
 
-			_dragEnd->setPosition(screenToWorldCoords(input.pointerPos()));
-			_dragLine->setAngle(pointdir.getAngle()+M_PI);
-			_dragLine->setScale(pointdir.length()/36.0f,1.0f);
-			if(_ballista->getPower() < BALLISTA_MIN_POWER) { //not enough power to fire ballista
-				_dragStart->setTexture(_dpOrange);
-				_dragLine->setTexture(_dlOrange);
-				_dragEnd->setTexture(_dpOrange);
-			}
-			else {
-				_dragStart->setTexture(_dpBlue);
-				_dragLine->setTexture(_dlBlue);
-				_dragEnd->setTexture(_dpBlue);
-			}
+		_dragEnd->setPosition(screenToWorldCoords(input.pointerPos()));
+		_dragLine->setAngle(pointdir.getAngle() + M_PI);
+		_dragLine->setScale(pointdir.length() / 36.0f, 1.0f);
+		if (_ballista->getPower() < BALLISTA_MIN_POWER) { //not enough power to fire ballista
+			_dragStart->setTexture(_dpOrange);
+			_dragLine->setTexture(_dlOrange);
+			_dragEnd->setTexture(_dpOrange);
+		}
+		else {
+			_dragStart->setTexture(_dpBlue);
+			_dragLine->setTexture(_dlBlue);
+			_dragEnd->setTexture(_dpBlue);
 		}
     }
     if(input.justReleased()){
