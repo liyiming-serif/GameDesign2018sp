@@ -31,7 +31,7 @@ public:
 	/**
 	* Gameplay Functions
 	*/
-	void update(float deltaTime);
+	void update(float deltaTime, bool hasAmmo);
 
 	// Assume assets are already loaded, and _node is immutable after init
 	const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }

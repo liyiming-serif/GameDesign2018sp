@@ -395,7 +395,6 @@ void LevelselectScene::update(float timestep){
         _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
         doMove6(_move6, _cloud6);
     }
-    CULog("campaign %i",campaign);
     if (input.hScrolling() < 0 && campaign < 3 && !_actions->isActive(ACT_KEY+7)) {
         LevelselectScene::doScroll(_moveleft);
         campaign += 1;

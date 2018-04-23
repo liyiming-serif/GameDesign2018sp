@@ -247,6 +247,8 @@ void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
 
+	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
+
 	// Poll inputs
 	if (input.justPressed()) {
 		if (getChildByName("dragStart") == nullptr) {
@@ -317,7 +319,8 @@ void BallistaScene::update(float deltaTime, int direction){
 		}
     }
 
-	_ballista->update(deltaTime);
+	
+	_ballista->update(deltaTime, hasAmmo);
 
     // Update arrows and mark out of bound ones for deletion
     Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);

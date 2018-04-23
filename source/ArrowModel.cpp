@@ -13,6 +13,7 @@ bool ArrowModel::init(Vec2 pos, float speed, float dir, int drawScale, const std
     _node = nullptr;
     std::shared_ptr<Texture> texture  = assets->get<Texture>("arrow");
     _node = PolygonNode::allocWithTexture(texture);
+	_node->setScale(0.4);
     _node->setAnchor(Vec2::ANCHOR_CENTER);
 
     //initialize the box2d obstacle
