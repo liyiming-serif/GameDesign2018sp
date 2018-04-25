@@ -59,7 +59,7 @@ void GameModel::update(float deltaTime){
             if (gameModel.server) {
                 //TODO: Read from network
                 //Prints the messages from the clients
-                char **read_buffers = ConsumeStateServer();
+                char **read_buffers = gameModel.ConsumeStateServer();
 //                char *read_buffers[_noPlayers-1];
 //                for (int k = 0; k < _noPlayers-1; ++k) {
 //                    read_buffers[k] = random_buffer_client(k);
@@ -67,15 +67,15 @@ void GameModel::update(float deltaTime){
 //                }
                 //CULog("RandNet State Change %s \n", read_byte_buffer);
                 if (read_buffers[0] != NULL) {
-                    updateStateServer(read_buffers);
+                    gameModel.updateStateServer(read_buffers);
                 }
 
                 char *write_byte_buffer = return_buffer(produceStateChangeServer());
                 //TODO: Write to network
 
                 CULog("State Change %s \n", write_byte_buffer);
-
-                if (sendState(write_byte_buffer) == 1){
+                
+                if (gameModel.sendState(write_byte_buffer) == 1){
                     CULog("At least one write failure");
                 } else {
                     CULog("Write success");
@@ -89,10 +89,10 @@ void GameModel::update(float deltaTime){
                 //TODO: Write to network
                 CULog("State Change: %s \n", write_byte_buffer);
                 //TODO: Read from network
-                char *read_buffer = ConsumeStateClient();
+                char *read_buffer = gameModel.ConsumeStateClient();
                 CULog("Read Server State: %s \n", read_buffer);
                 if (read_buffer != NULL) {
-                    updateStateClient(read_buffer);
+                    gameModel.updateStateClient(read_buffer);
                 }
                 clock = 0;
                 delete[] write_byte_buffer;
@@ -302,14 +302,14 @@ std::string GameModel::produceStateChangeClient() {
 char** GameModel::ConsumeStateServer() {
     char *tmp[gameModel._noPlayers-1];
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
-        tmp[i] = consumeState();
+        tmp[i] = gameModel.consumeState();
         CULog("State from Client %i: %s", i, tmp[i]);
     }
     return tmp;
 }
 
 char* GameModel::ConsumeStateClient() {
-    return consumeState();
+    return gameModel.consumeState();
 }
 
 void GameModel::updateStateServer(char** ConsumedStates) {

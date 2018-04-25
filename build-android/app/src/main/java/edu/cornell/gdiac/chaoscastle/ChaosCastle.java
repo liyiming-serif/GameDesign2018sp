@@ -45,7 +45,9 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
-		origName = mba.getName();
+		if(mba != null) {
+			origName = mba.getName();
+		}
 	}
 
 	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
@@ -83,6 +85,7 @@ public class ChaosCastle extends SDLActivity {
                     s = bConnected.dequeueState();
                 }
                 if (s == null){
+                	Log.d("CLIENT", "got nothing");
                 	return null;
 				}
 				return s.getBytes("UTF-8");
@@ -96,6 +99,13 @@ public class ChaosCastle extends SDLActivity {
 	 *  to the bluetooth socket.
 	 */
 	public int sendState(byte[] byte_buffer) {
+		try {
+			Log.d("CLIENT", "Passed JNI barrier: " + new String(byte_buffer, "UTF-8"));
+		}
+		catch(java.io.UnsupportedEncodingException e){
+			Log.e("CLIENT", "There's no reason to read this.");
+		}
+		Log.d("CLIENT", "Passed JNI barrier: in sendState");
 		int status = 0;
 	    if(isServer){
 	    	if(bConnectedRing==null || bConnectedRing.size()==0){
@@ -267,6 +277,7 @@ public class ChaosCastle extends SDLActivity {
 
 	@Override
 	protected void onDestroy() {
+		mba.setName(origName);
 		super.onDestroy();
 
 		// Don't forget to unregister the ACTION_FOUND receiver.
