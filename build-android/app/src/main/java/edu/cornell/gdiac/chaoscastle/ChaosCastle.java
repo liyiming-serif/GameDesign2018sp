@@ -65,6 +65,9 @@ public class ChaosCastle extends SDLActivity {
                     s = bConnectedRing.get(currClientIndex).dequeueState();
 
                 }
+                if(s==null){
+                	return null;
+				}
                 return s.getBytes("UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 return null;
