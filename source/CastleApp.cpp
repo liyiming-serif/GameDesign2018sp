@@ -211,18 +211,14 @@ void CastleApp::update(float timestep) {
         }
         else{ //gameplay update loop
             if(_currscene==OVERWORLD) {
-                CULog("Overworld is updating");
                 _overworldScene.update(timestep);
-                CULog("Overworld is updated");
                 if(_overworldScene.switchscene!=0){
                     swapscenes(_overworldScene.switchscene, _overworldScene.direction);
                     _overworldScene.setActive(false);
                 }
             }
             else if(_currscene==BALLISTA){
-                CULog("Ballista is updating");
                 _ballistaScene.update(timestep, _direction);
-                CULog("Ballista is updating");
                 if(_ballistaScene.switchscene!=0){
                     swapscenes(_ballistaScene.switchscene, 0);
                     _ballistaScene.setActive(false, _direction);
@@ -236,9 +232,7 @@ void CastleApp::update(float timestep) {
                 }
             }
             else if(_currscene==REPAIR){
-                CULog("Repair is updating");
                 _repairScene.update(timestep);
-                CULog("Repair is updating");
                 if(_repairScene.switchscene!=0){
                     swapscenes(_repairScene.switchscene, 0);
                     _repairScene.setActive(false);
@@ -266,7 +260,6 @@ void CastleApp::update(float timestep) {
                 }
             }
             if (gameModel.isServer() || !gameModel.isNetworked()) {
-                CULog("Spawn Controller updater: Is Server: %b Is Networked: %b", gameModel.isServer(), gameModel.isNetworked());
                 _spawnController.update(timestep);
             }
 
