@@ -28,8 +28,8 @@ protected:
     
     std::shared_ptr<cugl::Button> _backButton;
     std::shared_ptr<cugl::Button> _createButton;
-    std::shared_ptr<cugl::Button> _enterButtons[];
-    std::shared_ptr<cugl::Label> _enterTexts[];
+    std::shared_ptr<cugl::Button>* _enterButtons;
+    std::shared_ptr<cugl::Label>* _enterTexts;
 
     std::shared_ptr<cugl::Button> _levelsButton;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
@@ -197,22 +197,31 @@ public:
         // Call the Java method
         jobjectArray array = (jobjectArray) env->CallObjectMethod(activity, method_id);
 
-        int stringCount = env->GetArrayLength(array);
+        if (array == NULL) {
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
 
-        const char* serverDevices[stringCount];
-        for (int i=0; i<stringCount; i++) {
-            jstring string = (jstring) (env->GetObjectArrayElement(array, i));
-            const char *rawString = env->GetStringUTFChars(string, 0);
-            serverDevices[i] = rawString;
-            // Don't forget to call `ReleaseStringUTFChars` when you're done.
-            env->ReleaseStringUTFChars(string, rawString);
+            return NULL;
+        }
+        else {
+            int stringCount = env->GetArrayLength(array);
+
+            const char* Devices[stringCount];
+            for (int i=0; i<stringCount; i++) {
+                jstring string = (jstring) (env->GetObjectArrayElement(array, i));
+                const char *rawString = env->GetStringUTFChars(string, 0);
+                Devices[i] = rawString;
+                // Don't forget to call `ReleaseStringUTFChars` when you're done.
+                env->ReleaseStringUTFChars(string, rawString);
+            }
+
+            // Free local references
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+
+            return Devices;
         }
 
-        // Free local references
-        env->DeleteLocalRef(activity);
-        env->DeleteLocalRef(clazz);
-
-        return serverDevices;
     }
 #endif
 

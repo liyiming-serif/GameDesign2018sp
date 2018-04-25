@@ -353,10 +353,9 @@ void LobbyScene::update(float timestep){
             _enterTexts[i]->dispose();
         }
     }
-
+    serverDevices = getServerDevices();
     // Create new enter buttons/text if canvas is lobby
-    if (!_avatar->isVisible()) {
-        serverDevices = getServerDevices();
+    if (!_avatar->isVisible() && serverDevices != NULL) {
         length = sizeof(serverDevices)/sizeof(serverDevices[0]);
         _enterButtons = new std::shared_ptr<cugl::Button>[length];
         _enterTexts = new std::shared_ptr<cugl::Label>[length];
@@ -367,7 +366,6 @@ void LobbyScene::update(float timestep){
             setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
         }
     }
-
     setButtonActive(_createButton,"createButton");
 
     _actions->update(timestep);
