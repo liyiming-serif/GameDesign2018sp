@@ -266,6 +266,7 @@ void CastleApp::update(float timestep) {
                 }
             }
             if (gameModel.isServer() || !gameModel.isNetworked()) {
+                CULog("Spawn Controller updater: Is Server: %b Is Networked: %b", gameModel.isServer(), gameModel.isNetworked());
                 _spawnController.update(timestep);
             }
 
@@ -281,6 +282,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
         if (gameModel.isServer() || !gameModel.isNetworked()) {
+            CULog("Is Server: %b Is Networked: %b", gameModel.isServer(), gameModel.isNetworked());
             CULog("Trying to initialize spawn controller");
             _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
             CULog("Setting spawnController up for the server");

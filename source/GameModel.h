@@ -101,21 +101,13 @@ public:
 
     void addDeltaAmmo(int type, int amt);
 
-    bool isNetworked() {
-        return networked;
-    }
+    bool isNetworked();
 
-    void setNetworked(bool networked) {
-        this->networked = networked;
-    }
+    void setNetworked(bool networked);
 
-    bool isServer() {
-        return server;
-    }
+    bool isServer();
 
-    void setServer(bool server) {
-        this->server = server;
-    }
+    void setServer(bool server);
 
     int getArrowAmmo(int type) {
         return _arrowAmmo[type];
@@ -144,9 +136,7 @@ public:
         _oilPoured[wall] = 1;
     }
 
-    void setCurrentRoom(int room) {
-        _currentRoom = room;
-    }
+    void setCurrentRoom(int room);
 
 private:
     std::string produceStateChangeServer();

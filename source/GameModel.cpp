@@ -846,6 +846,26 @@ char* GameModel::return_buffer(const std::string& string) {
     return return_string;
 }
 
+bool GameModel::isNetworked(){
+    return gameModel.networked;
+}
+
+void GameModel::setNetworked(bool networked){
+    gameModel.networked = networked;
+}
+
+bool GameModel::isServer(){
+    return gameModel.server;
+}
+
+void GameModel::setServer(bool server){
+    gameModel.server = server;
+}
+
+void GameModel::setCurrentRoom(int room){
+    gameModel._currentRoom = room;
+}
+
 //#if CU_PLATFORM == CU_PLATFORM_ANDROID
 //JNIEXPORT char* JNICALL Java_edu_cornell_gdiac_chaoscastle_ChaosCastle_readNetwork
 //        (JNIEnv *env, jclass clazz, jbyteArray array) {
