@@ -107,6 +107,7 @@ void GameModel::update(float deltaTime){
         else {
             clock++;
         }
+        CULog("Clock value is: %i", clock);
     }
 
 	//update enemies
@@ -578,7 +579,8 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     char* enemyDamage;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
-        if (tmpEnemyChanges[i] != NULL) {
+        if (tmpEnemyChanges[i] != NULL && tmpEnemyChanges[i] != "") {
+            CULog("Enemy Changes to apply: %s", tmpEnemyChanges[i]);
             enemySubToken = strtok(tmpEnemyChanges[i], " :");
             while (enemySubToken != NULL) {
                 strcpy(enemyName, enemySubToken);

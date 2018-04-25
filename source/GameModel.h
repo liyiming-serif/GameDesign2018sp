@@ -217,6 +217,9 @@ private:
                 CULog("sendState: byte_buffer not big enough");
                 return NULL;
             }
+            else {
+                CULog("Size of byte_buffer passed to send State is %i", n);
+            }
             jbyteArray arr = env->NewByteArray(n);
             env->SetByteArrayRegion(arr,0,n, (jbyte*)byte_buffer);
 
