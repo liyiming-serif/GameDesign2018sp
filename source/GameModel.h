@@ -87,6 +87,14 @@ public:
         this->_noPlayers = _noPlayers;
     }
 
+    void setPlayerID(int ID) {
+        this->_playerID = ID;
+    }
+
+    int getPlayerID() {
+        return this->_playerID;
+    }
+
     void setPlayerAvatar(int player, int avatar);
 
     void addEnemyChange(std::string name, int damage);
@@ -152,12 +160,6 @@ private:
     void updateStateServer(char** ConsumedStates);
 
     void updateStateClient(const char* read_byte_buffer);
-
-    void aggregateCastleHealth(char** tmpCastleChanges);
-
-    void aggregateAmmo(char** tmpAmmoChanges);
-
-    void aggregateEnemies(char** tmpEnemyChanges);
 
     char* return_buffer(const std::string& string);
 
