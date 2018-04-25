@@ -426,10 +426,10 @@ void LobbyScene::changeCanvas(std::string canvas) {
     if (canvas=="avatar"){
         _lobby->setVisible(false);
         _avatar->setVisible(true);
-       // _createButton->deactivate();
-       // _enterButton->deactivate();
-//        _enterButtonOne->deactivate();
-//        _enterButtonTwo->deactivate();
+        _createButton->deactivate();
+        _enterButton->deactivate();
+        _enterButtonOne->deactivate();
+        _enterButtonTwo->deactivate();
         CULog("go to avatar");
     }
     else {
@@ -494,6 +494,7 @@ void LobbyScene::setActive(bool active){
         _backButton->deactivate();
         _createButton->deactivate();
         _enterButton->deactivate();
+        _enterButtonOne->deactivate();
         _enterButtonTwo->deactivate();
         _levelsButton->deactivate();
     }
