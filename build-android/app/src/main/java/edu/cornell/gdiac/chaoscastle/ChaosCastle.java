@@ -65,11 +65,12 @@ public class ChaosCastle extends SDLActivity {
                 String s;
                 synchronized (this) {
                     s = bConnectedRing.get(currClientIndex).dequeueState();
-
                 }
                 if(s==null){
+                	Log.d("SERVER", "got nothing");
                 	return null;
 				}
+				Log.d("SERVER", s);
                 return s.getBytes("UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 return null;
@@ -88,6 +89,7 @@ public class ChaosCastle extends SDLActivity {
                 	Log.d("CLIENT", "got nothing");
                 	return null;
 				}
+				Log.d("CLIENT", s);
 				return s.getBytes("UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 return null;

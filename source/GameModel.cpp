@@ -74,7 +74,7 @@ void GameModel::update(float deltaTime){
                 //TODO: Write to network
 
                 CULog("State Change %s \n", write_byte_buffer);
-                
+
                 if (gameModel.sendState(write_byte_buffer) == 1){
                     CULog("At least one write failure");
                 } else {
@@ -85,9 +85,14 @@ void GameModel::update(float deltaTime){
                 //delete read_buffers;
             }
             else {
-                const char *write_byte_buffer = return_buffer(produceStateChangeClient());
+                char *write_byte_buffer = return_buffer(produceStateChangeClient());
                 //TODO: Write to network
                 CULog("State Change: %s \n", write_byte_buffer);
+                if (gameModel.sendState(write_byte_buffer) == 1){
+                    CULog("At least one write failure");
+                } else {
+                    CULog("Write success");
+                }
                 //TODO: Read from network
                 char *read_buffer = gameModel.ConsumeStateClient();
                 CULog("Read Server State: %s \n", read_buffer);
