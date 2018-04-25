@@ -360,7 +360,7 @@ void LobbyScene::update(float timestep){
 
     // Create new enter buttons/text if canvas is lobby
     if (!_avatar->isVisible() && serverDevices != NULL) {
-        length = sizeof(serverDevices)/sizeof(serverDevices[0]);
+        length = serverDevices.size();
         _enterButtons = new std::shared_ptr<cugl::Button>[length];
         _enterTexts = new std::shared_ptr<cugl::Label>[length];
 
@@ -476,7 +476,7 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             setupBluetoothClient(device);
 #endif
             gameModel.setNetworked(true);
-            int roomOccup = stoi(to_string(serverDevices[device][6]));
+            int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
             gameModel.setNoPlayers(roomOccup+1);
             gameModel.setPlayerAvatar(roomOccup, roomOccup+1);
             gameModel.setPlayerID(roomOccup);
@@ -494,10 +494,9 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     _buttonText->setAnchor(Vec2::ANCHOR_CENTER);
     _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);
     _buttonText->setForeground(cugl::Color4(233,225,212,255));
-    const char * roomName = serverDevices[device] + 7;
-    std::string roomNameString = roomName;
-    const char roomOccup = serverDevices[device][6];
-    _buttonText->setText(roomNameString + " " + roomOccup + "/6 Players");
+    std::string roomName = serverDevices.at(device);
+    const char roomOccup = serverDevices.at(device).at(6);
+    _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
 }
 
 

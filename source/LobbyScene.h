@@ -21,7 +21,7 @@ class LobbyScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 
-    const char** serverDevices;
+    std::vector<std::string> serverDevices;
     
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -185,7 +185,7 @@ public:
         env->DeleteLocalRef(clazz);
     }
 
-    const char** getServerDevices() {
+    std::vector<std::string> getServerDevices() {
         // Set up parameters for JNI call
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
         jobject activity = (jobject)SDL_AndroidGetActivity();
@@ -206,11 +206,11 @@ public:
         else {
             int stringCount = env->GetArrayLength(array);
 
-            const char* Devices[stringCount];
+            std::vector<std::string> Devices;
             for (int i=0; i<stringCount; i++) {
                 jstring string = (jstring) (env->GetObjectArrayElement(array, i));
                 const char *rawString = env->GetStringUTFChars(string, 0);
-                Devices[i] = rawString;
+                Devices.push_back((std::string)rawString);
                 // Don't forget to call `ReleaseStringUTFChars` when you're done.
                 env->ReleaseStringUTFChars(string, rawString);
             }
