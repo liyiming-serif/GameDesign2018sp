@@ -74,11 +74,14 @@ public class ChaosCastle extends SDLActivity {
                 return null;
             }
             try {
-                byte[] result;
+                String s;
                 synchronized (this) {
-                    result = bConnected.dequeueState().getBytes("UTF-8");
+                    s = bConnected.dequeueState();
                 }
-                return result;
+                if (s == null){
+                	return null;
+				}
+				return s.getBytes("UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 return null;
             }
@@ -139,7 +142,9 @@ public class ChaosCastle extends SDLActivity {
 	 * Called by C++. Updates paired devices, then returns its toString.
 	 */
 	public String[] getServerDevices() {
+		mba.startDiscovery();
 		updatePairedDevices();
+		mba.cancelDiscovery();
 
 		if (pairedServers.size() > 0) {
 			// There are open servers. Enumerate and return their names.

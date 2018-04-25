@@ -278,7 +278,7 @@ void LobbyScene::dispose() {
 }
 
 void LobbyScene::update(float timestep){
-    
+
     // Animate
     if (!_actions->isActive(ACT_KEY) && move1 ){
         doMove(_move1, _cloud1);
@@ -346,31 +346,35 @@ void LobbyScene::update(float timestep){
     }
 
     // Delete all enter buttons/text
-    if (!serverDevices.empty()) {
-        for(int i = 0; i < serverDevices.size(); i++) {
-            _enterButtons[i]->dispose();
-            _enterTexts[i]->dispose();
+    if (LobbyClock >= 100) {
+        if (!serverDevices.empty()) {
+            for(int i = 0; i < serverDevices.size(); i++) {
+                _enterButtons[i]->dispose();
+                _enterTexts[i]->dispose();
+            }
         }
-    }
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
-    serverDevices = getServerDevices();
+        serverDevices = getServerDevices();
 #endif
 
-    // Create new enter buttons/text if canvas is lobby
-    if (!_avatar->isVisible() && !serverDevices.empty()) {
-        length = serverDevices.size();
-        _enterButtons = new std::shared_ptr<cugl::Button>[length];
-        _enterTexts = new std::shared_ptr<cugl::Label>[length];
+        // Create new enter buttons/text if canvas is lobby
+        if (!_avatar->isVisible() && !serverDevices.empty()) {
+            length = serverDevices.size();
+            _enterButtons = new std::shared_ptr<cugl::Button>[length];
+            _enterTexts = new std::shared_ptr<cugl::Label>[length];
 
-        for (int i = 0; i < length; ++i) {
-            _enterButtons[i] = createServerRoomButton(i);
-            _enterTexts[i] = createServerRoomText(i);
-            //setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
+            for (int i = 0; i < length; ++i) {
+                _enterButtons[i] = createServerRoomButton(i);
+                _enterTexts[i] = createServerRoomText(i);
+                //setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
+            }
         }
+        LobbyClock = 0;
     }
-    setButtonActive(_createButton,"createButton");
 
+    setButtonActive(_createButton,"createButton");
+    LobbyClock++;
     _actions->update(timestep);
 }
 
@@ -489,13 +493,15 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
 }
 
 std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
-    std::shared_ptr<cugl::Label> _buttonText = Label::alloc((std::string) "", FONT);
+    std::shared_ptr<cugl::Label> _buttonText = Label::alloc((std::string) "                                                                        ", FONT);
     _enterButtons[device]->addChild(_buttonText);
     _buttonText->setAnchor(Vec2::ANCHOR_CENTER);
     _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);
     _buttonText->setForeground(cugl::Color4(233,225,212,255));
     std::string roomName = serverDevices.at(device);
     const char roomOccup = serverDevices.at(device).at(6);
+    std::string printString = roomName + " " + roomOccup + "/6 Players";
+    CULog("%s", printString.c_str());
     _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
     return _buttonText;
 }
