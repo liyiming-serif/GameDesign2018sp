@@ -479,6 +479,7 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             setupBluetoothClient(device);
 #endif
             gameModel.setNetworked(true);
+            gameModel.setServer(false);
             int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
             gameModel.setNoPlayers(roomOccup+1);
             gameModel.setPlayerAvatar(roomOccup, roomOccup+1);
