@@ -190,14 +190,8 @@ public class ChaosCastle extends SDLActivity {
 	}
 
 	public void changeServerName(int numPlayers){
-		if(isServer){ //is already a server, just updating numPlayers
-			String newName = "SERVER"+numPlayers+mba.getName().substring(7);
-			mba.setName(newName);
-		}
-		else{ //first time setting up this server
-			String newName = "SERVER"+numPlayers+mba.getName();
-			mba.setName(newName);
-		}
+		String newName = "SERVER"+numPlayers+origName;
+		mba.setName(newName);
 	}
 
 	public void setupBluetoothServer() {

@@ -193,11 +193,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _avatar->addChild(_player2);
     _avatar->addChild(_avatar1);
     _avatar->addChild(_avatar2);
-    
 
-    
-
-    
     
     // Create the play button.  A button has an up image and a down image
     std::shared_ptr<Texture> play_up   = _assets->get<Texture>("levels");
@@ -473,7 +469,7 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
 
 
     // Create a callback function for the JOIN button
-    _enterButton->setName("_enterButton" + device);
+    _enterButton->setName("_enterButton" + to_string(device));
     _enterButton->setListener([=] (const std::string& name, bool down) {
         if (!down) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -482,14 +478,14 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             gameModel.setNetworked(true);
             int roomOccup = stoi(to_string(serverDevices[device][6]));
             gameModel.setNoPlayers(roomOccup+1);
-            gameModel.setPlayerAvatar(roomOccup+1, roomOccup+1);
-            gameModel.setPlayerID(roomOccup+1);
+            gameModel.setPlayerAvatar(roomOccup, roomOccup+1);
+            gameModel.setPlayerID(roomOccup);
             LobbyScene::changeCanvas("avatar");
             CULog("enter");
         }
     });
     _lobby->addChild(_enterButton);
-    _enterButton->activate(input.findKey("_enterButton"+device));
+    _enterButton->activate(input.findKey("_enterButton"+to_string(device)));
 }
 
 std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
