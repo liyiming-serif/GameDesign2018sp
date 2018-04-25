@@ -85,6 +85,7 @@ public class ChaosCastle extends SDLActivity {
                     s = bConnected.dequeueState();
                 }
                 if (s == null){
+                	Log.d("CLIENT", "got nothing");
                 	return null;
 				}
 				return s.getBytes("UTF-8");
@@ -104,6 +105,7 @@ public class ChaosCastle extends SDLActivity {
 		catch(java.io.UnsupportedEncodingException e){
 			Log.e("CLIENT", "There's no reason to read this.");
 		}
+		Log.d("CLIENT", "Passed JNI barrier: in sendState");
 		int status = 0;
 	    if(isServer){
 	    	if(bConnectedRing==null || bConnectedRing.size()==0){
@@ -265,12 +267,6 @@ public class ChaosCastle extends SDLActivity {
 	public void disconnect(BluetoothConnectedThread connection) {
 		mba.setName(origName);
 		connection.cancel();
-	}
-
-	@Override
-	protected void onPause(){
-		mba.setName(origName);
-		super.onPause();
 	}
 
 	@Override
