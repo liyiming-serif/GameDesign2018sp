@@ -493,7 +493,7 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
 }
 
 std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
-    std::shared_ptr<cugl::Label> _buttonText = Label::alloc((std::string) "                                                ", FONT);
+    std::shared_ptr<cugl::Label> _buttonText = Label::alloc((std::string) "                                                                        ", FONT);
     _enterButtons[device]->addChild(_buttonText);
     _buttonText->setAnchor(Vec2::ANCHOR_CENTER);
     _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);

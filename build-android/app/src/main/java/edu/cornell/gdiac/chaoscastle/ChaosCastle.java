@@ -139,7 +139,9 @@ public class ChaosCastle extends SDLActivity {
 	 * Called by C++. Updates paired devices, then returns its toString.
 	 */
 	public String[] getServerDevices() {
+		mba.startDiscovery();
 		updatePairedDevices();
+		mba.cancelDiscovery();
 
 		if (pairedServers.size() > 0) {
 			// There are open servers. Enumerate and return their names.
