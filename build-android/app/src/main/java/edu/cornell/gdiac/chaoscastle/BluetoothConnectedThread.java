@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 
 /**
  * Created by accoo on 3/15/2018.
@@ -70,6 +71,7 @@ public class BluetoothConnectedThread extends Thread {
         do{
             try {
                 numBytes = mmInStream.read(mmBuffer);
+                mmBuffer = Arrays.copyOfRange(mmBuffer,0,numBytes);
                 acc += new String(mmBuffer, "UTF-8");
                 Log.d(TAG, "Read bytes: "+acc);
                 String delims = "[|]";
