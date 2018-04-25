@@ -26,10 +26,11 @@ public class ChaosCastle extends SDLActivity {
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static final int MAX_PLAYERS = 5;
 
-	BluetoothServerThread bServer = null;
-	BluetoothClientThread bClient = null;
-	BluetoothAdapter mba = null;
-	BluetoothConnectedThread bConnected = null;
+	BluetoothServerThread bServer;
+	BluetoothClientThread bClient;
+	BluetoothAdapter mba;
+	ArrayList<BluetoothDevice> pairedServers;
+	BluetoothConnectedThread bConnected;
 	ArrayList<BluetoothConnectedThread> bConnectedRing;
 
 	boolean isServer = false;
@@ -42,6 +43,7 @@ public class ChaosCastle extends SDLActivity {
 	    super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
+		mba = BluetoothAdapter.getDefaultAdapter();
 	}
 
 	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
@@ -81,7 +83,7 @@ public class ChaosCastle extends SDLActivity {
         }
 	}
 
-	/** Call consumeState from C++ to send one COMPLETE game state
+	/** Call sendState from C++ to send one COMPLETE game state
 	 *  to the bluetooth socket.
 	 */
 	public int sendState(byte[] byte_buffer) {
@@ -121,7 +123,6 @@ public class ChaosCastle extends SDLActivity {
 	};
 
 	public void enableBluetooth() {
-		BluetoothAdapter mba = BluetoothAdapter.getDefaultAdapter();
 		if (mba == null) {
 			System.out.print("Bluetooth Unavailable");
 		}
@@ -132,83 +133,95 @@ public class ChaosCastle extends SDLActivity {
 		}
 	}
 
-	public String[] getPairedDevicesString(BluetoothAdapter mba) {
-		Set<BluetoothDevice> pairedDevices = mba.getBondedDevices();
-		int pairedPhoneSize = 0;
+	/**
+	 * Called by C++. Updates paired devices, then returns its toString.
+	 */
+	public String[] getServerDevices() {
+		updatePairedDevices();
 
-		if (pairedDevices.size() > 0) {
-			// There are paired devices. Get the name and address of each paired device.
-			for (BluetoothDevice device : pairedDevices) {
-				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhoneSize++;
-				}
-			}
-			String[] pairedPhoneList = new String[pairedPhoneSize];
+		if (pairedServers.size() > 0) {
+			// There are open servers. Enumerate and return their names.
+			String[] result = new String[pairedServers.size()];
 			int i = 0;
-			for (BluetoothDevice device : pairedDevices) {
-				String deviceName = device.getName();
-				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhoneList[i] = deviceName;
-					i++;
-				}
+			for (BluetoothDevice device : pairedServers) {
+				result[i] = device.getName();
+				i++;
 			}
-			return pairedPhoneList;
+			return result;
 		}
 		else {
-			String[] pairedPhoneList = new String[0];
-			return pairedPhoneList;
+			return null;
 		}
 	}
 
-	public Set<BluetoothDevice> getPairedDevices(BluetoothAdapter mba) {
+	/**
+	 * Filter bonded devices by phone, then by SERVER.
+	 * Populates pairedServers with updated devices.
+	 */
+	public void updatePairedDevices() {
 		Set<BluetoothDevice> pairedDevices = mba.getBondedDevices();
-		Set<BluetoothDevice> pairedPhones = new HashSet<>();
+		pairedServers = new ArrayList<BluetoothDevice>(pairedDevices.size());
 
 		if (pairedDevices.size() > 0) {
 			// There are paired devices. Get the name and address of each paired device.
 			for (BluetoothDevice device : pairedDevices) {
 				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhones.add(device);
+				if (deviceClass == BluetoothClass.Device.PHONE_SMART &&
+						device.getName().matches("SERVER[0-9].*")) {
+					pairedServers.add(device);
 				}
 			}
 		}
-		return pairedPhones;
 	}
 
-	public void findNewDevices(BluetoothAdapter mba) {
+	public void findNewDevices() {
 		if (!mba.startDiscovery()) {
 			System.out.print("Discovery Failed");
 		}
 	}
 
-	public void makeDiscoverable(BluetoothAdapter mba) {
+	public void makeDiscoverable() {
 		Intent discoverableIntent =
 				new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
 		//discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
 		startActivity(discoverableIntent);
 	}
 
+	public void changeServerName(int numPlayers){
+		if(isServer){ //is already a server, just updating numPlayers
+			String newName = "SERVER"+numPlayers+mba.getName();
+			mba.setName(newName);
+		}
+		else{ //first time setting up this server
+			String newName = "SERVER"+numPlayers+mba.getName().substring(7);
+			mba.setName(newName);
+		}
+	}
+
 	public void setupBluetoothServer() {
+	    changeServerName(1);
 	    isServer = true;
 	    bConnectedRing = new ArrayList<BluetoothConnectedThread>(5);
 		bServer = new BluetoothServerThread(this);
 		bServer.start();
 	}
 
-	public void setupBluetoothClient() {
-		Set<BluetoothDevice> newDevices = getPairedDevices(BluetoothAdapter.getDefaultAdapter());
-		Log.e("CLIENT","about to pair devices");
-		BluetoothDevice[] newDevicesArray = newDevices.toArray(new BluetoothDevice[1]);
-		Log.d("CLIENT", "Bluetooth Device Paired " +newDevicesArray[0].getName());
-		bClient = new BluetoothClientThread(newDevicesArray[0], this);
+	public void setupBluetoothClient(int serverIndx) {
+		if(pairedServers==null){
+			Log.e("CLIENT", "Forgot to call paired devices");
+			return;
+		}
+		if(serverIndx < 0 || serverIndx >=pairedServers.size()){
+			Log.e("CLIENT", "Server "+serverIndx+" not found.");
+			return;
+		}
+		Log.d("CLIENT", "Bluetooth Device Paired " +pairedServers.get(serverIndx).getName());
+		bClient = new BluetoothClientThread(pairedServers.get(serverIndx), this);
 		bClient.start();
 	}
 
 	public boolean connected(BluetoothSocket mmSocket) {
-		Log.d("CONNECTED", "connected: Starting.");
+		Log.d("CONNECTED", "Starting connection");
 
 		// Start the thread to manage the connection and perform transmissions
         if(isServer){
@@ -216,10 +229,12 @@ public class ChaosCastle extends SDLActivity {
                 return false;
             }
             synchronized (this) {
+            	//change server name to reflect number of players
+				changeServerName(bConnectedRing.size()+1);
                 BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
                 bConnectedRing.add(b);
                 b.start();
-                Log.d("CONNECTED", "Connected Thread Starting");
+                Log.d("CONNECTED", "Another player has joined "+mba.getName());
             }
             return true;
         }
@@ -227,7 +242,7 @@ public class ChaosCastle extends SDLActivity {
             synchronized (this) {
                 bConnected = new BluetoothConnectedThread(mmSocket);
                 bConnected.start();
-				Log.d("CONNECTED", "Connected Thread Starting");
+				Log.d("CONNECTED", "Joining server!");
             }
             return true;
         }
