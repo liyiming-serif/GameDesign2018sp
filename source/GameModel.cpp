@@ -66,21 +66,23 @@ void GameModel::update(float deltaTime){
 //                    CULog("RandNet State Change %d %s \n", k, read_buffers[k]);
 //                }
                 //CULog("RandNet State Change %s \n", read_byte_buffer);
-                updateStateServer(read_buffers);
+                if (read_buffers[0] != NULL) {
+                    updateStateServer(read_buffers);
 
-                char *write_byte_buffer = return_buffer(produceStateChangeServer());
-                //TODO: Write to network
+                    char *write_byte_buffer = return_buffer(produceStateChangeServer());
+                    //TODO: Write to network
 
-                CULog("State Change %s \n", write_byte_buffer);
+                    CULog("State Change %s \n", write_byte_buffer);
 
-                if (sendState(write_byte_buffer) == 1){
-                    CULog("At least one write failure");
-                } else {
-                    CULog("Write success");
+                    if (sendState(write_byte_buffer) == 1){
+                        CULog("At least one write failure");
+                    } else {
+                        CULog("Write success");
+                    }
+                    clock = 0;
+                    delete[] write_byte_buffer;
+                    //delete read_buffers;
                 }
-                clock = 0;
-                delete[] write_byte_buffer;
-                //delete read_buffers;
             }
             else {
                 const char *write_byte_buffer = return_buffer(produceStateChangeClient());

@@ -485,6 +485,7 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
     });
     _lobby->addChild(_enterButton);
     _enterButton->activate(input.findKey("_enterButton"+to_string(device)));
+    return _enterButton;
 }
 
 std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
@@ -496,6 +497,7 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     std::string roomName = serverDevices.at(device);
     const char roomOccup = serverDevices.at(device).at(6);
     _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
+    return _buttonText;
 }
 
 

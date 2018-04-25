@@ -187,6 +187,7 @@ private:
             return NULL;
         }
         else {
+            CULog("Read Byte Array is not Null");
             jbyte* buffer = env->GetByteArrayElements(array, NULL);
             jsize size = env->GetArrayLength(array);
             char *byte_buffer = new char[size];
