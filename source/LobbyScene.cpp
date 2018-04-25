@@ -249,6 +249,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
     _levelsButton->activate(input.generateKey("levelsMULTIButton"));
+    input.generateKey("_enterButton0");
     input.generateKey("_enterButton1");
     input.generateKey("_enterButton2");
     input.generateKey("_enterButton3");
@@ -370,7 +371,7 @@ void LobbyScene::update(float timestep){
         for (int i = 0; i < length; ++i) {
             _enterButtons[i] = createServerRoomButton(i);
             _enterTexts[i] = createServerRoomText(i);
-            setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
+            //setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
         }
     }
     setButtonActive(_createButton,"createButton");
