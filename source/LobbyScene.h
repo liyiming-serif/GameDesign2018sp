@@ -196,17 +196,18 @@ public:
 
         // Call the Java method
         jobjectArray array = (jobjectArray) env->CallObjectMethod(activity, method_id);
+        std::vector<std::string> Devices;
 
         if (array == NULL) {
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
 
-            return NULL;
+            return Devices;
         }
         else {
             int stringCount = env->GetArrayLength(array);
 
-            std::vector<std::string> Devices;
+
             for (int i=0; i<stringCount; i++) {
                 jstring string = (jstring) (env->GetObjectArrayElement(array, i));
                 const char *rawString = env->GetStringUTFChars(string, 0);

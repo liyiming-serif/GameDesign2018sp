@@ -251,8 +251,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     input.generateKey("_enterButton3");
     input.generateKey("_enterButton4");
 
-    serverDevices = NULL;
-    length = NULL;
+    length = 0;
     
     return true;
 }
@@ -347,8 +346,8 @@ void LobbyScene::update(float timestep){
     }
 
     // Delete all enter buttons/text
-    if (serverDevices != NULL && length != NULL) {
-        for(int i = 0; i < length; i++) {
+    if (!serverDevices.empty()) {
+        for(int i = 0; i < serverDevices.size(); i++) {
             _enterButtons[i]->dispose();
             _enterTexts[i]->dispose();
         }
@@ -359,7 +358,7 @@ void LobbyScene::update(float timestep){
 #endif
 
     // Create new enter buttons/text if canvas is lobby
-    if (!_avatar->isVisible() && serverDevices != NULL) {
+    if (!_avatar->isVisible() && !serverDevices.empty()) {
         length = serverDevices.size();
         _enterButtons = new std::shared_ptr<cugl::Button>[length];
         _enterTexts = new std::shared_ptr<cugl::Label>[length];
