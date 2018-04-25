@@ -29,6 +29,7 @@ public class ChaosCastle extends SDLActivity {
 	BluetoothServerThread bServer;
 	BluetoothClientThread bClient;
 	BluetoothAdapter mba;
+	String origName;
 	ArrayList<BluetoothDevice> pairedServers;
 	BluetoothConnectedThread bConnected;
 	ArrayList<BluetoothConnectedThread> bConnectedRing;
@@ -44,6 +45,7 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
+		origName = mba.getName();
 	}
 
 	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
@@ -189,11 +191,11 @@ public class ChaosCastle extends SDLActivity {
 
 	public void changeServerName(int numPlayers){
 		if(isServer){ //is already a server, just updating numPlayers
-			String newName = "SERVER"+numPlayers+mba.getName();
+			String newName = "SERVER"+numPlayers+mba.getName().substring(7);
 			mba.setName(newName);
 		}
 		else{ //first time setting up this server
-			String newName = "SERVER"+numPlayers+mba.getName().substring(7);
+			String newName = "SERVER"+numPlayers+mba.getName();
 			mba.setName(newName);
 		}
 	}
@@ -257,6 +259,7 @@ public class ChaosCastle extends SDLActivity {
 		super.onDestroy();
 
 		// Don't forget to unregister the ACTION_FOUND receiver.
+		mba.setName(origName);
 		unregisterReceiver(mReceiver);
 	}
 	
