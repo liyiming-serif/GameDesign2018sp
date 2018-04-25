@@ -208,6 +208,10 @@ Uint32 InputController::generateKey(const std::string & name) {
 Uint32 InputController::findKey(const std::string & name) {
 	//Fuck c++ hashmaps
 	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
+    std::string out = name;
+    if(i==_buttonMap.end()){
+        CULog("%s",out.c_str());
+    }
 	assert(i != _buttonMap.end());
 	return i->second;
 }
