@@ -251,7 +251,14 @@ public class ChaosCastle extends SDLActivity {
 	}
 
 	public void disconnect(BluetoothConnectedThread connection) {
+		mba.setName(origName);
 		connection.cancel();
+	}
+
+	@Override
+	protected void onStop(){
+		mba.setName(origName);
+		super.onStop();
 	}
 
 	@Override
@@ -259,7 +266,6 @@ public class ChaosCastle extends SDLActivity {
 		super.onDestroy();
 
 		// Don't forget to unregister the ACTION_FOUND receiver.
-		mba.setName(origName);
 		unregisterReceiver(mReceiver);
 	}
 	
