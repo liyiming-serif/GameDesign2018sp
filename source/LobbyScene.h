@@ -75,6 +75,8 @@ protected:
 
     size_t length;
 
+    int LobbyClock = 0;
+
     
     
 public:
@@ -201,6 +203,7 @@ public:
         if (array == NULL) {
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
+            env->DeleteLocalRef(array);
 
             return Devices;
         }
@@ -214,11 +217,13 @@ public:
                 Devices.push_back((std::string)rawString);
                 // Don't forget to call `ReleaseStringUTFChars` when you're done.
                 env->ReleaseStringUTFChars(string, rawString);
+                env->DeleteLocalRef(string);
             }
 
             // Free local references
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
+            env->DeleteLocalRef(array);
 
             return Devices;
         }
