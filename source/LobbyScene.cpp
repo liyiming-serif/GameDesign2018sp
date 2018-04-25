@@ -253,6 +253,9 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     input.generateKey("_enterButton2");
     input.generateKey("_enterButton3");
     input.generateKey("_enterButton4");
+
+    serverDevices = NULL;
+    length = NULL;
     
     return true;
 }
@@ -353,7 +356,11 @@ void LobbyScene::update(float timestep){
             _enterTexts[i]->dispose();
         }
     }
+
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
     serverDevices = getServerDevices();
+#endif
+
     // Create new enter buttons/text if canvas is lobby
     if (!_avatar->isVisible() && serverDevices != NULL) {
         length = sizeof(serverDevices)/sizeof(serverDevices[0]);
