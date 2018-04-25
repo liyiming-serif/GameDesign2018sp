@@ -206,13 +206,33 @@ private:
         jmethodID method_id = env->GetMethodID(clazz, "sendState",
                                                "([B)I");
 
-        // Call the Java method
-        int response = env->CallIntMethod(activity, method_id, byte_buffer);
+        if (byte_buffer != NULL) {
+            // Call the Java method
 
-        // Free local references
-        env->DeleteLocalRef(activity);
-        env->DeleteLocalRef(clazz);
-        return response;
+            int n=0;
+            char* p = byte_buffer;
+            while(*p++){
+                n++;
+            } if(n<=0) {
+                CULog("sendState: byte_buffer not big enough");
+                return NULL;
+            }
+            jbyteArray arr = env->NewByteArray(n);
+            env->SetByteArrayRegion(arr,0,n, (jbyte*)byte_buffer);
+
+            int response = env->CallIntMethod(activity, method_id, arr);
+
+            // Free local references
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return response;
+        }
+        else {
+            CULog("sendState: attempt to send Null message");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
     }
 #endif
 };
