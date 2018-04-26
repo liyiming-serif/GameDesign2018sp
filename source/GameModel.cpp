@@ -277,11 +277,17 @@ std::string GameModel::produceStateChangeClient() {
     for (int i = 0; i < 6; ++i) {
         _tmpHealthString+= to_string(gameModel._castleHealth[i]) + ":" + to_string(gameModel._deltaCastleHealth[i]) + " ";
         gameModel._deltaCastleHealth[i] = 0;
-        _tmpEnemyString += gameModel._enemyChanges;
-        gameModel._enemyChanges = "";
         _tmpOilString += to_string(gameModel._oilPoured[i]) + " ";
         gameModel._oilPoured[i] = 0;
     }
+
+    if (gameModel._enemyChanges == "") {
+        _tmpEnemyString += "  ";
+    }
+    else {
+        _tmpEnemyString += gameModel._enemyChanges;
+    }
+    gameModel._enemyChanges = "";
 
     for (int i = 0; i < 3; ++i) {
         _tmpAmmoString += to_string(gameModel._deltaAmmo[i]) + " ";
