@@ -55,8 +55,8 @@ void GameModel::dispose() {
 void GameModel::update(float deltaTime){
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
-        if (clock == 300) {
-            if (gameModel.server) {
+        if (clock >= 100) {
+            if (gameModel.isServer()) {
                 //TODO: Read from network
                 //Prints the messages from the clients
                 char **read_buffers = gameModel.ConsumeStateServer();
@@ -85,6 +85,7 @@ void GameModel::update(float deltaTime){
                 //delete read_buffers;
             }
             else {
+                CULog("Client Update Cycle");
                 char *write_byte_buffer = return_buffer(produceStateChangeClient());
                 //TODO: Write to network
                 CULog("State Change: %s \n", write_byte_buffer);
@@ -107,7 +108,6 @@ void GameModel::update(float deltaTime){
         else {
             clock++;
         }
-        CULog("Clock value is: %i", clock);
     }
 
 	//update enemies
@@ -590,8 +590,10 @@ void GameModel::updateStateServer(char** ConsumedStates) {
             enemySubToken = strtok(tmpEnemyChanges[i], " :");
             while (enemySubToken != NULL) {
                 strcpy(enemyName, enemySubToken);
+                CULog("enemy Name: %s", enemyName);
                 enemySubToken = strtok(NULL, " :");
                 strcpy(enemyDamage, enemySubToken);
+                CULog("enemy Damage: %s", enemyDamage);
                 for (int j = 0; j<6; ++j) {
                     std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[j].find (enemyName);
                     if ( got != gameModel._enemyArrayMaster[j].end() ) {

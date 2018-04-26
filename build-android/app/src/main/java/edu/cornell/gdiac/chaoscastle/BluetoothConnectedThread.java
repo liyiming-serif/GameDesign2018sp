@@ -71,19 +71,19 @@ public class BluetoothConnectedThread extends Thread {
         do{
             try {
                 numBytes = mmInStream.read(mmBuffer);
-                mmBuffer = Arrays.copyOfRange(mmBuffer,0,numBytes);
+//                mmBuffer = Arrays.copyOfRange(mmBuffer,0,numBytes);
                 acc += new String(mmBuffer, "UTF-8");
                 Log.d(TAG, "Read bytes: "+acc);
                 String delims = "[|]";
                 len = Integer.parseInt(acc.split(delims)[0]);
                 Log.d(TAG, "length is: "+len);
-                Log.d(TAG, "numBytes is: "+numBytes);
+                Log.d(TAG, "numBytes is: "+acc.length());
             } catch (IOException e) {
                 Log.d(TAG, "Input stream was disconnected", e);
                 success = false;
                 break;
             }
-        }while(acc.length()<len);
+        }while(acc.length()<len+1);
 
         if(success) {
             return acc;
