@@ -83,7 +83,7 @@ public class ChaosCastle extends SDLActivity {
             try {
                 String s;
                 synchronized (this) {
-                    s = bConnected.dequeueState();
+                    s = bConnected.popState();
                 }
                 if (s == null){
                 	Log.d("CLIENT", "got nothing");

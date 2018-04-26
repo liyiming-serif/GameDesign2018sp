@@ -55,8 +55,8 @@ void GameModel::dispose() {
 void GameModel::update(float deltaTime){
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
-        if (clock >= 100) {
-            if (gameModel.isServer()) {
+        if (clock >= 30) {
+            if (gameModel.server) {
                 //TODO: Read from network
                 //Prints the messages from the clients
                 char **read_buffers = gameModel.ConsumeStateServer();
@@ -116,9 +116,11 @@ void GameModel::update(float deltaTime){
 			Vec2 pos = enemy.second->getPos();
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
+                CULog("Enemy Collided with wall");
 				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
-                if (enemy.second->getType() == 1) {
+                if (enemy.second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
                     gameModel.addEnemyChange(enemy.first, 0-enemy.second->getHealth());
+                    CULog("Enemy %s collided with wall", enemy.first.c_str());
                 }
 				gameModel.changeWallHealth(wall, -enemy.second->getDamage());
 			}
@@ -235,6 +237,10 @@ std::string GameModel::produceStateChangeServer() {
             _tmpEnemyString += it->second->toString() + " ";
         }
         _tmpOilString += to_string(gameModel._oilCooldown[i]) + " ";
+    }
+
+    if (_tmpEnemyString == "") {
+        _tmpEnemyString = "  ";
     }
 
     for (int i = 0; i < 3; ++i) {
@@ -581,13 +587,14 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     // Apply all damage created by all players to the respective monsters
     CULog("Applying enemy changes");
     char* enemySubToken;
-    char* enemyName;
-    char* enemyDamage;
+    char enemyName[4];
+    char enemyDamage[4];
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpEnemyChanges[i] != NULL && tmpEnemyChanges[i] != "") {
             CULog("Enemy Changes to apply: %s", tmpEnemyChanges[i]);
             enemySubToken = strtok(tmpEnemyChanges[i], " :");
+            CULog("Enemysubtoken: %s", enemySubToken);
             while (enemySubToken != NULL) {
                 strcpy(enemyName, enemySubToken);
                 CULog("enemy Name: %s", enemyName);
@@ -601,13 +608,16 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                         thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyDamage));
                     }
                 }
+                CULog("Enemy updated successfully");
                 enemySubToken = strtok(NULL, " :");
+                CULog("Enemysubtoken in loop: %s", enemySubToken);
             }
             free(tmpEnemyChanges[i]);
         }
     }
 
     // Aggregate player info changes; if players occupy the same room and it's not overworld, kick player with higher ID
+    CULog("Applying player changes");
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpPlayerChanges[i] != NULL) {
             char *roomToken = strtok(tmpPlayerChanges[i], ":");
@@ -679,6 +689,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         section++;
     }
     // Starting with castle health, reset all gamestate to server state
+    CULog("Updating Wall Health");
     char* wallHealthToken = strtok(castleHealthToken, " ");
     section = 0;
     while (wallHealthToken != NULL) {
@@ -688,6 +699,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     }
 
     // Next, update all existing enemies with new health/pos, and spawn new enemies according to server state
+    CULog("Updating enemies");
     char* enemyPosX;
     char* enemyPosY;
     char* enemyWall;
@@ -742,6 +754,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 
 
     // Update arrow ammo with new values
+    CULog("Updating ammo");
     char* arrowToken = strtok(ammoToken, " ");
     section = 0;
     while (arrowToken != NULL) {
@@ -751,6 +764,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     }
 
     // Update player rooms with new values
+    CULog("Updating player room");
     char* playerRoom = strtok(playerInfoToken, " ");
     section = 0;
     while (playerRoom != NULL) {
@@ -760,6 +774,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     }
 
     // Update oilcooldowns to match server
+    CULog("updating oil cooldown");
     char* cooldown = strtok(oilToken, " ");
     section = 0;
     while (cooldown != NULL) {

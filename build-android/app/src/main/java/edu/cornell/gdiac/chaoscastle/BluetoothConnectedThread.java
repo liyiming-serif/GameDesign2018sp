@@ -73,17 +73,15 @@ public class BluetoothConnectedThread extends Thread {
                 numBytes = mmInStream.read(mmBuffer);
 //                mmBuffer = Arrays.copyOfRange(mmBuffer,0,numBytes);
                 acc += new String(mmBuffer, "UTF-8");
-                Log.d(TAG, "Read bytes: "+acc);
+                //Log.d(TAG, "Read bytes: "+acc);
                 String delims = "[|]";
                 len = Integer.parseInt(acc.split(delims)[0]);
-                Log.d(TAG, "length is: "+len);
-                Log.d(TAG, "numBytes is: "+acc.length());
             } catch (IOException e) {
                 Log.d(TAG, "Input stream was disconnected", e);
                 success = false;
                 break;
             }
-        }while(acc.length()<len+1);
+        }while(acc.length()<len);
 
         if(success) {
             return acc;
@@ -98,6 +96,16 @@ public class BluetoothConnectedThread extends Thread {
         String result;
         synchronized (this){
             result = gameStates.poll();
+        }
+        return result;
+    }
+
+    /**dequeueState for client. Client always needs most up to date game state.*/
+    public String popState(){
+        String result;
+        synchronized (this){
+            result = gameStates.pollLast();
+            gameStates.clear();
         }
         return result;
     }
