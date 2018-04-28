@@ -23,6 +23,7 @@ protected:
     
     std::shared_ptr<cugl::Button> _ammoTOcastle;
     std::shared_ptr<cugl::Button> _hammer;
+    std::shared_ptr<cugl::Button> _hammer2;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _cursor;
@@ -48,6 +49,8 @@ protected:
     std::shared_ptr<cugl::Label> _ammoText;
     
     bool move_direction;
+    
+
     
     
 public:

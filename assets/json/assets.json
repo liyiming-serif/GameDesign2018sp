@@ -84,6 +84,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "ballista_floor_s": {
+            "file":     "textures/Ballista/BallistaFloor_s.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_floor_d": {
+            "file":     "textures/Ballista/BallistaFloor_d.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "ballista_icon": {
             "file":     "textures/Ballista/BallistaIcon.png",
             "minfilter":"nearest",
@@ -154,6 +168,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "lookout_floor_s": {
+            "file":     "textures/Lookout/LookoutFloor_s.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_floor_d": {
+            "file":     "textures/Lookout/LookoutFloor_d.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "lookout_icon": {
             "file":     "textures/Lookout/LookoutIcon.png",
             "minfilter":"nearest",
@@ -167,6 +195,20 @@
 			"magfilter":"linear",
 			"wrapS":    "clamp",
 			"wrapT":    "clamp"
+        },
+        "lookout_view_s": {
+            "file":     "textures/Lookout/LookoutView_s.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_view_d": {
+            "file":     "textures/Lookout/LookoutView_d.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
         },
         "basement_floor": {
             "file":     "textures/Basement/BasementFloor.png",
@@ -234,22 +276,22 @@
         "hammer_animation": {
             "file":     "textures/Basement/repair_animation.png"
         },
-        "catapult_floor": {
-            "file":     "textures/Catapult/CatapultFloor.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "catapult_icon": {
-            "file":     "textures/Catapult/CatapultIcon.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
         "oil_floor": {
             "file":     "textures/Oil/OilFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_floor_s": {
+            "file":     "textures/Oil/OilFloor_s.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_floor_d": {
+            "file":     "textures/Oil/OilFloor_d.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -304,29 +346,8 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "levelpage_lvl1": {
-            "file":     "textures/Menu/levels/lvl1.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "levelpage_lvl2": {
-            "file":     "textures/Menu/levels/lvl2.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "levelpage_lvl3": {
-            "file":     "textures/Menu/levels/lvl3.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "levelpage_lvl4": {
-            "file":     "textures/Menu/levels/lvl4.png",
+        "levelpage_button": {
+            "file":     "textures/Menu/levels/levelButton.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -586,6 +607,10 @@
         "futura": {
             "file":     "fonts/Futura.ttf",
             "size":     64
+        },
+        "futura_levels": {
+            "file":     "fonts/Futura.ttf",
+            "size":     90
         }
 	}
 }
