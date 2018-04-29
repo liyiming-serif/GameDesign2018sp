@@ -151,7 +151,9 @@ void CastleApp::onShutdown() {
  * @param timestep  The amount of time (in seconds) since the last frame
  */
 void CastleApp::update(float timestep) {
+    CULog("Are we here");
 	input.pollInputs();
+    CULog("first");
     if (!_loaded && _loadingScene.isActive()) { //is loading
         _loadingScene.update(0.01f);
         if (_loadingScene.isPending()){
@@ -179,6 +181,7 @@ void CastleApp::update(float timestep) {
             _loaded=true;
         }
     } else {
+        CULog("second");
         if(_currscene==MENU) {
             _menuScene.update(timestep);
             if(_menuScene.switchscene!=0){
@@ -254,8 +257,10 @@ void CastleApp::update(float timestep) {
             gameModel.update(timestep);
         }
     }
+    CULog("end");
     //refresh the input controller
 	input.update(timestep);
+    CULog("end2");
 
 }
 
