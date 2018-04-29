@@ -92,6 +92,7 @@ void CastleApp::onStartup() {
     _loadingScene.init(_assets);
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
+    //TODO:FIX THIS AHHHHH
     _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
     _players = -1;
@@ -268,10 +269,14 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _players = _lobbyScene.getNumPlayers();
     }
 	if (_currscene == LEVELS && nextscene == OVERWORLD) {
+		//TODO: replace 0 with level
 		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
 	}
-	if (_currscene == OVERWORLD && nextscene == MENU){
-	    reset();
+	if (_currscene == MENU && nextscene == LEVELS){
+	    _players = 1;
+	}
+	if (_currscene == LOBBY && nextscene == LEVELS){
+	    _players = _lobbyScene.getNumPlayers();
 	}
     switch(nextscene){
         case MENU:
@@ -354,7 +359,6 @@ void CastleApp::draw() {
         }
     }
 }
-
 //only reset from overworld scene
 void CastleApp::reset(){
     _menuScene.setActive(true);

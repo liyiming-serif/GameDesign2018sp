@@ -71,8 +71,6 @@ std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
     gameModel._unlockedRooms["repair"] = _roomsJSON->getBool("repair");
     gameModel._unlockedRooms["ammo"] = _roomsJSON->getBool("ammo");
 
-    //initialize ammo count
-	gameModel.setArrowAmmo(0, _levelJSON->getInt("ammo"));
 
     _enemiesJSON = _levelJSON->get("enemies");
     for(int i = 1; i<=_enemiesJSON->getInt("numSpawn"); i++){

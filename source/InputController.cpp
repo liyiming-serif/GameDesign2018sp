@@ -136,7 +136,6 @@ void InputController::dispose(){
 #endif
         _active = false;
     }
-    _buttonMap.clear();
 }
 
 void InputController::clear() {
