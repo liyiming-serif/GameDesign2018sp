@@ -89,7 +89,12 @@ bool InputController::init(){
 void InputController::pollInputs() {
 #ifdef CU_TOUCH_SCREEN
 	Accelerometer* acc = Input::get<Accelerometer>();
-	_oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    if(acc == nullptr){
+        CULog("no accel");
+    }
+    else {
+        _oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    }
 #else
 	Keyboard* keys = Input::get<Keyboard>();
 	if (keys->keyDown(TILT_KEY)) {
@@ -116,14 +121,14 @@ void InputController::dispose(){
     if (_active) {
 #ifdef CU_TOUCH_SCREEN
 		//TOUCH+ACCELEROMETER INPUT
-		Input::deactivate<Accelerometer>();
+		//Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
         touch->removeBeginListener(LISTENER_KEY);
         touch->removeEndListener(LISTENER_KEY);
         touch->removeMotionListener(LISTENER_KEY);
 #else
         //MOUSE+KEYBOARD INPUT
-		Input::deactivate<Keyboard>();
+		//Input::deactivate<Keyboard>();
         Mouse* mouse = Input::get<Mouse>();
 		mouse->removePressListener(LISTENER_KEY);
 		mouse->removeReleaseListener(LISTENER_KEY);
@@ -198,23 +203,23 @@ void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focu
 }
 
 Uint32 InputController::generateKey(const std::string & name) {
-	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
-	//New button key
-	if (i == _buttonMap.end()) {
-		_buttonMap[name] = _currMaxKey++;
-		return _currMaxKey - 1;
-	}
-	//Old button key
-	return i->second;
+		std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
+    	//New button key
+    	if (i == _buttonMap.end()) {
+    		_buttonMap[name] = _currMaxKey++;
+    		return _currMaxKey - 1;
+    	}
+    	//Old button key
+    	return i->second;
 }
 
 Uint32 InputController::findKey(const std::string & name) {
 	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
-	//New button key
-	if (i == _buttonMap.end()) {
-		_buttonMap[name] = _currMaxKey++;
-		return _currMaxKey - 1;
-	}
-	//Old button key
+		//New button key
+    	if (i == _buttonMap.end()) {
+    		_buttonMap[name] = _currMaxKey++;
+    		return _currMaxKey - 1;
+    	}
+    	//Old button key
 	return i->second;
 }

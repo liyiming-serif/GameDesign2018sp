@@ -77,6 +77,10 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	// Create the enemy set
 	_enemyArray.clear();
 	_enemiesToFree.clear();
+
+	for(int i = 0; i<6; i++){
+	gameModel.setOilCooldown(i, 0);
+	}
     
 	// Create the physics world
 	_world = ObstacleWorld::alloc(Rect(Vec2::ZERO, _size / DRAW_SCALE), Vec2::ZERO);
