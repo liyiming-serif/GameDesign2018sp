@@ -95,7 +95,12 @@ bool InputController::init(){
 void InputController::pollInputs() {
 #ifdef CU_TOUCH_SCREEN
 	Accelerometer* acc = Input::get<Accelerometer>();
-	_oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    if(acc == nullptr){
+        CULog("no accel");
+    }
+    else {
+        _oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    }
 #else
 	Keyboard* keys = Input::get<Keyboard>();
 	if (keys->keyDown(TILT_KEY)) {
