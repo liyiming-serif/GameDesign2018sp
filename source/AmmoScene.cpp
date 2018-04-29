@@ -180,11 +180,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setPosition(_size.width*1.38, _size.height - _size.height/12);
     _ammoText->setForeground(cugl::Color4(249,242,210,255));
     addChild(_ammoText);
-    
-
-
-    //initialize ammo count
-	gameModel.setArrowAmmo(0, 30);
 
     return true;
 }

@@ -45,9 +45,13 @@ bool InputController::init(){
 #ifdef CU_TOUCH_SCREEN
 	// ACCELEROMETER CONTROLS
 	success = Input::activate<Accelerometer>();
+	/*
 	if (!success) {
+	CULog("accel 1");
 		throw "Accelerometer not detected :(";
+		CULog("accel2");
 	}
+	*/
 
 	// TOUCH CONTROLS
     Touchscreen* touch = Input::get<Touchscreen>();
@@ -65,7 +69,9 @@ bool InputController::init(){
 	//KEYBOARD CONTROLS
 	success = Input::activate<Keyboard>();
 	if (!success) {
+	CULog("key1");
 		throw "Keyboard not detected :(";
+		CULog("key2");
 	}
 
     //MOUSE CONTROLS
@@ -113,8 +119,10 @@ void InputController::update(float deltaTime) {
  * Uninstalls listeners from primary input; deactivates aux input.
  */
 void InputController::dispose(){
+CULog("disposing");
     if (_active) {
 #ifdef CU_TOUCH_SCREEN
+        CULog("deactivate");
 		//TOUCH+ACCELEROMETER INPUT
 		Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
@@ -131,6 +139,7 @@ void InputController::dispose(){
 #endif
         _active = false;
     }
+    _buttonMap.clear();
 }
 
 void InputController::clear() {

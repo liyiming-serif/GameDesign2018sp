@@ -146,6 +146,9 @@ public:
      * causing the application to be deleted.
      */
     virtual void onShutdown() override;
+
+    //Moves to menu and resets the game
+    void reset();
     
     /**
      * The method called to update the application data.
