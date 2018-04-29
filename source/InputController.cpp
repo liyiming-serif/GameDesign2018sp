@@ -207,16 +207,23 @@ void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focu
 }
 
 Uint32 InputController::generateKey(const std::string & name) {
-	//duplicate button name
-	assert(_buttonMap.find(name) == _buttonMap.end());
-
-	_buttonMap[name] = _currMaxKey++;
-	return _currMaxKey - 1;
+	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
+	//New button key
+	if (i == _buttonMap.end()) {
+		_buttonMap[name] = _currMaxKey++;
+		return _currMaxKey - 1;
+	}
+	//Old button key
+	return i->second;
 }
 
 Uint32 InputController::findKey(const std::string & name) {
-	//Fuck c++ hashmaps
 	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
-	assert(i != _buttonMap.end());
+	//New button key
+	if (i == _buttonMap.end()) {
+		_buttonMap[name] = _currMaxKey++;
+		return _currMaxKey - 1;
+	}
+	//Old button key
 	return i->second;
 }
