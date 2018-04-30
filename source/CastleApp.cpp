@@ -361,7 +361,6 @@ void CastleApp::reset(){
     _currscene = MENU;
     _overworldScene.setActive(false);
 
-    _levelScene.dispose();
     _overworldScene.dispose();
     _ballistaScene.dispose();
     _lookoutScene.dispose();
@@ -369,7 +368,6 @@ void CastleApp::reset(){
     _mageScene.dispose();
     _ammoScene.dispose();
     _oilScene.dispose();
-    _lobbyScene.dispose();
     _spawnController.dispose();
     gameModel.dispose();
     input.dispose();
@@ -394,8 +392,4 @@ void CastleApp::reset(){
     _ammoScene.setActive(false);
     _oilScene.init(_assets);
     _oilScene.setActive(false, 0);
-    _lobbyScene.init(_assets);
-    _lobbyScene.setActive(false);
-    _levelScene.init(_assets);
-    _levelScene.setActive(false, 0);
 }
