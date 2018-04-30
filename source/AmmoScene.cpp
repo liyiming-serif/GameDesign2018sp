@@ -73,9 +73,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     std::shared_ptr<Texture> icon  = _assets->get<Texture>("ammo_cursor");
     _cursor = PolygonNode::allocWithTexture(icon);
-    _cursor->setScale(.5f); // Magic number to rescale asset
+    _cursor->setScale(.4f); // Magic number to rescale asset
     _cursor->setAnchor(Vec2::ANCHOR_CENTER);
-    _cursor->setPosition(_cursor->getWidth()/2,40);
+    _cursor->setPosition(_cursor->getWidth()/2,_size.height/11.5);
     addChild(_cursor);
     
     // Create the back button.  A button has an up image and a down image
@@ -126,7 +126,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_J, _jackpot);
-                    _jackpot->setColor(Color4 (0,200,0,200));
+                    _jackpot->setColor(Color4 (232,227,201,255));
                     CULog("do move");
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
@@ -140,7 +140,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_O, _jackpot);
-                    _jackpot->setColor(Color4 (220,220,0,220));
+                    _jackpot->setColor(Color4 (212,179,84,255));
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+5);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
@@ -153,7 +153,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_B, _jackpot);
-                    _jackpot->setColor(Color4 (200,0,0,200));
+                    _jackpot->setColor(Color4 (159,48,46,255));
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+2);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
@@ -177,7 +177,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_J, _jackpot);
-                    _jackpot->setColor(Color4 (0,200,0,200));
+                    _jackpot->setColor(Color4 (232,227,201,255));
                     CULog("do move");
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
@@ -190,7 +190,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
-                    _jackpot->setColor(Color4 (220,220,0,220));
+                    _jackpot->setColor(Color4 (212,179,84,255));
                     AmmoScene::doMoveUp(_moveup_O, _jackpot);
 
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+5);
@@ -205,7 +205,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _jackpot->setPosition(675,300);
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_B, _jackpot);
-                    _jackpot->setColor(Color4 (200,0,0,200));
+                    _jackpot->setColor(Color4 (159,48,46,255));
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+2);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
@@ -236,13 +236,13 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hammer2->activate(input.generateKey("hammer2"));
     
     
-    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,40),DURATION);
-    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,40),DURATION);
+    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,_size.height/11.5),DURATION);
+    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,_size.height/11.5),DURATION);
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
     _ammoText->setPosition(_size.width*1.38, _size.height - _size.height/12);
-    _ammoText->setForeground(cugl::Color4(249,242,210,255));
+    _ammoText->setForeground(cugl::Color4(232,227,201,255));
     addChild(_ammoText);
     
 
@@ -288,14 +288,14 @@ void AmmoScene::update(float timestep){
     if (move_direction  && !_actions->isActive(ACT_KEY) && !_actions->isActive(ACT_KEY+2)){
         CULog("move 1");
         //_cursor->setPosition(Vec2(_cursor->getWidth()/2,40));
-        _cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,40));
+        _cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,_size.height/11.5));
         doMove(_moveright);
         move_direction = !move_direction;
     }
     if (!move_direction && !_actions->isActive(ACT_KEY) && !_actions->isActive(ACT_KEY+2)){
         CULog("move 2");
         //_cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,40));
-        _cursor->setPosition(Vec2(_cursor->getWidth()/2,40));
+        _cursor->setPosition(Vec2(_cursor->getWidth()/2,_size.height/11.5));
         doMove(_moveleft);
         move_direction = !move_direction;
         
