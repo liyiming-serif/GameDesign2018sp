@@ -77,6 +77,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
     _mageTOcastle->activate(input.generateKey("mageTOcastle"));
     
+
     return true;
 }
 
@@ -91,6 +92,7 @@ void MageScene::dispose() {
 }
 
 void MageScene::update(float timestep){
+
 }
 
 
@@ -98,12 +100,15 @@ void MageScene::update(float timestep){
 void MageScene::setActive(bool active){
     _active = active;
     switchscene = 0;
+	GestureInput* gest = Input::get<GestureInput>();
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _mageTOcastle->activate(input.findKey("mageTOcastle"));
+		gest->resume();
     }
     else{
         _mageTOcastle->deactivate();
+		gest->pause();
     }
 }

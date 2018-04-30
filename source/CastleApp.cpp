@@ -72,8 +72,9 @@ void CastleApp::onStartup() {
 #else
     Input::activate<Mouse>();
 #endif
-	input.init();
+	Input::activate<GestureInput>();
 
+	input.init();
 	gameModel.init();
 
     // You have to attach the individual loaders for each asset type
@@ -92,10 +93,12 @@ void CastleApp::onStartup() {
     _loadingScene.init(_assets);
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
-    //TODO:FIX THIS AHHHHH
     _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
     _players = -1;
+
+	CULog("gestures saved at: %s", Application::getSaveDirectory().c_str());
+
     Application::onStartup(); // YOU MUST END with call to parent
 
 }
@@ -136,7 +139,7 @@ void CastleApp::onShutdown() {
 #else
     Input::deactivate<Mouse>();
 #endif
-
+	Input::deactivate<GestureInput>();
     Application::onShutdown();
 }
 

@@ -26,7 +26,6 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     
     
-    
 public:
     // Constructors
     MageScene() : Scene() {}
