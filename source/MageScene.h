@@ -28,7 +28,7 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     
     std::shared_ptr<cugl::Node>  _hex;
-    
+	std::shared_ptr<cugl::Node> _hexCanvas;
     
     std::shared_ptr<cugl::Button> _northWallButton;
     std::shared_ptr<cugl::Button> _northeastWallButton;

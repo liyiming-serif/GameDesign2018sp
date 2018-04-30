@@ -34,6 +34,7 @@
 //  Version: 12/20/16
 //
 #include <cugl/cugl.h>
+#include <SDL/SDL.h>
 
 using namespace cugl;
 

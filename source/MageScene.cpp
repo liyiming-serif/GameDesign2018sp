@@ -27,6 +27,8 @@ using namespace cugl;
 #define FLOOR_SCALE    0.55f
 #define BUTTON_SCALE    2.0f
 
+#define GESTURE_TIMEOUT 420
+
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
