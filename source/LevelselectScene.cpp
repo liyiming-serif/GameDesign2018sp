@@ -529,7 +529,7 @@ void LevelselectScene::update(float timestep){
         _cloud2->setColor(cloudC);
         _cloud3->setColor(cloudC);
         _cloud4->setColor(cloudC);
-        lerp +=.0005;
+        lerp +=.002;
       //  CULog("lerp %f",lerp);
     }
 
@@ -542,7 +542,7 @@ void LevelselectScene::update(float timestep){
         _cloud2->setColor(cloudC);
         _cloud3->setColor(cloudC);
         _cloud4->setColor(cloudC);
-        lerp +=.0005;
+        lerp +=.002;
        // CULog("lerp %f",lerp);
         
     }
@@ -556,7 +556,7 @@ void LevelselectScene::update(float timestep){
         _cloud2->setColor(cloudC);
         _cloud3->setColor(cloudC);
         _cloud4->setColor(cloudC);
-        lerp +=.0005;
+        lerp +=.002;
        // CULog("lerp %f",lerp);
     }
     
