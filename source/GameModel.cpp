@@ -59,17 +59,11 @@ void GameModel::update(float deltaTime){
             //TODO: Read from network
             //Prints the messages from the clients
             char **read_buffers = gameModel.ConsumeStateServer();
-//                char *read_buffers[_noPlayers-1];
-//                for (int k = 0; k < _noPlayers-1; ++k) {
-//                    read_buffers[k] = random_buffer_client(k);
-//                    CULog("RandNet State Change %d %s \n", k, read_buffers[k]);
-//                }
-            //CULog("RandNet State Change %s \n", read_byte_buffer);
+
             if (read_buffers[0] != NULL) {
                 gameModel.updateStateServer(read_buffers);
             }
             for (int l = 0; l<_noPlayers-1; l++) {
-                CULog("Read state from Client %i: %s", l, read_buffers[l]);
                 delete[] read_buffers[l];
             }
 
@@ -88,17 +82,17 @@ void GameModel::update(float deltaTime){
             //delete[] read_buffers;
             clock = 0;
         }
-        else if (!gameModel.server && clock == 0) {
+        else if (!gameModel.server && clock%10 == 0) {
             //TODO: Read from network
             char *read_buffer = gameModel.ConsumeStateClient();
             CULog("Read Server State: %s \n", read_buffer);
             if (read_buffer != NULL) {
                 gameModel.updateStateClient(read_buffer);
             }
-            CULog("Client Update Cycle");
             delete[] read_buffer;
+            clock++;
         }
-        else if (!gameModel.server && clock == 15) {
+        else if (!gameModel.server && clock%15 == 0) {
             char *write_byte_buffer = return_buffer(produceStateChangeClient());
             //TODO: Write to network
             CULog("State Change: %s \n", write_byte_buffer);
@@ -107,7 +101,11 @@ void GameModel::update(float deltaTime){
             } else {
                 CULog("Write success");
             }
-            clock = 0;
+            if (clock == 15) {
+                clock++;
+            } else {
+                clock = 0;
+            }
             delete[] write_byte_buffer;
         }
         else {
@@ -116,20 +114,14 @@ void GameModel::update(float deltaTime){
     }
 
 	//update enemies
-    CULog("Updating enemies");
-    CULog("EnemyArray size: %i", gameModel._enemyArrayMaster.size());
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
-        CULog("Updating enemies at wall: %i", wall);
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
-            CULog("Looking at enemy: %s", it->first.c_str());
 			Vec2 pos = it->second->getPos();
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
-                CULog("Enemy Collided with wall");
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
                 if (it->second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
                     gameModel.addEnemyChange(it->first, 0-it->second->getHealth());
-                    CULog("Enemy %s collided with wall", it->first.c_str());
                 }
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
 			}
@@ -151,7 +143,6 @@ void GameModel::update(float deltaTime){
 	}
 
 	//delete enemies here to not disrupt iterator
-    CULog("Deleting Enemies");
 	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
 		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
 			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
@@ -244,9 +235,7 @@ std::string GameModel::produceStateChangeServer() {
     for (int i = 0; i < 6; ++i) {
         _tmpHealthString+= to_string(gameModel._castleHealth[i]) + " ";
         for (auto it = gameModel._enemyArrayMaster[i].begin(); it != gameModel._enemyArrayMaster[i].end(); ++it) {
-            CULog("Enemy Name Before: %s", it->first.c_str());
             _tmpEnemyString += it->second->toString() + " ";
-            CULog("Enemy Name After: %s", it->first.c_str());
         }
         _tmpOilString += to_string(gameModel._oilCooldown[i]) + " ";
     }
@@ -345,7 +334,6 @@ char* GameModel::ConsumeStateClient() {
 void GameModel::updateStateServer(char** ConsumedStates) {
 
     // Break down all read states into component changes to apply
-    CULog("Breaking down ConsumedStates");
     char * tmpHealthChanges[gameModel._noPlayers-1];
     char * tmpAmmoChanges[gameModel._noPlayers-1];
     char * tmpEnemyChanges[gameModel._noPlayers-1];
@@ -712,56 +700,46 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 
     // Next, update all existing enemies with new health/pos, and spawn new enemies according to server state
     CULog("Updating enemies");
-    char* enemyPosX;
-    char* enemyPosY;
-    char* enemyWall;
-    char* enemyType;
-    char* enemyHealth;
-    char* enemyName;
-    char* enemyDataToken = strtok(enemyToken, " ");
-    if (enemyDataToken != NULL) {
-        section = 0;
-        int subsection = 0;
-        while (enemyDataToken != NULL) {
-            char * enemyDataPoint = strtok(enemyDataToken, ":");
-            while (enemyDataPoint != NULL) {
-                if (subsection == 0) {
-                    enemyName = enemyDataPoint;
-                } else if (subsection == 1) {
-                    enemyHealth = enemyDataPoint;
-                } else if (subsection == 2) {
-                    enemyPosX = enemyDataPoint;
-                } else if (subsection == 3) {
-                    enemyPosY = enemyDataPoint;
-                } else if (subsection == 4) {
-                    enemyType = enemyDataPoint;
-                } else if (subsection == 5) {
-                    enemyWall = enemyDataPoint;
-                }
-                enemyDataPoint = strtok(NULL, ":");
-                subsection++;
-            }
-            std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[std::stoi(enemyWall)].find (enemyName);
+    char enemyPosX[10];
+    char enemyPosY[10];
+    char enemyWall[1];
+    char enemyType[1];
+    char enemyHealth[2];
+    char enemyName[4];
+    char * enemySubToken;
+    enemySubToken = strtok(enemyToken, " :");
+    while (enemySubToken != NULL) {
+        strcpy(enemyName, enemySubToken);
+        enemySubToken = strtok(NULL, " :");
+        strcpy(enemyHealth, enemySubToken);
+        enemySubToken = strtok(NULL, " :");
+        strcpy(enemyPosX, enemySubToken);
+        enemySubToken = strtok(NULL, " :");
+        strcpy(enemyPosY, enemySubToken);
+        enemySubToken = strtok(NULL, " :");
+        strcpy(enemyType, enemySubToken);
+        enemySubToken = strtok(NULL, " :");
+        strcpy(enemyWall, enemySubToken);
 
-            if ( got == gameModel._enemyArrayMaster[std::stoi(enemyWall)].end() ) {
-                // Allocate a new EnemyDataModel in memory
-                std::shared_ptr<EnemyDataModel> e =
-                        EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
-                                              Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
-                                              std::stoi(enemyType), std::stoi(enemyWall));
+        std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[std::stoi(enemyWall)].find (enemyName);
 
-                if (e != nullptr) {
-                    gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
-                }
+        if ( got == gameModel._enemyArrayMaster[std::stoi(enemyWall)].end() ) {
+            // Allocate a new EnemyDataModel in memory
+            std::shared_ptr<EnemyDataModel> e =
+                    EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
+                                          Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
+                                          std::stoi(enemyType), std::stoi(enemyWall));
+
+            if (e != nullptr) {
+                gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
             }
-            else {
-                std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
-                thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyHealth));
-                thisEnemy->setPos(Vec2(std::stof(enemyPosX), std::stof(enemyPosY)));
-            }
-            enemyDataToken = strtok(NULL, " ");
-            section++;
         }
+        else {
+            std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
+            thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyHealth));
+            //thisEnemy->setPos(Vec2(std::stof(enemyPosX), std::stof(enemyPosY)));
+        }
+        enemySubToken = strtok(NULL, " :");
     }
 
 
@@ -884,8 +862,6 @@ char* GameModel::random_buffer_server() {
 
 char* GameModel::return_buffer(const std::string& string) {
     char* return_string = new char[string.length() + 1];
-    CULog("Return Buffer: %s", return_string);
-    CULog("Return Buffer pt.2: %s, Length: %i", string, string.length());
     strcpy(return_string, string.c_str());
     return return_string;
 }
