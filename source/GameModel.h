@@ -188,6 +188,7 @@ private:
             env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
 
             // Free local references
+            env->DeleteLocalRef(array);
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
             return byte_buffer;
@@ -226,6 +227,8 @@ private:
             int response = env->CallIntMethod(activity, method_id, arr);
 
             // Free local references
+            env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
+            env->DeleteLocalRef(arr);
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
             return response;

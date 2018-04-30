@@ -69,7 +69,7 @@ public:
 	int getAtkCounter() { return _atkCounter; }
 	void setAtkCounter(int c) { _atkCounter = c; }
 
-	const std::string& toString() const {
+	std::string toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"
 			+std::to_string(_type)+":"+std::to_string(_wall);
 	}

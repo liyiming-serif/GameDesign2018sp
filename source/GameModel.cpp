@@ -55,55 +55,60 @@ void GameModel::dispose() {
 void GameModel::update(float deltaTime){
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
-        if (clock >= 30) {
-            if (gameModel.server) {
-                //TODO: Read from network
-                //Prints the messages from the clients
-                char **read_buffers = gameModel.ConsumeStateServer();
+        if (gameModel.server && clock == 10) {
+            //TODO: Read from network
+            //Prints the messages from the clients
+            char **read_buffers = gameModel.ConsumeStateServer();
 //                char *read_buffers[_noPlayers-1];
 //                for (int k = 0; k < _noPlayers-1; ++k) {
 //                    read_buffers[k] = random_buffer_client(k);
 //                    CULog("RandNet State Change %d %s \n", k, read_buffers[k]);
 //                }
-                //CULog("RandNet State Change %s \n", read_byte_buffer);
-                if (read_buffers[0] != NULL) {
-                    gameModel.updateStateServer(read_buffers);
-                }
-
-                char *write_byte_buffer = return_buffer(produceStateChangeServer());
-                //TODO: Write to network
-
-                CULog("State Change %s \n", write_byte_buffer);
-
-                if (gameModel.sendState(write_byte_buffer) == 1){
-                    CULog("At least one write failure");
-                } else {
-                    CULog("Write success");
-                }
-                clock = 0;
-                delete[] write_byte_buffer;
-                //delete read_buffers;
+            //CULog("RandNet State Change %s \n", read_byte_buffer);
+            if (read_buffers[0] != NULL) {
+                gameModel.updateStateServer(read_buffers);
             }
-            else {
-                CULog("Client Update Cycle");
-                char *write_byte_buffer = return_buffer(produceStateChangeClient());
-                //TODO: Write to network
-                CULog("State Change: %s \n", write_byte_buffer);
-                if (gameModel.sendState(write_byte_buffer) == 1){
-                    CULog("At least one write failure");
-                } else {
-                    CULog("Write success");
-                }
-                //TODO: Read from network
-                char *read_buffer = gameModel.ConsumeStateClient();
-                CULog("Read Server State: %s \n", read_buffer);
-                if (read_buffer != NULL) {
-                    gameModel.updateStateClient(read_buffer);
-                }
-                clock = 0;
-                delete[] write_byte_buffer;
-                delete[] read_buffer;
+            for (int l = 0; l<_noPlayers-1; l++) {
+                CULog("Read state from Client %i: %s", l, read_buffers[l]);
+                delete[] read_buffers[l];
             }
+
+            char *write_byte_buffer = return_buffer(produceStateChangeServer());
+            //TODO: Write to network
+
+            CULog("State Change %s \n", write_byte_buffer);
+
+            if (gameModel.sendState(write_byte_buffer) == 1){
+                CULog("At least one write failure");
+            } else {
+                CULog("Write success");
+            }
+
+            delete[] write_byte_buffer;
+            //delete[] read_buffers;
+            clock = 0;
+        }
+        else if (!gameModel.server && clock == 0) {
+            //TODO: Read from network
+            char *read_buffer = gameModel.ConsumeStateClient();
+            CULog("Read Server State: %s \n", read_buffer);
+            if (read_buffer != NULL) {
+                gameModel.updateStateClient(read_buffer);
+            }
+            CULog("Client Update Cycle");
+            delete[] read_buffer;
+        }
+        else if (!gameModel.server && clock == 15) {
+            char *write_byte_buffer = return_buffer(produceStateChangeClient());
+            //TODO: Write to network
+            CULog("State Change: %s \n", write_byte_buffer);
+            if (gameModel.sendState(write_byte_buffer) == 1){
+                CULog("At least one write failure");
+            } else {
+                CULog("Write success");
+            }
+            clock = 0;
+            delete[] write_byte_buffer;
         }
         else {
             clock++;
@@ -111,37 +116,42 @@ void GameModel::update(float deltaTime){
     }
 
 	//update enemies
+    CULog("Updating enemies");
+    CULog("EnemyArray size: %i", gameModel._enemyArrayMaster.size());
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
-		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
-			Vec2 pos = enemy.second->getPos();
+        CULog("Updating enemies at wall: %i", wall);
+		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
+            CULog("Looking at enemy: %s", it->first.c_str());
+			Vec2 pos = it->second->getPos();
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
                 CULog("Enemy Collided with wall");
-				gameModel._enemiesToFreeMaster[wall].push_back(enemy.first);
-                if (enemy.second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
-                    gameModel.addEnemyChange(enemy.first, 0-enemy.second->getHealth());
-                    CULog("Enemy %s collided with wall", enemy.first.c_str());
+				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
+                if (it->second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
+                    gameModel.addEnemyChange(it->first, 0-it->second->getHealth());
+                    CULog("Enemy %s collided with wall", it->first.c_str());
                 }
-				gameModel.changeWallHealth(wall, -enemy.second->getDamage());
+				gameModel.changeWallHealth(wall, -it->second->getDamage());
 			}
-			else if(pos.y>=enemy.second->getAtkRange()){
+			else if(pos.y>=it->second->getAtkRange()){
 				// move enemy
-				enemy.second->setPos(Vec2(pos.x,pos.y-(BASE_SPEED*enemy.second->getSpeed())));
+				it->second->setPos(Vec2(pos.x,pos.y-(BASE_SPEED*it->second->getSpeed())));
 			}
 			else {
 				// enemy in position; begin attacking
-				if (enemy.second->getAtkCounter() <= 0) {
-					gameModel.changeWallHealth(wall, -enemy.second->getDamage());
-					enemy.second->setAtkCounter(enemy.second->getAtkSpeed());
+				if (it->second->getAtkCounter() <= 0) {
+					gameModel.changeWallHealth(wall, -it->second->getDamage());
+					it->second->setAtkCounter(it->second->getAtkSpeed());
 				}
 				else {
-					enemy.second->setAtkCounter(enemy.second->getAtkCounter() - 1);
+					it->second->setAtkCounter(it->second->getAtkCounter() - 1);
 				}
 			}
 		}
 	}
 
 	//delete enemies here to not disrupt iterator
+    CULog("Deleting Enemies");
 	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
 		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
 			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
@@ -234,7 +244,9 @@ std::string GameModel::produceStateChangeServer() {
     for (int i = 0; i < 6; ++i) {
         _tmpHealthString+= to_string(gameModel._castleHealth[i]) + " ";
         for (auto it = gameModel._enemyArrayMaster[i].begin(); it != gameModel._enemyArrayMaster[i].end(); ++it) {
+            CULog("Enemy Name Before: %s", it->first.c_str());
             _tmpEnemyString += it->second->toString() + " ";
+            CULog("Enemy Name After: %s", it->first.c_str());
         }
         _tmpOilString += to_string(gameModel._oilCooldown[i]) + " ";
     }
@@ -264,13 +276,13 @@ std::string GameModel::produceStateChangeServer() {
     _tmpOilString.pop_back();
 
     //TODO: Game recovery state (currserver, gameclock, etc)
-    std::string premessage = _tmpHealthString + "|" + _tmpEnemyString + "|" +
+    std::string premessage = "|" + _tmpHealthString + "|" + _tmpEnemyString + "|" +
             _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
 
     int premessageSize = premessage.length();
     int messageSizeSize = to_string(premessageSize + to_string(premessageSize).length()).length();
     int totalmessageSize = premessageSize + messageSizeSize;
-    return to_string(totalmessageSize) + "|" + premessage;
+    return to_string(totalmessageSize) + premessage;
 }
 
 std::string GameModel::produceStateChangeClient() {
@@ -872,6 +884,8 @@ char* GameModel::random_buffer_server() {
 
 char* GameModel::return_buffer(const std::string& string) {
     char* return_string = new char[string.length() + 1];
+    CULog("Return Buffer: %s", return_string);
+    CULog("Return Buffer pt.2: %s, Length: %i", string, string.length());
     strcpy(return_string, string.c_str());
     return return_string;
 }
