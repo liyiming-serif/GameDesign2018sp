@@ -751,11 +751,25 @@ void RepairScene::setActive(bool active){
         Application::get()->setClearColor(Color4(0,0,0,255));
         _repairTOcastle->activate(input.findKey("repairTOcastle"));
         _northWallButton->activate(input.findKey("northWallButton"));
-        _northeastWallButton->activate(input.findKey("northeastWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));
-        _southWallButton->activate(input.findKey("southWallButton"));
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
-        _northwestWallButton->activate(input.findKey("northwestWallButton"));
+        
+        
+        if (player_TEST > 1) {
+            _northeastWallButton->activate(input.findKey("northeastWallButton"));
+            _southWallButton->activate(input.findKey("southWallButton"));
+            _northwestWallButton->activate(input.findKey("northwestWallButton"));
+        }
+        else {
+            _northeastText->setVisible(false);
+            _northeastWallButton->setColor(Color4(10,10,10,255));
+            _southText->setVisible(false);
+            _southWallButton->setColor(Color4(10,10,10,255));
+            _northwestText->setVisible(false);
+            _northwestWallButton->setColor(Color4(10,10,10,255));
+        }
+        
+        
     }
     else{
         _repairTOcastle->deactivate();

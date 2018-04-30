@@ -46,7 +46,6 @@ protected:
 
 
     //buttons
-    std::shared_ptr<cugl::Button> _quitButton;
     std::shared_ptr<cugl::Button> _menuButton;
     //Ballista Buttons
         std::shared_ptr<cugl::Button> _ballistaNorth;
@@ -123,6 +122,9 @@ public:
     float stairs;
     cugl::Vec2 castleOrigin;
     int currentCastleFloor;
+    
+    bool click;
+    int player_TEST=2;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
@@ -186,6 +188,22 @@ public:
      * @param action The move action
      */
     void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    
+    /**
+     * Disables all buttons
+     *
+     *
+     */
+    void disableButtons();
+    
+    /**
+     * Enables all buttons
+     *
+     *
+     */
+    void enableButtons();
+    
     
 
 };

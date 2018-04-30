@@ -19,6 +19,10 @@ using namespace cugl;
 #define LEVELS      9
 #define LOBBY       10
 
+
+#define JUNGLE  2
+#define SNOW  3
+
 bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
@@ -38,11 +42,24 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("lookout_view");
-    _background = PolygonNode::allocWithTexture(texture);
+    std::shared_ptr<Texture> texture_s  = _assets->get<Texture>("lookout_view_s");
+    std::shared_ptr<Texture> texture_d  = _assets->get<Texture>("lookout_view_d");
+    if (gameModel.level<JUNGLE) {
+        _background = PolygonNode::allocWithTexture(texture);
+    }
+    else if (gameModel.level<SNOW) {
+         _background = PolygonNode::allocWithTexture(texture_s);
+    }
+    else {
+         _background = PolygonNode::allocWithTexture(texture_d);
+    }
     _background->setScale(0.5625f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(0,0);
     addChild(_background);
+    
+    
+    
 
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
