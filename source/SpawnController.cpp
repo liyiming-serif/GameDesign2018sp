@@ -50,7 +50,8 @@ void SpawnController::update(float deltaTime) {
 			std::string ekey;
 			do {
 				ekey = genRandName(ENEMY_NAME_LEN);
-			} while (gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].find(ekey)
+			} while ((int)(_enemyArray[_currSpawnIndex][5])<= gameModel._enemyArrayMaster.size() &&
+			gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].find(ekey)
 				!= gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].end());
 
 			// Allocate a new EnemyDataModel in memory

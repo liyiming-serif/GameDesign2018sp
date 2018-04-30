@@ -163,6 +163,8 @@ public:
     //when moving from overworld scene to menu, reset game states
     void reset();
 
+    void initializeRooms();
+
     void swapscenes(int nextscene, int direction);
     
     /**
