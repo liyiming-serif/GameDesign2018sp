@@ -92,7 +92,6 @@ void CastleApp::onStartup() {
     _loadingScene.init(_assets);
     // Queue up the other assets
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
-    //TODO:FIX THIS AHHHHH
     _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
     _players = -1;
@@ -272,6 +271,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
 		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
         gameModel.level=_levelScene.level;
 	}
+	if(_currscene == OVERWORLD && nextscene == MENU){
+	    reset();
+	}
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
@@ -352,4 +354,48 @@ void CastleApp::draw() {
             _levelScene.render(_batch);
         }
     }
+}
+//only reset from overworld scene
+void CastleApp::reset(){
+    _menuScene.setActive(true);
+    _currscene = MENU;
+    _overworldScene.setActive(false);
+
+    _levelScene.dispose();
+    _overworldScene.dispose();
+    _ballistaScene.dispose();
+    _lookoutScene.dispose();
+    _repairScene.dispose();
+    _mageScene.dispose();
+    _ammoScene.dispose();
+    _oilScene.dispose();
+    _lobbyScene.dispose();
+    _spawnController.dispose();
+    gameModel.dispose();
+    input.dispose();
+    #ifdef CU_TOUCH_SCREEN
+        Input::activate<Touchscreen>();
+    #else
+        Input::activate<Mouse>();
+    #endif
+    input.init();
+    gameModel.init();
+    _ballistaScene.init(_assets);
+    _ballistaScene.setActive(false, 0);
+    _lookoutScene.init(_assets);
+    _lookoutScene.setActive(false);
+    _repairScene.init(_assets);
+    _repairScene.setActive(false);
+    _overworldScene.init(_assets);
+    _overworldScene.setActive(false);
+    _mageScene.init(_assets);
+    _mageScene.setActive(false);
+    _ammoScene.init(_assets);
+    _ammoScene.setActive(false);
+    _oilScene.init(_assets);
+    _oilScene.setActive(false, 0);
+    _lobbyScene.init(_assets);
+    _lobbyScene.setActive(false);
+    _levelScene.init(_assets);
+    _levelScene.setActive(false, 0);
 }

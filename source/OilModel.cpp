@@ -6,12 +6,12 @@
 
 #include "OilModel.h"
 
-#define NUM_ROWS 7
-#define NUM_COLS 3
+#define NUM_ROWS 6
+#define NUM_COLS 4
 
 #define POURING_FRAME_START 0
-#define RESETTING_FRAME_START 5
-#define REFILLING_FRAME_START 9
+#define RESETTING_FRAME_START 6
+#define REFILLING_FRAME_START 12
 
 using namespace cugl;
 
