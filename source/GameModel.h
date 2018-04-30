@@ -42,6 +42,8 @@ public:
 
     bool init();
 
+    int level;
+
     std::unordered_map<std::string, bool> _unlockedRooms;
 
     //Keeps track of all enemies.

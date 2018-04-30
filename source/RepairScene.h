@@ -88,6 +88,8 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _healthbar_low;
     std::shared_ptr<cugl::PolygonNode> _health_frame;
     
+    int player_TEST=2;
+    
     
     
 public:

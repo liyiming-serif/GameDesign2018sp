@@ -14,6 +14,8 @@
 #include "InputController.h"
 #include <cugl/cugl.h>
 
+using namespace cugl;
+
 class MageScene : public cugl::Scene{
 protected:
     cugl::Size _size;
@@ -24,6 +26,24 @@ protected:
     std::shared_ptr<cugl::Button> _mageTOcastle;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    
+    std::shared_ptr<cugl::Node>  _hex;
+    
+    
+    std::shared_ptr<cugl::Button> _northWallButton;
+    std::shared_ptr<cugl::Button> _northeastWallButton;
+    std::shared_ptr<cugl::Button> _southeastWallButton;
+    std::shared_ptr<cugl::Button> _southWallButton;
+    std::shared_ptr<cugl::Button> _southwestWallButton;
+    std::shared_ptr<cugl::Button> _northwestWallButton;
+    
+    std::shared_ptr<PolygonNode> plain_floor;
+    std::shared_ptr<PolygonNode> northWall_floor;
+    std::shared_ptr<PolygonNode> northeastWall_floor;
+    std::shared_ptr<PolygonNode> southeastWall_floor;
+    std::shared_ptr<PolygonNode> southWall_floor;
+    std::shared_ptr<PolygonNode> southwestWall_floor;
+    std::shared_ptr<PolygonNode> northwestWall_floor;
     
     
 public:
@@ -41,6 +61,8 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+    
+    void setSide (std::string side);
 };
 
 #endif /* MageScene_h */
