@@ -50,7 +50,17 @@ public class ChaosCastle extends SDLActivity {
 		}
 	}
 
-	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
+	public int getPlayers(){
+	    if(isServer){
+			if(bConnectedRing!=null){
+				return bConnectedRing.size()+1;
+			}
+			return 1;
+		}
+		else{
+	    	return -1;
+		}
+    }
 
 	/** Call consumeState from C++ to get one COMPLETE game state
 	 *  from the bluetooth socket.
