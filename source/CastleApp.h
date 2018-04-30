@@ -159,6 +159,10 @@ public:
      * @param timestep  The amount of time (in seconds) since the last frame
      */
     virtual void update(float timestep) override;
+
+    //when moving from overworld scene to menu, reset game states
+    void reset();
+
     void swapscenes(int nextscene, int direction);
     
     /**

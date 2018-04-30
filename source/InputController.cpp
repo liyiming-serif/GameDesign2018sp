@@ -18,7 +18,7 @@ using namespace cugl;
 /**
  * Creates a new input controller.
  *
- * This constructor does NOT do any initialzation.  It simply allocates the
+ * This constructor does NOT do any initialization.  It simply allocates the
  * object. This makes it safe to use this class without a pointer.
  */
 InputController::InputController() :
@@ -38,7 +38,7 @@ InputController::InputController() :
 /**
  * Install listeners and enable control schemes.
  * Either enable Mouse+Keyboard or Touch+Accelerometer
- * @return true if properly initiallized
+ * @return true if properly initialized
  */
 bool InputController::init(){
     bool success = true;
