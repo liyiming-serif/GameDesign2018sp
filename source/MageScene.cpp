@@ -27,7 +27,7 @@ using namespace cugl;
 #define FLOOR_SCALE    0.55f
 #define BUTTON_SCALE    2.0f
 
-#define GESTURE_TIMEOUT 420
+#define GESTURE_TIMEOUT 300
 #define HEX_CANVAS_SIZE 50 //length of hexagon size
 
 
@@ -280,12 +280,13 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	//Alloc the path node that traces the spell gesture
 	_spellPathVertices.clear();
 	_spellPath = PathNode::alloc();
-	_spellPath->setStroke(4.0f);
+	_spellPath->setStroke(2.0f);
 	_spellPath->setClosed(false);
 	_spellPath->setJoint(PathJoint::ROUND);
 	_spellPath->setCap(PathCap::ROUND);
 	_spellPath->setColor(Color4(0, 0, 0));
 	_spellPath->setAbsolute(true);
+	_spellPath->setName("spellPath");
 	addChild(_spellPath);
 
     return true;
@@ -313,25 +314,41 @@ void MageScene::dispose() {
     }
 }
 
+void MageScene::resetSpellPath() {
+	_spellPathVertices.clear();
+	removeChildByName("spellPath");
+	_spellPath = nullptr;
+
+	_spellPath = PathNode::alloc();
+	_spellPath->setStroke(2.0f);
+	_spellPath->setClosed(false);
+	_spellPath->setJoint(PathJoint::ROUND);
+	_spellPath->setCap(PathCap::ROUND);
+	_spellPath->setColor(Color4(0, 0, 0));
+	_spellPath->setAbsolute(true);
+	_spellPath->setName("spellPath");
+	addChild(_spellPath);
+}
+
 void MageScene::update(float timestep){
 	//poll inputs
 	if (input.isPressed()) {
 		if (_spellTimer <= 0) {
 			//Took too long to cast spell
-			_spellPathVertices.clear();
-			_spellPath->setPolygon(Poly2());
+			resetSpellPath();
 		}
 		else {
 			//Trace the attempted spell
-			_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
-			_spellPath->setPolygon(_spellPathVertices);
 			_spellTimer--;
+			if (_spellTimer % 10 == 0) {//stupid SDL limitations
+				_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
+				_spellPath->setPolygon(_spellPathVertices);
+			}
 		}
 	}
 	if (input.justReleased()) {
 		//Done casting spell
-		_spellPathVertices.clear();
-		_spellPath->setPolygon(Poly2());
+		resetSpellPath();
 		_spellTimer = GESTURE_TIMEOUT;
 	}
 }
@@ -373,8 +390,7 @@ void MageScene::setActive(bool active){
     _active = active;
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
-	_spellPathVertices.clear();
-	_spellPath->setPolygon(Poly2());
+	resetSpellPath();
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));

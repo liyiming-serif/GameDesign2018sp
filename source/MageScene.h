@@ -48,7 +48,9 @@ protected:
     std::shared_ptr<PolygonNode> southwestWall_floor;
     std::shared_ptr<PolygonNode> northwestWall_floor;
     
-    
+    // Helpers
+	void resetSpellPath();
+
 public:
     // Constructors
     MageScene() : Scene() {}
