@@ -30,8 +30,8 @@ protected:
     
     std::shared_ptr<cugl::Node>  _hex;
 	std::shared_ptr<cugl::Rect> _hexCanvas;
-	std::shared_ptr<cugl::PathNode> _spellPath;
-	std::vector<cugl::Vec2> _spellPathVertices;
+	std::shared_ptr<cugl::Node> _spellPath;
+	std::shared_ptr<cugl::Vec2> _pointerPrev;
     
     std::shared_ptr<cugl::Button> _northWallButton;
     std::shared_ptr<cugl::Button> _northeastWallButton;
@@ -49,7 +49,7 @@ protected:
     std::shared_ptr<PolygonNode> northwestWall_floor;
     
     // Helpers
-	void resetSpellPath();
+	void addSpellVertex(const cugl::Vec2& origin, const cugl::Vec2& dest);
 
 public:
     // Constructors

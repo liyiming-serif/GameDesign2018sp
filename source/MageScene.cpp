@@ -275,18 +275,11 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 	//Alloc the canvas for drawing spells
 	float hexheight = HEX_CANVAS_SIZE*sqrtf(3);
-	_hexCanvas = std::make_shared<Rect>(_size.width*0.6f*HEX_CANVAS_SIZE/2,_size.height*.06f*hexheight/2.0f,HEX_CANVAS_SIZE,hexheight);
+	_hexCanvas = std::make_shared<Rect>(_size.width*0.6f+HEX_CANVAS_SIZE/2.0f,_size.height*.06f+hexheight/2.0f,HEX_CANVAS_SIZE,hexheight);
 
-	//Alloc the path node that traces the spell gesture
-	_spellPathVertices.clear();
-	_spellPath = PathNode::alloc();
-	_spellPath->setStroke(2.0f);
-	_spellPath->setClosed(false);
-	_spellPath->setJoint(PathJoint::ROUND);
-	_spellPath->setCap(PathCap::ROUND);
-	_spellPath->setColor(Color4(0, 0, 0));
-	_spellPath->setAbsolute(true);
-	_spellPath->setName("spellPath");
+	//Alloc the canvas node that traces the spell gesture
+	
+	_spellPath = Node::alloc();
 	addChild(_spellPath);
 
     return true;
@@ -301,8 +294,9 @@ void MageScene::dispose() {
         _active = false;
         _hex = nullptr;
 		_hexCanvas = nullptr;
+		_spellPath->removeAllChildren();
 		_spellPath = nullptr;
-		_spellPathVertices.clear();
+		_pointerPrev = nullptr;
         plain_floor = nullptr;
         northWall_floor = nullptr;
         northeastWall_floor = nullptr;
@@ -314,20 +308,14 @@ void MageScene::dispose() {
     }
 }
 
-void MageScene::resetSpellPath() {
-	_spellPathVertices.clear();
-	removeChildByName("spellPath");
-	_spellPath = nullptr;
+void MageScene::addSpellVertex(const Vec2& origin, const Vec2& dest) {
+	std::shared_ptr<PathNode> edge = PathNode::allocWithLine(origin, dest,2.0f);
+	edge->setAbsolute(true);
+	edge->setClosed(false);
+	edge->setColor(Color4(0, 0, 0));
+	edge->setPosition(origin);
 
-	_spellPath = PathNode::alloc();
-	_spellPath->setStroke(2.0f);
-	_spellPath->setClosed(false);
-	_spellPath->setJoint(PathJoint::ROUND);
-	_spellPath->setCap(PathCap::ROUND);
-	_spellPath->setColor(Color4(0, 0, 0));
-	_spellPath->setAbsolute(true);
-	_spellPath->setName("spellPath");
-	addChild(_spellPath);
+	_spellPath->addChild(edge);
 }
 
 void MageScene::update(float timestep){
@@ -335,20 +323,23 @@ void MageScene::update(float timestep){
 	if (input.isPressed()) {
 		if (_spellTimer <= 0) {
 			//Took too long to cast spell
-			resetSpellPath();
+			_pointerPrev = nullptr;
+			_spellPath->removeAllChildren();
 		}
 		else {
 			//Trace the attempted spell
 			_spellTimer--;
-			if (_spellTimer % 10 == 0) {//stupid SDL limitations
-				_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
-				_spellPath->setPolygon(_spellPathVertices);
+			if (_pointerPrev != nullptr) {
+				addSpellVertex(screenToWorldCoords(*_pointerPrev), screenToWorldCoords(input.pointerPos()));
 			}
+			_pointerPrev = nullptr;
+			_pointerPrev = std::make_shared<Vec2>(input.pointerPos().x,input.pointerPos().y);
 		}
 	}
 	if (input.justReleased()) {
 		//Done casting spell
-		resetSpellPath();
+		_spellPath->removeAllChildren();
+		_pointerPrev = nullptr;
 		_spellTimer = GESTURE_TIMEOUT;
 	}
 }
@@ -390,7 +381,7 @@ void MageScene::setActive(bool active){
     _active = active;
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
-	resetSpellPath();
+	_spellPath->removeAllChildren();
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
