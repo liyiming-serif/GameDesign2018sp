@@ -19,6 +19,7 @@ using namespace cugl;
 class MageScene : public cugl::Scene{
 protected:
     cugl::Size _size;
+	int _spellTimer;
     
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -28,7 +29,9 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     
     std::shared_ptr<cugl::Node>  _hex;
-	std::shared_ptr<cugl::Node> _hexCanvas;
+	std::shared_ptr<cugl::Rect> _hexCanvas;
+	std::shared_ptr<cugl::PathNode> _spellPath;
+	std::vector<cugl::Vec2> _spellPathVertices;
     
     std::shared_ptr<cugl::Button> _northWallButton;
     std::shared_ptr<cugl::Button> _northeastWallButton;

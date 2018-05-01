@@ -28,6 +28,8 @@ using namespace cugl;
 #define BUTTON_SCALE    2.0f
 
 #define GESTURE_TIMEOUT 420
+#define HEX_CANVAS_SIZE 50 //length of hexagon size
+
 
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -43,6 +45,8 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     Application::get()->setClearColor(Color4(132,180,113,255));
     
     switchscene = 0;
+
+	_spellTimer = GESTURE_TIMEOUT;
     
     _assets = assets;
     
@@ -268,6 +272,22 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _southWallButton->activate(input.generateKey("southWallButton_mage"));
     _southwestWallButton->activate(input.generateKey("southwestWallButton_mage"));
     _northwestWallButton->activate(input.generateKey("northwestWallButton_mage"));
+
+	//Alloc the canvas for drawing spells
+	float hexheight = HEX_CANVAS_SIZE*sqrtf(3);
+	_hexCanvas = std::make_shared<Rect>(_size.width*0.6f*HEX_CANVAS_SIZE/2,_size.height*.06f*hexheight/2.0f,HEX_CANVAS_SIZE,hexheight);
+
+	//Alloc the path node that traces the spell gesture
+	_spellPathVertices.clear();
+	_spellPath = PathNode::alloc();
+	_spellPath->setStroke(4.0f);
+	_spellPath->setClosed(false);
+	_spellPath->setJoint(PathJoint::ROUND);
+	_spellPath->setCap(PathCap::ROUND);
+	_spellPath->setColor(Color4(0, 0, 0));
+	_spellPath->setAbsolute(true);
+	addChild(_spellPath);
+
     return true;
 }
 
@@ -279,6 +299,9 @@ void MageScene::dispose() {
         _background = nullptr;
         _active = false;
         _hex = nullptr;
+		_hexCanvas = nullptr;
+		_spellPath = nullptr;
+		_spellPathVertices.clear();
         plain_floor = nullptr;
         northWall_floor = nullptr;
         northeastWall_floor = nullptr;
@@ -286,11 +309,31 @@ void MageScene::dispose() {
         southWall_floor = nullptr;
         southeastWall_floor =nullptr;
         southwestWall_floor = nullptr;
+		
     }
 }
 
 void MageScene::update(float timestep){
-
+	//poll inputs
+	if (input.isPressed()) {
+		if (_spellTimer <= 0) {
+			//Took too long to cast spell
+			_spellPathVertices.clear();
+			_spellPath->setPolygon(Poly2());
+		}
+		else {
+			//Trace the attempted spell
+			_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
+			_spellPath->setPolygon(_spellPathVertices);
+			_spellTimer--;
+		}
+	}
+	if (input.justReleased()) {
+		//Done casting spell
+		_spellPathVertices.clear();
+		_spellPath->setPolygon(Poly2());
+		_spellTimer = GESTURE_TIMEOUT;
+	}
 }
 
 void MageScene::setSide(std::string side){
@@ -330,11 +373,13 @@ void MageScene::setActive(bool active){
     _active = active;
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
+	_spellPathVertices.clear();
+	_spellPath->setPolygon(Poly2());
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _mageTOcastle->activate(input.findKey("mageTOcastle"));
-		gest->resume();
+		gest->pause();
 
 		_northWallButton->activate(input.findKey("northWallButton_mage"));
 		_southeastWallButton->activate(input.findKey("southeastWallButton_mage"));
