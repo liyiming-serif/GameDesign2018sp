@@ -27,7 +27,6 @@ void GameModel::dispose() {
 }
 
 void GameModel::update(float deltaTime){
-
     if (networked) {
         if (clock == 300) {
             const char *write_byte_buffer = return_buffer(getStateChange());
@@ -125,6 +124,14 @@ void GameModel::setOilCooldown(int wall, int amount) {
 	else {
 		_oilCooldown[wall] = 0;
 	}
+}
+
+float GameModel::getEndTime(){
+    return _endTime;
+}
+
+void GameModel::setEndTime(float time){
+    _endTime = time;
 }
 
 std::string GameModel::getStateChange() {

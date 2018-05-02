@@ -791,10 +791,6 @@ void OverworldScene::enableButtons() {
 }
 
 void OverworldScene::update(float timestep){
-	//poll inputs
-    
-        CULog("level %i", gameModel.level);
-    
     if (!click) {
         _lookout_button->setDown(false);
         
