@@ -418,7 +418,7 @@ void MageScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
         _mageTOcastle->activate(input.findKey("mageTOcastle"));
-		gest->pause();
+		gest->resume();
 
 		_northWallButton->activate(input.findKey("northWallButton_mage"));
 		_southeastWallButton->activate(input.findKey("southeastWallButton_mage"));

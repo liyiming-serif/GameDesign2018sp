@@ -494,7 +494,7 @@
             "wrapT":    "clamp"
         },
         "mage_background": {
-            "file":     "textures/Basement/MageBackground.png",
+            "file":     "textures/Basement/MageBackground_star.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
