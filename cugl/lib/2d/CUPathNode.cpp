@@ -335,6 +335,7 @@ void PathNode::setPolygon(const std::vector<Vec2>& vertices) {
 void PathNode::setPolygon(const Poly2& poly) {
     _closed = poly.getVertices().size()*2 == poly.getIndices().size();
     TexturedNode::setPolygon(poly);
+	_extrusion.clear();
     updateExtrusion();
 }
 

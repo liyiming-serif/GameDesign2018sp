@@ -29,9 +29,11 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     
     std::shared_ptr<cugl::Node>  _hex;
-	std::shared_ptr<cugl::Rect> _hexCanvas;
-	std::shared_ptr<cugl::Node> _spellPath;
-	std::shared_ptr<cugl::Vec2> _pointerPrev;
+	std::shared_ptr<cugl::Rect> _hexCanvas; //can't rotate, so rotate pointer instead
+	std::shared_ptr<cugl::PathNode> _spellPath;
+	std::vector<cugl::Vec2> _spellPathVertices;
+	float _minSpellPathX; //used to reposition _spellPath
+	float _minSpellPathY;
     
     std::shared_ptr<cugl::Button> _northWallButton;
     std::shared_ptr<cugl::Button> _northeastWallButton;
@@ -49,7 +51,9 @@ protected:
     std::shared_ptr<PolygonNode> northwestWall_floor;
     
     // Helpers
-	void addSpellVertex(const cugl::Vec2& origin, const cugl::Vec2& dest);
+	void resetSpellPath();
+
+	bool inHexCanvas(const cugl::Vec2& point);
 
 public:
     // Constructors

@@ -27,8 +27,8 @@ using namespace cugl;
 #define FLOOR_SCALE    0.55f
 #define BUTTON_SCALE    2.0f
 
-#define GESTURE_TIMEOUT 300
-#define HEX_CANVAS_SIZE 50 //length of hexagon size
+#define GESTURE_TIMEOUT 240
+#define HEX_CANVAS_SIZE 200 //length of hexagon side
 
 
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
@@ -275,11 +275,18 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
 	//Alloc the canvas for drawing spells
 	float hexheight = HEX_CANVAS_SIZE*sqrtf(3);
-	_hexCanvas = std::make_shared<Rect>(_size.width*0.6f+HEX_CANVAS_SIZE/2.0f,_size.height*.06f+hexheight/2.0f,HEX_CANVAS_SIZE,hexheight);
+	_hexCanvas = std::make_shared<Rect>(_size.width*0.6375f-HEX_CANVAS_SIZE/2.0f,_size.height*0.5125f-hexheight/2.0f,HEX_CANVAS_SIZE,hexheight);
 
-	//Alloc the canvas node that traces the spell gesture
-	
-	_spellPath = Node::alloc();
+	//Alloc the path node that traces the spell gesture
+	_spellPathVertices.clear();
+	_spellPath = PathNode::alloc();
+	_spellPath->setStroke(2.0f);
+	_spellPath->setClosed(false);
+	_spellPath->setJoint(PathJoint::ROUND);
+	_spellPath->setCap(PathCap::ROUND);
+	_spellPath->setColor(Color4(0, 0, 0));
+	_spellPath->setAbsolute(true);
+	_spellPath->setName("spellPath");
 	addChild(_spellPath);
 
     return true;
@@ -296,7 +303,7 @@ void MageScene::dispose() {
 		_hexCanvas = nullptr;
 		_spellPath->removeAllChildren();
 		_spellPath = nullptr;
-		_pointerPrev = nullptr;
+		_spellPathVertices.clear();
         plain_floor = nullptr;
         northWall_floor = nullptr;
         northeastWall_floor = nullptr;
@@ -308,38 +315,63 @@ void MageScene::dispose() {
     }
 }
 
-void MageScene::addSpellVertex(const Vec2& origin, const Vec2& dest) {
-	std::shared_ptr<PathNode> edge = PathNode::allocWithLine(origin, dest,2.0f);
-	edge->setAbsolute(true);
-	edge->setClosed(false);
-	edge->setColor(Color4(0, 0, 0));
-	edge->setPosition(origin);
+void MageScene::resetSpellPath() {
+	removeChildByName("spellPath");
+	_spellPathVertices.clear();
+	_spellPath = nullptr;
 
-	_spellPath->addChild(edge);
+	_spellPath = PathNode::alloc();
+	_spellPath->setStroke(2.0f);
+	_spellPath->setClosed(false);
+	_spellPath->setJoint(PathJoint::ROUND);
+	_spellPath->setCap(PathCap::ROUND);
+	_spellPath->setColor(Color4(0, 0, 0));
+	_spellPath->setAbsolute(true);
+	_spellPath->setName("spellPath");
+	addChild(_spellPath);
+}
+
+bool MageScene::inHexCanvas(const Vec2& point) {
+	Vec2 axisOfRotation = Vec2(_hexCanvas->getMidX(), _hexCanvas->getMidY());
+	Vec2 rotCCW = point;
+	Vec2 rotCW = point;
+	//translate point into axisOfRotation coords
+	rotCCW.rotate(M_PI / 3.0f, axisOfRotation);
+	rotCW.rotate(-1.0f*M_PI / 3.0f, axisOfRotation);
+	
+	return _hexCanvas->contains(point)|| _hexCanvas->contains(rotCCW)|| _hexCanvas->contains(rotCW);
 }
 
 void MageScene::update(float timestep){
 	//poll inputs
+	if (input.justPressed()) {
+		if (inHexCanvas(screenToWorldCoords(input.dTouch()))) {
+			_spellPath->setPosition(screenToWorldCoords(input.pointerPos()));
+			_minSpellPathX = screenToWorldCoords(input.pointerPos()).x;
+			_minSpellPathY = screenToWorldCoords(input.pointerPos()).y;
+		}
+	}
 	if (input.isPressed()) {
 		if (_spellTimer <= 0) {
 			//Took too long to cast spell
-			_pointerPrev = nullptr;
-			_spellPath->removeAllChildren();
+			resetSpellPath();
 		}
 		else {
 			//Trace the attempted spell
 			_spellTimer--;
-			if (_pointerPrev != nullptr) {
-				addSpellVertex(screenToWorldCoords(*_pointerPrev), screenToWorldCoords(input.pointerPos()));
+			if (inHexCanvas(screenToWorldCoords(input.pointerPos()))&&inHexCanvas(screenToWorldCoords(input.dTouch()))) {
+				//only trace if within bounds
+				_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
+				_spellPath->setPolygon(_spellPathVertices);
+				_minSpellPathX = fminf(_minSpellPathX, screenToWorldCoords(input.pointerPos()).x);
+				_minSpellPathY = fminf(_minSpellPathY, screenToWorldCoords(input.pointerPos()).y);
+				_spellPath->setPosition(Vec2(_minSpellPathX, _minSpellPathY));
 			}
-			_pointerPrev = nullptr;
-			_pointerPrev = std::make_shared<Vec2>(input.pointerPos().x,input.pointerPos().y);
 		}
 	}
 	if (input.justReleased()) {
 		//Done casting spell
-		_spellPath->removeAllChildren();
-		_pointerPrev = nullptr;
+		resetSpellPath();
 		_spellTimer = GESTURE_TIMEOUT;
 	}
 }
@@ -381,7 +413,7 @@ void MageScene::setActive(bool active){
     _active = active;
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
-	_spellPath->removeAllChildren();
+	resetSpellPath();
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
