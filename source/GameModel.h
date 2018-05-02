@@ -48,6 +48,8 @@ public:
 
     float _endTime;
 
+    float _currentTime;
+
     //Keeps track of all enemies.
 	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
     std::array<std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>, 6> _enemyArrayMaster;
@@ -65,6 +67,10 @@ public:
     /**
 	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT
 	 */
+	float getCurrentTime();
+
+	void setCurrentTime(float time);
+
 	float getEndTime();
 
 	void setEndTime(float time);

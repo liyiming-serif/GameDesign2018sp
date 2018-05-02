@@ -42,6 +42,7 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets, std::vec
 
 void SpawnController::update(float deltaTime) {
     _totalTime++;
+    gameModel.setCurrentTime(_totalTime);
     if(_currSpawnIndex >= 0){
         if(_enemyArray[_currSpawnIndex][4]<_totalTime){
 			//we need to spawn one

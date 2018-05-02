@@ -13,7 +13,7 @@ using namespace cugl;
 bool GameModel::init(){
     clock = 0;
     networked = false;
-
+    gameModel._currentTime = 0;
     return true;
 }
 
@@ -132,6 +132,14 @@ float GameModel::getEndTime(){
 
 void GameModel::setEndTime(float time){
     _endTime = time;
+}
+
+float GameModel::getCurrentTime(){
+    return _currentTime;
+}
+
+void GameModel::setCurrentTime(float time){
+    _currentTime = time;
 }
 
 std::string GameModel::getStateChange() {
