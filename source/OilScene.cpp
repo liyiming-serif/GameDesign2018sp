@@ -69,7 +69,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setPosition(_size.width/2,_size.height/2);
 
 	// Set the oil model
-	_oil = OilModel::alloc(Vec2(_size.width / 2, _background->getContentHeight() / 10), _assets);
+	_oil = OilModel::alloc(Vec2(_size.width / 2, _background->getContentHeight()*0.11f), _assets);
 	if (_oil != nullptr) {
 		addChild(_oil->getNode());
 	}
