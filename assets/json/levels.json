@@ -1732,7 +1732,7 @@
 				"ammo" : true,
 				"repair" : true,
 				"oil" : true,
-				"mage" : false
+				"mage" : true
 			},
 			"ammo" : 30
 		}
