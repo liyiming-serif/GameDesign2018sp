@@ -396,6 +396,8 @@ void LobbyScene::update(float timestep){
     }
 
     setButtonActive(_createButton,"createButton");
+
+    //TODO: Add new avatars to screen based on number of players; allow players to change their avatars
     LobbyClock++;
     _actions->update(timestep);
 }
@@ -529,7 +531,7 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     return _buttonText;
 }
 
-void LobbySceen::refreshRooms() {
+void LobbyScene::refreshRooms() {
 
 }
 
