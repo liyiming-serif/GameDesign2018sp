@@ -176,10 +176,10 @@ void LookoutScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
-        if (gameModel.getCurrentTime()*_distance > _size.height*.09f) {
-         _progressBar->setPosition(_progressBar->getPositionX(),std::min(gameModel.getCurrentTime()*_distance,_size.height));
-        }
+        _progressBar->setPosition(_progressBar->getPositionX(),
+            std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));
     }
+    
     else{
         _lookoutTOcastle->deactivate();
 		for (int i = 0; i < _enemyMarkers.size(); i++) {

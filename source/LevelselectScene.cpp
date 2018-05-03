@@ -152,8 +152,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     // Create the play button.  A button has an up image and a down image
-    std::shared_ptr<Texture> play_1   = _assets->get<Texture>("levelpage_button");
-    _level1 = Button::alloc(PolygonNode::allocWithTexture(play_1));
+    std::shared_ptr<Texture> play   = _assets->get<Texture>("levelpage_button");
+    _level1 = Button::alloc(PolygonNode::allocWithTexture(play));
     _level1->setScale(BUTTON_SCALE); // Magic number to rescale asset
     
     _lvl1T =Label::alloc((std::string) "1", FONT);
@@ -178,8 +178,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     // Create the play button.  A button has an up image and a down image
-    std::shared_ptr<Texture> play_2   = _assets->get<Texture>("levelpage_button");
-    _level2 = Button::alloc(PolygonNode::allocWithTexture(play_2));
+    _level2 = Button::alloc(PolygonNode::allocWithTexture(play));
     _level2->setScale(BUTTON_SCALE); // Magic number to rescale asset
     
     _lvl2T =Label::alloc((std::string) "2", FONT);
@@ -202,8 +201,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     // Create the play button.  A button has an up image and a down image
-    std::shared_ptr<Texture> play_3   = _assets->get<Texture>("levelpage_button");
-    _level3 = Button::alloc(PolygonNode::allocWithTexture(play_3));
+    _level3 = Button::alloc(PolygonNode::allocWithTexture(play));
     _level3->setScale(BUTTON_SCALE); // Magic number to rescale asset
     
     _lvl3T =Label::alloc((std::string) "3", FONT);
@@ -226,8 +224,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     // Create the play button.  A button has an up image and a down image
-    std::shared_ptr<Texture> play_4   = _assets->get<Texture>("levelpage_button");
-    _level4 = Button::alloc(PolygonNode::allocWithTexture(play_4));
+    _level4 = Button::alloc(PolygonNode::allocWithTexture(play));
     _level4->setScale(BUTTON_SCALE); // Magic number to rescale asset
     
     _lvl4T =Label::alloc((std::string) "4", FONT);
@@ -250,26 +247,110 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         }
     });
     
+    // Create the play button.  A button has an up image and a down image
+    _level5 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level5->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl5T =Label::alloc((std::string) "5", FONT);
+    _lvl5T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl5T->setPosition(_level5->getContentWidth()/2, _level5->getContentHeight()/2);
+    _lvl5T->setForeground(cugl::Color4(159,48,46,255));
+    _level5->addChild(_lvl5T);
+    
+    // Create a callback function for the play button
+    _level5->setName("play");
+    _level5->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=5;
+                gameModel.level=5;
+            }
+            
+        }
+    });
+
+    
+    // Create the play button.  A button has an up image and a down image
+    _level6 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level6->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl6T =Label::alloc((std::string) "6", FONT);
+    _lvl6T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl6T->setPosition(_level6->getContentWidth()/2, _level6->getContentHeight()/2);
+    _lvl6T->setForeground(cugl::Color4(159,48,46,255));
+    _level6->addChild(_lvl6T);
+    
+    // Create a callback function for the play button
+    _level6->setName("play");
+    _level6->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=6;
+                gameModel.level=6;
+            }
+            
+        }
+    });
+
+    
+    // Create the play button.  A button has an up image and a down image
+    _level7 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level7->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl7T =Label::alloc((std::string) "7", FONT);
+    _lvl7T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl7T->setPosition(_level7->getContentWidth()/2, _level7->getContentHeight()/2);
+    _lvl7T->setForeground(cugl::Color4(159,48,46,255));
+    _level7->addChild(_lvl7T);
+    
+    // Create a callback function for the play button
+    _level7->setName("play");
+    _level7->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=7;
+                gameModel.level=7;
+            }
+            
+        }
+    });
+
+    
     _levels->addChild(_level1);
     _levels->addChild(_level2);
     _levels->addChild(_level3);
     _levels->addChild(_level4);
+    _levels->addChild(_level5);
+    _levels->addChild(_level6);
+    _levels->addChild(_level7);
     
-    // Position the play button in the bottom left
+    // Position the play buttons
     _level1->setAnchor(Vec2::ANCHOR_CENTER);
     _level1->setPosition(385,345);
     
-    // Position the play button in the bottom left
     _level2->setAnchor(Vec2::ANCHOR_CENTER);
     _level2->setPosition(710,630);
     
-    // Position the play button in the bottom left
     _level3->setAnchor(Vec2::ANCHOR_CENTER);
     _level3->setPosition(1180,720);
     
-    // Position the play button in the bottom left
     _level4->setAnchor(Vec2::ANCHOR_CENTER);
     _level4->setPosition(1640,900);
+    
+    _level5->setAnchor(Vec2::ANCHOR_CENTER);
+    _level5->setPosition(2125,720);
+    
+    _level6->setAnchor(Vec2::ANCHOR_CENTER);
+    _level6->setPosition(2500,323);
+    
+    _level7->setAnchor(Vec2::ANCHOR_CENTER);
+    _level7->setPosition(3140,330);
     
     // Create the lobby button.  A button has an up image and a down image
     std::shared_ptr<Texture> back_up   = _assets->get<Texture>("back");
