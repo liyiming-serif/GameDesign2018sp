@@ -55,7 +55,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     else {
          _background = PolygonNode::allocWithTexture(texture_d);
     }
-    _background->setScale(0.534f); // Magic number to rescale asset
+    _background->setScale(0.5342f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     addChild(_background);
@@ -67,10 +67,12 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the background image
     std::shared_ptr<Texture> texture2  = _assets->get<Texture>("lookout_progressBar");
     _progressBar = PolygonNode::allocWithTexture(texture2);
-    _progressBar->setScale(0.53f); // Magic number to rescale asset
-    _progressBar->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
-    _progressBar->setPosition(_size.width-_progressBar->getWidth()/2,0);
+    _progressBar->setScale(0.525f); // Magic number to rescale asset
+    _progressBar->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _progressBar->setPosition(_size.width-(_progressBar->getWidth()/2),_size.height*.09f);
     addChild(_progressBar);
+    
+    _distance=.85f*_size.height/gameModel.getEndTime();
     
     
 	//allocate an enemy icon, but don't add it yet
@@ -130,6 +132,12 @@ void LookoutScene::dispose() {
 }
 
 void LookoutScene::update(float timestep){
+    
+    CULog("end time %f", gameModel.getEndTime());
+    CULog("current time %f", gameModel.getCurrentTime());
+    CULog("delta distacne %f", _distance);
+    CULog("height %f", _progressBar->getPositionY());
+    
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
         switchscene = LOSE;
@@ -139,6 +147,10 @@ void LookoutScene::update(float timestep){
                 switchscene = WIN;
         }
     }
+    if (_progressBar->getPositionY()<_size.height) {
+        _progressBar->setPosition(_progressBar->getPositionX(),_progressBar->getPositionY()+_distance);
+    }
+
 	//UPDATE ENEMY MARKERS
 	//clear enemy lanes
 	for (int i = 0; i < _enemyMarkers.size(); i++) {
@@ -155,18 +167,21 @@ void LookoutScene::update(float timestep){
 	}
 }
 
+
 //Pause or Resume
 void LookoutScene::setActive(bool active){
     _active = active;
     switchscene = 0;
     if(active){
         // Set background color
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
+        if (gameModel.getCurrentTime()*_distance > _size.height*.09f) {
+         _progressBar->setPosition(_progressBar->getPositionX(),std::min(gameModel.getCurrentTime()*_distance,_size.height));
+        }
     }
     else{
         _lookoutTOcastle->deactivate();
-
 		for (int i = 0; i < _enemyMarkers.size(); i++) {
 			_enemyMarkers[i]->removeAllChildren();
 		}
