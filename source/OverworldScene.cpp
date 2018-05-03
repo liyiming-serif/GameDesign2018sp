@@ -603,7 +603,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the button in the bottom right corner
     _menuButton->setAnchor(Vec2::ANCHOR_TOP_LEFT);
-    _menuButton->setPosition(0+5,_size.height-5);
+    _menuButton->setPosition(_size.width-(_menuButton->getWidth()/2+5),_size.height-5);
     _menuButton->setScale(.5f);
     
     

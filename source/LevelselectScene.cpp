@@ -145,7 +145,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 //    addChild(_cloud6);
     
     addChild(_foreground);
-    _single->addChild(_levels);
+    //_single->addChild(_levels);
+   addChild(_levels);
     
     
     
@@ -350,11 +351,11 @@ void LevelselectScene::dispose() {
 void LevelselectScene::setCanvas(int players){
     gameModel._gamePlayers=players;
     _single->setVisible(false);
-    _levels->setVisible(false);
+   // _levels->setVisible(false);
     _multi->setVisible(false);
     if (players == 1) {
         _single->setVisible(true);
-        _levels->setVisible(true);
+       // _levels->setVisible(true);
     }
     else {
         _multi->setVisible(true);

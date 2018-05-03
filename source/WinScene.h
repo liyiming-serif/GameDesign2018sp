@@ -22,6 +22,8 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _winTOmenu;
+    std::shared_ptr<cugl::Button> _winReplay;
+    std::shared_ptr<cugl::Button> _winNext;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     

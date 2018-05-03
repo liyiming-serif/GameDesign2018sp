@@ -92,7 +92,7 @@ void MageScene::dispose() {
 }
 
 void MageScene::update(float timestep){
-    switchscene = LOSE;
+    switchscene = WIN;
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
         switchscene = LOSE;

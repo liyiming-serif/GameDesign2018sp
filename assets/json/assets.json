@@ -210,6 +210,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "lookout_progressBar": {
+            "file":     "textures/Lookout/Progress.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "basement_floor": {
             "file":     "textures/Basement/BasementFloor.png",
             "minfilter":"nearest",
@@ -397,6 +404,27 @@
         },
         "win_BG": {
             "file":     "textures/Menu/WinLose/win.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_menu": {
+            "file":     "textures/Menu/WinLose/win_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_replay": {
+            "file":     "textures/Menu/WinLose/win_replay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_next": {
+            "file":     "textures/Menu/WinLose/win_next.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

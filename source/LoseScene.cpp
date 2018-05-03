@@ -122,7 +122,7 @@ void LoseScene::setActive(bool active){
     switchscene = 0;
     if(active){
         // Set background color
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
         _loseTOmenu->activate(input.findKey("loseTOmenu"));
         _loseReplay->activate(input.findKey("loseReplay"));
     }

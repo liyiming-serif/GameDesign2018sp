@@ -55,17 +55,24 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     else {
          _background = PolygonNode::allocWithTexture(texture_d);
     }
-    _background->setScale(0.5625f); // Magic number to rescale asset
+    _background->setScale(0.534f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(0,0);
+    _background->setPosition(_size.width/2,_size.height/2);
     addChild(_background);
     
     
     
 
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(_size.width/2,_size.height/2);
-
+    
+    // Set the background image
+    std::shared_ptr<Texture> texture2  = _assets->get<Texture>("lookout_progressBar");
+    _progressBar = PolygonNode::allocWithTexture(texture2);
+    _progressBar->setScale(0.53f); // Magic number to rescale asset
+    _progressBar->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
+    _progressBar->setPosition(_size.width-_progressBar->getWidth()/2,0);
+    addChild(_progressBar);
+    
+    
 	//allocate an enemy icon, but don't add it yet
 	_enemyIcon = _assets->get<Texture>("skeletonIcon");
 	//initialize lanes for displaying enemies.

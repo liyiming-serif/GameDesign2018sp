@@ -21,6 +21,7 @@ protected:
     std::shared_ptr<cugl::Button> _lookoutTOcastle;
 
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _progressBar;
 
 	std::shared_ptr<cugl::Texture> _enemyIcon;
 
