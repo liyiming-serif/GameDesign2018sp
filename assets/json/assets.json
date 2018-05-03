@@ -395,6 +395,34 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "win_BG": {
+            "file":     "textures/Menu/WinLose/win.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_BG": {
+            "file":     "textures/Menu/WinLose/lose.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_menu": {
+            "file":     "textures/Menu/WinLose/lose_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_replay": {
+            "file":     "textures/Menu/WinLose/lose_replay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "single": {
             "file":     "textures/Menu/singleplayer.png",
             "minfilter":"nearest",

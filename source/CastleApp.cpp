@@ -40,6 +40,8 @@
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 
 // This keeps us from having to write cugl:: all the time
@@ -115,6 +117,8 @@ void CastleApp::onShutdown() {
     _menuScene.dispose();
     _loadingScene.dispose();
     _levelScene.dispose();
+    _winScene.dispose();
+    _loseScene.dispose();
     _overworldScene.dispose();
     _ballistaScene.dispose();
     _lookoutScene.dispose();
@@ -160,6 +164,10 @@ void CastleApp::update(float timestep) {
             _lobbyScene.setActive(false);
             _levelScene.init(_assets);
             _levelScene.setActive(false, 0);
+            _winScene.init(_assets);
+            _winScene.setActive(false);
+            _loseScene.init(_assets);
+            _loseScene.setActive(false);
             _menuScene.init(_assets);
             _currscene=MENU;
             _loaded=true;
@@ -184,6 +192,20 @@ void CastleApp::update(float timestep) {
             if(_levelScene.switchscene!=0){
                 swapscenes(_levelScene.switchscene, 0);
                 _levelScene.setActive(false, _direction);
+            }
+        }
+        else if(_currscene==WIN){
+            _winScene.update(timestep);
+            if(_winScene.switchscene!=0){
+                swapscenes(_winScene.switchscene, 0);
+                _winScene.setActive(false);
+            }
+        }
+        else if(_currscene==LOSE){
+            _loseScene.update(timestep);
+            if(_loseScene.switchscene!=0){
+                swapscenes(_loseScene.switchscene, 0);
+                _loseScene.setActive(false);
             }
         }
         else{ //gameplay update loop
@@ -240,6 +262,9 @@ void CastleApp::update(float timestep) {
             gameModel.update(timestep);
         }
     }
+    
+
+    
     //refresh the input controller
 	input.update(timestep);
 
@@ -251,17 +276,27 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _players = 1;
     }
     if (_currscene == LOBBY && nextscene == LEVELS){
-        _players = _lobbyScene.getNumPlayers();
+        //_players = _lobbyScene.getNumPlayers();
+        _players = 2;
     }
-	if (_currscene == LEVELS && nextscene == OVERWORLD) {
+	if ((_currscene == LEVELS && nextscene == OVERWORLD) || (_currscene == WIN && nextscene == OVERWORLD)
+        || (_currscene == LOSE && nextscene == OVERWORLD)) {
+        CULog("here");
 		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
         gameModel.level=_levelScene.level;
 
         initializeRooms();
 	}
 	if(_currscene == OVERWORLD && nextscene == MENU){
+        _menuScene.setActive(true);
+        _currscene = MENU;
+        _overworldScene.setActive(false);
 	    reset();
 	}
+    if (_currscene==LOSE && nextscene == OVERWORLD ) {
+        _loseScene.setActive(false);
+        reset();
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
@@ -289,6 +324,12 @@ void CastleApp::swapscenes(int nextscene, int direction){
             break;
         case LOBBY:
             _lobbyScene.setActive(true);
+            break;
+        case WIN:
+            _winScene.setActive(true);
+            break;
+        case LOSE:
+            _loseScene.setActive(true);
             break;
         case LEVELS:
 			_levelScene.setActive(true,_players);
@@ -338,6 +379,12 @@ void CastleApp::draw() {
         else if(_currscene==LOBBY){
             _lobbyScene.render(_batch);
         }
+        else if(_currscene==WIN){
+            _winScene.render(_batch);
+        }
+        else if(_currscene==LOSE){
+            _loseScene.render(_batch);
+        }
         else if(_currscene==LEVELS){
             _levelScene.render(_batch);
         }
@@ -345,9 +392,7 @@ void CastleApp::draw() {
 }
 //only reset from overworld scene
 void CastleApp::reset(){
-    _menuScene.setActive(true);
-    _currscene = MENU;
-    _overworldScene.setActive(false);
+
 
     _overworldScene.dispose();
     _ballistaScene.dispose();

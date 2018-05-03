@@ -94,6 +94,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     
     
+    
     std::shared_ptr<Texture> c_1  = _assets->get<Texture>("cloudL");
     _cloud1 = PolygonNode::allocWithTexture(c_1);
     _cloud1->setScale(0.5625f); // Magic number to rescale asset
@@ -168,7 +169,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-               level = 1;
+                level=1;
                gameModel.level=1;
             }
 
@@ -193,7 +194,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-               level = 2;
+                level=2;
                gameModel.level=2;
             }
         }
@@ -217,7 +218,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level = 3;
+                level=3;
                 gameModel.level=3;
             }
         }
@@ -241,7 +242,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level = 4;
+                level=4;
                 gameModel.level=4;
             }
 
@@ -280,7 +281,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _backButtonMULTI->setScale(0.5f); // Magic number to rescale asset
     
     // Create a callback function for the lobby button
-    _backButtonSINGLE->setName("lvlTOmenu");
+    _backButtonSINGLE->setName("backButtonSINGLE");
     _backButtonSINGLE->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
@@ -289,7 +290,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     });
     
     // Create a callback function for the lobby button
-    _backButtonMULTI->setName("lvlTOlobby");
+    _backButtonMULTI->setName("backButtonMULTI");
     _backButtonMULTI->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
@@ -318,10 +319,6 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
     _backButtonSINGLE->activate(input.generateKey("backButtonSINGLE"));
     _backButtonMULTI->activate(input.generateKey("backButtonMULTI"));
-    _level1->activate(input.generateKey("lvl1"));
-    _level2->activate(input.generateKey("lvl2"));
-    _level3->activate(input.generateKey("lvl3"));
-    _level4->activate(input.generateKey("lvl4"));
     return true;
 }
 
@@ -350,11 +347,14 @@ void LevelselectScene::dispose() {
 }
 
 
-void LevelselectScene::setCanvas(int direction){
+void LevelselectScene::setCanvas(int players){
+    gameModel._gamePlayers=players;
     _single->setVisible(false);
+    _levels->setVisible(false);
     _multi->setVisible(false);
-    if (direction == 1) {
+    if (players == 1) {
         _single->setVisible(true);
+        _levels->setVisible(true);
     }
     else {
         _multi->setVisible(true);
@@ -378,10 +378,10 @@ void LevelselectScene::disableButtons() {
 }
 
 void LevelselectScene::enableButtons() {
-    _level1->activate(input.findKey("lvl1"));
-    _level2->activate(input.findKey("lvl2"));
-    _level3->activate(input.findKey("lvl3"));
-    _level4->activate(input.findKey("lvl4"));
+    setButtonActive(_level1, "lvl1");
+    setButtonActive(_level2, "lvl2");
+    setButtonActive(_level3, "lvl3");
+    setButtonActive(_level4, "lvl4");
 }
 
 void LevelselectScene::update(float timestep){
@@ -512,11 +512,11 @@ void LevelselectScene::update(float timestep){
     }
     
 
-    
+
     if (!_actions->isActive(ACT_KEY+7)){
         click=true;
         enableButtons();
-        
+
     }
     
     if (campaign == 1 && lerp < 1) {
@@ -613,6 +613,7 @@ void LevelselectScene::setActive(bool active, int players){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         setCanvas(players);
+        //gameModel._players=players;
         setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
         setButtonActive(_backButtonMULTI, "backButtonMULTI");
     }

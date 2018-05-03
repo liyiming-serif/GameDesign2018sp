@@ -18,6 +18,9 @@
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
+
 #define DRAW_SCALE 32
 
 
@@ -770,7 +773,7 @@ void OverworldScene::enableButtons() {
     _mage_button->activate(input.findKey("mage_button"));
     _ammo_button->activate(input.findKey("ammo_button"));
     
-    if (player_TEST > 1) {
+    if (gameModel._gamePlayers > 1) {
         _oilNorthEast->activate(input.findKey("oilNorthEast"));
         _oilNorthWest->activate(input.findKey("oilNorthWest"));
         _oilSouth->activate(input.findKey("oilSouth"));
@@ -791,6 +794,19 @@ void OverworldScene::enableButtons() {
 }
 
 void OverworldScene::update(float timestep){
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
+	//poll inputs
+    
+        CULog("level %i", gameModel.level);
+    
     if (!click) {
         _lookout_button->setDown(false);
         
