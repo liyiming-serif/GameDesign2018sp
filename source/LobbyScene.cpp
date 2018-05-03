@@ -227,6 +227,21 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         }
     });
 
+//    std::shared_ptr<Texture> tex_refresh   = _assets->get<Texture>("refresh");
+//    _refreshButton = Button::alloc(PolygonNode::allocWithTexture(play_up));
+//    _refreshButton->setScale(1.0f); // Magic number to rescale asset
+//
+//    // Create a callback function for HOST
+//    _refreshButton->setName("refresh");
+//    _refreshButton->setListener([=] (const std::string& name, bool down) {
+//        if (!down) {
+//            refreshRooms();
+//            CULog("refresh");
+//        }
+//    });
+//
+//    _refreshButton->setAnchor(Vec2::ANCHOR_CENTER);
+//    _refreshButton->setPosition(40, 40);
 
     // Position the overworld button in the bottom left
     _backButton->setAnchor(Vec2::ANCHOR_CENTER);
@@ -240,10 +255,12 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_lobby);
     addChild(_avatar);
     addChild(_levelsButton);
+//    addChild(_refreshButton);
     
     // We can only activate a button AFTER it is added to a scene
     _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
+//    _refreshButton->activate(input.generateKey("refreshButton"));
     _levelsButton->activate(input.generateKey("levelsMULTIButton"));
     input.generateKey("_enterButton0");
     input.generateKey("_enterButton1");
@@ -262,6 +279,7 @@ void LobbyScene::dispose() {
         _assets = nullptr;
         _backButton = nullptr;
         _createButton = nullptr;
+        _refreshButton = nullptr;
         for(int i = 0; i < length; i++) {
             _enterButtons[i] = nullptr;
             _enterTexts[i] = nullptr;
@@ -346,7 +364,7 @@ void LobbyScene::update(float timestep){
     }
 
     // Delete all enter buttons/text
-    if (LobbyClock >= 100) {
+    if (LobbyClock = 20) {
         if (!serverDevices.empty()) {
             for(int i = 0; i < serverDevices.size(); i++) {
                 _enterButtons[i]->dispose();
@@ -357,6 +375,10 @@ void LobbyScene::update(float timestep){
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
         serverDevices = getServerDevices();
 #endif
+
+        if (_avatar->isVisible() && gameModel.isServer()) {
+            gameModel.setNoPlayers(getPlayers());
+        }
 
         // Create new enter buttons/text if canvas is lobby
         if (!_avatar->isVisible() && !serverDevices.empty()) {
@@ -505,6 +527,10 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     CULog("%s", printString.c_str());
     _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
     return _buttonText;
+}
+
+void LobbySceen::refreshRooms() {
+
 }
 
 

@@ -29,6 +29,7 @@ protected:
     std::shared_ptr<cugl::Button> _backButton;
     std::shared_ptr<cugl::Button> _createButton;
     std::shared_ptr<cugl::Button>* _enterButtons;
+    std::shared_ptr<cugl::Button> _refreshButton;
     std::shared_ptr<cugl::Label>* _enterTexts;
 
     std::shared_ptr<cugl::Button> _levelsButton;
@@ -149,7 +150,7 @@ public:
 
     std::shared_ptr<cugl::Label> createServerRoomText(int device);
 
-    //TODO: Close the accepted thread when game starts
+    void refreshRooms();
 
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -228,6 +229,25 @@ public:
             return Devices;
         }
 
+    }
+
+    int getPlayers() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "getPlayers",
+                                               "()I");
+
+        // Call the Java method
+        int players = env->CallIntMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return players;
     }
 #endif
 
