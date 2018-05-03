@@ -279,23 +279,47 @@ void CastleApp::swapscenes(int nextscene, int direction){
         //_players = _lobbyScene.getNumPlayers();
         _players = 2;
     }
-	if ((_currscene == LEVELS && nextscene == OVERWORLD) || (_currscene == WIN && nextscene == OVERWORLD)
-        || (_currscene == LOSE && nextscene == OVERWORLD)) {
-        CULog("here");
-		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
-        gameModel.level=_levelScene.level;
-
-        initializeRooms();
-	}
 	if(_currscene == OVERWORLD && nextscene == MENU){
-        _menuScene.setActive(true);
         _currscene = MENU;
         _overworldScene.setActive(false);
 	    reset();
 	}
-    if (_currscene==LOSE && nextscene == OVERWORLD ) {
+	if(_currscene == WIN && nextscene == MENU){
+        _currscene = MENU;
+        _winScene.setActive(false);
+        reset();
+    }
+    if(_currscene == LOSE && nextscene == MENU){
+        _currscene = MENU;
         _loseScene.setActive(false);
         reset();
+    }
+    if (_currscene==LOSE && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _loseScene.setActive(false);
+        int level = _levelScene.level;
+        reset();
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, level));
+        initializeRooms();
+        gameModel.level=level;
+    }
+    if (_currscene==WIN && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _winScene.setActive(false);
+        int level = _levelScene.level;
+        reset();
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, level+1));
+        initializeRooms();
+        gameModel.level=level+1;
+    }
+    if (_currscene==LEVELS && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _levelScene.setActive(false, 0);
+        int level = _levelScene.level;
+        reset();
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
+        initializeRooms();
+        gameModel.level=level;
     }
     switch(nextscene){
         case MENU:
