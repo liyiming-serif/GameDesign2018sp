@@ -25,7 +25,10 @@ using namespace cugl;
 #define WIN         11
 #define LOSE        12
 
-#define BUTTON_SCALE 1.0f
+#define JUNGLE  5
+#define SNOW  8
+
+#define BUTTON_SCALE .6f
 #define DRAW_SCALE 32
 
 #define OIL_COOLDOWN 420

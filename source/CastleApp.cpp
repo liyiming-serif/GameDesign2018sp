@@ -269,6 +269,7 @@ void CastleApp::update(float timestep) {
 	input.update(timestep);
 
 }
+//TODO::FIX THE NEXT LEVEL AND RESET
 
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;

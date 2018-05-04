@@ -161,6 +161,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "room_lock": {
+            "file":     "textures/Menu/levels/lock_rooms.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "lookout_floor": {
             "file":     "textures/Lookout/LookoutFloor.png",
             "minfilter":"nearest",

@@ -320,6 +320,78 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             
         }
     });
+    
+    // Create the play button.  A button has an up image and a down image
+    _level8 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level8->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl8T =Label::alloc((std::string) "8", FONT);
+    _lvl8T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl8T->setPosition(_level8->getContentWidth()/2, _level8->getContentHeight()/2);
+    _lvl8T->setForeground(cugl::Color4(159,48,46,255));
+    _level8->addChild(_lvl8T);
+    
+    // Create a callback function for the play button
+    _level8->setName("play");
+    _level8->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=8;
+                gameModel.level=8;
+            }
+            
+        }
+    });
+    
+    // Create the play button.  A button has an up image and a down image
+    _level9 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level9->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl9T =Label::alloc((std::string) "9", FONT);
+    _lvl9T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl9T->setPosition(_level9->getContentWidth()/2, _level9->getContentHeight()/2);
+    _lvl9T->setForeground(cugl::Color4(159,48,46,255));
+    _level9->addChild(_lvl9T);
+    
+    // Create a callback function for the play button
+    _level9->setName("play");
+    _level9->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=9;
+                gameModel.level=9;
+            }
+            
+        }
+    });
+    
+    // Create the play button.  A button has an up image and a down image
+    _level10 = Button::alloc(PolygonNode::allocWithTexture(play));
+    _level10->setScale(BUTTON_SCALE); // Magic number to rescale asset
+    
+    _lvl10T =Label::alloc((std::string) "10", FONT);
+    _lvl10T->setAnchor(Vec2::ANCHOR_CENTER);
+    _lvl10T->setPosition(_level10->getContentWidth()/2, _level10->getContentHeight()/2);
+    _lvl10T->setForeground(cugl::Color4(159,48,46,255));
+    _level10->addChild(_lvl10T);
+    
+    // Create a callback function for the play button
+    _level10->setName("play");
+    _level10->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (click){
+                switchscene = OVERWORLD;
+                level=10;
+                gameModel.level=10;
+            }
+            
+        }
+    });
 
     
     _levels->addChild(_level1);
@@ -329,6 +401,9 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _levels->addChild(_level5);
     _levels->addChild(_level6);
     _levels->addChild(_level7);
+    _levels->addChild(_level8);
+    _levels->addChild(_level9);
+    _levels->addChild(_level10);
     
     // Position the play buttons
     _level1->setAnchor(Vec2::ANCHOR_CENTER);
@@ -351,6 +426,15 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _level7->setAnchor(Vec2::ANCHOR_CENTER);
     _level7->setPosition(3140,330);
+    
+    _level8->setAnchor(Vec2::ANCHOR_CENTER);
+    _level8->setPosition(4740,330);
+    
+    _level9->setAnchor(Vec2::ANCHOR_CENTER);
+    _level9->setPosition(5060,645);
+    
+    _level10->setAnchor(Vec2::ANCHOR_CENTER);
+    _level10->setPosition(5390,220);
     
     // Create the lobby button.  A button has an up image and a down image
     std::shared_ptr<Texture> back_up   = _assets->get<Texture>("back");
@@ -412,6 +496,12 @@ void LevelselectScene::dispose() {
         _level2 = nullptr;
         _level3 = nullptr;
         _level4 = nullptr;
+        _level5 = nullptr;
+        _level6 = nullptr;
+        _level7 = nullptr;
+        _level8 = nullptr;
+        _level9 = nullptr;
+        _level10 = nullptr;
         _backButtonSINGLE = nullptr;
         _background = nullptr;
         _foreground = nullptr;
@@ -457,6 +547,12 @@ void LevelselectScene::disableButtons() {
     _level2->deactivate();
     _level3->deactivate();
     _level4->deactivate();
+    _level5->deactivate();
+    _level6->deactivate();
+    _level7->deactivate();
+    _level8->deactivate();
+    _level9->deactivate();
+    _level10->deactivate();
 }
 
 void LevelselectScene::enableButtons() {
@@ -464,6 +560,12 @@ void LevelselectScene::enableButtons() {
     setButtonActive(_level2, "lvl2");
     setButtonActive(_level3, "lvl3");
     setButtonActive(_level4, "lvl4");
+    setButtonActive(_level5, "lvl5");
+    setButtonActive(_level6, "lvl6");
+    setButtonActive(_level7, "lvl7");
+    setButtonActive(_level8, "lvl8");
+    setButtonActive(_level9, "lvl9");
+    setButtonActive(_level10, "lvl10");
 }
 
 void LevelselectScene::update(float timestep){
@@ -473,6 +575,12 @@ void LevelselectScene::update(float timestep){
         _level2->setDown(false);
         _level3->setDown(false);
         _level4->setDown(false);
+        _level5->setDown(false);
+        _level6->setDown(false);
+        _level7->setDown(false);
+        _level8->setDown(false);
+        _level9->setDown(false);
+        _level10->setDown(false);
     }
     
     // Animate

@@ -17,10 +17,13 @@
 #define WIN         11
 #define LOSE        12
 
-#define DRAW_SCALE 32
-#define FONT    _assets->get<Font>("futura")
+#define JUNGLE  5
+#define SNOW  8
 
-#define BUTTON_SCALE .8f
+#define DRAW_SCALE 32
+#define FONT    _assets->get<Font>("futura_levels")
+
+#define BUTTON_SCALE .6f
 
 #define BALLISTA_MIN_POWER 9.0f
 
@@ -189,8 +192,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
-    _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(620, 20);
+    _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _ammoText->setPosition(10, 40);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
     _ammoText->setScale(.5f);
 

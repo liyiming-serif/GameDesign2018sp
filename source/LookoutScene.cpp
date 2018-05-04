@@ -22,8 +22,8 @@ using namespace cugl;
 #define LOSE        12
 
 
-#define JUNGLE  2
-#define SNOW  3
+#define JUNGLE  5
+#define SNOW  8
 
 bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
