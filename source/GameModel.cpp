@@ -378,7 +378,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 token = strtok(NULL,s);
                 section++;
             }
-            free(copy);
+            //free(copy);
         }
     }
 
@@ -588,7 +588,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 }
                 j++;
             }
-            free(tmpAmmoChanges[i]);
+            //free(tmpAmmoChanges[i]);
         }
     }
     gameModel.setArrowAmmo(0, gameModel.getArrowAmmo(0)+deltaArrow1);
@@ -624,7 +624,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 enemySubToken = strtok(NULL, " :");
                 CULog("Enemysubtoken in loop: %s", enemySubToken);
             }
-            free(tmpEnemyChanges[i]);
+            //free(tmpEnemyChanges[i]);
         }
     }
 
@@ -647,7 +647,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
             } else {
                 _playerRooms[playerID] = playerRoom;
             }
-            free(tmpPlayerChanges[i]);
+            //free(tmpPlayerChanges[i]);
         }
     }
 
@@ -664,7 +664,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 pourToken = strtok(NULL, " ");
                 section++;
             }
-            free(tmpOilChanges[i]);
+            //free(tmpOilChanges[i]);
         }
     }
 
