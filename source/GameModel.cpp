@@ -90,7 +90,7 @@ void GameModel::update(float deltaTime){
             //delete[] read_buffers;
             clock = 0;
         }
-        else if (!gameModel.server && clock == 10) {
+        else if (!gameModel.server && clock%10 == 0 && clock != 30) {
             //TODO: Read from network
             char *read_buffer = gameModel.ConsumeStateClient();
             CULog("Read Server State: %s \n", read_buffer);
@@ -98,7 +98,9 @@ void GameModel::update(float deltaTime){
                 gameModel.updateStateClient(read_buffer);
             }
             //delete[] read_buffer;
-
+            clock++;
+        }
+        else if (!gameModel.server && clock%15 == 0) {
             char *write_byte_buffer = return_buffer(produceStateChangeClient());
             //TODO: Write to network
             CULog("State Change: %s \n", write_byte_buffer);
@@ -107,8 +109,12 @@ void GameModel::update(float deltaTime){
             } else {
                 CULog("Write success");
             }
+            if (clock == 15) {
+                clock++;
+            } else {
+                clock = 0;
+            }
             delete[] write_byte_buffer;
-            clock = 0;
         }
         else {
             clock++;
