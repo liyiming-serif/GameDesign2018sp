@@ -1693,6 +1693,48 @@
 				"mage" : false
 			},
 			"ammo" : 30
+		},
+		"level8" : {
+			"enemies" : {
+				"numSpawn" : 4,
+				"spawn1" : {
+					"name" : "berserker",
+					"spawn_time" : 100,
+					"xCoord" : 500,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn2" : {
+					"name" : "berserker",
+					"spawn_time" : 400,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn3" : {
+					"name" : "reaper",
+					"spawn_time" : 700,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn4" : {
+					"name" : "warrior",
+					"spawn_time" : 700,
+					"xCoord" : 700,
+					"yCoord" : 700,
+					"sector" : 4
+				}
+			},
+			"rooms_unlocked" : {
+				"lookout" : true,
+				"ballista" : true,
+				"ammo" : true,
+				"repair" : true,
+				"oil" : true,
+				"mage" : true
+			},
+			"ammo" : 30
 		}
 	},
 	"two" : {
