@@ -4,6 +4,8 @@
 
 #include "EnemyModel.h"
 
+#define ANIMATION_SP 0.2f
+
 /*
 * ENEMY TYPES:
 * 1 Regular
@@ -65,14 +67,14 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			texture = assets->get<Texture>("warrior");
 			_node = AnimationNode::alloc(texture, _rows, _cols, _offset);
 			_node->setFrame(_walkFrameStart);
-			_node->setScale(0.4);
+			_node->setScale(0.3);
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 
 		default: //unrecognized enemy type
 			return false;
 	}
-
+	_currFrame = 0.0f;
 	_node->setPosition(pos);
 
 	//initialize the box2d obstacle
@@ -91,9 +93,8 @@ void EnemyModel::update(float deltaTime) {
         _node->setAngle(getAngle());
 
 		//Animation
-		unsigned int frame = _node->getFrame();
-		frame++;
-		_node->setFrame((frame)%_dieFrameStart);
+		_currFrame += ANIMATION_SP;
+		_node->setFrame(static_cast<int>(floor(_currFrame))%_dieFrameStart);
     }
 }
 

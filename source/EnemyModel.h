@@ -54,6 +54,7 @@ protected:
 	int _walkFrameStart;
 	int _dieFrameStart;
 	int _attackFrameStart;
+	float _currFrame;
 
     //MEMBERS
 	std::string _name;
