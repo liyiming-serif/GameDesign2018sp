@@ -444,8 +444,15 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "flying": {
-            "file":     "textures/flying.png",
+    "flying": {
+      "file": "textures/flying.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "warrior": {
+            "file":     "textures/reaper.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

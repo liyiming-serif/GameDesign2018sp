@@ -32,22 +32,40 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			texture = assets->get<Texture>("skeleton");
 			_node = AnimationNode::alloc(texture, _rows, _cols);
 			_node->setFrame(_walkFrameStart);
-			_node->setScale(0.3);
+			_node->setScale(0.25);
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 
 		case 2: //flying, ranged enemies
 			//set animation constants
-			_rows = 4;
+			_rows = 8;
 			_cols = 5;
+			_offset = 39;
 			_walkFrameStart = 0;
 			_dieFrameStart = 10;
+			_attackFrameStart = 10;
 
 			//create the scene node
 			texture = assets->get<Texture>("flying");
-			_node = AnimationNode::alloc(texture, _rows, _cols);
+			_node = AnimationNode::alloc(texture, _rows, _cols, _offset);
 			_node->setFrame(_walkFrameStart);
-			_node->setScale(0.3);
+			_node->setScale(0.2);
+			_node->setAnchor(Vec2::ANCHOR_CENTER);
+			break;
+
+		case 3: //warriors/small reapers, continuous melee damage
+			//set animation constants
+			_rows = 6;
+			_cols = 7;
+			_offset = 41;
+			_walkFrameStart = 0;
+			_dieFrameStart = 16;
+
+			//create the scene node
+			texture = assets->get<Texture>("warrior");
+			_node = AnimationNode::alloc(texture, _rows, _cols, _offset);
+			_node->setFrame(_walkFrameStart);
+			_node->setScale(0.4);
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 

@@ -15,7 +15,6 @@
 
 class EnemyModel : public cugl::BoxObstacle{
 private:
-    //always do this?
     CU_DISALLOW_COPY_AND_ASSIGN(EnemyModel);
 
 public:
@@ -51,8 +50,10 @@ protected:
 	//ANIMATION CONSTANTS
 	int _rows;
 	int _cols;
+	int _offset;
 	int _walkFrameStart;
 	int _dieFrameStart;
+	int _attackFrameStart;
 
     //MEMBERS
 	std::string _name;
