@@ -28,8 +28,8 @@
 #define BALLISTA_MIN_POWER 9.0f
 
 #define BALLISTA_MAX_RANGE 640	//farthest enemy ballista scene can see
-#define BALLISTA_MIN_RANGE 192	//closest enemy ballista scene can see
-#define BALLISTA_END_ZONE 180	//enemies dissapear past this y-coord; set by castle wall art assets
+#define BALLISTA_MIN_RANGE 100	//closest enemy ballista scene can see
+#define BALLISTA_END_ZONE 0	//enemies dissapear past this y-coord; set by castle wall art assets
 
 using namespace cugl;
 

@@ -38,7 +38,7 @@ using namespace cugl;
 #define OIL_COOLDOWN 420
 #define TIPPING_POINT 0.45f
 
-#define OIL_MAX_RANGE 191	//farthest enemy oil scene can see
+#define OIL_MAX_RANGE 99	//farthest enemy oil scene can see
 #define OIL_MIN_RANGE 0		//closest enemy oil scene can see
 #define OIL_END_ZONE 127	//enemies dissapear past this y-coord; set by castle wall art assets
 
