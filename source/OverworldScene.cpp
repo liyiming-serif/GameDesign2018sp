@@ -54,7 +54,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     
-    CULog("level %i", gameModel.level);
 
     if (assets == nullptr) {
         return false;
@@ -816,6 +815,10 @@ void OverworldScene::enableButtons() {
     _menuButton->activate(input.findKey("menuButton"));
     
     _lookout_button->activate(input.findKey("lookout_button"));
+    
+    
+            _oilNorth->activate(input.findKey("oilNorth"));
+        _repair_button->activate(input.findKey("repair_button"));
     
     if (gameModel._unlockedRooms["oil"] == true) {
         _oilNorth->activate(input.findKey("oilNorth"));
