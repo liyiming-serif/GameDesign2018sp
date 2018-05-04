@@ -817,8 +817,8 @@ void OverworldScene::enableButtons() {
     _lookout_button->activate(input.findKey("lookout_button"));
     
     
-            _oilNorth->activate(input.findKey("oilNorth"));
-        _repair_button->activate(input.findKey("repair_button"));
+//            _oilNorth->activate(input.findKey("oilNorth"));
+//        _repair_button->activate(input.findKey("repair_button"));
     
     if (gameModel._unlockedRooms["oil"] == true) {
         _oilNorth->activate(input.findKey("oilNorth"));
