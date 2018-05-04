@@ -125,15 +125,18 @@ void GameModel::update(float deltaTime){
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
 			Vec2 pos = it->second->getPos();
-			if (pos.y <= 0) {
+            if (it->second->getHealth() <= 0){
+                gameModel._enemiesToFreeMaster[wall].push_back(it->first);
+            }
+			else if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
 			}
-			else if(pos.y>=it->second->getAtkRange()){
-				// move enemy
-				it->second->setPos(Vec2(pos.x,pos.y-(BASE_SPEED*it->second->getSpeed())));
-			}
+			else if(pos.y>=it->second->getAtkRange()) {
+                // move enemy
+                it->second->setPos(Vec2(pos.x, pos.y - (BASE_SPEED * it->second->getSpeed())));
+            }
 			else {
 				// enemy in position; begin attacking
 				if (it->second->getAtkCounter() <= 0) {
@@ -227,7 +230,7 @@ void GameModel::addDeltaAmmo(int type, int amt) {
 }
 
 void GameModel::addEnemyChange(std::string name, int damage, int wall) {
-    gameModel._enemyChanges += name+ ":" + to_string(damage) + ":" + to_string(wall) + " ";
+    gameModel._enemyChanges += name + ":" + to_string(damage) + ":" + to_string(wall) + " ";
 }
 
 std::string GameModel::produceStateChangeServer() {
@@ -560,18 +563,20 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 enemySubToken = strtok(NULL, " :");
                 strcpy(enemyWall, enemySubToken);
                 CULog("enemy Wall: %s", enemyWall);
+                CULog("enemy Wall as int: %i", std::stoi(enemyWall));
 
                 std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[std::stoi(enemyWall)].find (enemyName);
                 if ( got != gameModel._enemyArrayMaster[std::stoi(enemyWall)].end() ) {
                     std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
                     thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyDamage));
+                    CULog("Enemy updated successfully, new health: %i", thisEnemy->getHealth());
                 }
                 else {
                     if (std::stoi(enemyDamage) == -1) {
                         gameModel._castleHealth[std::stoi(enemyWall)] += 10;
                     }
                 }
-                CULog("Enemy updated successfully");
+
                 enemySubToken = strtok(NULL, " :");
                 CULog("Enemysubtoken in loop: %s", enemySubToken);
             }
@@ -668,7 +673,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     char enemyWall[1];
     char enemyType[1];
     char enemyHealth[2];
-    char enemyName[4];
+    //char enemyName[4];
+    std::string enemyName;
     char * enemySubToken;
 
     for (int i = 0; i < 6; i++) {
@@ -676,7 +682,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     }
     enemySubToken = strtok(enemyToken, " :");
     while (enemySubToken != NULL) {
-        strcpy(enemyName, enemySubToken);
+        enemyName = std::string(enemySubToken);
+        CULog("Allocating new enemy with name: %s", enemySubToken);
         enemySubToken = strtok(NULL, " :");
         strcpy(enemyHealth, enemySubToken);
         enemySubToken = strtok(NULL, " :");
@@ -688,14 +695,19 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         enemySubToken = strtok(NULL, " :");
         strcpy(enemyWall, enemySubToken);
 
-        // Allocate a new EnemyDataModel in memory
-        std::shared_ptr<EnemyDataModel> e =
-                EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
-                                      Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
-                                      std::stoi(enemyType), std::stoi(enemyWall));
 
-        if (e != nullptr) {
-            gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
+        CULog("Allocating new enemy with name: %s", enemyName.c_str());
+
+        if (std::stoi(enemyHealth)>=0) {
+            // Allocate a new EnemyDataModel in memory
+            std::shared_ptr<EnemyDataModel> e =
+                    EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
+                                          Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
+                                          std::stoi(enemyType), std::stoi(enemyWall));
+
+            if (e != nullptr) {
+                gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
+            }
         }
         enemySubToken = strtok(NULL, " :");
     }
