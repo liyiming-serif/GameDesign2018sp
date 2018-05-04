@@ -229,7 +229,7 @@ private:
 
             // Free local references
             //env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
-            delete(p);
+            //free(p);
             env->DeleteLocalRef(arr);
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);

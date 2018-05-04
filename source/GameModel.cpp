@@ -710,7 +710,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         section++;
     }
 
-    // Next, update all existing enemies with new health/pos, and spawn new enemies according to server state
+    // Next, clear all enemies, and add enemies according to the server
     CULog("Updating enemies");
     char enemyPosX[10];
     char enemyPosY[10];
@@ -719,6 +719,10 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     char enemyHealth[2];
     char enemyName[4];
     char * enemySubToken;
+
+    for (int i = 0; i < 6; i++) {
+        gameModel._enemyArrayMaster[i].clear();
+    }
     enemySubToken = strtok(enemyToken, " :");
     while (enemySubToken != NULL) {
         strcpy(enemyName, enemySubToken);
@@ -733,23 +737,14 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         enemySubToken = strtok(NULL, " :");
         strcpy(enemyWall, enemySubToken);
 
-        std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[std::stoi(enemyWall)].find (enemyName);
+        // Allocate a new EnemyDataModel in memory
+        std::shared_ptr<EnemyDataModel> e =
+                EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
+                                      Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
+                                      std::stoi(enemyType), std::stoi(enemyWall));
 
-        if ( got == gameModel._enemyArrayMaster[std::stoi(enemyWall)].end() ) {
-            // Allocate a new EnemyDataModel in memory
-            std::shared_ptr<EnemyDataModel> e =
-                    EnemyDataModel::alloc(enemyName,std::stoi(enemyHealth),
-                                          Vec2(std::stof(enemyPosX), std::stof(enemyPosY)),
-                                          std::stoi(enemyType), std::stoi(enemyWall));
-
-            if (e != nullptr) {
-                gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
-            }
-        }
-        else {
-            std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
-            thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyHealth));
-            //thisEnemy->setPos(Vec2(std::stof(enemyPosX), std::stof(enemyPosY)));
+        if (e != nullptr) {
+            gameModel._enemyArrayMaster[std::stoi(enemyWall)][enemyName] = e;
         }
         enemySubToken = strtok(NULL, " :");
     }
@@ -873,8 +868,10 @@ char* GameModel::random_buffer_server() {
 }
 
 char* GameModel::return_buffer(const std::string& string) {
+    CULog("State Change before buffering %s", string.c_str());
     char* return_string = new char[string.length() + 1];
     strcpy(return_string, string.c_str());
+    CULog("State Change after buffering %s", return_string);
     return return_string;
 }
 
