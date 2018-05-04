@@ -12,6 +12,7 @@
 #include "InputController.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
+#include "GameModel.h"
 
 using namespace cugl;
 

@@ -29,6 +29,19 @@ protected:
     std::shared_ptr<cugl::Label> _lvl3T;
     std::shared_ptr<cugl::Button> _level4;
     std::shared_ptr<cugl::Label> _lvl4T;
+    std::shared_ptr<cugl::Button> _level5;
+    std::shared_ptr<cugl::Label> _lvl5T;
+    std::shared_ptr<cugl::Button> _level6;
+    std::shared_ptr<cugl::Label> _lvl6T;
+    std::shared_ptr<cugl::Button> _level7;
+    std::shared_ptr<cugl::Label> _lvl7T;
+    std::shared_ptr<cugl::Button> _level8;
+    std::shared_ptr<cugl::Label> _lvl8T;
+    std::shared_ptr<cugl::Button> _level9;
+    std::shared_ptr<cugl::Label> _lvl9T;
+    std::shared_ptr<cugl::Button> _level10;
+    std::shared_ptr<cugl::Label> _lvl10T;
+    
     
     std::shared_ptr<cugl::Button> _backButtonSINGLE;
     std::shared_ptr<cugl::Button> _backButtonMULTI;

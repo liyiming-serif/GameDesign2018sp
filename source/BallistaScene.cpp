@@ -3,6 +3,7 @@
 //
 #include <stdlib.h>
 #include "BallistaScene.h"
+
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
@@ -13,10 +14,16 @@
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
-#define DRAW_SCALE 32
-#define FONT    _assets->get<Font>("futura")
+#define WIN         11
+#define LOSE        12
 
-#define BUTTON_SCALE .8f
+#define JUNGLE  5
+#define SNOW  8
+
+#define DRAW_SCALE 32
+#define FONT    _assets->get<Font>("futura_levels")
+
+#define BUTTON_SCALE .6f
 
 #define BALLISTA_MIN_POWER 9.0f
 
@@ -185,8 +192,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
-    _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(620, 20);
+    _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _ammoText->setPosition(10, 40);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
     _ammoText->setScale(.5f);
 
@@ -244,6 +251,16 @@ void BallistaScene::setCompass(int direction){
 }
 
 void BallistaScene::update(float deltaTime, int direction){
+
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
 

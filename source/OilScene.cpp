@@ -22,8 +22,13 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
-#define BUTTON_SCALE 1.0f
+#define JUNGLE  5
+#define SNOW  8
+
+#define BUTTON_SCALE .6f
 #define DRAW_SCALE 32
 
 #define OIL_COOLDOWN 420
@@ -212,6 +217,17 @@ void OilScene::setCompass(int direction){
 
 
 void OilScene::update(float timestep, int direction){
+    
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
+    
 	//poll inputs
 	if (gameModel.getOilCooldown(direction) == 0 && input.oilTilt()>=TIPPING_POINT && !_oil->isReloading) {
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);

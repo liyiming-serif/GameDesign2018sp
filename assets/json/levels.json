@@ -138,7 +138,7 @@
 				"oil" : false,
 				"mage" : false
 			},
-			"ammo" : 99
+			"ammo" : 100
 		},
 		"level2" : {
 			"enemies" : {
@@ -1693,6 +1693,288 @@
 				"mage" : false
 			},
 			"ammo" : 30
+		},
+		"level8" : {
+			"enemies" : {
+				"numSpawn" : 4,
+				"spawn1" : {
+					"name" : "berserker",
+					"spawn_time" : 100,
+					"xCoord" : 500,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn2" : {
+					"name" : "berserker",
+					"spawn_time" : 400,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn3" : {
+					"name" : "reaper",
+					"spawn_time" : 700,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn4" : {
+					"name" : "warrior",
+					"spawn_time" : 700,
+					"xCoord" : 700,
+					"yCoord" : 700,
+					"sector" : 4
+				}
+			},
+			"rooms_unlocked" : {
+				"lookout" : true,
+				"ballista" : true,
+				"ammo" : true,
+				"repair" : true,
+				"oil" : true,
+				"mage" : true
+			},
+			"ammo" : 30
+		}
+	},
+	"two" : {
+		"level1" : {
+			"enemies" : {
+				"numSpawn" : 32,
+				"spawn1" : {
+					"name" : "skeleton",
+					"spawn_time" : 300,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn2" : {
+					"name" : "skeleton",
+					"spawn_time" : 500,
+					"xCoord" : 950,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn3" : {
+					"name" : "skeleton",
+					"spawn_time" : 700,
+					"xCoord" : 500,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn4" : {
+					"name" : "skeleton",
+					"spawn_time" : 900,
+					"xCoord" : 400,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn5" : {
+					"name" : "skeleton",
+					"spawn_time" : 1100,
+					"xCoord" : 950,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn6" : {
+					"name" : "skeleton",
+					"spawn_time" : 1300,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn7" : {
+					"name" : "skeleton",
+					"spawn_time" : 1700,
+					"xCoord" : 300,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn8" : {
+					"name" : "skeleton",
+					"spawn_time" : 1700,
+					"xCoord" : 900,
+					"yCoord" : 700,
+					"sector" : 5
+				},
+				"spawn9" : {
+					"name" : "skeleton",
+					"spawn_time" : 1700,
+					"xCoord" : 700,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn10" : {
+					"name" : "skeleton",
+					"spawn_time" : 1700,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 5
+				},
+				"spawn11" : {
+					"name" : "skeleton",
+					"spawn_time" : 2300,
+					"xCoord" : 400,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn12" : {
+					"name" : "skeleton",
+					"spawn_time" : 2400,
+					"xCoord" : 800,
+					"yCoord" : 700,
+					"sector" : 3
+				},
+				"spawn13" : {
+					"name" : "skeleton",
+					"spawn_time" : 2700,
+					"xCoord" : 650,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn14" : {
+					"name" : "skeleton",
+					"spawn_time" : 2800,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 3
+				},
+				"spawn15" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn16" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 700,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn17" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 350,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn18" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn19" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 600,
+					"yCoord" : 700,
+					"sector" : 3
+				},
+				"spawn20" : {
+					"name" : "skeleton",
+					"spawn_time" : 3700,
+					"xCoord" : 850,
+					"yCoord" : 700,
+					"sector" : 5
+				},
+				"spawn21" : {
+					"name" : "skeleton",
+					"spawn_time" : 4700,
+					"xCoord" : 800,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn22" : {
+					"name" : "skeleton",
+					"spawn_time" : 4700,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn23" : {
+					"name" : "skeleton",
+					"spawn_time" : 5000,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn24" : {
+					"name" : "skeleton",
+					"spawn_time" : 5000,
+					"xCoord" : 300,
+					"yCoord" : 700,
+					"sector" : 1
+				},
+				"spawn25" : {
+					"name" : "skeleton",
+					"spawn_time" : 5700,
+					"xCoord" : 550,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn26" : {
+					"name" : "skeleton",
+					"spawn_time" : 5700,
+					"xCoord" : 800,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn27" : {
+					"name" : "skeleton",
+					"spawn_time" : 6000,
+					"xCoord" : 950,
+					"yCoord" : 700,
+					"sector" : 3
+				},
+				"spawn28" : {
+					"name" : "skeleton",
+					"spawn_time" : 6000,
+					"xCoord" : 300,
+					"yCoord" : 700,
+					"sector" : 3
+				},
+				"spawn29" : {
+					"name" : "skeleton",
+					"spawn_time" : 6500,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn30" : {
+					"name" : "skeleton",
+					"spawn_time" : 6500,
+					"xCoord" : 400,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn31" : {
+					"name" : "skeleton",
+					"spawn_time" : 6500,
+					"xCoord" : 600,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn32" : {
+					"name" : "skeleton",
+					"spawn_time" : 6500,
+					"xCoord" : 800,
+					"yCoord" : 700,
+					"sector" : 0
+				}
+			},
+			"rooms_unlocked" : {
+				"lookout" : true,
+				"ballista" : true,
+				"ammo" : false,
+				"repair" : false,
+				"oil" : false,
+				"mage" : false
+			},
+			"ammo" : 200
 		}
 	}
 }

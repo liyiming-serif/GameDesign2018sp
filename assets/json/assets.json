@@ -161,6 +161,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "room_lock": {
+            "file":     "textures/Menu/levels/lock_rooms.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "lookout_floor": {
             "file":     "textures/Lookout/LookoutFloor.png",
             "minfilter":"nearest",
@@ -205,6 +212,13 @@
         },
         "lookout_view_d": {
             "file":     "textures/Lookout/LookoutView_d.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_progressBar": {
+            "file":     "textures/Lookout/Progress.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -390,6 +404,55 @@
         },
         "m_title": {
             "file":     "textures/Menu/title.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_BG": {
+            "file":     "textures/Menu/WinLose/win.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_menu": {
+            "file":     "textures/Menu/WinLose/win_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_replay": {
+            "file":     "textures/Menu/WinLose/win_replay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_next": {
+            "file":     "textures/Menu/WinLose/win_next.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_BG": {
+            "file":     "textures/Menu/WinLose/lose.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_menu": {
+            "file":     "textures/Menu/WinLose/lose_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_replay": {
+            "file":     "textures/Menu/WinLose/lose_replay.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

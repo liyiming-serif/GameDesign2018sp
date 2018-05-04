@@ -41,8 +41,11 @@ public:
     GameModel() {};
 
     bool init();
+    bool _winFlag=false;
+    bool _loseFlag=true;
 
     int level;
+    int _gamePlayers;
 
     std::unordered_map<std::string, bool> _unlockedRooms;
 
