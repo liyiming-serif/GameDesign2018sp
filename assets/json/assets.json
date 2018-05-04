@@ -452,7 +452,14 @@
       "wrapT": "clamp"
     },
     "warrior": {
-            "file":     "textures/reaper.png",
+      "file": "textures/reaper.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "berserker": {
+            "file":     "textures/berserker.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

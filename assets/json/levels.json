@@ -4,7 +4,7 @@
 			"enemies" : {
 				"numSpawn" : 18,
 				"spawn1" : {
-					"name" : "warrior",
+					"name" : "berserker",
 					"spawn_time" : 300,
 					"xCoord" : 100,
 					"yCoord" : 700,
@@ -18,7 +18,7 @@
 					"sector" : 0
 				},
 				"spawn3" : {
-					"name" : "skeleton",
+					"name" : "reaper",
 					"spawn_time" : 1100,
 					"xCoord" : 950,
 					"yCoord" : 700,

@@ -71,6 +71,37 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 
+		case 4: //big reapers, slow and heavy melee
+			//set animation constants
+			_rows = 6;
+			_cols = 7;
+			_offset = 41;
+			_walkFrameStart = 0;
+			_dieFrameStart = 16;
+
+			//create the scene node
+			texture = assets->get<Texture>("warrior");
+			_node = AnimationNode::alloc(texture, _rows, _cols, _offset);
+			_node->setFrame(_walkFrameStart);
+			_node->setScale(0.45);
+			_node->setAnchor(Vec2::ANCHOR_CENTER);
+			break;
+		case 5: //berserkers, stronger when attacked
+			//set animation constants
+			_rows = 6;
+			_cols = 7;
+			_offset = 41;
+			_walkFrameStart = 0;
+			_dieFrameStart = 16;
+
+			//create the scene node
+			texture = assets->get<Texture>("berserker");
+			_node = AnimationNode::alloc(texture, _rows, _cols, _offset);
+			_node->setFrame(_walkFrameStart);
+			_node->setScale(0.3);
+			_node->setAnchor(Vec2::ANCHOR_CENTER);
+			break;
+
 		default: //unrecognized enemy type
 			return false;
 	}
