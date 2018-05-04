@@ -26,6 +26,8 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 
 /** Define the time settings for animation */
@@ -118,7 +120,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 float pos = _cursor->getPositionX();
                 
                 if (fabs(pos-_size.width/2)< .05*_size.width) {
-                    CULog("jackpot");
                     std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
                     _jackpot = PolygonNode::allocWithTexture(perf);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -127,12 +128,10 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_J, _jackpot);
                     _jackpot->setColor(Color4 (232,227,201,255));
-                    CULog("do move");
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
                 else if (fabs(pos-_size.width/2)< .2*_size.width ) {
-                    CULog("okay");
                     std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
                     _jackpot = PolygonNode::allocWithTexture(okay);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -145,7 +144,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
                 else {
-                    CULog("bad");
                     std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
                     _jackpot = PolygonNode::allocWithTexture(bad);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -169,7 +167,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 float pos = _cursor->getPositionX();
                 
                 if (fabs(pos-_size.width/2)< .05*_size.width) {
-                    CULog("jackpot");
                     std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
                     _jackpot = PolygonNode::allocWithTexture(perf);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -178,12 +175,10 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     addChild(_jackpot);
                     AmmoScene::doMoveUp(_moveup_J, _jackpot);
                     _jackpot->setColor(Color4 (232,227,201,255));
-                    CULog("do move");
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
                 else if (fabs(pos-_size.width/2)< .2*_size.width ) {
-                    CULog("okay");
                     std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
                     _jackpot = PolygonNode::allocWithTexture(okay);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -197,7 +192,6 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
                 }
                 else {
-                    CULog("bad");
                     std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
                     _jackpot = PolygonNode::allocWithTexture(bad);
                     _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -271,6 +265,15 @@ void AmmoScene::dispose() {
 void AmmoScene::update(float timestep){
     // Animate
 
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
 
     if (!_actions->isActive(ACT_KEY+1)){
         _jackpot=nullptr;
@@ -315,7 +318,6 @@ void AmmoScene::doMoveUp(const std::shared_ptr<MoveTo>& action, std::shared_ptr<
 
 void AmmoScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
     _actions->activate(ACT_KEY+2, action, _hammerAnim);
-   // CULog("Doing the strip");
 }
 
 

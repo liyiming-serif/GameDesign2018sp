@@ -41,6 +41,8 @@
 #include "AmmoScene.h"
 #include "OilScene.h"
 #include "LobbyScene.h"
+#include "WinScene.h"
+#include "LoseScene.h"
 #include "InputController.h"
 #include "GameModel.h"
 #include "SpawnController.h"
@@ -84,6 +86,9 @@ protected:
     MageScene _mageScene;
     AmmoScene _ammoScene;
     OilScene _oilScene;
+    
+    WinScene _winScene;
+    LoseScene _loseScene;
 
 
     

@@ -22,8 +22,13 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
-#define BUTTON_SCALE 1.0f
+#define JUNGLE  5
+#define SNOW  8
+
+#define BUTTON_SCALE .6f
 #define DRAW_SCALE 32
 
 #define OIL_COOLDOWN 420
@@ -61,18 +66,48 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
     
     // Set the background image
-    std::shared_ptr<Texture> texture  = _assets->get<Texture>("oil_background");
-    _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(0.5625f); // Magic number to rescale asset
-    addChild(_background);
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
+    std::shared_ptr<Texture> texture_s  = _assets->get<Texture>("weaponBG_snow");
+    std::shared_ptr<Texture> texture_d  = _assets->get<Texture>("weaponBG_desert");
+    if (gameModel.level<JUNGLE) {
+        _background = PolygonNode::allocWithTexture(texture);
+    }
+    else if (gameModel.level<SNOW) {
+        _background = PolygonNode::allocWithTexture(texture_s);
+    }
+    else {
+        _background = PolygonNode::allocWithTexture(texture_d);
+    }
+    _background->setScale(0.54f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
 
-	// Set the oil model
-	_oil = OilModel::alloc(Vec2(_size.width / 2, _background->getContentHeight()*0.11f), _assets);
-	if (_oil != nullptr) {
-		addChild(_oil->getNode());
-	}
+
+     std::shared_ptr<Texture> wallGreen  = _assets->get<Texture>("oil_wall_GREEN");
+    _wall_GREEN = PolygonNode::allocWithTexture(wallGreen);
+    _wall_GREEN->setScale(0.54f); // Magic number to rescale asset
+    _wall_GREEN->setAnchor(Vec2::ANCHOR_CENTER);
+    _wall_GREEN->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> wallYellow  = _assets->get<Texture>("oil_wall_YELLOW");
+    _wall_YELLOW = PolygonNode::allocWithTexture(wallYellow);
+    _wall_YELLOW->setScale(0.54f); // Magic number to rescale asset
+    _wall_YELLOW->setAnchor(Vec2::ANCHOR_CENTER);
+    _wall_YELLOW->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> wallOrange  = _assets->get<Texture>("oil_wall_ORANGE");
+    _wall_ORANGE = PolygonNode::allocWithTexture(wallOrange);
+    _wall_ORANGE->setScale(0.54f); // Magic number to rescale asset
+    _wall_ORANGE->setAnchor(Vec2::ANCHOR_CENTER);
+    _wall_ORANGE->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> wallRed  = _assets->get<Texture>("oil_wall_RED");
+    _wall_RED = PolygonNode::allocWithTexture(wallRed);
+    _wall_RED->setScale(0.54f); // Magic number to rescale asset
+    _wall_RED->setAnchor(Vec2::ANCHOR_CENTER);
+    _wall_RED->setPosition(_size.width/2,_size.height/2);
+
+
 
 	// Create the enemy set
 	_enemyArray.clear();
@@ -105,7 +140,19 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _oilTOcastle->setScale(.6f);
     
     // Add the logo and button to the scene graph
+    addChild(_background);
+    addChild(_wall_GREEN);
+    addChild(_wall_YELLOW);
+    addChild(_wall_ORANGE);
+    addChild(_wall_RED);
     addChild(_oilTOcastle);
+    
+    
+    // Set the oil model
+    _oil = OilModel::alloc(Vec2(_size.width / 2, _background->getContentHeight()*0.11f), _assets);
+    if (_oil != nullptr) {
+        addChild(_oil->getNode());
+    }
     
     // We can only activate a button AFTER it is added to a scene
     _oilTOcastle->activate(input.generateKey("oilTOcastle"));
@@ -115,7 +162,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     N_compass = PolygonNode::allocWithTexture(north_compass);
     N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(950,80);
+    N_compass->setPosition(950,72.2);
     addChild(N_compass);
     N_compass->setVisible(false);
     
@@ -123,7 +170,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NE_compass->setPosition(950,80);
+    NE_compass->setPosition(950,72.2);
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
@@ -131,7 +178,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NW_compass->setPosition(950,80);
+    NW_compass->setPosition(950,72.2);
     NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
@@ -140,7 +187,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    S_compass->setPosition(950,80);
+    S_compass->setPosition(950,72.2);
     S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
@@ -149,7 +196,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SE_compass->setPosition(950,80);
+    SE_compass->setPosition(950,72.2);
     SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
@@ -158,11 +205,13 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SW_compass->setPosition(950,80);
+    SW_compass->setPosition(950,72.2);
     SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
     
+    
+
     return true;
 }
 
@@ -210,8 +259,60 @@ void OilScene::setCompass(int direction){
     }
 }
 
+void OilScene::setWall(int direction){
+    _wall_GREEN->setVisible(false);
+    _wall_YELLOW->setVisible(false);
+    _wall_ORANGE->setVisible(false);
+    _wall_RED->setVisible(false);
+    if (gameModel.getWallHealth(direction) < 25){
+        _wall_RED->setVisible(true);
+    }
+    else if (gameModel.getWallHealth(direction) < 50){
+        _wall_ORANGE->setVisible(true);
+    }
+    else if (gameModel.getWallHealth(direction) < 75){
+        _wall_YELLOW->setVisible(true);
+    }
+    else {
+         _wall_GREEN->setVisible(true);
+    }
+    
+
+    
+    if (direction == 0) {
+        N_compass->setVisible(true);
+    }
+    else if (direction == 1){
+        NW_compass->setVisible(true);
+    }
+    else if (direction == 2){
+        SW_compass->setVisible(true);
+    }
+    else if (direction == 3){
+        S_compass->setVisible(true);
+    }
+    else if (direction == 4){
+        SE_compass->setVisible(true);
+    }
+    else if (direction == 5){
+        NE_compass->setVisible(true);
+    }
+}
+
 
 void OilScene::update(float timestep, int direction){
+    
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
+    setWall(direction);
+    
 	//poll inputs
 	if (gameModel.getOilCooldown(direction) == 0 && input.oilTilt()>=TIPPING_POINT && !_oil->isReloading) {
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
@@ -310,9 +411,12 @@ void OilScene::setActive(bool active, int direction){
 
     if(active){
         // Set background color
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
         _oilTOcastle->activate(input.findKey("oilTOcastle"));
          OilScene::setCompass(direction);
+         OilScene::setWall(direction);
+        
+        
     }
     else{
         _oilTOcastle->deactivate();

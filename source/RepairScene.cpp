@@ -26,6 +26,8 @@ using namespace std;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 #define FLOOR_SCALE .54f
 #define BUTTON_SCALE 1.255f
@@ -512,7 +514,17 @@ void RepairScene::update(float timestep){
     int _curr_wall_health;
 
     
-
+    
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
+    
         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
@@ -755,7 +767,7 @@ void RepairScene::setActive(bool active){
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
         
         
-        if (player_TEST > 1) {
+        if (gameModel._gamePlayers > 1) {
             _northeastWallButton->activate(input.findKey("northeastWallButton"));
             _southWallButton->activate(input.findKey("southWallButton"));
             _northwestWallButton->activate(input.findKey("northwestWallButton"));

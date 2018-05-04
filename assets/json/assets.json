@@ -105,41 +105,83 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "ballista_view": {
-            "file":     "textures/Ballista/BallistaView.png",
+        "ballista_turret_GREEN": {
+            "file":     "textures/Ballista/BallistaTurretGREEN.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-    "ballista": {
-      "file": "textures/Ballista/Ballista.png",
-      "minfilter": "nearest",
-      "magfilter": "linear",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-point": {
-      "file": "textures/Ballista/DragPoint.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-line": {
-      "file": "textures/Ballista/DragLine.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-line-short": {
-      "file": "textures/Ballista/DragLineShort.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
+        "ballista_turret_YELLOW": {
+            "file":     "textures/Ballista/BallistaTurretYELLOW.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_turret_ORANGE": {
+            "file":     "textures/Ballista/BallistaTurretORANGE.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_turret_RED": {
+            "file":     "textures/Ballista/BallistaTurretRED.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista": {
+          "file": "textures/Ballista/Ballista.png",
+          "minfilter": "nearest",
+          "magfilter": "linear",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "weaponBG_jungle": {
+            "file": "textures/Overworld/BG_jungle.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "weaponBG_desert": {
+            "file": "textures/Overworld/BG_desert.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "weaponBG_snow": {
+            "file": "textures/Overworld/BG_snow.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "drag-point": {
+          "file": "textures/Ballista/DragPoint.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "drag-line": {
+          "file": "textures/Ballista/DragLine.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "drag-line-short": {
+          "file": "textures/Ballista/DragLineShort.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
         "drag-point-short": {
             "file":     "textures/Ballista/DragPointShort.png",
             "minfilter":"nearest",
@@ -156,6 +198,13 @@
         },
         "smallC": {
             "file":     "textures/Compass/smallC.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "room_lock": {
+            "file":     "textures/Menu/levels/lock_rooms.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -205,6 +254,13 @@
         },
         "lookout_view_d": {
             "file":     "textures/Lookout/LookoutView_d.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lookout_progressBar": {
+            "file":     "textures/Lookout/Progress.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -297,13 +353,41 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-    "oil_icon": {
-      "file": "textures/Oil/OilIcon.png",
-      "minfilter": "nearest",
-      "magfilter": "linear",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
+        "oil_wall_GREEN": {
+            "file":     "textures/Oil/WallGreen.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_YELLOW": {
+            "file":     "textures/Oil/WallYellow.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_ORANGE": {
+            "file":     "textures/Oil/WallOrange.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_RED": {
+            "file":     "textures/Oil/WallRed.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_icon": {
+          "file": "textures/Oil/OilIcon.png",
+          "minfilter": "nearest",
+          "magfilter": "linear",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
     "oil_vat": {
 			"file":     "textures/Oil/oil-vat.png",
 			"minfilter":"nearest",
@@ -390,6 +474,55 @@
         },
         "m_title": {
             "file":     "textures/Menu/title.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_BG": {
+            "file":     "textures/Menu/WinLose/win.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_menu": {
+            "file":     "textures/Menu/WinLose/win_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_replay": {
+            "file":     "textures/Menu/WinLose/win_replay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "win_next": {
+            "file":     "textures/Menu/WinLose/win_next.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_BG": {
+            "file":     "textures/Menu/WinLose/lose.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_menu": {
+            "file":     "textures/Menu/WinLose/lose_menu.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "lose_replay": {
+            "file":     "textures/Menu/WinLose/lose_replay.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -516,13 +649,6 @@
         },
         "ammo_background": {
             "file":     "textures/Basement/AmmoBackground.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "oil_background": {
-            "file":     "textures/Oil/OilBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
