@@ -32,6 +32,7 @@ bool GameModel::init(){
     gameModel._playerRooms = new int[gameModel._noPlayers];
     for (int i = 0; i < gameModel._noPlayers; ++i) {
         gameModel._playerRooms[i] = 0;
+        gameModel._playerAvatars[i] = 0;
     }
 
     gameModel._playerID = 0;
@@ -60,17 +61,24 @@ void GameModel::update(float deltaTime){
             //Prints the messages from the clients
             char **read_buffers = gameModel.ConsumeStateServer();
 
-            if (read_buffers[0] != NULL) {
+            bool nothingToRead = false;
+            for (int l = 0; l<_noPlayers-1; l++) {
+                if (read_buffers[l] == NULL) {
+                    nothingToRead = true;
+                }
+            }
+            if (!nothingToRead) {
                 gameModel.updateStateServer(read_buffers);
             }
+
             for (int l = 0; l<_noPlayers-1; l++) {
-                delete[] read_buffers[l];
+                //delete[] read_buffers[l];
             }
 
             char *write_byte_buffer = return_buffer(produceStateChangeServer());
             //TODO: Write to network
 
-            CULog("State Change %s \n", write_byte_buffer);
+            //CULog("State Change %s \n", write_byte_buffer);
 
             if (gameModel.sendState(write_byte_buffer) == 1){
                 CULog("At least one write failure");
@@ -82,14 +90,14 @@ void GameModel::update(float deltaTime){
             //delete[] read_buffers;
             clock = 0;
         }
-        else if (!gameModel.server && clock%10 == 0) {
+        else if (!gameModel.server && clock%10 == 0 && clock != 30) {
             //TODO: Read from network
             char *read_buffer = gameModel.ConsumeStateClient();
             CULog("Read Server State: %s \n", read_buffer);
             if (read_buffer != NULL) {
                 gameModel.updateStateClient(read_buffer);
             }
-            delete[] read_buffer;
+            //delete[] read_buffer;
             clock++;
         }
         else if (!gameModel.server && clock%15 == 0) {
@@ -309,13 +317,13 @@ std::string GameModel::produceStateChangeClient() {
     _tmpOilString.pop_back();
 
     //TODO: Game recovery state (currserver, gameclock, etc)
-    std::string premessage = _tmpHealthString + "|" + _tmpEnemyString + "|" +
+    std::string premessage = "|" + _tmpHealthString + "|" + _tmpEnemyString + "|" +
                              _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
 
     int premessageSize = premessage.length();
     int postmessageSize = premessageSize + to_string(premessageSize).length();
     int totalmessageSize = premessageSize + to_string(postmessageSize).length();
-    return to_string(totalmessageSize) + "|" + premessage;
+    return to_string(totalmessageSize) + premessage;
 }
 
 char** GameModel::ConsumeStateServer() {
@@ -387,6 +395,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthChanges[i] != NULL) {
+            CULog("TMP healthchanges for player %i are %s", i, tmpHealthChanges[i]);
             subtoken = strtok(tmpHealthChanges[i], " ");
             int j = 0;
             while (subtoken != NULL) {
@@ -406,10 +415,10 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 subtoken = strtok(NULL, " ");
                 j++;
             }
-            free(tmpHealthChanges[i]);
+            //free(tmpHealthChanges[i]);
         }
     }
-
+    //CULog("finished tokenizing");
     // Optimistically apply new health as max of all wall healths (minus deltas), plus the sum of all deltas
     int castleHealthUpdate[6];
     char* tottoken;
@@ -422,9 +431,9 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthN[i] != NULL) {
             tottoken = strtok(tmpHealthN[i], ":");
-            //CULog("RandNet Token %d %s \n", i, tottoken);
+            CULog("Token %d %s \n", i, tottoken);
             deltoken = strtok(NULL, ":");
-            //CULog("RandNet Token %d %s \n", i, deltoken);
+            CULog("Token %d %s \n", i, deltoken);
             int repairdelt = std::stoi(deltoken);
             int currplayerhealth = std::stoi(tottoken);
             if (currplayerhealth > currmax) {
@@ -438,6 +447,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     }
     castleHealthUpdate[0] = deltasum + currmax;
 
+    //CULog("finished north wall");
     // NorthWest Wall
     currmax = 0;
     deltasum = 0;
@@ -544,12 +554,14 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     }
     castleHealthUpdate[5] = deltasum + currmax;
 
+    //CULog("finished other walls");
+
     // Apply castle health changes
     for (int i = 0; i < 6; ++i) {
         //CULog("wallHealth: %d \n", getWallHealth(i));
         gameModel.setWallHealth(i, castleHealthUpdate[i]);
         //CULog("wallHealth: %d \n", getWallHealth(i));
-        CULog("total: %i, update: %i", gameModel._castleHealth[i], castleHealthUpdate[i]);
+        //CULog("total: %i, update: %i", gameModel._castleHealth[i], castleHealthUpdate[i]);
     }
 
     // Sum all arrow changes
@@ -773,7 +785,7 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         section++;
     }
 
-    free(copy);
+    //free(copy);
 }
 
 char* GameModel::random_buffer_client(int player) {

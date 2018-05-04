@@ -171,13 +171,13 @@ private:
         jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
 
         if (array == NULL) {
-            CULog("Read Byte Array is Null");
+            //CULog("Read Byte Array is Null");
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);
             return NULL;
         }
         else {
-            CULog("Read Byte Array is not Null");
+            //CULog("Read Byte Array is not Null");
             jbyte* buffer = env->GetByteArrayElements(array, NULL);
             jsize size = env->GetArrayLength(array);
             char *byte_buffer = new char[size];
@@ -209,10 +209,11 @@ private:
 
         if (byte_buffer != NULL) {
             // Call the Java method
-
+            //CULog("Attempting to send across JNI");
             int n=0;
             char* p = byte_buffer;
             while(*p++){
+                //CULog("N is currently: %i", n);
                 n++;
             } if(n<=0) {
                 CULog("sendState: byte_buffer not big enough");
@@ -228,6 +229,7 @@ private:
 
             // Free local references
             //env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
+            delete(p);
             env->DeleteLocalRef(arr);
             env->DeleteLocalRef(activity);
             env->DeleteLocalRef(clazz);

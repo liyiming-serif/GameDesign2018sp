@@ -169,6 +169,10 @@ public class ChaosCastle extends SDLActivity {
 	 */
 	public String[] getServerDevices() {
 		mba.startDiscovery();
+		int discClock = 0;
+		while (discClock < 10) {
+			discClock++;
+		}
 		updatePairedDevices();
 		mba.cancelDiscovery();
 
@@ -216,7 +220,7 @@ public class ChaosCastle extends SDLActivity {
 	public void makeDiscoverable() {
 		Intent discoverableIntent =
 				new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		//discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+		discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 800);
 		startActivity(discoverableIntent);
 	}
 
@@ -258,9 +262,9 @@ public class ChaosCastle extends SDLActivity {
             }
             synchronized (this) {
             	//change server name to reflect number of players
-				changeServerName(bConnectedRing.size()+1);
                 BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
                 bConnectedRing.add(b);
+				changeServerName(bConnectedRing.size()+1);
                 b.start();
                 Log.d("CONNECTED", "Another player has joined "+mba.getName());
             }
@@ -283,7 +287,7 @@ public class ChaosCastle extends SDLActivity {
 
 	@Override
 	protected void onStop(){
-		mba.setName(origName);
+		//mba.setName(origName);
 		super.onStop();
 	}
 

@@ -43,7 +43,7 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets, std::vec
 void SpawnController::update(float deltaTime) {
     _totalTime++;
 	if (_totalTime%10 == 0) {
-		CULog("Total time in Spawn Controller %d", _totalTime);
+		//CULog("Total time in Spawn Controller %d", _totalTime);
 	}
     if(_currSpawnIndex >= 0){
         if(_enemyArray[_currSpawnIndex][4]<_totalTime){
@@ -73,7 +73,7 @@ void SpawnController::update(float deltaTime) {
             //done spawning
                 _currSpawnIndex = -1;
             }
-			CULog("Current Spawn Index: %d", _currSpawnIndex);
+			//CULog("Current Spawn Index: %d", _currSpawnIndex);
         }
     }
 }

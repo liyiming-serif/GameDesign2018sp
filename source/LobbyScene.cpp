@@ -364,7 +364,7 @@ void LobbyScene::update(float timestep){
     }
 
     // Delete all enter buttons/text
-    if (LobbyClock = 20) {
+    if (LobbyClock == 50) {
         if (!serverDevices.empty()) {
             for(int i = 0; i < serverDevices.size(); i++) {
                 _enterButtons[i]->dispose();
@@ -389,7 +389,7 @@ void LobbyScene::update(float timestep){
             for (int i = 0; i < length; ++i) {
                 _enterButtons[i] = createServerRoomButton(i);
                 _enterTexts[i] = createServerRoomText(i);
-                //setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
+                setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
             }
         }
         LobbyClock = 0;
