@@ -466,7 +466,7 @@ void BallistaScene::beginContact(b2Contact* contact) {
 						ed->setHealth(ed->getHealth() - 1);
 					}
 					if (gameModel.isNetworked() && !gameModel.isServer()) {
-						gameModel.addEnemyChange(ed->getName(), -1);
+						gameModel.addEnemyChange(ed->getName(), -1, ed->getWall());
 					}
 				}
 				break;

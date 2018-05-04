@@ -97,7 +97,7 @@ public:
 
     void setPlayerAvatar(int player, int avatar);
 
-    void addEnemyChange(std::string name, int damage);
+    void addEnemyChange(std::string name, int damage, int wall);
 
     void addDeltaAmmo(int type, int amt);
 

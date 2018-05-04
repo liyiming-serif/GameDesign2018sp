@@ -90,7 +90,7 @@ void GameModel::update(float deltaTime){
             //delete[] read_buffers;
             clock = 0;
         }
-        else if (!gameModel.server && clock%10 == 0 && clock != 30) {
+        else if (!gameModel.server && clock == 10) {
             //TODO: Read from network
             char *read_buffer = gameModel.ConsumeStateClient();
             CULog("Read Server State: %s \n", read_buffer);
@@ -98,9 +98,7 @@ void GameModel::update(float deltaTime){
                 gameModel.updateStateClient(read_buffer);
             }
             //delete[] read_buffer;
-            clock++;
-        }
-        else if (!gameModel.server && clock%15 == 0) {
+
             char *write_byte_buffer = return_buffer(produceStateChangeClient());
             //TODO: Write to network
             CULog("State Change: %s \n", write_byte_buffer);
@@ -109,12 +107,8 @@ void GameModel::update(float deltaTime){
             } else {
                 CULog("Write success");
             }
-            if (clock == 15) {
-                clock++;
-            } else {
-                clock = 0;
-            }
             delete[] write_byte_buffer;
+            clock = 0;
         }
         else {
             clock++;
@@ -129,7 +123,7 @@ void GameModel::update(float deltaTime){
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
                 if (it->second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
-                    gameModel.addEnemyChange(it->first, 0-it->second->getHealth());
+                    gameModel.addEnemyChange(it->first, 0-it->second->getHealth(), it->second->getWall());
                 }
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
 			}
@@ -229,8 +223,8 @@ void GameModel::addDeltaAmmo(int type, int amt) {
     gameModel._deltaAmmo[type] += amt;
 }
 
-void GameModel::addEnemyChange(std::string name, int damage) {
-    gameModel._enemyChanges += name+ ":" + to_string(damage) + " ";
+void GameModel::addEnemyChange(std::string name, int damage, int wall) {
+    gameModel._enemyChanges += name+ ":" + to_string(damage) + ":" + to_string(wall) + " ";
 }
 
 std::string GameModel::produceStateChangeServer() {
@@ -290,7 +284,7 @@ std::string GameModel::produceStateChangeClient() {
     std::string _tmpOilString = "";
 
     for (int i = 0; i < 6; ++i) {
-        _tmpHealthString+= to_string(gameModel._castleHealth[i]) + ":" + to_string(gameModel._deltaCastleHealth[i]) + " ";
+        _tmpHealthString+= to_string(gameModel._deltaCastleHealth[i]) + " ";
         gameModel._deltaCastleHealth[i] = 0;
         _tmpOilString += to_string(gameModel._oilPoured[i]) + " ";
         gameModel._oilPoured[i] = 0;
@@ -421,138 +415,84 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     //CULog("finished tokenizing");
     // Optimistically apply new health as max of all wall healths (minus deltas), plus the sum of all deltas
     int castleHealthUpdate[6];
-    char* tottoken;
     char* deltoken;
 
     // North Wall
-    int currmax = 0;
     int deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthN[i] != NULL) {
-            tottoken = strtok(tmpHealthN[i], ":");
-            CULog("Token %d %s \n", i, tottoken);
-            deltoken = strtok(NULL, ":");
+            deltoken = tmpHealthN[i];
             CULog("Token %d %s \n", i, deltoken);
             int repairdelt = std::stoi(deltoken);
-            int currplayerhealth = std::stoi(tottoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
     }
-    if (gameModel.getWallHealth(0) > currmax) {
-        currmax = gameModel.getWallHealth(0);
-    }
-    castleHealthUpdate[0] = deltasum + currmax;
+
+    castleHealthUpdate[0] = deltasum + gameModel._castleHealth[0];
 
     //CULog("finished north wall");
     // NorthWest Wall
-    currmax = 0;
     deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthNW[i] != NULL) {
-            tottoken = strtok(tmpHealthNW[i], ":");
-            deltoken = strtok(NULL, ":");
-            int currplayerhealth = std::stoi(tottoken);
+            deltoken = tmpHealthNW[i];
             int repairdelt = std::stoi(deltoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
     }
-    if (gameModel.getWallHealth(1) > currmax) {
-        currmax = gameModel.getWallHealth(1);
-    }
-    castleHealthUpdate[1] = deltasum + currmax;
+    castleHealthUpdate[1] = deltasum + gameModel._castleHealth[1];
 
     //SouthWest Wall
-    currmax = 0;
     deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthSW[i] != NULL) {
-            tottoken = strtok(tmpHealthSW[i], ":");
-            deltoken = strtok(NULL, ":");
-            int currplayerhealth = std::stoi(tottoken);
+            deltoken = tmpHealthSW[i];
             int repairdelt = std::stoi(deltoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
     }
-    if (gameModel.getWallHealth(2) > currmax) {
-        currmax = gameModel.getWallHealth(2);
-    }
-    castleHealthUpdate[2] = deltasum + currmax;
+    castleHealthUpdate[2] = deltasum + gameModel._castleHealth[2];
 
     //South Wall
-    currmax = 0;
     deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthS[i] != NULL) {
-            tottoken = strtok(tmpHealthS[i], ":");
-            deltoken = strtok(NULL, ":");
-            int currplayerhealth = std::stoi(tottoken);
+            deltoken = tmpHealthS[i];
             int repairdelt = std::stoi(deltoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
 
     }
-    if (gameModel.getWallHealth(3) > currmax) {
-        currmax = gameModel.getWallHealth(3);
-    }
-    castleHealthUpdate[3] = deltasum + currmax;
+    castleHealthUpdate[3] = deltasum + gameModel._castleHealth[3];
 
     // SouthEast Wall
-    currmax = 0;
     deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthSE[i] != NULL) {
-            tottoken = strtok(tmpHealthSE[i], ":");
-            deltoken = strtok(NULL, ":");
-            int currplayerhealth = std::stoi(tottoken);
+
+            deltoken = tmpHealthSE[i];
             int repairdelt = std::stoi(deltoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
     }
-    if (gameModel.getWallHealth(4) > currmax) {
-        currmax = gameModel.getWallHealth(4);
-    }
-    castleHealthUpdate[4] = deltasum + currmax;
+    castleHealthUpdate[4] = deltasum + gameModel._castleHealth[4];
 
     // NorthEast Wall
-    currmax = 0;
     deltasum = 0;
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpHealthNE[i] != NULL) {
-            tottoken = strtok(tmpHealthNE[i], ":");
-            deltoken = strtok(NULL, ":");
-            int currplayerhealth = std::stoi(tottoken);
+            deltoken = tmpHealthNE[i];
             int repairdelt = std::stoi(deltoken);
-            if (currplayerhealth > currmax) {
-                currmax = currplayerhealth;
-            }
             deltasum += repairdelt;
         }
     }
-    if (gameModel.getWallHealth(5) > currmax) {
-        currmax = gameModel.getWallHealth(5);
-    }
-    castleHealthUpdate[5] = deltasum + currmax;
+    castleHealthUpdate[5] = deltasum + gameModel._castleHealth[5];
 
     //CULog("finished other walls");
 
@@ -601,6 +541,7 @@ void GameModel::updateStateServer(char** ConsumedStates) {
     char* enemySubToken;
     char enemyName[4];
     char enemyDamage[4];
+    char enemyWall[2];
 
     for (int i = 0; i < gameModel._noPlayers-1; ++i) {
         if (tmpEnemyChanges[i] != NULL && tmpEnemyChanges[i] != "") {
@@ -613,11 +554,18 @@ void GameModel::updateStateServer(char** ConsumedStates) {
                 enemySubToken = strtok(NULL, " :");
                 strcpy(enemyDamage, enemySubToken);
                 CULog("enemy Damage: %s", enemyDamage);
-                for (int j = 0; j<6; ++j) {
-                    std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[j].find (enemyName);
-                    if ( got != gameModel._enemyArrayMaster[j].end() ) {
-                        std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
-                        thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyDamage));
+                enemySubToken = strtok(NULL, " :");
+                strcpy(enemyWall, enemySubToken);
+                CULog("enemy Wall: %s", enemyWall);
+
+                std::unordered_map<std::string,std::shared_ptr<EnemyDataModel>>::iterator got = gameModel._enemyArrayMaster[std::stoi(enemyWall)].find (enemyName);
+                if ( got != gameModel._enemyArrayMaster[std::stoi(enemyWall)].end() ) {
+                    std::shared_ptr<EnemyDataModel> thisEnemy = got->second;
+                    thisEnemy->setHealth(thisEnemy->getHealth() + std::stoi(enemyDamage));
+                }
+                else {
+                    if (std::stoi(enemyDamage) == -1) {
+                        gameModel._castleHealth[std::stoi(enemyWall)] += 10;
                     }
                 }
                 CULog("Enemy updated successfully");
