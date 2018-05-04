@@ -105,41 +105,83 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "ballista_view": {
-            "file":     "textures/Ballista/BallistaView.png",
+        "ballista_turret_GREEN": {
+            "file":     "textures/Ballista/BallistaTurretGREEN.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-    "ballista": {
-      "file": "textures/Ballista/Ballista.png",
-      "minfilter": "nearest",
-      "magfilter": "linear",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-point": {
-      "file": "textures/Ballista/DragPoint.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-line": {
-      "file": "textures/Ballista/DragLine.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
-    "drag-line-short": {
-      "file": "textures/Ballista/DragLineShort.png",
-      "minfilter": "nearest",
-      "magfilter": "nearest",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
+        "ballista_turret_YELLOW": {
+            "file":     "textures/Ballista/BallistaTurretYELLOW.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_turret_ORANGE": {
+            "file":     "textures/Ballista/BallistaTurretORANGE.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista_turret_RED": {
+            "file":     "textures/Ballista/BallistaTurretRED.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "ballista": {
+          "file": "textures/Ballista/Ballista.png",
+          "minfilter": "nearest",
+          "magfilter": "linear",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "weaponBG_jungle": {
+            "file": "textures/Overworld/BG_jungle.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "weaponBG_desert": {
+            "file": "textures/Overworld/BG_desert.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "weaponBG_snow": {
+            "file": "textures/Overworld/BG_snow.png",
+            "minfilter": "nearest",
+            "magfilter": "linear",
+            "wrapS": "clamp",
+            "wrapT": "clamp"
+        },
+        "drag-point": {
+          "file": "textures/Ballista/DragPoint.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "drag-line": {
+          "file": "textures/Ballista/DragLine.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
+        "drag-line-short": {
+          "file": "textures/Ballista/DragLineShort.png",
+          "minfilter": "nearest",
+          "magfilter": "nearest",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
         "drag-point-short": {
             "file":     "textures/Ballista/DragPointShort.png",
             "minfilter":"nearest",
@@ -311,13 +353,41 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-    "oil_icon": {
-      "file": "textures/Oil/OilIcon.png",
-      "minfilter": "nearest",
-      "magfilter": "linear",
-      "wrapS": "clamp",
-      "wrapT": "clamp"
-    },
+        "oil_wall_GREEN": {
+            "file":     "textures/Oil/WallGreen.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_YELLOW": {
+            "file":     "textures/Oil/WallYellow.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_ORANGE": {
+            "file":     "textures/Oil/WallOrange.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_wall_RED": {
+            "file":     "textures/Oil/WallRed.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "oil_icon": {
+          "file": "textures/Oil/OilIcon.png",
+          "minfilter": "nearest",
+          "magfilter": "linear",
+          "wrapS": "clamp",
+          "wrapT": "clamp"
+        },
     "oil_vat": {
 			"file":     "textures/Oil/oil-vat.png",
 			"minfilter":"nearest",
@@ -565,13 +635,6 @@
         },
         "ammo_background": {
             "file":     "textures/Basement/AmmoBackground.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
-        "oil_background": {
-            "file":     "textures/Oil/OilBackground.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
