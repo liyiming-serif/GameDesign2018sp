@@ -4,7 +4,7 @@
 			"enemies" : {
 				"numSpawn" : 18,
 				"spawn1" : {
-					"name" : "berserker",
+					"name" : "skeleton",
 					"spawn_time" : 300,
 					"xCoord" : 100,
 					"yCoord" : 700,
@@ -18,7 +18,7 @@
 					"sector" : 0
 				},
 				"spawn3" : {
-					"name" : "reaper",
+					"name" : "skeleton",
 					"spawn_time" : 1100,
 					"xCoord" : 950,
 					"yCoord" : 700,
@@ -863,7 +863,7 @@
 				"ballista" : true,
 				"ammo" : true,
 				"repair" : true,
-				"oil" : false,
+				"oil" : true,
 				"mage" : false
 			},
 			"ammo" : 30

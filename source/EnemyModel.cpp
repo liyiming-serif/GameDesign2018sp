@@ -107,6 +107,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 	}
 	_currFrame = 0.0f;
 	_node->setPosition(pos);
+	_node->setZOrder(-1);
 
 	//initialize the box2d obstacle
 	BoxObstacle::init(pos / _drawScale, Size(_node->getWidth() / _drawScale, _node->getHeight() / _drawScale));

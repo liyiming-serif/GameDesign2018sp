@@ -31,6 +31,10 @@ using namespace cugl;
 #define BUTTON_SCALE .6f
 #define DRAW_SCALE 32
 
+#define DELUGE_NUM_ROWS 5
+#define DELUGE_NUM_COLS 5
+#define DELUGE_SPEED 0.2f
+
 #define OIL_COOLDOWN 420
 #define TIPPING_POINT 0.45f
 
@@ -61,6 +65,9 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
     
+	//Autosort by ZOrder
+	setZAutoSort(true);
+
     switchscene = 0;
     
     _assets = assets;
@@ -81,7 +88,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setScale(0.54f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
-
+	_background->setZOrder(-2);
 
      std::shared_ptr<Texture> wallGreen  = _assets->get<Texture>("oil_wall_GREEN");
     _wall_GREEN = PolygonNode::allocWithTexture(wallGreen);
@@ -139,8 +146,17 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _oilTOcastle->setPosition(15,_size.height-18);
     _oilTOcastle->setScale(.6f);
     
+	// Init the oil effect when it's poured
+	_deluge = AnimationNode::alloc(_assets->get<Texture>("oil_wave"),DELUGE_NUM_ROWS,DELUGE_NUM_COLS);
+	_deluge->setVisible(false);
+	_deluge->setScale(_size.width/_deluge->getWidth(),_size.height/_deluge->getHeight());
+	_deluge->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
+	_deluge->setPosition(0, 0);
+	_delugeFrame = 0;
+
     // Add the logo and button to the scene graph
     addChild(_background);
+	addChild(_deluge);
     addChild(_wall_GREEN);
     addChild(_wall_YELLOW);
     addChild(_wall_ORANGE);
@@ -225,8 +241,19 @@ void OilScene::dispose() {
         _assets = nullptr;
         _oilTOcastle = nullptr;
         _background = nullptr;
+		_wall_GREEN = nullptr;
+		_wall_YELLOW = nullptr;
+		_wall_ORANGE = nullptr;
+		_wall_RED = nullptr;
 		_oil = nullptr;
         _active = false;
+		N_compass = nullptr;
+		NE_compass = nullptr;
+		NW_compass = nullptr;
+		S_compass = nullptr;
+		SE_compass = nullptr;
+		SW_compass = nullptr;
+		_deluge = nullptr;
 		_enemyArray.clear();
 		_enemiesToFree.clear();
     }
@@ -318,6 +345,8 @@ void OilScene::update(float timestep, int direction){
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
 		_oil->isReloading = true;
 		//OIL SPILT! Obliterate all enemies!
+		_deluge->setVisible(true);
+		_delugeFrame = 0;
 		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
 			std::shared_ptr<EnemyModel> e = epair.second;
 			std::string k = epair.first;
@@ -336,6 +365,16 @@ void OilScene::update(float timestep, int direction){
 	//advance frame
 	_oil->update(cooldown, tilt);
 
+	if (_deluge!=nullptr && _deluge->isVisible()) {
+		_delugeFrame += DELUGE_SPEED;
+		if (_delugeFrame >= _deluge->getSize()) {
+			_deluge->setVisible(false);
+		}
+		else {
+			_deluge->setFrame(floor(_delugeFrame));
+		}
+	}
+
 	updateEnemyModels(timestep, direction);
 
 	//crank the physics engine
@@ -350,7 +389,7 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 
 		std::unordered_map<std::string, std::shared_ptr<EnemyModel>>::iterator i =
 			_enemyArray.find(k);
-		if (i == _enemyArray.end()) {
+		if (i == _enemyArray.end()) { //New enemy spotted; create in scene.
 			if (inRange(e->getPos().y)) {
 				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, e->getType(), DRAW_SCALE, _assets);
@@ -361,7 +400,7 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 				}
 			}
 		}
-		else {
+		else { //Enemy already exists; update it.
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos / DRAW_SCALE);
 			i->second->update(timestep);

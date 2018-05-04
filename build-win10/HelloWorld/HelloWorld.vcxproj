@@ -199,6 +199,7 @@
     <ClInclude Include="..\..\source\LoadingScene.h" />
     <ClInclude Include="..\..\source\LobbyScene.h" />
     <ClInclude Include="..\..\source\LookoutScene.h" />
+    <ClInclude Include="..\..\source\LoseScene.h" />
     <ClInclude Include="..\..\source\MageScene.h" />
     <ClInclude Include="..\..\source\MenuScene.h" />
     <ClInclude Include="..\..\source\OilModel.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="..\..\source\OverworldScene.h" />
     <ClInclude Include="..\..\source\RepairScene.h" />
     <ClInclude Include="..\..\source\SpawnController.h" />
+    <ClInclude Include="..\..\source\WinScene.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
@@ -223,6 +225,7 @@
     <ClCompile Include="..\..\source\LoadingScene.cpp" />
     <ClCompile Include="..\..\source\LobbyScene.cpp" />
     <ClCompile Include="..\..\source\LookoutScene.cpp" />
+    <ClCompile Include="..\..\source\LoseScene.cpp" />
     <ClCompile Include="..\..\source\MageScene.cpp" />
     <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\MenuScene.cpp" />
@@ -231,6 +234,7 @@
     <ClCompile Include="..\..\source\OverworldScene.cpp" />
     <ClCompile Include="..\..\source\RepairScene.cpp" />
     <ClCompile Include="..\..\source\SpawnController.cpp" />
+    <ClCompile Include="..\..\source\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />

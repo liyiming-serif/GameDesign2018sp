@@ -62,10 +62,12 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
 
+	//Autosort by ZOrder
+	setZAutoSort(true);
+
     // Set the assets
     switchscene = 0;
     _assets = assets;
-
 
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
@@ -83,6 +85,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setScale(.54f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
+	_background->setZOrder(-2);
     
     std::shared_ptr<Texture> turret  = _assets->get<Texture>("ballista_turret_GREEN");
     _ballistaTurret_GREEN = PolygonNode::allocWithTexture(turret);
@@ -253,6 +256,19 @@ void BallistaScene::dispose() {
 		_dpBlue = nullptr;
 		_dlBlue = nullptr;
 		_ballista = nullptr;
+		_background = nullptr;
+		_ballistaTurret_GREEN = nullptr;
+		_ballistaTurret_YELLOW = nullptr;
+		_ballistaTurret_ORANGE = nullptr;
+		_ballistaTurret_RED = nullptr;
+		_ballistaTOcastle = nullptr;
+		N_compass = nullptr;
+		NE_compass = nullptr;
+		NW_compass = nullptr;
+		S_compass = nullptr;
+		SE_compass = nullptr;
+		SW_compass = nullptr;
+		_ammoText = nullptr;
         _arrows.clear();
 		_arrowsToFree.clear();
         _active = false;

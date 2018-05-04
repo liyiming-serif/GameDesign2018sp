@@ -389,7 +389,14 @@
           "wrapT": "clamp"
         },
     "oil_vat": {
-			"file":     "textures/Oil/oil-vat.png",
+      "file": "textures/Oil/oil-vat.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "oil_wave": {
+			"file":     "textures/Oil/oil-wave.png",
 			"minfilter":"nearest",
 			"magfilter":"linear",
 			"wrapS":    "clamp",
