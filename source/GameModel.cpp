@@ -122,9 +122,6 @@ void GameModel::update(float deltaTime){
 			if (pos.y <= 0) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
-                if (it->second->getType() == 1 && !gameModel.isServer() && gameModel.isNetworked()) {
-                    gameModel.addEnemyChange(it->first, 0-it->second->getHealth(), it->second->getWall());
-                }
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
 			}
 			else if(pos.y>=it->second->getAtkRange()){

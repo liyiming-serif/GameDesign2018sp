@@ -224,6 +224,7 @@ void OilScene::update(float timestep, int direction){
 			if (i != gameModel._enemyArrayMaster[direction].end()) {
 				std::shared_ptr<EnemyDataModel> ed = i->second;
 				gameModel._enemiesToFreeMaster[direction].push_back(k);
+                gameModel.addEnemyChange(i->first, 0-i->second->getHealth(), direction);
 				CULog("destroyed!");
 			}
 		}
