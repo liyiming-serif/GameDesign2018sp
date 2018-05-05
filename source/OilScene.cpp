@@ -40,7 +40,7 @@ using namespace cugl;
 
 #define OIL_MAX_RANGE 99	//farthest enemy oil scene can see
 #define OIL_MIN_RANGE 0		//closest enemy oil scene can see
-#define OIL_END_ZONE 127	//enemies dissapear past this y-coord; set by castle wall art assets
+#define OIL_END_ZONE 192	//enemies dissapear past this y-coord; set by castle wall art assets
 
 bool OilScene::inRange(float y) {
 	return OIL_MIN_RANGE < y && y < OIL_MAX_RANGE;
@@ -458,6 +458,7 @@ void OilScene::setActive(bool active, int direction){
         
     }
     else{
+		_deluge->setVisible(false);
         _oilTOcastle->deactivate();
     }
 }
