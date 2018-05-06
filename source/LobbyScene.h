@@ -20,18 +20,19 @@
 class LobbyScene : public cugl::Scene{
 protected:
     cugl::Size _size;
+
+    std::vector<std::string> serverDevices;
     
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _backButton;
     std::shared_ptr<cugl::Button> _createButton;
-    std::shared_ptr<cugl::Button> _enterButton;
-    std::shared_ptr<cugl::Button> _enterButtonOne;
-    std::shared_ptr<cugl::Button> _enterButtonTwo;
+    std::shared_ptr<cugl::Button>* _enterButtons;
+    std::shared_ptr<cugl::Button> _refreshButton;
+    std::shared_ptr<cugl::Label>* _enterTexts;
+
     std::shared_ptr<cugl::Button> _levelsButton;
-	bool _deactivateCreate;
-	bool _deactivateEnter;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
     std::shared_ptr<cugl::PolygonNode> _avatar2;
     std::shared_ptr<cugl::Button> _avatar3;
@@ -72,6 +73,10 @@ protected:
     bool move4 = true;
     bool move5 = true;
     bool move6 = true;
+
+    size_t length;
+
+    int LobbyClock = 0;
 
     
     
@@ -141,44 +146,111 @@ public:
     
     void changeCanvas (std::string canvas);
 
-#if CU_PLATFORM == CU_PLATFORM_ANDROID
-//    void setupBluetoothServer() {
-//        // Set up parameters for JNI call
-//        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-//        jobject activity = (jobject)SDL_AndroidGetActivity();
-//
-//        jclass clazz(env->GetObjectClass(activity));
-//        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothServer",
-//                                               "()V");
-//
-//        // Call the Java method
-//        env->CallVoidMethod(activity, method_id);
-//
-//        // Free local references
-//        env->DeleteLocalRef(activity);
-//        env->DeleteLocalRef(clazz);
-//   }
-//
-//    void setupBluetoothClient() {
-//        // Set up parameters for JNI call
-//        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-//        jobject activity = (jobject)SDL_AndroidGetActivity();
-//
-//        jclass clazz(env->GetObjectClass(activity));
-//        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothClient",
-//                                               "()V");
-//
-//        // Call the Java method
-//        env->CallVoidMethod(activity, method_id);
-//
-//        // Free local references
-//        env->DeleteLocalRef(activity);
-//        env->DeleteLocalRef(clazz);
-//    }
-#endif
-    
+    std::shared_ptr<cugl::Button> createServerRoomButton(int device);
 
-    
+    std::shared_ptr<cugl::Label> createServerRoomText(int device);
+
+    void refreshRooms();
+
+
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+    void setupBluetoothServer() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothServer",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+   }
+
+    void setupBluetoothClient(int serverDevice) {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "setupBluetoothClient",
+                                               "(I)V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id, serverDevice);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
+
+    std::vector<std::string> getServerDevices() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "getServerDevices",
+                                               "()[Ljava/lang/String;");
+
+        // Call the Java method
+        jobjectArray array = (jobjectArray) env->CallObjectMethod(activity, method_id);
+        std::vector<std::string> Devices;
+
+        if (array == NULL) {
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            env->DeleteLocalRef(array);
+
+            return Devices;
+        }
+        else {
+            int stringCount = env->GetArrayLength(array);
+
+
+            for (int i=0; i<stringCount; i++) {
+                jstring string = (jstring) (env->GetObjectArrayElement(array, i));
+                const char *rawString = env->GetStringUTFChars(string, 0);
+                Devices.push_back((std::string)rawString);
+                // Don't forget to call `ReleaseStringUTFChars` when you're done.
+                env->ReleaseStringUTFChars(string, rawString);
+                env->DeleteLocalRef(string);
+            }
+
+            // Free local references
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            env->DeleteLocalRef(array);
+
+            return Devices;
+        }
+
+    }
+
+    int getPlayers() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "getPlayers",
+                                               "()I");
+
+        // Call the Java method
+        int players = env->CallIntMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return players;
+    }
+#endif
+
 };
 
 

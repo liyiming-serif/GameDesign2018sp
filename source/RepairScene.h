@@ -10,9 +10,9 @@
 #define RepairScene_h
 
 #include "InputController.h"
+#include "GameModel.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
-#include "GameModel.h"
 
 using namespace cugl;
 

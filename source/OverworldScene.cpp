@@ -880,6 +880,8 @@ void OverworldScene::enableButtons() {
 }
 
 void OverworldScene::update(float timestep){
+
+    //TODO: Make the relevant buttons unclickable/covered in Avatars for networked game
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
         switchscene = LOSE;
@@ -890,8 +892,6 @@ void OverworldScene::update(float timestep){
         }
     }
 	//poll inputs
-    
-        CULog("level %i", gameModel.level);
     
     if (!click) {
         _lookout_button->setDown(false);

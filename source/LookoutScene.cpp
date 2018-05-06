@@ -37,7 +37,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
-
+	setZAutoSort(true);
     switchscene = 0;
 
     _assets = assets;
@@ -80,10 +80,10 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	//initialize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
 		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
-		ecanvas->setAnchor(Vec2(0.5f,-0.5f));
-		ecanvas->setPosition(_size.width / 2, _size.height / 2);
+		ecanvas->setAnchor(Vec2(0.5f,-0.3f));
+		ecanvas->setPosition(_size.width*0.46, _size.height / 2);
 		ecanvas->setAngle(i * 2 * M_PI / 6);
-		ecanvas->setScale(0.1f,0.4f);
+		ecanvas->setScale(0.075f,0.3f);
 		addChild(ecanvas);
 		_enemyMarkers.push_back(ecanvas);
 	}
@@ -112,7 +112,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // We can only activate a button AFTER it is added to a scene
     _lookoutTOcastle->activate(input.generateKey("lookoutTOcastle"));
-
+	CULog("initialized lookout");
     return true;
 }
 
@@ -132,11 +132,6 @@ void LookoutScene::dispose() {
 }
 
 void LookoutScene::update(float timestep){
-    
-    CULog("end time %f", gameModel.getEndTime());
-    CULog("current time %f", gameModel.getCurrentTime());
-    CULog("delta distacne %f", _distance);
-    CULog("height %f", _progressBar->getPositionY());
     
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
@@ -175,6 +170,7 @@ void LookoutScene::setActive(bool active){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
+		_distance = .85f*_size.height / gameModel.getEndTime();
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
         _progressBar->setPosition(_progressBar->getPositionX(),
             std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));

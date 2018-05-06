@@ -345,6 +345,9 @@ void OilScene::update(float timestep, int direction){
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
 		_oil->isReloading = true;
 		//OIL SPILT! Obliterate all enemies!
+        if (gameModel.isNetworked() && !gameModel.isServer()) {
+            gameModel.setOilPoured(direction);
+        }
 		_deluge->setVisible(true);
 		_delugeFrame = 0;
 		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
@@ -355,6 +358,7 @@ void OilScene::update(float timestep, int direction){
 			if (i != gameModel._enemyArrayMaster[direction].end()) {
 				std::shared_ptr<EnemyDataModel> ed = i->second;
 				gameModel._enemiesToFreeMaster[direction].push_back(k);
+                gameModel.addEnemyChange(k, 0-i->second->getHealth(), direction);
 				CULog("destroyed!");
 			}
 		}

@@ -11,8 +11,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.*;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.io.UnsupportedEncodingException;
 
 
 /**
@@ -21,12 +24,18 @@ import java.util.Set;
 public class ChaosCastle extends SDLActivity {
 
 	private static final int REQUEST_ENABLE_BT = 1;
+	private static final int MAX_PLAYERS = 5;
 
-	BluetoothServerThread bServer = null;
-	BluetoothClientThread bClient = null;
-	BluetoothAdapter mba = null;
-	BluetoothConnectedThread bConneted = null;
-	BluetoothSocket mmSocket = null;
+	BluetoothServerThread bServer;
+	BluetoothClientThread bClient;
+	BluetoothAdapter mba;
+	String origName;
+	ArrayList<BluetoothDevice> pairedServers;
+	BluetoothConnectedThread bConnected;
+	ArrayList<BluetoothConnectedThread> bConnectedRing;
+
+	boolean isServer = false;
+	int currClientIndex = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,14 +44,100 @@ public class ChaosCastle extends SDLActivity {
 	    super.onCreate(savedInstanceState);
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
+		mba = BluetoothAdapter.getDefaultAdapter();
+		if(mba != null) {
+			origName = mba.getName();
+		}
 	}
 
-	//TODO: Use this method to read from the reading-connected thread (pass bytes to C side)
-	private static native void readNetwork(byte[] byte_buffer);
+	public int getPlayers(){
+	    if(isServer){
+			if(bConnectedRing!=null){
+				return bConnectedRing.size()+1;
+			}
+			return 1;
+		}
+		else{
+	    	return -1;
+		}
+    }
 
-	//TODO: Use this method to write to the writing-connected thread (might need to be native function)
-	public void writeNetwork(byte[] byte_buffer) {
-		return;
+	/** Call consumeState from C++ to get one COMPLETE game state
+	 *  from the bluetooth socket.
+	 */
+	public byte[] consumeState(){
+	    if(isServer){
+            if(bConnectedRing==null || bConnectedRing.size()==0){
+                return null;
+            }
+            try {
+                currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+                String s;
+                synchronized (this) {
+                    s = bConnectedRing.get(currClientIndex).dequeueState();
+                }
+                if(s==null){
+                	Log.d("SERVER", "got nothing");
+                	return null;
+				}
+				Log.d("SERVER", s);
+                return s.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                return null;
+            }
+        }
+        else {
+            if (bConnected == null) {
+                return null;
+            }
+            try {
+                String s;
+                synchronized (this) {
+                    s = bConnected.popState();
+                }
+                if (s == null){
+                	Log.d("CLIENT", "got nothing");
+                	return null;
+				}
+				Log.d("CLIENT", s);
+				return s.getBytes("UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                return null;
+            }
+        }
+	}
+
+	/** Call sendState from C++ to send one COMPLETE game state
+	 *  to the bluetooth socket.
+	 */
+	public int sendState(byte[] byte_buffer) {
+		try {
+			Log.d("CLIENT", "Passed JNI barrier: " + new String(byte_buffer, "UTF-8"));
+		}
+		catch(java.io.UnsupportedEncodingException e){
+			Log.e("CLIENT", "There's no reason to read this.");
+		}
+		Log.d("CLIENT", "Passed JNI barrier: in sendState");
+		int status = 0;
+	    if(isServer){
+	    	if(bConnectedRing==null || bConnectedRing.size()==0){
+	    		return 1;
+			}
+	        synchronized (this) {
+                for (BluetoothConnectedThread b : bConnectedRing) {
+                    status = b.write(byte_buffer);
+                }
+            }
+        }
+        else {
+            if (bConnected == null) {
+                return 1;
+            }
+            synchronized (this) {
+                status = bConnected.write(byte_buffer);
+            }
+        }
+        return status;
 	}
 
 	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -58,8 +153,7 @@ public class ChaosCastle extends SDLActivity {
 		}
 	};
 
-	public BluetoothAdapter enableBluetooth() {
-		BluetoothAdapter mba = BluetoothAdapter.getDefaultAdapter();
+	public void enableBluetooth() {
 		if (mba == null) {
 			System.out.print("Bluetooth Unavailable");
 		}
@@ -68,103 +162,138 @@ public class ChaosCastle extends SDLActivity {
 			Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 			startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
 		}
-		return mba;
 	}
 
-	public String[] getPairedDevicesString(BluetoothAdapter mba) {
-		Set<BluetoothDevice> pairedDevices = mba.getBondedDevices();
-		int pairedPhoneSize = 0;
+	/**
+	 * Called by C++. Updates paired devices, then returns its toString.
+	 */
+	public String[] getServerDevices() {
+		mba.startDiscovery();
+		int discClock = 0;
+		while (discClock < 10) {
+			discClock++;
+		}
+		updatePairedDevices();
+		mba.cancelDiscovery();
 
-		if (pairedDevices.size() > 0) {
-			// There are paired devices. Get the name and address of each paired device.
-			for (BluetoothDevice device : pairedDevices) {
-				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhoneSize++;
-				}
-			}
-			String[] pairedPhoneList = new String[pairedPhoneSize];
+		if (pairedServers.size() > 0) {
+			// There are open servers. Enumerate and return their names.
+			String[] result = new String[pairedServers.size()];
 			int i = 0;
-			for (BluetoothDevice device : pairedDevices) {
-				String deviceName = device.getName();
-				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhoneList[i] = deviceName;
-					i++;
-				}
+			for (BluetoothDevice device : pairedServers) {
+				result[i] = device.getName();
+				i++;
 			}
-			return pairedPhoneList;
+			return result;
 		}
 		else {
-			String[] pairedPhoneList = new String[0];
-			return pairedPhoneList;
+			return null;
 		}
 	}
 
-	public Set<BluetoothDevice> getPairedDevices(BluetoothAdapter mba) {
+	/**
+	 * Filter bonded devices by phone, then by SERVER.
+	 * Populates pairedServers with updated devices.
+	 */
+	public void updatePairedDevices() {
 		Set<BluetoothDevice> pairedDevices = mba.getBondedDevices();
-		Set<BluetoothDevice> pairedPhones = new HashSet<>();
+		pairedServers = new ArrayList<BluetoothDevice>(pairedDevices.size());
 
 		if (pairedDevices.size() > 0) {
 			// There are paired devices. Get the name and address of each paired device.
 			for (BluetoothDevice device : pairedDevices) {
 				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART) {
-					pairedPhones.add(device);
+				if (deviceClass == BluetoothClass.Device.PHONE_SMART &&
+						device.getName().matches("SERVER[0-9].*")) {
+					pairedServers.add(device);
 				}
 			}
 		}
-		return pairedPhones;
 	}
 
-	public void findNewDevices(BluetoothAdapter mba) {
+	public void findNewDevices() {
 		if (!mba.startDiscovery()) {
 			System.out.print("Discovery Failed");
 		}
 	}
 
-	public void makeDiscoverable(BluetoothAdapter mba) {
+	public void makeDiscoverable() {
 		Intent discoverableIntent =
 				new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-		//discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+		discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 800);
 		startActivity(discoverableIntent);
 	}
 
+	public void changeServerName(int numPlayers){
+		String newName = "SERVER"+numPlayers+origName;
+		mba.setName(newName);
+	}
+
 	public void setupBluetoothServer() {
-		bServer = new BluetoothServerThread();
+	    changeServerName(1);
+	    makeDiscoverable();
+	    isServer = true;
+	    bConnectedRing = new ArrayList<BluetoothConnectedThread>(5);
+		bServer = new BluetoothServerThread(this);
 		bServer.start();
-		setmmSocket(bServer.mmSocket);
-		connected(mmSocket);
 	}
 
-	public void setupBluetoothClient() {
-		Set<BluetoothDevice> newDevices = getPairedDevices(mba);
-		BluetoothDevice[] newDevicesArray = newDevices.toArray(new BluetoothDevice[1]);
-		Log.d("CLIENT", "Bluetooth Device Paired " +newDevicesArray[0].getName());
-		bClient = new BluetoothClientThread(newDevicesArray[0]);
+	public void setupBluetoothClient(int serverIndx) {
+		if(pairedServers==null){
+			Log.e("CLIENT", "Forgot to call paired devices");
+			return;
+		}
+		if(serverIndx < 0 || serverIndx >=pairedServers.size()){
+			Log.e("CLIENT", "Server "+serverIndx+" not found.");
+			return;
+		}
+		Log.d("CLIENT", "Bluetooth Device Paired " +pairedServers.get(serverIndx).getName());
+		bClient = new BluetoothClientThread(pairedServers.get(serverIndx), this);
 		bClient.start();
-		setmmSocket(bClient.mmSocketFinal);
-		connected(mmSocket);
 	}
 
-	public void setmmSocket(BluetoothSocket mmSocket) {
-		this.mmSocket = mmSocket;
-	}
-
-	public void connected(BluetoothSocket mmSocket) {
-		Log.d("CONNECTED", "connected: Starting.");
+	public boolean connected(BluetoothSocket mmSocket) {
+		Log.d("CONNECTED", "Starting connection");
 
 		// Start the thread to manage the connection and perform transmissions
-		bConneted = new BluetoothConnectedThread(this.mmSocket);
-		bConneted.start();
+        if(isServer){
+            if(bConnectedRing.size()>=MAX_PLAYERS){
+                return false;
+            }
+            synchronized (this) {
+            	//change server name to reflect number of players
+                BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
+                bConnectedRing.add(b);
+				changeServerName(bConnectedRing.size()+1);
+                b.start();
+                Log.d("CONNECTED", "Another player has joined "+mba.getName());
+            }
+            return true;
+        }
+        else {
+            synchronized (this) {
+                bConnected = new BluetoothConnectedThread(mmSocket);
+                bConnected.start();
+				Log.d("CONNECTED", "Joining server!");
+            }
+            return true;
+        }
 	}
 
-	public void disconnected(BluetoothConnectedThread bConnected) {
-		bConnected.cancel();
+	public void disconnect(BluetoothConnectedThread connection) {
+		mba.setName(origName);
+		connection.cancel();
+	}
+
+	@Override
+	protected void onStop(){
+		//mba.setName(origName);
+		super.onStop();
 	}
 
 	@Override
 	protected void onDestroy() {
+		mba.setName(origName);
 		super.onDestroy();
 
 		// Don't forget to unregister the ACTION_FOUND receiver.

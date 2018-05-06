@@ -156,6 +156,10 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ballistaTurret_YELLOW);
     addChild(_ballistaTurret_ORANGE);
     addChild(_ballistaTurret_RED);
+	_ballistaTurret_GREEN->setVisible(false);
+	_ballistaTurret_YELLOW->setVisible(false);
+	_ballistaTurret_ORANGE->setVisible(false);
+	_ballistaTurret_RED->setVisible(false);
 	if (_ballista != nullptr) {
 		addChild(_ballista->getNode());
 	}
@@ -403,6 +407,9 @@ void BallistaScene::update(float deltaTime, int direction){
                     _world->addObstacle(a);
                     addChild(a->getNode());
                     gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)-1);
+					if (gameModel.isNetworked() && !gameModel.isServer()) {
+						gameModel.addDeltaAmmo(0,-1);
+					}
                 }
             }
 			// Fire ballista
@@ -573,6 +580,9 @@ void BallistaScene::beginContact(b2Contact* contact) {
 					}
 					else {
 						ed->setHealth(ed->getHealth() - 1);
+					}
+					if (gameModel.isNetworked() && !gameModel.isServer()) {
+						gameModel.addEnemyChange(k, -1, ed->getWall());
 					}
 				}
 				break;
