@@ -103,7 +103,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 						CULog("networked CLIENT in repair scene");
                         gameModel.changeWallHealth(0,1);
                         gameModel.addDeltaHealth(0,1);
-                        _northText->setText(std::to_string(gameModel.getWallHealth(0)+"%");
+                        _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                     }
 
                 }

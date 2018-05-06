@@ -57,6 +57,7 @@ void GameModel::dispose() {
 void GameModel::update(float deltaTime){
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
         if (gameModel.server && clock == 10) {
             //TODO: Read from network
             //Prints the messages from the clients
@@ -120,8 +121,8 @@ void GameModel::update(float deltaTime){
         else {
             clock++;
         }
+#endif
     }
-
 	//update enemies
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
@@ -233,7 +234,7 @@ void GameModel::addDeltaAmmo(int type, int amt) {
 void GameModel::addEnemyChange(std::string name, int damage, int wall) {
     gameModel._enemyChanges += name + ":" + to_string(damage) + ":" + to_string(wall) + " ";
 }
-
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 std::string GameModel::produceStateChangeServer() {
     std::string _tmpHealthString = "";
     std::string _tmpAmmoString = "";
@@ -282,6 +283,7 @@ std::string GameModel::produceStateChangeServer() {
     int totalmessageSize = premessageSize + messageSizeSize;
     return to_string(totalmessageSize) + premessage;
 }
+#endif
 
 float GameModel::getEndTime(){
     return _endTime;
@@ -299,7 +301,7 @@ void GameModel::setCurrentTime(float time){
     _currentTime = time;
 }
 
-
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 std::string GameModel::produceStateChangeClient() {
     std::string _tmpHealthString = "";
     std::string _tmpAmmoString = "";
@@ -343,6 +345,7 @@ std::string GameModel::produceStateChangeClient() {
     int totalmessageSize = premessageSize + to_string(postmessageSize).length();
     return to_string(totalmessageSize) + premessage;
 }
+
 
 char** GameModel::ConsumeStateServer() {
     char *tmp[gameModel._noPlayers-1];
@@ -760,94 +763,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
         cooldown = strtok(NULL, " ");
         section++;
     }
-
-    //free(copy);
 }
-
-//char* GameModel::random_buffer_client(int player) {
-//    std::string _tmpHealthString = "";
-//    std::string _tmpAmmoString = "";
-//    std::string _tmpEnemyString = "";
-//    std::string _tmpPlayerString = "";
-//    std::string _tmpOilString = "";
-//
-//    for (int i = 0; i < 6; ++i) {
-//        _tmpHealthString+= to_string(rand()%80) + ":" + to_string(rand()%5) + " ";
-//
-//        int randomoil= rand()%5;
-//        if (randomoil < 4) {
-//            randomoil = 0;
-//        }
-//        else {
-//            randomoil = 1;
-//        }
-//        _tmpOilString += to_string(randomoil) + " ";
-//    }
-//
-//    _tmpEnemyString += gameModel._enemyChanges + " ";
-//    gameModel._enemyChanges = "";
-//
-//    for (int i = 0; i < 3; ++i) {
-//        _tmpAmmoString += to_string(rand()%10-5) + " ";
-//    }
-//
-//    _tmpPlayerString += to_string(player) + ":" + to_string(rand()%17);
-//
-//    _tmpHealthString.pop_back();
-//    _tmpAmmoString.pop_back();
-//    _tmpOilString.pop_back();
-//
-//    //TODO: Game recovery state (currserver, gameclock, etc)
-//    std::string premessage = _tmpHealthString + "|" + _tmpEnemyString + "|" +
-//                             _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
-//
-//    int premessageSize = premessage.length();
-//    int postmessageSize = premessageSize + to_string(premessageSize).length();
-//    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
-//    std::string tmp_string = to_string(totalmessageSize) + "|" + premessage;
-//
-//    return return_buffer(tmp_string);
-//}
-
-//char* GameModel::random_buffer_server() {
-//    std::string _tmpHealthString = "";
-//    std::string _tmpAmmoString = "";
-//    std::string _tmpEnemyString = "";
-//    std::string _tmpPlayerString = "";
-//    std::string _tmpOilString = "";
-//
-//    for (int i = 0; i < 6; ++i) {
-//        _tmpHealthString+= to_string(rand()%100) + " ";
-//        _tmpOilString += to_string(rand()%420) + " ";
-//    }
-//
-//    _tmpEnemyString += " ";
-//
-//    for (int i = 0; i < 3; ++i) {
-//        _tmpAmmoString += to_string(rand()%50) + " ";
-//    }
-//
-//    for (int i = 0; i < gameModel._noPlayers-1; ++i) {
-//        _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(rand()%17) + " ";
-//    }
-//
-//    _tmpHealthString.pop_back();
-//    _tmpAmmoString.pop_back();
-//    _tmpOilString.pop_back();
-//    _tmpPlayerString.pop_back();
-//
-//    //TODO: Game recovery state (currserver, gameclock, etc)
-//    std::string premessage = _tmpHealthString + "|" + _tmpEnemyString + "|" +
-//                             _tmpAmmoString + "|" + _tmpPlayerString + "|" + _tmpOilString;
-//
-//    int premessageSize = premessage.length();
-//    int postmessageSize = premessageSize + to_string(premessageSize).length();
-//    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
-//    std::string tmp_string = to_string(totalmessageSize) + "|" + premessage;
-//
-//    return return_buffer(tmp_string);
-//}
-
+#endif
 char* GameModel::return_buffer(const std::string& string) {
     CULog("State Change before buffering %s", string.c_str());
     char* return_string = new char[string.length() + 1];

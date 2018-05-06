@@ -185,6 +185,7 @@ public:
 
     //TODO: Make sure JNI wrapper code is correct
     void enableBluetooth() {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
         // Set up parameters for JNI call
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
         jobject activity = (jobject) SDL_AndroidGetActivity();
@@ -199,8 +200,9 @@ public:
         // Free local references
         env->DeleteLocalRef(activity);
         env->DeleteLocalRef(clazz);
+#endif
     }
-    
 };
+
 
 #endif /* __CASTLE_APP_H__ */

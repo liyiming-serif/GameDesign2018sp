@@ -377,7 +377,9 @@ void LobbyScene::update(float timestep){
 #endif
 
         if (_avatar->isVisible() && gameModel.isServer()) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
             gameModel.setNoPlayers(getPlayers());
+#endif
         }
 
         // Create new enter buttons/text if canvas is lobby

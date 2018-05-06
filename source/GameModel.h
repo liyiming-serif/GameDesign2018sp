@@ -156,6 +156,7 @@ public:
     void setCurrentRoom(int room);
 
 private:
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
     std::string produceStateChangeServer();
 
     std::string produceStateChangeClient();
@@ -167,12 +168,9 @@ private:
     void updateStateServer(char** ConsumedStates);
 
     void updateStateClient(const char* read_byte_buffer);
+#endif
 
     char* return_buffer(const std::string& string);
-
-    char* random_buffer_client(int player);
-
-    char* random_buffer_server();
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
     //TODO: Make sure JNI wrapper code is correct
