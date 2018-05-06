@@ -654,6 +654,62 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "mage_hex": {
+            "file":     "textures/Basement/MageSides/Empty.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_N": {
+            "file":     "textures/Basement/MageSides/North.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_NE": {
+            "file":     "textures/Basement/MageSides/Northeast.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_SE": {
+            "file":     "textures/Basement/MageSides/Southeast.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_NW": {
+            "file":     "textures/Basement/MageSides/Northwest.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_SW": {
+            "file":     "textures/Basement/MageSides/Southwest.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_hex_S": {
+            "file":     "textures/Basement/MageSides/South.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "mage_transparent": {
+            "file":     "textures/Basement/MageSides/transparent.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "ammo_background": {
             "file":     "textures/Basement/AmmoBackground.png",
             "minfilter":"nearest",

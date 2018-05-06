@@ -594,6 +594,7 @@ void RepairScene::dispose() {
         _repairTOcastle = nullptr;
         _background = nullptr;
         _active = false;
+        _buttons = nullptr;
     }
 }
 

@@ -15,6 +15,8 @@ using namespace cugl;
 #define KEYBOARD_MAX_TILT 1.0f
 #define KEYBOARD_TILT_SENSITIVITY 0.01f
 
+#define GESTURE_ERROR 0.2f
+
 /**
  * Creates a new input controller.
  *
@@ -83,6 +85,22 @@ bool InputController::init(){
 	});
 #endif
     _active = success;
+
+	//GESTURE CONTROLS
+	GestureInput* gest = Input::get<GestureInput>();
+	gest->setTolerance(GESTURE_ERROR);
+	gest->addMatchListener(LISTENER_KEY, [=](const GestureEvent& event, bool focus) {
+		this->gestureMatchCB(event, focus);
+	});
+	gest->addStateListener(LISTENER_KEY, [=](GestureState old, GestureState curr) {
+		this->gestureStateCB(old, curr);
+	});
+	gest->loadAssetAsync("Gestures", [=](bool success) {
+		CULog("%i gestures loaded!", gest->getGestures().size());
+	});
+	gest->pause();
+	_makeGestureTimer = 100;
+	
     return success;
 }
 
@@ -104,6 +122,25 @@ void InputController::pollInputs() {
 		_oilTilt = std::fmax(_oilTilt - KEYBOARD_TILT_SENSITIVITY, 0);
 	}
 #endif
+	GestureInput* gest = Input::get<GestureInput>();
+	if (gest->ready()) {
+		if (_makeGestureTimer == 100) {
+			CULog("Gestures Ready!");
+			std::vector<std::string> gests = gest->getGestures();
+			//for (auto it = gest->getGestures().begin(); it != gest->getGestures().end(); it++) {
+			//	CULog("%s",it);
+			//}
+		}
+		if (_makeGestureTimer > 0) {
+			_makeGestureTimer--;
+		}
+		else if (_makeGestureTimer == 0) {
+			//GestureInput* g = Input::get<GestureInput>();
+			//CULog("NOW RECORDING GESTURE FOR BOMB2 SPELL");
+			//g->record("wind2");
+			_makeGestureTimer--;
+		}
+	}
 }
 
 void InputController::update(float deltaTime) {
@@ -134,6 +171,9 @@ void InputController::dispose(){
 		mouse->removeReleaseListener(LISTENER_KEY);
 		mouse->removeDragListener(LISTENER_KEY);
 #endif
+		GestureInput* gest = Input::get<GestureInput>();
+		gest->removeMatchListener(LISTENER_KEY);
+		gest->removeStateListener(LISTENER_KEY);
         _active = false;
     }
 }
@@ -200,6 +240,20 @@ void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focu
     _pointerPos.set(event.position);
 	_dTouch.set(0, 0);
     _isPressed = false;
+}
+
+void InputController::gestureMatchCB(const GestureEvent &event, bool focus) {
+	CULog("recognized a %s spell with %f error.", event.key.c_str(), event.error);
+}
+
+void InputController::gestureStateCB(GestureState old, GestureState curr) {
+	if (old == GestureState::RECORDING || old == GestureState::MATCHING) {
+		GestureInput* gest = Input::get<GestureInput>();
+		if (gest->ready()) {
+			//gest->save("Gestures");
+			//CULog("recording session successful for BOMB2 spell");
+		}
+	}
 }
 
 Uint32 InputController::generateKey(const std::string & name) {

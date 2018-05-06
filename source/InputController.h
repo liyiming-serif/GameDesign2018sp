@@ -46,6 +46,10 @@ protected:
 	int _hScrolling;
 	float _oilTilt;
     /** Wizard spell gestures go here*/
+	int _makeGestureTimer;
+	bool _castFreeze;
+	bool _castBomb;
+	bool _castBarrier;
 	/** Debug and reset toggle. */
 	bool _debugReleased;
 	bool _resetReleased;
@@ -74,6 +78,12 @@ protected:
 	void mouseDragCB(const cugl::MouseEvent& event, const cugl::Vec2& previous, bool focus);
 
 	void mouseUpCB(const cugl::MouseEvent& event, Uint8 clicks, bool focus);
+
+
+	//GESTURE CALLBACKS
+	void gestureMatchCB(const cugl::GestureEvent& event, bool focus);
+
+	void gestureStateCB(cugl::GestureState old, cugl::GestureState curr);
 
 public:
     //CONSTRUCTORS
@@ -145,7 +155,11 @@ public:
 
 	float oilTilt() { return _oilTilt; }
 
-    /**Wizard gestures go here*/
+	bool castFreeze() { return _castFreeze; }
+
+	bool castBomb() { return _castBomb; }
+
+	bool castBarrier() { return _castBarrier; }
 
 };
 

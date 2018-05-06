@@ -596,7 +596,6 @@ void LevelselectScene::update(float timestep){
     
     
     if (!_actions->isActive(ACT_KEY+2) && move2 ){
-        CULog("test");
         doMove2(_move2, _cloud2);
         move2=false;
     }
@@ -648,8 +647,6 @@ void LevelselectScene::update(float timestep){
         _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
         doMove6(_move6, _cloud6);
     }
-
-    CULog("%i", campaign);
     
     if (cooldown>0) {
         cooldown-=1;
