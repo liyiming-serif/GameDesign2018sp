@@ -325,7 +325,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _loseScene.setActive(false);
         int level = _levelScene.level;
         reset();
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
         initializeRooms();
         gameModel.level=level;
     }
@@ -334,7 +335,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _winScene.setActive(false);
         int level = _levelScene.level;
         reset();
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level + 1));
         initializeRooms();
         gameModel.level=level+1;
     }
@@ -343,7 +345,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _levelScene.setActive(false, 0);
         int level = _levelScene.level;
         reset();
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
         initializeRooms();
         gameModel.level=level;
     }

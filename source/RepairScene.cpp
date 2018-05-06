@@ -612,7 +612,7 @@ void RepairScene::update(float timestep){
             switchscene = WIN;
         }
     }
-    
+
     _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
     _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
     _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
