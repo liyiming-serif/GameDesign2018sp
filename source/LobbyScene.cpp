@@ -217,13 +217,13 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
 			setupBluetoothServer();
-#endif
             gameModel.setServer(true);
             gameModel.setNetworked(true);
             gameModel.setNoPlayers(1);
             gameModel.setPlayerAvatar(0, 1);
             LobbyScene::changeCanvas("avatar");
             CULog("create");
+#endif
         }
     });
 
