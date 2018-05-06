@@ -18,7 +18,7 @@ using namespace cugl;
 /**
  * Creates a new input controller.
  *
- * This constructor does NOT do any initialzation.  It simply allocates the
+ * This constructor does NOT do any initialization.  It simply allocates the
  * object. This makes it safe to use this class without a pointer.
  */
 InputController::InputController() :
@@ -38,7 +38,7 @@ InputController::InputController() :
 /**
  * Install listeners and enable control schemes.
  * Either enable Mouse+Keyboard or Touch+Accelerometer
- * @return true if properly initiallized
+ * @return true if properly initialized
  */
 bool InputController::init(){
     bool success = true;
@@ -89,7 +89,12 @@ bool InputController::init(){
 void InputController::pollInputs() {
 #ifdef CU_TOUCH_SCREEN
 	Accelerometer* acc = Input::get<Accelerometer>();
-	_oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    if(acc == nullptr){
+        CULog("no accel");
+    }
+    else {
+        _oilTilt = std::fmax(-acc->getAccelerationY(), 0);
+    }
 #else
 	Keyboard* keys = Input::get<Keyboard>();
 	if (keys->keyDown(TILT_KEY)) {
@@ -116,14 +121,14 @@ void InputController::dispose(){
     if (_active) {
 #ifdef CU_TOUCH_SCREEN
 		//TOUCH+ACCELEROMETER INPUT
-		Input::deactivate<Accelerometer>();
+		//Input::deactivate<Accelerometer>();
         Touchscreen* touch = Input::get<Touchscreen>();
         touch->removeBeginListener(LISTENER_KEY);
         touch->removeEndListener(LISTENER_KEY);
         touch->removeMotionListener(LISTENER_KEY);
 #else
         //MOUSE+KEYBOARD INPUT
-		Input::deactivate<Keyboard>();
+		//Input::deactivate<Keyboard>();
         Mouse* mouse = Input::get<Mouse>();
 		mouse->removePressListener(LISTENER_KEY);
 		mouse->removeReleaseListener(LISTENER_KEY);
@@ -198,20 +203,23 @@ void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focu
 }
 
 Uint32 InputController::generateKey(const std::string & name) {
-	//duplicate button name
-	assert(_buttonMap.find(name) == _buttonMap.end());
-
-	_buttonMap[name] = _currMaxKey++;
-	return _currMaxKey - 1;
+    std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
+    //New button key
+    if (i == _buttonMap.end()) {
+        _buttonMap[name] = _currMaxKey++;
+        return _currMaxKey - 1;
+    }
+    //Old button key
+    return i->second;
 }
 
 Uint32 InputController::findKey(const std::string & name) {
-	//Fuck c++ hashmaps
 	std::unordered_map<std::string, Uint32>::iterator i = _buttonMap.find(name);
-    std::string out = name;
-    if(i==_buttonMap.end()){
-        CULog("%s",out.c_str());
+    //New button key
+    if (i == _buttonMap.end()) {
+        _buttonMap[name] = _currMaxKey++;
+        return _currMaxKey - 1;
     }
-	assert(i != _buttonMap.end());
+    //Old button key
 	return i->second;
 }

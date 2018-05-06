@@ -75,6 +75,11 @@ std::vector<std::vector<float>> JSONReader::readJSON(int players, int level){
     _enemiesJSON = _levelJSON->get("enemies");
     for(int i = 1; i<=_enemiesJSON->getInt("numSpawn"); i++){
         _singleEnemyJSON = _enemiesJSON->get("spawn" + std::to_string(i));
+        if(i ==_enemiesJSON->getInt("numSpawn")){
+            //parse final spawn time
+            gameModel.setEndTime(_singleEnemyJSON->getFloat("spawn_time"));
+            CULog("%f", _singleEnemyJSON->getFloat("spawn_time"));
+        }
 		if (_singleEnemyJSON != nullptr) {
 			//get values and store this somewhere
 			_enemy = {

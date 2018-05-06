@@ -35,6 +35,10 @@ protected:
     std::shared_ptr<cugl::Button> _oilTOcastle;
 	std::shared_ptr<OilModel> _oil;
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _wall_GREEN;
+    std::shared_ptr<cugl::PolygonNode> _wall_YELLOW;
+    std::shared_ptr<cugl::PolygonNode> _wall_ORANGE;
+    std::shared_ptr<cugl::PolygonNode> _wall_RED;
     
     std::shared_ptr<cugl::PolygonNode> N_compass;
     std::shared_ptr<cugl::PolygonNode> NE_compass;
@@ -42,6 +46,9 @@ protected:
     std::shared_ptr<cugl::PolygonNode> S_compass;
     std::shared_ptr<cugl::PolygonNode> SE_compass;
     std::shared_ptr<cugl::PolygonNode> SW_compass;
+
+	std::shared_ptr<cugl::AnimationNode> _deluge;
+	float _delugeFrame;
     
 	//helper functions for translating enemy y coords
 	bool inRange(float y);
@@ -66,6 +73,9 @@ public:
     
     //Sets the compass image based on the direction input
     void setCompass (int direction);
+    
+    //Sets the wall image based on the wall health input
+    void setWall (int direction);
 };
 
 

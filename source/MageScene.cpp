@@ -23,6 +23,8 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -46,11 +48,10 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background = PolygonNode::allocWithTexture(texture);
     _background->setScale(0.5625f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(0,0);
+    _background->setPosition(_size.width/2,_size.height/2);
     addChild(_background);
     
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(_size.width/2,_size.height/2);
+
     
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -91,6 +92,16 @@ void MageScene::dispose() {
 }
 
 void MageScene::update(float timestep){
+    switchscene = WIN;
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
 }
 
 

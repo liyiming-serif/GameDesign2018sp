@@ -13,6 +13,7 @@
 #include "GameModel.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
+#include "GameModel.h"
 
 using namespace cugl;
 
@@ -88,6 +89,8 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _healthbar_warning;
     std::shared_ptr<cugl::PolygonNode> _healthbar_low;
     std::shared_ptr<cugl::PolygonNode> _health_frame;
+    
+    int player_TEST=2;
     
     
     

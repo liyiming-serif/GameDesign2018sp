@@ -63,7 +63,7 @@ int EnemyDataModel::getSpeed() {
 
 int EnemyDataModel::getDamage() {
 	if (_type == 1) {
-		return 10;
+		return 15;
 	}
 	else if (_type == 2) {
 		return 3;
@@ -79,7 +79,7 @@ int EnemyDataModel::getDamage() {
 
 int EnemyDataModel::getAtkSpeed() {
 	if (_type == 2) {
-		return 60;
+		return 75;
 	}
 	else if (_type == 3) {
 		return 45;

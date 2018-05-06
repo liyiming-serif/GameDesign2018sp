@@ -42,40 +42,44 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets, std::vec
 
 void SpawnController::update(float deltaTime) {
     _totalTime++;
-	if (_totalTime%10 == 0) {
-		//CULog("Total time in Spawn Controller %d", _totalTime);
+	if (_totalTime%20 == 0) {
+		CULog("Total time in Spawn Controller %d", _totalTime);
 	}
-    if(_currSpawnIndex >= 0){
-        if(_enemyArray[_currSpawnIndex][4]<_totalTime){
-			//we need to spawn one
+    gameModel.setCurrentTime(_totalTime);
+	if (gameModel.isServer() || !gameModel.isNetworked()) {
+		if(_currSpawnIndex >= 0){
+			if(_enemyArray[_currSpawnIndex][4]<_totalTime){
+				//we need to spawn one
 
-			//keep generating ekey until we find a unique one
-			std::string ekey;
-			do {
-				ekey = genRandName(ENEMY_NAME_LEN);
-			} while (gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].find(ekey)
-				!= gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].end());
+				//keep generating ekey until we find a unique one
+				std::string ekey;
+				do {
+					ekey = genRandName(ENEMY_NAME_LEN);
+				} while ((int)(_enemyArray[_currSpawnIndex][5])<= gameModel._enemyArrayMaster.size() &&
+						 gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].find(ekey)
+						 != gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])].end());
 
-			// Allocate a new EnemyDataModel in memory
-			std::shared_ptr<EnemyDataModel> e = EnemyDataModel::alloc(ekey,_enemyArray[_currSpawnIndex][3],
-				Vec2(_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1]),
-				_enemyArray[_currSpawnIndex][2], _enemyArray[_currSpawnIndex][5]);
+				// Allocate a new EnemyDataModel in memory
+				std::shared_ptr<EnemyDataModel> e = EnemyDataModel::alloc(ekey,_enemyArray[_currSpawnIndex][3],
+																		  Vec2(_enemyArray[_currSpawnIndex][0], _enemyArray[_currSpawnIndex][1]),
+																		  _enemyArray[_currSpawnIndex][2], _enemyArray[_currSpawnIndex][5]);
 
-			if (e != nullptr) {
-				gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])][ekey] = e;
+				if (e != nullptr) {
+					gameModel._enemyArrayMaster[(int)(_enemyArray[_currSpawnIndex][5])][ekey] = e;
+				}
+
+				if(_currSpawnIndex != _enemyArray.size()-1){
+					//still have more enemies to spawn
+					_currSpawnIndex++;
+				}
+				else{
+					//done spawning
+					_currSpawnIndex = -1;
+				}
+				//CULog("Current Spawn Index: %d", _currSpawnIndex);
 			}
-
-            if(_currSpawnIndex != _enemyArray.size()-1){
-            //still have more enemies to spawn
-                _currSpawnIndex++;
-            }
-            else{
-            //done spawning
-                _currSpawnIndex = -1;
-            }
-			//CULog("Current Spawn Index: %d", _currSpawnIndex);
-        }
-    }
+		}
+	}
 }
 
 void SpawnController::dispose(){

@@ -31,7 +31,7 @@ public:
 	/**
 	* Gameplay Functions
 	*/
-	void update(float deltaTime);
+	void update(float deltaTime, bool hasAmmo);
 
 	// Assume assets are already loaded, and _node is immutable after init
 	const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
@@ -66,6 +66,8 @@ protected:
 	float _angle;
 
 	float _power;
+
+	float _interFrame;
 
 };
 #endif //BUILD_ANDROID_BALLISTAMODEL_H

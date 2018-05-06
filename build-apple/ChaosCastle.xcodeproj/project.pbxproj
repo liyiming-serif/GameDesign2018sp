@@ -13,6 +13,12 @@
 		A92C726D20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
 		A92C726E20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
 		A92C726F20896A8A002CA320 /* OilModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C726820896A89002CA320 /* OilModel.cpp */; };
+		A92C727A208A3756002CA320 /* JSONReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7274208A3756002CA320 /* JSONReader.cpp */; };
+		A92C727B208A3756002CA320 /* JSONReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7274208A3756002CA320 /* JSONReader.cpp */; };
+		A92C727C208A3756002CA320 /* JSONReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7274208A3756002CA320 /* JSONReader.cpp */; };
+		A92C727D208A3756002CA320 /* EnemyDataModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7279208A3756002CA320 /* EnemyDataModel.cpp */; };
+		A92C727E208A3756002CA320 /* EnemyDataModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7279208A3756002CA320 /* EnemyDataModel.cpp */; };
+		A92C727F208A3756002CA320 /* EnemyDataModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A92C7279208A3756002CA320 /* EnemyDataModel.cpp */; };
 		A949992420683B1800A0D1C0 /* LobbyScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A949992320683B1700A0D1C0 /* LobbyScene.cpp */; };
 		A949993C206B27DE00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
 		A949993E206B27DF00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
@@ -20,6 +26,12 @@
 		A9499940206B27FF00A0D1C0 /* SpawnController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499933206B27DD00A0D1C0 /* SpawnController.cpp */; };
 		A9499941206B280A00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
 		A9499942206B280B00A0D1C0 /* BallistaModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */; };
+		A956AE2D2099F42B004E1405 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE2B2099F42B004E1405 /* WinScene.cpp */; };
+		A956AE2E2099F42B004E1405 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE2B2099F42B004E1405 /* WinScene.cpp */; };
+		A956AE2F2099F42B004E1405 /* WinScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE2B2099F42B004E1405 /* WinScene.cpp */; };
+		A956AE352099F446004E1405 /* LoseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE332099F446004E1405 /* LoseScene.cpp */; };
+		A956AE362099F446004E1405 /* LoseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE332099F446004E1405 /* LoseScene.cpp */; };
+		A956AE372099F446004E1405 /* LoseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A956AE332099F446004E1405 /* LoseScene.cpp */; };
 		A979457320537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
 		A979457420537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
 		A979457520537A97006DB3E3 /* RepairScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A979457120537A97006DB3E3 /* RepairScene.cpp */; };
@@ -159,12 +171,19 @@
 		A91CBDD7207D33F000351862 /* LevelselectScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LevelselectScene.h; sourceTree = "<group>"; };
 		A92C726820896A89002CA320 /* OilModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OilModel.cpp; sourceTree = "<group>"; };
 		A92C726C20896A89002CA320 /* OilModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OilModel.h; sourceTree = "<group>"; };
+		A92C7274208A3756002CA320 /* JSONReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JSONReader.cpp; sourceTree = "<group>"; };
+		A92C7278208A3756002CA320 /* EnemyDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyDataModel.h; sourceTree = "<group>"; };
+		A92C7279208A3756002CA320 /* EnemyDataModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EnemyDataModel.cpp; sourceTree = "<group>"; };
 		A949991F20683B1700A0D1C0 /* LobbyScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LobbyScene.h; sourceTree = "<group>"; };
 		A949992320683B1700A0D1C0 /* LobbyScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LobbyScene.cpp; sourceTree = "<group>"; };
 		A9499933206B27DD00A0D1C0 /* SpawnController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpawnController.cpp; sourceTree = "<group>"; };
 		A9499938206B27DE00A0D1C0 /* BallistaModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BallistaModel.cpp; sourceTree = "<group>"; };
 		A949993A206B27DE00A0D1C0 /* SpawnController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnController.h; sourceTree = "<group>"; };
 		A949993B206B27DE00A0D1C0 /* BallistaModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallistaModel.h; sourceTree = "<group>"; };
+		A956AE2B2099F42B004E1405 /* WinScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WinScene.cpp; sourceTree = "<group>"; };
+		A956AE2C2099F42B004E1405 /* WinScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WinScene.h; sourceTree = "<group>"; };
+		A956AE332099F446004E1405 /* LoseScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LoseScene.cpp; sourceTree = "<group>"; };
+		A956AE342099F446004E1405 /* LoseScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoseScene.h; sourceTree = "<group>"; };
 		A979457120537A97006DB3E3 /* RepairScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RepairScene.cpp; sourceTree = "<group>"; };
 		A979457220537A97006DB3E3 /* RepairScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RepairScene.h; sourceTree = "<group>"; };
 		A9AA6114204A19BC00940276 /* LookoutScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LookoutScene.cpp; sourceTree = "<group>"; };
@@ -432,6 +451,7 @@
 				A949991F20683B1700A0D1C0 /* LobbyScene.h */,
 				A91CBDD6207D33F000351862 /* LevelselectScene.cpp */,
 				A91CBDD7207D33F000351862 /* LevelselectScene.h */,
+				A92C7274208A3756002CA320 /* JSONReader.cpp */,
 				A9E863B32061A05F00166C6F /* GameModel.cpp */,
 				A9E863B82061A06000166C6F /* GameModel.h */,
 				A9E863862059C59400166C6F /* ArrowModel.cpp */,
@@ -440,6 +460,8 @@
 				A949993B206B27DE00A0D1C0 /* BallistaModel.h */,
 				A9E863B92061A06000166C6F /* EnemyModel.cpp */,
 				A9E863B72061A05F00166C6F /* EnemyModel.h */,
+				A92C7279208A3756002CA320 /* EnemyDataModel.cpp */,
+				A92C7278208A3756002CA320 /* EnemyDataModel.h */,
 				A92C726820896A89002CA320 /* OilModel.cpp */,
 				A92C726C20896A89002CA320 /* OilModel.h */,
 				A9B9B6252048F26D0036047B /* OverworldScene.cpp */,
@@ -456,6 +478,10 @@
 				A9E863C120647B3E00166C6F /* MageScene.h */,
 				A979457120537A97006DB3E3 /* RepairScene.cpp */,
 				A979457220537A97006DB3E3 /* RepairScene.h */,
+				A956AE2B2099F42B004E1405 /* WinScene.cpp */,
+				A956AE2C2099F42B004E1405 /* WinScene.h */,
+				A956AE332099F446004E1405 /* LoseScene.cpp */,
+				A956AE342099F446004E1405 /* LoseScene.h */,
 			);
 			name = Source;
 			path = ../source;
@@ -635,12 +661,16 @@
 			files = (
 				A9AA61122049AD4900940276 /* BallistaScene.cpp in Sources */,
 				EB0FF61D2016F06000517030 /* main.cpp in Sources */,
+				A92C727F208A3756002CA320 /* EnemyDataModel.cpp in Sources */,
 				A92C726F20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9499942206B280B00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C920647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C420647B3E00166C6F /* MageScene.cpp in Sources */,
+				A956AE372099F446004E1405 /* LoseScene.cpp in Sources */,
 				A9E863CE206483A000166C6F /* OilScene.cpp in Sources */,
+				A92C727C208A3756002CA320 /* JSONReader.cpp in Sources */,
 				A9B9B6292048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A956AE2F2099F42B004E1405 /* WinScene.cpp in Sources */,
 				A9E8638C205B583E00166C6F /* ArrowModel.cpp in Sources */,
 				A9B5BCA6206E9ACB00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638E205B584400166C6F /* InputController.cpp in Sources */,
@@ -662,12 +692,16 @@
 			files = (
 				A9AA610E2049AD4700940276 /* BallistaScene.cpp in Sources */,
 				EB7454AE1D74D891002FBAE6 /* main.cpp in Sources */,
+				A92C727E208A3756002CA320 /* EnemyDataModel.cpp in Sources */,
 				A92C726E20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9499941206B280A00A0D1C0 /* BallistaModel.cpp in Sources */,
 				A9E863C820647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863C320647B3E00166C6F /* MageScene.cpp in Sources */,
+				A956AE362099F446004E1405 /* LoseScene.cpp in Sources */,
 				A9E863CD206483A000166C6F /* OilScene.cpp in Sources */,
+				A92C727B208A3756002CA320 /* JSONReader.cpp in Sources */,
 				A9B9B6282048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A956AE2E2099F42B004E1405 /* WinScene.cpp in Sources */,
 				A9E8638B205B583D00166C6F /* ArrowModel.cpp in Sources */,
 				A9B5BCA5206E9ACA00984595 /* LobbyScene.cpp in Sources */,
 				A9E8638D205B584400166C6F /* InputController.cpp in Sources */,
@@ -689,12 +723,16 @@
 			files = (
 				EB2BE9B61D74952A002FE78B /* main.cpp in Sources */,
 				A9B9B6272048F26D0036047B /* OverworldScene.cpp in Sources */,
+				A92C727D208A3756002CA320 /* EnemyDataModel.cpp in Sources */,
 				A92C726D20896A8A002CA320 /* OilModel.cpp in Sources */,
 				A9AA61132049AEE700940276 /* CastleApp.cpp in Sources */,
 				A9E863C220647B3E00166C6F /* MageScene.cpp in Sources */,
 				A9E863892059C59500166C6F /* ArrowModel.cpp in Sources */,
+				A956AE352099F446004E1405 /* LoseScene.cpp in Sources */,
 				A949992420683B1800A0D1C0 /* LobbyScene.cpp in Sources */,
+				A92C727A208A3756002CA320 /* JSONReader.cpp in Sources */,
 				A9E8638A2059C59500166C6F /* InputController.cpp in Sources */,
+				A956AE2D2099F42B004E1405 /* WinScene.cpp in Sources */,
 				A9E863C720647EB400166C6F /* AmmoScene.cpp in Sources */,
 				A9E863BA2061A06000166C6F /* GameModel.cpp in Sources */,
 				A979457320537A97006DB3E3 /* RepairScene.cpp in Sources */,

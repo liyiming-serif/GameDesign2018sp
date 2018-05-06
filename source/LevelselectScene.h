@@ -10,6 +10,7 @@
 #define LevelselectScene_h
 
 #include "InputController.h"
+#include "GameModel.h"
 #include <stdio.h>
 #include <cugl/cugl.h>
 
@@ -21,9 +22,27 @@ protected:
     std::shared_ptr<cugl::AssetManager> _assets;
     
     std::shared_ptr<cugl::Button> _level1;
+    std::shared_ptr<cugl::Label> _lvl1T;
     std::shared_ptr<cugl::Button> _level2;
+    std::shared_ptr<cugl::Label> _lvl2T;
     std::shared_ptr<cugl::Button> _level3;
+    std::shared_ptr<cugl::Label> _lvl3T;
     std::shared_ptr<cugl::Button> _level4;
+    std::shared_ptr<cugl::Label> _lvl4T;
+    std::shared_ptr<cugl::Button> _level5;
+    std::shared_ptr<cugl::Label> _lvl5T;
+    std::shared_ptr<cugl::Button> _level6;
+    std::shared_ptr<cugl::Label> _lvl6T;
+    std::shared_ptr<cugl::Button> _level7;
+    std::shared_ptr<cugl::Label> _lvl7T;
+    std::shared_ptr<cugl::Button> _level8;
+    std::shared_ptr<cugl::Label> _lvl8T;
+    std::shared_ptr<cugl::Button> _level9;
+    std::shared_ptr<cugl::Label> _lvl9T;
+    std::shared_ptr<cugl::Button> _level10;
+    std::shared_ptr<cugl::Label> _lvl10T;
+    
+    
     std::shared_ptr<cugl::Button> _backButtonSINGLE;
     std::shared_ptr<cugl::Button> _backButtonMULTI;
     
@@ -53,8 +72,9 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move5;
     std::shared_ptr<cugl::MoveTo> _move6;
     
-    std::shared_ptr<cugl::MoveBy> _moveleft;
-    std::shared_ptr<cugl::MoveBy> _moveright;
+    std::shared_ptr<cugl::MoveTo> _movejungle;
+    std::shared_ptr<cugl::MoveTo> _movesnow;
+    std::shared_ptr<cugl::MoveTo> _movedesert;
     
     bool move1 = true;
     bool move2 = true;
@@ -87,6 +107,9 @@ public:
     int mode;
     int campaign;
     int level;
+    
+    bool click;
+    int cooldown;
     
     /**
      * Performs a move action
@@ -135,11 +158,25 @@ public:
      *
      * @param action The move action
      */
-    void doScroll(const std::shared_ptr<cugl::MoveBy>& action);
+    void doScroll(const std::shared_ptr<cugl::MoveTo>& action);
 
     //Sets the compass image based on the direction input
     void setCanvas (int direction);
     void setButtonActive ( std::shared_ptr<cugl::Button> button, std::string actKey);
+    
+    /**
+     * Disables all buttons
+     *
+     *
+     */
+    void disableButtons();
+    
+    /**
+     * Enables all buttons
+     *
+     *
+     */
+    void enableButtons();
 };
 
 #endif /* LevelselectScene_h */

@@ -9,14 +9,15 @@
 #define TURN_SPEED M_PI/20.0f
 
 #define MAX_POWER 24.0f
-#define PULLBACK_SPEED 1.0f
+#define PULLBACK_SPEED 3.0f
 
-#define NUM_ROWS 3
+#define NUM_ROWS 7
 #define NUM_COLS 5
 
 #define IDLE_FRAME_START 0
-#define AIMING_FRAME_START 1
-#define FIRING_FRAME_START 10
+#define AIMING_FRAME_START 10
+#define FIRING_FRAME_START 20
+#define RECOIL_SPEED 0.5f
 
 using namespace cugl;
 
@@ -48,33 +49,49 @@ bool BallistaModel::init(Vec2 position, const std::shared_ptr<AssetManager>& ass
 	_node = nullptr;
 	std::shared_ptr<Texture> texture = assets->get<Texture>("ballista");
 	_node = AnimationNode::alloc(texture, NUM_ROWS, NUM_COLS);
+	_node->setScale(0.35);
 	_node->setFrame(IDLE_FRAME_START);
 	_node->setAnchor(Vec2::ANCHOR_CENTER);
 	_node->setPosition(position);
 	return true;
 }
 
-void BallistaModel::update(float deltaTime) {
+void BallistaModel::update(float deltaTime, bool hasAmmo) {
 	if (_node != nullptr) {
 		unsigned int frame = _node->getFrame();
 		//Manipulate animation frame
 		if (_power > 0.0f) {
-			//aiming
-			int pullbackFrames = FIRING_FRAME_START - AIMING_FRAME_START;
-			frame = floor(_power / MAX_POWER*pullbackFrames) + AIMING_FRAME_START;
+			if (hasAmmo) {
+				//aiming WITH arrow loaded
+				int pullbackFrames = FIRING_FRAME_START - AIMING_FRAME_START - 1;
+				frame = floor(_power / MAX_POWER*pullbackFrames) + AIMING_FRAME_START;
+			}
+			else {
+				//aiming WITHOUT arrow loaded
+				int pullbackFrames = AIMING_FRAME_START - IDLE_FRAME_START - 1;
+				frame = floor(_power / MAX_POWER*pullbackFrames);
+			}
 		}
 		else if (!isReadyToFire) {
-			//recoiling from fire
-			frame++;
+			if (frame < FIRING_FRAME_START) {
+				//just fired
+				frame = FIRING_FRAME_START;
+				_interFrame = frame;
+			}
+			else {
+				//recoiling from fire
+				_interFrame += RECOIL_SPEED;
+				frame = floor(_interFrame);
+			}
 			//finish recoiling
 			if (frame >= _node->getSize()) {
 				isReadyToFire = true;
-				frame = 0;
+				frame = IDLE_FRAME_START;
 			}
 		}
 		else {
 			//idle
-			frame = 0;
+			frame = IDLE_FRAME_START;
 		}
 		_node->setFrame(frame);
 		_node->setAngle(_angle-M_PI/2.0f);

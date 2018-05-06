@@ -481,6 +481,7 @@ void LobbyScene::setActive(bool active){
         for(int i = 0; i < length; i++) {
             _enterButtons[i]->deactivate();
         }
+        _levelsButton->deactivate();
     }
 }
 

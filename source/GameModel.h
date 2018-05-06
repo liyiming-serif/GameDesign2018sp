@@ -47,8 +47,17 @@ public:
     GameModel() {};
 
     bool init();
+    bool _winFlag=false;
+    bool _loseFlag=true;
+
+    int level;
+    int _gamePlayers;
 
     std::unordered_map<std::string, bool> _unlockedRooms;
+
+    float _endTime;
+
+    float _currentTime;
 
     //Keeps track of all enemies.
 	//{N, NW, SW, S, SE, NE} each have a hashmap of enemy data
@@ -67,6 +76,14 @@ public:
     /**
 	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT
 	 */
+	float getCurrentTime();
+
+	void setCurrentTime(float time);
+
+	float getEndTime();
+
+	void setEndTime(float time);
+
     int getWallHealth(int wall);
 
     void setWallHealth(int wall, int amt);
@@ -114,8 +131,8 @@ public:
     }
 
     void setArrowAmmo(int type, int amount) {
-        if (amount > 99) {
-            _arrowAmmo[type] = 99;
+        if (amount > 909) {
+            _arrowAmmo[type] = 999;
         }
         else if (amount < 0) {
             _arrowAmmo[type] = 0;

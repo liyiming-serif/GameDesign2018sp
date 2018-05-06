@@ -3,6 +3,7 @@
 //
 #include <stdlib.h>
 #include "BallistaScene.h"
+
 #define BALLISTA    1
 #define OVERWORLD   2
 #define LOOKOUT     3
@@ -13,16 +14,22 @@
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
-#define DRAW_SCALE 32
-#define FONT    _assets->get<Font>("futura")
+#define WIN         11
+#define LOSE        12
 
-#define BUTTON_SCALE .8f
+#define JUNGLE  5
+#define SNOW  8
+
+#define DRAW_SCALE 32
+#define FONT    _assets->get<Font>("futura_levels")
+
+#define BUTTON_SCALE .6f
 
 #define BALLISTA_MIN_POWER 9.0f
 
 #define BALLISTA_MAX_RANGE 640	//farthest enemy ballista scene can see
-#define BALLISTA_MIN_RANGE 192	//closest enemy ballista scene can see
-#define BALLISTA_END_ZONE 180	//enemies dissapear past this y-coord; set by castle wall art assets
+#define BALLISTA_MIN_RANGE 100	//closest enemy ballista scene can see
+#define BALLISTA_END_ZONE 0	//enemies dissapear past this y-coord; set by castle wall art assets
 
 using namespace cugl;
 
@@ -55,17 +62,54 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
 
+	//Autosort by ZOrder
+	setZAutoSort(true);
+
     // Set the assets
     switchscene = 0;
     _assets = assets;
 
-
     // Set the background image
-    std::shared_ptr<Texture> bktexture  = _assets->get<Texture>("ballista_view");
-    _background = PolygonNode::allocWithTexture(bktexture);
-    _background->setScale(.5625f); // Magic number to rescale asset
+    std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
+    std::shared_ptr<Texture> texture_s  = _assets->get<Texture>("weaponBG_snow");
+    std::shared_ptr<Texture> texture_d  = _assets->get<Texture>("weaponBG_desert");
+    if (gameModel.level<JUNGLE) {
+        _background = PolygonNode::allocWithTexture(texture);
+    }
+    else if (gameModel.level<SNOW) {
+        _background = PolygonNode::allocWithTexture(texture_s);
+    }
+    else {
+        _background = PolygonNode::allocWithTexture(texture_d);
+    }
+    _background->setScale(.54f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
+	_background->setZOrder(-2);
+    
+    std::shared_ptr<Texture> turret  = _assets->get<Texture>("ballista_turret_GREEN");
+    _ballistaTurret_GREEN = PolygonNode::allocWithTexture(turret);
+    _ballistaTurret_GREEN->setScale(.54f); // Magic number to rescale asset
+    _ballistaTurret_GREEN->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballistaTurret_GREEN->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> turretYELLOW  = _assets->get<Texture>("ballista_turret_YELLOW");
+    _ballistaTurret_YELLOW = PolygonNode::allocWithTexture(turretYELLOW);
+    _ballistaTurret_YELLOW->setScale(.54f); // Magic number to rescale asset
+    _ballistaTurret_YELLOW->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballistaTurret_YELLOW->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> turretORANGE  = _assets->get<Texture>("ballista_turret_ORANGE");
+    _ballistaTurret_ORANGE = PolygonNode::allocWithTexture(turretORANGE);
+    _ballistaTurret_ORANGE->setScale(.54f); // Magic number to rescale asset
+    _ballistaTurret_ORANGE->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballistaTurret_ORANGE->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> turretRED  = _assets->get<Texture>("ballista_turret_RED");
+    _ballistaTurret_RED = PolygonNode::allocWithTexture(turretRED);
+    _ballistaTurret_RED->setScale(.54f); // Magic number to rescale asset
+    _ballistaTurret_RED->setAnchor(Vec2::ANCHOR_CENTER);
+    _ballistaTurret_RED->setPosition(_size.width/2,_size.height/2);
 
     // Get the ballista image and attach it to the animated model
 	_ballista = BallistaModel::alloc(Vec2(_size.width / 2, _background->getContentHeight() / 10),_assets);
@@ -79,11 +123,14 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 	_dragStart = AnimationNode::alloc(_dpOrange, 1, 4);
 	_dragStart->setFrame(0);
 	_dragStart->setAnchor(Vec2::ANCHOR_CENTER);
+	_dragStart->setName("dragStart");
 	_dragLine = PolygonNode::allocWithTexture(_dlOrange);
 	_dragLine->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+	_dragLine->setName("dragLine");
 	_dragEnd = AnimationNode::alloc(_dpOrange, 1, 4);
 	_dragEnd->setFrame(0);
 	_dragEnd->setAnchor(Vec2::ANCHOR_CENTER);
+	_dragEnd->setName("dragEnd");
 
     // Create the back button.  A button has an up image and a down image
     std::shared_ptr<Texture> castle   = _assets->get<Texture>("castle");
@@ -105,6 +152,10 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Add children to the scene graph
     addChild(_background);
+    addChild(_ballistaTurret_GREEN);
+    addChild(_ballistaTurret_YELLOW);
+    addChild(_ballistaTurret_ORANGE);
+    addChild(_ballistaTurret_RED);
 	if (_ballista != nullptr) {
 		addChild(_ballista->getNode());
 	}
@@ -130,7 +181,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     N_compass = PolygonNode::allocWithTexture(north_compass);
     N_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     N_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    N_compass->setPosition(950,80);
+    N_compass->setPosition(950,72.2);
     addChild(N_compass);
     N_compass->setVisible(false);
     
@@ -138,7 +189,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     NE_compass = PolygonNode::allocWithTexture(northeast_compass);
     NE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NE_compass->setPosition(950,80);
+    NE_compass->setPosition(950,72.2);
     addChild(NE_compass);
     NE_compass->setVisible(false);
     
@@ -146,7 +197,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     NW_compass = PolygonNode::allocWithTexture(northwest_compass);
     NW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     NW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    NW_compass->setPosition(950,80);
+    NW_compass->setPosition(950,72.2);
     NW_compass->setAngle(M_PI/2);
     addChild(NW_compass);
     NW_compass->setVisible(false);
@@ -155,7 +206,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     S_compass = PolygonNode::allocWithTexture(south_compass);
     S_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     S_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    S_compass->setPosition(950,80);
+    S_compass->setPosition(950,72.2);
     S_compass->setAngle(M_PI);
     addChild(S_compass);
     S_compass->setVisible(false);
@@ -164,7 +215,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     SE_compass = PolygonNode::allocWithTexture(southeast_compass);
     SE_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SE_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SE_compass->setPosition(950,80);
+    SE_compass->setPosition(950,72.2);
     SE_compass->setAngle(-M_PI/2);
     addChild(SE_compass);
     SE_compass->setVisible(false);
@@ -173,7 +224,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     SW_compass = PolygonNode::allocWithTexture(southwest_compass);
     SW_compass->setScale(BUTTON_SCALE); // Magic number to rescale asset
     SW_compass->setAnchor(Vec2::ANCHOR_CENTER);
-    SW_compass->setPosition(950,80);
+    SW_compass->setPosition(950,72.2);
     SW_compass->setAngle(M_PI);
     addChild(SW_compass);
     SW_compass->setVisible(false);
@@ -182,8 +233,8 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     addChild(_ammoText);
-    _ammoText->setAnchor(Vec2::ANCHOR_CENTER);
-    _ammoText->setPosition(620, 20);
+    _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _ammoText->setPosition(10, 30);
     _ammoText->setForeground(cugl::Color4(0,0,0,255));
     _ammoText->setScale(.5f);
 
@@ -205,6 +256,19 @@ void BallistaScene::dispose() {
 		_dpBlue = nullptr;
 		_dlBlue = nullptr;
 		_ballista = nullptr;
+		_background = nullptr;
+		_ballistaTurret_GREEN = nullptr;
+		_ballistaTurret_YELLOW = nullptr;
+		_ballistaTurret_ORANGE = nullptr;
+		_ballistaTurret_RED = nullptr;
+		_ballistaTOcastle = nullptr;
+		N_compass = nullptr;
+		NE_compass = nullptr;
+		NW_compass = nullptr;
+		S_compass = nullptr;
+		SE_compass = nullptr;
+		SW_compass = nullptr;
+		_ammoText = nullptr;
         _arrows.clear();
 		_arrowsToFree.clear();
         _active = false;
@@ -240,48 +304,94 @@ void BallistaScene::setCompass(int direction){
     }
 }
 
+void BallistaScene::setWall(int direction){
+    _ballistaTurret_GREEN->setVisible(false);
+    _ballistaTurret_YELLOW->setVisible(false);
+    _ballistaTurret_ORANGE->setVisible(false);
+    _ballistaTurret_RED->setVisible(false);
+    if (gameModel.getWallHealth(direction) < 25){
+        _ballistaTurret_RED->setVisible(true);
+    }
+    else if (gameModel.getWallHealth(direction) < 50){
+        _ballistaTurret_ORANGE->setVisible(true);
+    }
+    else if (gameModel.getWallHealth(direction) < 75){
+        _ballistaTurret_YELLOW->setVisible(true);
+    }
+    else {
+        _ballistaTurret_GREEN->setVisible(true);
+    }
+}
+
 void BallistaScene::update(float deltaTime, int direction){
+
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
+    setWall(direction);
+
+    
+	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
 
 	// Poll inputs
 	if (input.justPressed()) {
-		addChild(_dragStart);
-		addChild(_dragLine);
-		addChild(_dragEnd);
+		if (getChildByName("dragStart") == nullptr) {
+			addChild(_dragStart);
+		}
+		if (getChildByName("dragLine") == nullptr) {
+			addChild(_dragLine);
+		}
+		if (getChildByName("dragEnd") == nullptr) {
+			addChild(_dragEnd);
+		}
 
 		_dragStart->setPosition(screenToWorldCoords(input.dTouch()));
 		_dragLine->setPosition(screenToWorldCoords(input.dTouch()));
 	}
     if(input.isPressed()){
+		Vec2 pointdir = screenToWorldCoords(input.dTouch()) - screenToWorldCoords(input.pointerPos());
 		if (_ballista->isReadyToFire) {
-			Vec2 pointdir = screenToWorldCoords(input.dTouch())-screenToWorldCoords(input.pointerPos());
 			_ballista->setAngle(pointdir.getAngle());
 			_ballista->setPower(2.0f*pointdir.length() / (float)DRAW_SCALE, false);
+		}
 
-			//drag UI
-			_dragStart->setFrame((_dragStart->getFrame() + 1)%_dragStart->getSize());
-			_dragEnd->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
+		//drag UI
+		_dragStart->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
+		_dragEnd->setFrame((_dragStart->getFrame() + 1) % _dragStart->getSize());
 
-			_dragEnd->setPosition(screenToWorldCoords(input.pointerPos()));
-			_dragLine->setAngle(pointdir.getAngle()+M_PI);
-			_dragLine->setScale(pointdir.length()/36.0f,1.0f);
-			if(_ballista->getPower() < BALLISTA_MIN_POWER) { //not enough power to fire ballista
-				_dragStart->setTexture(_dpOrange);
-				_dragLine->setTexture(_dlOrange);
-				_dragEnd->setTexture(_dpOrange);
-			}
-			else {
-				_dragStart->setTexture(_dpBlue);
-				_dragLine->setTexture(_dlBlue);
-				_dragEnd->setTexture(_dpBlue);
-			}
+		_dragEnd->setPosition(screenToWorldCoords(input.pointerPos()));
+		_dragLine->setAngle(pointdir.getAngle() + M_PI);
+		_dragLine->setScale(pointdir.length() / 36.0f, 1.0f);
+		if (_ballista->getPower() < BALLISTA_MIN_POWER) { //not enough power to fire ballista
+			_dragStart->setTexture(_dpOrange);
+			_dragLine->setTexture(_dlOrange);
+			_dragEnd->setTexture(_dpOrange);
+		}
+		else {
+			_dragStart->setTexture(_dpBlue);
+			_dragLine->setTexture(_dlBlue);
+			_dragEnd->setTexture(_dpBlue);
 		}
     }
     if(input.justReleased()){
-		removeChild(_dragStart);
-		removeChild(_dragLine);
-		removeChild(_dragEnd);
+		if (getChildByName("dragStart") != nullptr) {
+			removeChild(_dragStart);
+		}
+		if (getChildByName("dragLine") != nullptr) {
+			removeChild(_dragLine);
+		}
+		if (getChildByName("dragEnd") != nullptr) {
+			removeChild(_dragEnd);
+		}
+		
 		if (_ballista->isReadyToFire) {
             if (gameModel.getArrowAmmo(0)>0 && _ballista->getPower()>=BALLISTA_MIN_POWER) {
                 // Allocate a new arrow in memory
@@ -304,7 +414,8 @@ void BallistaScene::update(float deltaTime, int direction){
 		}
     }
 
-	_ballista->update(deltaTime);
+	
+	_ballista->update(deltaTime, hasAmmo);
 
     // Update arrows and mark out of bound ones for deletion
     Rect bounds(Vec2::ZERO, _size/DRAW_SCALE);
@@ -419,9 +530,10 @@ void BallistaScene::setActive(bool active, int direction){
 	_enemiesToFree.clear();
 
     if(active){
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
         BallistaScene::setCompass(direction);
+        BallistaScene::setWall(direction);
     }
     else{
         _ballistaTOcastle->deactivate();

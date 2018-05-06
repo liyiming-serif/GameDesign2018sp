@@ -46,7 +46,6 @@ protected:
 
 
     //buttons
-    std::shared_ptr<cugl::Button> _quitButton;
     std::shared_ptr<cugl::Button> _menuButton;
     //Ballista Buttons
         std::shared_ptr<cugl::Button> _ballistaNorth;
@@ -57,15 +56,6 @@ protected:
         std::shared_ptr<cugl::Button> _ballistaSouthWest;
         std::shared_ptr<cugl::Button> _ballistaWest;
         std::shared_ptr<cugl::Button> _ballistaNorthWest;
-    //Catapult Buttons
-        std::shared_ptr<cugl::Button> _catapultNorth;
-        std::shared_ptr<cugl::Button> _catapultNorthEast;
-        std::shared_ptr<cugl::Button> _catapultEast;
-        std::shared_ptr<cugl::Button> _catapultSouthEast;
-        std::shared_ptr<cugl::Button> _catapultSouth;
-        std::shared_ptr<cugl::Button> _catapultSouthWest;
-        std::shared_ptr<cugl::Button> _catapultWest;
-        std::shared_ptr<cugl::Button> _catapultNorthWest;
     //Oil Buttons
         std::shared_ptr<cugl::Button> _oilNorth;
         std::shared_ptr<cugl::Button> _oilNorthEast;
@@ -75,16 +65,27 @@ protected:
         std::shared_ptr<cugl::Button> _oilSouthWest;
         std::shared_ptr<cugl::Button> _oilWest;
         std::shared_ptr<cugl::Button> _oilNorthWest;
+    
+        std::shared_ptr<cugl::PolygonNode> _oilNorthLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthEastLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilEastLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthEastLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthWestLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilWestLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthWestLOCKED;
     //Lookout Button
-    std::shared_ptr<cugl::Button> _lookout_button;
+        std::shared_ptr<cugl::Button> _lookout_button;
     //Basement Buttons
-    std::shared_ptr<cugl::Button> _repair_button;
-    std::shared_ptr<cugl::Button> _mage_button;
-    std::shared_ptr<cugl::Button> _ammo_button;
+        std::shared_ptr<cugl::Button> _repair_button;
+        std::shared_ptr<cugl::Button> _mage_button;
+        std::shared_ptr<cugl::Button> _ammo_button;
     
-    std::shared_ptr<cugl::Button> _up_button;
-    std::shared_ptr<cugl::Button> _down_button;
+        std::shared_ptr<cugl::PolygonNode> _repair_buttonLOCKED;
+        std::shared_ptr<cugl::PolygonNode>_mage_buttonLOCKED;
+        std::shared_ptr<cugl::PolygonNode> _ammo_buttonLOCKED;
     
+
     
     
     
@@ -123,6 +124,9 @@ public:
     float stairs;
     cugl::Vec2 castleOrigin;
     int currentCastleFloor;
+    
+    bool click;
+    int player_TEST=2;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
@@ -186,6 +190,22 @@ public:
      * @param action The move action
      */
     void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    
+    /**
+     * Disables all buttons
+     *
+     *
+     */
+    void disableButtons();
+    
+    /**
+     * Enables all buttons
+     *
+     *
+     */
+    void enableButtons();
+    
     
 
 };

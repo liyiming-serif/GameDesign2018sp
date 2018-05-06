@@ -21,10 +21,12 @@ protected:
     std::shared_ptr<cugl::Button> _lookoutTOcastle;
 
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _progressBar;
 
 	std::shared_ptr<cugl::Texture> _enemyIcon;
 
     std::vector<std::shared_ptr<cugl::Node>> _enemyMarkers;
+    
 
 public:
     // Constructors
@@ -41,5 +43,7 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+    
+    float _distance; 
 };
 #endif //BUILD_ANDROID_LOOKOUTSCENE_H

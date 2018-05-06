@@ -25,6 +25,8 @@ using namespace std;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 #define FLOOR_SCALE .54f
 #define BUTTON_SCALE 1.255f
@@ -99,8 +101,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(0,1);
                         gameModel.addDeltaHealth(0,1);
-                        _northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
+                        _northText->setText(std::to_string(gameModel.getWallHealth(0)+"%");
                     }
 
                 }
@@ -124,8 +127,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(5,1);
                         gameModel.addDeltaHealth(5,1);
-                        _northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
+                        _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                     }
 
                 }
@@ -150,8 +154,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(4,1);
                         gameModel.addDeltaHealth(4,1);
-                        _southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
+                        _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                     }
 
                 }
@@ -175,8 +180,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(3,1);
                         gameModel.addDeltaHealth(3,1);
-                        _southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
+                        _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                     }
 
                 }
@@ -199,8 +205,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(2,1);
                         gameModel.addDeltaHealth(2,1);
-                        _southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
+                        _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                     }
 
                 }
@@ -223,8 +230,9 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
+                        gameModel.changeWallHealth(1,1);
                         gameModel.addDeltaHealth(1,1);
-                        _northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
+                        _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                     }
 
                 }
@@ -594,24 +602,23 @@ void RepairScene::update(float timestep){
     // Animate
     _actions->update(timestep);
     int _curr_wall_health;
-
-    if (gameModel.isNetworked() && !gameModel.isServer()) {
-		CULog("networked CLIENT in repair scene");
-		_northText->setText(std::to_string(gameModel.getWallHealth(0)+gameModel.getDeltaHealth(0))+"%");
-		_northeastText->setText(std::to_string(gameModel.getWallHealth(5)+gameModel.getDeltaHealth(5))+"%");
-		_southeastText->setText(std::to_string(gameModel.getWallHealth(4)+gameModel.getDeltaHealth(4))+"%");
-		_southText->setText(std::to_string(gameModel.getWallHealth(3)+gameModel.getDeltaHealth(3))+"%");
-		_southwestText->setText(std::to_string(gameModel.getWallHealth(2)+gameModel.getDeltaHealth(2))+"%");
-		_northwestText->setText(std::to_string(gameModel.getWallHealth(1)+gameModel.getDeltaHealth(1))+"%");
+    
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
     }
-    else {
-        _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
-        _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
-        _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
-        _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
-        _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
-        _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
     }
+    
+    _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
+    _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
+    _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
+    _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
+    _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
+    _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
 
 
 
@@ -847,11 +854,25 @@ void RepairScene::setActive(bool active){
         Application::get()->setClearColor(Color4(0,0,0,255));
         _repairTOcastle->activate(input.findKey("repairTOcastle"));
         _northWallButton->activate(input.findKey("northWallButton"));
-        _northeastWallButton->activate(input.findKey("northeastWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));
-        _southWallButton->activate(input.findKey("southWallButton"));
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
-        _northwestWallButton->activate(input.findKey("northwestWallButton"));
+        
+        
+        if (gameModel._gamePlayers > 1) {
+            _northeastWallButton->activate(input.findKey("northeastWallButton"));
+            _southWallButton->activate(input.findKey("southWallButton"));
+            _northwestWallButton->activate(input.findKey("northwestWallButton"));
+        }
+        else {
+            _northeastText->setVisible(false);
+            _northeastWallButton->setColor(Color4(10,10,10,255));
+            _southText->setVisible(false);
+            _southWallButton->setColor(Color4(10,10,10,255));
+            _northwestText->setVisible(false);
+            _northwestWallButton->setColor(Color4(10,10,10,255));
+        }
+        
+        
     }
     else{
         _repairTOcastle->deactivate();

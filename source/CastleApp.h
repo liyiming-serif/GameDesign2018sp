@@ -41,6 +41,8 @@
 #include "AmmoScene.h"
 #include "OilScene.h"
 #include "LobbyScene.h"
+#include "WinScene.h"
+#include "LoseScene.h"
 #include "InputController.h"
 #include "GameModel.h"
 #include "SpawnController.h"
@@ -84,6 +86,9 @@ protected:
     MageScene _mageScene;
     AmmoScene _ammoScene;
     OilScene _oilScene;
+    
+    WinScene _winScene;
+    LoseScene _loseScene;
 
 
     
@@ -159,6 +164,12 @@ public:
      * @param timestep  The amount of time (in seconds) since the last frame
      */
     virtual void update(float timestep) override;
+
+    //when moving from overworld scene to menu, reset game states
+    void reset();
+
+    void initializeRooms();
+
     void swapscenes(int nextscene, int direction);
     
     /**
