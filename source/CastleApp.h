@@ -41,6 +41,8 @@
 #include "AmmoScene.h"
 #include "OilScene.h"
 #include "LobbyScene.h"
+#include "WinScene.h"
+#include "LoseScene.h"
 #include "InputController.h"
 #include "GameModel.h"
 #include "SpawnController.h"
@@ -84,6 +86,9 @@ protected:
     MageScene _mageScene;
     AmmoScene _ammoScene;
     OilScene _oilScene;
+    
+    WinScene _winScene;
+    LoseScene _loseScene;
 
 
     
@@ -159,6 +164,12 @@ public:
      * @param timestep  The amount of time (in seconds) since the last frame
      */
     virtual void update(float timestep) override;
+
+    //when moving from overworld scene to menu, reset game states
+    void reset();
+
+    void initializeRooms();
+
     void swapscenes(int nextscene, int direction);
     
     /**
@@ -171,7 +182,27 @@ public:
      * at all. The default implmentation does nothing.
      */
     virtual void draw() override;
-    
+
+    //TODO: Make sure JNI wrapper code is correct
+    void enableBluetooth() {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+        // Set up parameters for JNI call
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "enableBluetooth",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+#endif
+    }
 };
+
 
 #endif /* __CASTLE_APP_H__ */

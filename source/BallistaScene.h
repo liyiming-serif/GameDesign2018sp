@@ -41,6 +41,10 @@ protected:
     // Models
     std::shared_ptr<BallistaModel> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::PolygonNode> _ballistaTurret_GREEN;
+    std::shared_ptr<cugl::PolygonNode> _ballistaTurret_YELLOW;
+    std::shared_ptr<cugl::PolygonNode> _ballistaTurret_ORANGE;
+    std::shared_ptr<cugl::PolygonNode> _ballistaTurret_RED;
     std::shared_ptr<cugl::Button> _ballistaTOcastle;
     
     std::shared_ptr<cugl::PolygonNode> N_compass;
@@ -93,6 +97,9 @@ public:
     
     //Sets the compass image based on the direction input
     void setCompass (int direction);
+    
+    //Sets the wall image based on the wall health input
+    void setWall (int direction);
 
 };
 

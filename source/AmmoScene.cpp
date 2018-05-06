@@ -26,6 +26,8 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 
 /** Define the time settings for animation */
@@ -73,9 +75,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     std::shared_ptr<Texture> icon  = _assets->get<Texture>("ammo_cursor");
     _cursor = PolygonNode::allocWithTexture(icon);
-    _cursor->setScale(.5f); // Magic number to rescale asset
+    _cursor->setScale(.4f); // Magic number to rescale asset
     _cursor->setAnchor(Vec2::ANCHOR_CENTER);
-    _cursor->setPosition(_cursor->getWidth()/2,40);
+    _cursor->setPosition(_cursor->getWidth()/2,_size.height/11.5);
     addChild(_cursor);
     
     // Create the back button.  A button has an up image and a down image
@@ -114,104 +116,111 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hammer->setName("hammer");
     _hammer->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
-            if (!down && !_actions->isActive(ACT_KEY+1)) {
-                float pos = _cursor->getPositionX();
-                
-                if (fabs(pos-_size.width/2)< .05*_size.width) {
-                    CULog("jackpot");
-                    std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
-                    _jackpot = PolygonNode::allocWithTexture(perf);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    AmmoScene::doMoveUp(_moveup_J, _jackpot);
-                    _jackpot->setColor(Color4 (0,200,0,200));
-                    CULog("do move");
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
-                }
-                else if (fabs(pos-_size.width/2)< .2*_size.width ) {
-                    CULog("okay");
-                    std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
-                    _jackpot = PolygonNode::allocWithTexture(okay);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    AmmoScene::doMoveUp(_moveup_O, _jackpot);
-                    _jackpot->setColor(Color4 (220,220,0,220));
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+5);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
-                }
-                else {
-                    CULog("bad");
-                    std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
-                    _jackpot = PolygonNode::allocWithTexture(bad);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    AmmoScene::doMoveUp(_moveup_B, _jackpot);
-                    _jackpot->setColor(Color4 (200,0,0,200));
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+2);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
-                }
-                _actions->clearAllActions(_cursor);
-               
-            }
-        });
-    
-        _hammer2->setName("hammer2");
-        _hammer2->setListener([=] (const std::string& name, bool down) {
-            // Only quit when the button is released
-            if (!down && !_actions->isActive(ACT_KEY+1)) {
-                float pos = _cursor->getPositionX();
-                
-                if (fabs(pos-_size.width/2)< .05*_size.width) {
-                    CULog("jackpot");
-                    std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
-                    _jackpot = PolygonNode::allocWithTexture(perf);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    AmmoScene::doMoveUp(_moveup_J, _jackpot);
-                    _jackpot->setColor(Color4 (0,200,0,200));
-                    CULog("do move");
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
-                }
-                else if (fabs(pos-_size.width/2)< .2*_size.width ) {
-                    CULog("okay");
-                    std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
-                    _jackpot = PolygonNode::allocWithTexture(okay);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    _jackpot->setColor(Color4 (220,220,0,220));
-                    AmmoScene::doMoveUp(_moveup_O, _jackpot);
+        if (!down && !_actions->isActive(ACT_KEY + 1)) {
+            float pos = _cursor->getPositionX();
 
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+5);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+            if (fabs(pos - _size.width / 2) < .05 * _size.width) {
+                std::shared_ptr<Texture> perf = _assets->get<Texture>("ammo_perfect");
+                _jackpot = PolygonNode::allocWithTexture(perf);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675, 300);
+                addChild(_jackpot);
+                AmmoScene::doMoveUp(_moveup_J, _jackpot);
+                _jackpot->setColor(Color4(232, 227, 201, 255));
+                gameModel.setArrowAmmo(0, gameModel.getArrowAmmo(0) + 15);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0, 15);
                 }
-                else {
-                    CULog("bad");
-                    std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
-                    _jackpot = PolygonNode::allocWithTexture(bad);
-                    _jackpot->setScale(.5f); // Magic number to rescale asset
-                    _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
-                    _jackpot->setPosition(675,300);
-                    addChild(_jackpot);
-                    AmmoScene::doMoveUp(_moveup_B, _jackpot);
-                    _jackpot->setColor(Color4 (200,0,0,200));
-                    gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+2);
-                    _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+                _ammoText->setText("Ammo " + std::to_string(gameModel.getArrowAmmo(0)));
+            } else if (fabs(pos - _size.width / 2) < .2 * _size.width) {
+                std::shared_ptr<Texture> okay = _assets->get<Texture>("ammo_okay");
+                _jackpot = PolygonNode::allocWithTexture(okay);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675, 300);
+                addChild(_jackpot);
+                AmmoScene::doMoveUp(_moveup_O, _jackpot);
+                _jackpot->setColor(Color4(212, 179, 84, 255));
+                gameModel.setArrowAmmo(0, gameModel.getArrowAmmo(0) + 5);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0, 5);
                 }
-                _actions->clearAllActions(_cursor);
+                _ammoText->setText("Ammo " + std::to_string(gameModel.getArrowAmmo(0)));
+            } else {
+                CULog("bad");
+                std::shared_ptr<Texture> bad = _assets->get<Texture>("ammo_bad");
+                _jackpot = PolygonNode::allocWithTexture(bad);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675, 300);
+                addChild(_jackpot);
+                AmmoScene::doMoveUp(_moveup_B, _jackpot);
+                _jackpot->setColor(Color4(159, 48, 46, 255));
+                gameModel.setArrowAmmo(0, gameModel.getArrowAmmo(0) + 2);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0, 2);
+                }
+                _ammoText->setText("Ammo " + std::to_string(gameModel.getArrowAmmo(0)));
             }
-        });
+            _actions->clearAllActions(_cursor);
+        }
+    });
+    
+    _hammer2->setName("hammer2");
+    _hammer2->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down && !_actions->isActive(ACT_KEY+1)) {
+            float pos = _cursor->getPositionX();
+
+            if (fabs(pos-_size.width/2)< .05*_size.width) {
+                std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
+                _jackpot = PolygonNode::allocWithTexture(perf);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675,300);
+                addChild(_jackpot);
+                AmmoScene::doMoveUp(_moveup_J, _jackpot);
+                _jackpot->setColor(Color4 (232,227,201,255));
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+15);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,15);
+                }
+                _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+            }
+            else if (fabs(pos-_size.width/2)< .2*_size.width ) {
+                std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
+                _jackpot = PolygonNode::allocWithTexture(okay);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675,300);
+                addChild(_jackpot);
+                _jackpot->setColor(Color4 (212,179,84,255));
+                AmmoScene::doMoveUp(_moveup_O, _jackpot);
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+5);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,5);
+                }
+                _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+            }
+            else {
+                std::shared_ptr<Texture> bad  = _assets->get<Texture>("ammo_bad");
+                _jackpot = PolygonNode::allocWithTexture(bad);
+                _jackpot->setScale(.5f); // Magic number to rescale asset
+                _jackpot->setAnchor(Vec2::ANCHOR_CENTER);
+                _jackpot->setPosition(675,300);
+                addChild(_jackpot);
+                AmmoScene::doMoveUp(_moveup_B, _jackpot);
+                _jackpot->setColor(Color4 (159,48,46,255));
+                gameModel.setArrowAmmo(0,gameModel.getArrowAmmo(0)+2);
+                if (gameModel.isNetworked() && !gameModel.isServer()) {
+                    gameModel.addDeltaAmmo(0,2);
+                }
+                _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+            }
+            _actions->clearAllActions(_cursor);
+        }
+    });
     
     
     // Position the overworld button in the bottom left
@@ -236,13 +245,13 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hammer2->activate(input.generateKey("hammer2"));
     
     
-    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,40),DURATION);
-    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,40),DURATION);
+    _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,_size.height/11.5),DURATION);
+    _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,_size.height/11.5),DURATION);
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
     _ammoText->setPosition(_size.width*1.38, _size.height - _size.height/12);
-    _ammoText->setForeground(cugl::Color4(249,242,210,255));
+    _ammoText->setForeground(cugl::Color4(232,227,201,255));
     addChild(_ammoText);
     
 
@@ -271,6 +280,15 @@ void AmmoScene::dispose() {
 void AmmoScene::update(float timestep){
     // Animate
 
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+            switchscene = WIN;
+        }
+    }
 
     if (!_actions->isActive(ACT_KEY+1)){
         _jackpot=nullptr;
@@ -288,14 +306,14 @@ void AmmoScene::update(float timestep){
     if (move_direction  && !_actions->isActive(ACT_KEY) && !_actions->isActive(ACT_KEY+2)){
         CULog("move 1");
         //_cursor->setPosition(Vec2(_cursor->getWidth()/2,40));
-        _cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,40));
+        _cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,_size.height/11.5));
         doMove(_moveright);
         move_direction = !move_direction;
     }
     if (!move_direction && !_actions->isActive(ACT_KEY) && !_actions->isActive(ACT_KEY+2)){
         CULog("move 2");
         //_cursor->setPosition(Vec2(_size.width-_cursor->getWidth()/2,40));
-        _cursor->setPosition(Vec2(_cursor->getWidth()/2,40));
+        _cursor->setPosition(Vec2(_cursor->getWidth()/2,_size.height/11.5));
         doMove(_moveleft);
         move_direction = !move_direction;
         
@@ -315,7 +333,6 @@ void AmmoScene::doMoveUp(const std::shared_ptr<MoveTo>& action, std::shared_ptr<
 
 void AmmoScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
     _actions->activate(ACT_KEY+2, action, _hammerAnim);
-   // CULog("Doing the strip");
 }
 
 

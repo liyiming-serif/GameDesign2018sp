@@ -20,9 +20,12 @@
     <ClCompile Include="..\..\source\RepairScene.cpp" />
     <ClCompile Include="..\..\source\SpawnController.cpp" />
     <ClCompile Include="..\..\source\LevelselectScene.cpp" />
+    <ClCompile Include="..\..\source\EnemyDataModel.cpp" />
     <ClCompile Include="..\..\source\OilModel.cpp" />
     <ClCompile Include="..\..\source\JSONReader.cpp" />
     <ClCompile Include="..\..\source\EnemyDataModel.cpp" />
+    <ClCompile Include="..\..\source\LoseScene.cpp" />
+    <ClCompile Include="..\..\source\WinScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\AmmoScene.h" />
@@ -47,6 +50,8 @@
     <ClInclude Include="..\..\source\EnemyDataModel.h" />
     <ClInclude Include="..\..\source\OilModel.h" />
     <ClInclude Include="..\..\source\JSONReader.h" />
+    <ClInclude Include="..\..\source\LoseScene.h" />
+    <ClInclude Include="..\..\source\WinScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HelloWorld.rc" />

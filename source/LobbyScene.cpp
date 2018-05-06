@@ -31,6 +31,8 @@ using namespace cugl;
 #define REPEATS  3
 #define ACT_KEY  "current"
 
+#define FONT    _assets->get<Font>("futura")
+
 bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
@@ -119,7 +121,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _backButton = Button::alloc(PolygonNode::allocWithTexture(menu_tex));
     _backButton->setScale(.5f); // Magic number to rescale asset
 
-    // Create a callback function for the OVERWORLD button
+    // Create a callback function for the Menu button
     _backButton->setName("menu");
     _backButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
@@ -143,91 +145,16 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _createButton->setScale(.6f); // Magic number to rescale asset
     
     
-    // Create the JOIN button.  A button has an up image and a down image
-    std::shared_ptr<Texture> tex_2   = _assets->get<Texture>("enter_button");
-    _enterButton = Button::alloc(PolygonNode::allocWithTexture(tex_2));
-    _enterButton->setScale(.6f); // Magic number to rescale asset
-    
-
-    _enterButtonOne = Button::alloc(PolygonNode::allocWithTexture(tex_2));
-    _enterButtonOne->setScale(.6f); // Magic number to rescale asset
-    
-    _enterButtonTwo = Button::alloc(PolygonNode::allocWithTexture(tex_2));
-    _enterButtonTwo->setScale(.6f); // Magic number to rescale asset
-    
-    
-            // Create a callback function for HOST
-            _createButton->setName("create");
-            _createButton->setListener([=] (const std::string& name, bool down) {
-                if (!down) {
-                    #if CU_PLATFORM == CU_PLATFORM_ANDROID
-//                                setupBluetoothServer();
-                    #endif
-                   LobbyScene::changeCanvas("avatar");
-                    CULog("create");
-                }
-            });
-    
-    
-    
-            // Create a callback function for the JOIN button
-            _enterButton->setName("enter");
-            _enterButton->setListener([=] (const std::string& name, bool down) {
-                if (!down) {
-                #if CU_PLATFORM == CU_PLATFORM_ANDROID
-//                            setupBluetoothClient();
-                #endif
-                  LobbyScene::changeCanvas("avatar");
-                     CULog("enter");
-                }
-            });
-    
-    
-            // Create a callback function for the JOIN button
-            _enterButtonOne->setName("enterOne");
-            _enterButtonOne->setListener([=] (const std::string& name, bool down) {
-                if (!down) {
-        #if CU_PLATFORM == CU_PLATFORM_ANDROID
-//                    setupBluetoothClient();
-        #endif
-                    LobbyScene::changeCanvas("avatar");
-                    CULog("enterOne");
-                }
-            });
-    
-            // Create a callback function for the JOIN button
-            _enterButtonTwo->setName("enterTwo");
-            _enterButtonTwo->setListener([=] (const std::string& name, bool down) {
-                if (!down) {
-                #if CU_PLATFORM == CU_PLATFORM_ANDROID
-//                            setupBluetoothClient();
-                #endif
-                    LobbyScene::changeCanvas("avatar");
-                    CULog("enterTwo");
-                }
-            });
-    
-    
     _createButton->setAnchor(Vec2::ANCHOR_CENTER);
     _createButton->setPosition(_size.width/2, 70);
     
-    _enterButton->setAnchor(Vec2::ANCHOR_CENTER);
-    _enterButton->setPosition(_size.width/2, 470);
-    
-    _enterButtonOne->setAnchor(Vec2::ANCHOR_CENTER);
-    _enterButtonOne->setPosition(_size.width/2, 300);
-    
-    _enterButtonTwo->setAnchor(Vec2::ANCHOR_CENTER);
-    _enterButtonTwo->setPosition(_size.width/2, 200);
+
     
     
     
     
     _lobby->addChild(_box);
     _lobby->addChild(_createButton);
-    _lobby->addChild(_enterButton);
-    _lobby->addChild(_enterButtonOne);
-    _lobby->addChild(_enterButtonTwo);
     
     
 
@@ -266,11 +193,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _avatar->addChild(_player2);
     _avatar->addChild(_avatar1);
     _avatar->addChild(_avatar2);
-    
 
-    
-
-    
     
     // Create the play button.  A button has an up image and a down image
     std::shared_ptr<Texture> play_up   = _assets->get<Texture>("levels");
@@ -287,9 +210,39 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             players = 2;
         }
     });
-    
-    
-  
+
+    // Create a callback function for HOST
+    _createButton->setName("create");
+    _createButton->setListener([=] (const std::string& name, bool down) {
+        if (!down) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+			setupBluetoothServer();
+            gameModel.setServer(true);
+            gameModel.setNetworked(true);
+            gameModel.setNoPlayers(1);
+            gameModel.setPlayerAvatar(0, 1);
+            LobbyScene::changeCanvas("avatar");
+            CULog("create");
+#endif
+        }
+    });
+
+//    std::shared_ptr<Texture> tex_refresh   = _assets->get<Texture>("refresh");
+//    _refreshButton = Button::alloc(PolygonNode::allocWithTexture(play_up));
+//    _refreshButton->setScale(1.0f); // Magic number to rescale asset
+//
+//    // Create a callback function for HOST
+//    _refreshButton->setName("refresh");
+//    _refreshButton->setListener([=] (const std::string& name, bool down) {
+//        if (!down) {
+//            refreshRooms();
+//            CULog("refresh");
+//        }
+//    });
+//
+//    _refreshButton->setAnchor(Vec2::ANCHOR_CENTER);
+//    _refreshButton->setPosition(40, 40);
+
     // Position the overworld button in the bottom left
     _backButton->setAnchor(Vec2::ANCHOR_CENTER);
     _backButton->setPosition(40,530);
@@ -302,14 +255,20 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_lobby);
     addChild(_avatar);
     addChild(_levelsButton);
+//    addChild(_refreshButton);
     
     // We can only activate a button AFTER it is added to a scene
     _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
-    _enterButton->activate(input.generateKey("enterButtonn"));
-    _enterButtonOne->activate(input.generateKey("enterButtonOne"));
-    _enterButtonTwo->activate(input.generateKey("enterButtonTwo"));
+//    _refreshButton->activate(input.generateKey("refreshButton"));
     _levelsButton->activate(input.generateKey("levelsMULTIButton"));
+    input.generateKey("_enterButton0");
+    input.generateKey("_enterButton1");
+    input.generateKey("_enterButton2");
+    input.generateKey("_enterButton3");
+    input.generateKey("_enterButton4");
+
+    length = 0;
     
     return true;
 }
@@ -320,8 +279,11 @@ void LobbyScene::dispose() {
         _assets = nullptr;
         _backButton = nullptr;
         _createButton = nullptr;
-        _enterButton = nullptr;
-        _enterButtonTwo = nullptr;
+        _refreshButton = nullptr;
+        for(int i = 0; i < length; i++) {
+            _enterButtons[i] = nullptr;
+            _enterTexts[i] = nullptr;
+        }
         _background = nullptr;
         _cloud1 = nullptr;
         _cloud2 = nullptr;
@@ -334,7 +296,7 @@ void LobbyScene::dispose() {
 }
 
 void LobbyScene::update(float timestep){
-    
+
     // Animate
     if (!_actions->isActive(ACT_KEY) && move1 ){
         doMove(_move1, _cloud1);
@@ -399,12 +361,45 @@ void LobbyScene::update(float timestep){
         _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
         doMove6(_move6, _cloud6);
     }
-    
-    setButtonActive(_createButton,"createButton");
-    setButtonActive(_enterButton,"enterButton");
-    setButtonActive(_enterButtonOne,"enterButtonOne");
-    setButtonActive(_enterButtonTwo,"enterButtonTwo");
 
+    // Delete all enter buttons/text
+    if (LobbyClock == 50) {
+        if (!serverDevices.empty()) {
+            for(int i = 0; i < serverDevices.size(); i++) {
+                _enterButtons[i]->dispose();
+                _enterTexts[i]->dispose();
+            }
+        }
+
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+        serverDevices = getServerDevices();
+#endif
+
+        if (_avatar->isVisible() && gameModel.isServer()) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+            gameModel.setNoPlayers(getPlayers());
+#endif
+        }
+
+        // Create new enter buttons/text if canvas is lobby
+        if (!_avatar->isVisible() && !serverDevices.empty()) {
+            length = serverDevices.size();
+            _enterButtons = new std::shared_ptr<cugl::Button>[length];
+            _enterTexts = new std::shared_ptr<cugl::Label>[length];
+
+            for (int i = 0; i < length; ++i) {
+                _enterButtons[i] = createServerRoomButton(i);
+                _enterTexts[i] = createServerRoomText(i);
+                setButtonActive(_enterButtons[i], _enterButtons[i]->getName());
+            }
+        }
+        LobbyClock = 0;
+    }
+
+    setButtonActive(_createButton,"createButton");
+
+    //TODO: Add new avatars to screen based on number of players; allow players to change their avatars
+    LobbyClock++;
     _actions->update(timestep);
 }
 
@@ -426,9 +421,9 @@ void LobbyScene::changeCanvas(std::string canvas) {
         _lobby->setVisible(false);
         _avatar->setVisible(true);
         _createButton->deactivate();
-        _enterButton->deactivate();
-        _enterButtonOne->deactivate();
-        _enterButtonTwo->deactivate();
+        for(int i = 0; i < length; i++) {
+            _enterButtons[i]->deactivate();
+        }
         CULog("go to avatar");
     }
     else {
@@ -467,11 +462,6 @@ void LobbyScene::doMove6(const std::shared_ptr<MoveTo>& action, std::shared_ptr<
     _actions->activate(ACT_KEY+6, action, object, fcn);
 }
 
-int LobbyScene::getNumPlayers(){
-    //TODO: RETURN NUMBER OF PLAYERS
-    return 0;
-}
-
 
 //Pause or Resume
 void LobbyScene::setActive(bool active){
@@ -485,16 +475,68 @@ void LobbyScene::setActive(bool active){
         _lobby->setVisible(true);
         _avatar->setVisible(false);
         _createButton->activate(input.findKey("createButton"));
-        _enterButton->activate(input.findKey("enterButtonn"));
-        _enterButtonOne->activate(input.findKey("enterButtonOne"));
-        _enterButtonTwo->activate(input.findKey("enterButtonTwo"));
     }
     else{
         _backButton->deactivate();
         _createButton->deactivate();
-        _enterButton->deactivate();
-        _enterButtonOne->deactivate();
-        _enterButtonTwo->deactivate();
+        for(int i = 0; i < length; i++) {
+            _enterButtons[i]->deactivate();
+        }
         _levelsButton->deactivate();
     }
 }
+
+std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
+    // Create the JOIN button.  A button has an up image and a down image
+    std::shared_ptr<Texture> tex_2   = _assets->get<Texture>("enter_button");
+    std::shared_ptr<cugl::Button> _enterButton = Button::alloc(PolygonNode::allocWithTexture(tex_2));
+    _enterButton->setScale(.6f); // Magic number to rescale asset
+
+    _enterButton->setAnchor(Vec2::ANCHOR_CENTER);
+    _enterButton->setPosition(_size.width/2, 500 - (device * 100));
+
+
+
+    // Create a callback function for the JOIN button
+    _enterButton->setName("_enterButton" + to_string(device));
+    _enterButton->setListener([=] (const std::string& name, bool down) {
+        if (!down) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+            setupBluetoothClient(device);
+#endif
+            gameModel.setNetworked(true);
+            gameModel.setServer(false);
+            int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
+            gameModel.setNoPlayers(roomOccup+1);
+            gameModel.setPlayerAvatar(roomOccup, roomOccup+1);
+            gameModel.setPlayerID(roomOccup);
+            LobbyScene::changeCanvas("avatar");
+            CULog("enter");
+        }
+    });
+    _lobby->addChild(_enterButton);
+    _enterButton->activate(input.findKey("_enterButton"+to_string(device)));
+    return _enterButton;
+}
+
+std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
+    std::shared_ptr<cugl::Label> _buttonText = Label::alloc((std::string) "                                                                        ", FONT);
+    _enterButtons[device]->addChild(_buttonText);
+    _buttonText->setAnchor(Vec2::ANCHOR_CENTER);
+    _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);
+    _buttonText->setForeground(cugl::Color4(233,225,212,255));
+    std::string roomName = serverDevices.at(device);
+    const char roomOccup = serverDevices.at(device).at(6);
+    std::string printString = roomName + " " + roomOccup + "/6 Players";
+    CULog("%s", printString.c_str());
+    _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
+    return _buttonText;
+}
+
+void LobbyScene::refreshRooms() {
+
+}
+
+
+
+

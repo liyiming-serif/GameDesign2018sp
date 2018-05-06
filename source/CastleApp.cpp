@@ -40,6 +40,8 @@
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 
 // This keeps us from having to write cugl:: all the time
@@ -95,9 +97,6 @@ void CastleApp::onStartup() {
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
-    _players = -1;
-
-	CULog("gestures saved at: %s", Application::getSaveDirectory().c_str());
 
     Application::onStartup(); // YOU MUST END with call to parent
 
@@ -119,6 +118,8 @@ void CastleApp::onShutdown() {
     _menuScene.dispose();
     _loadingScene.dispose();
     _levelScene.dispose();
+    _winScene.dispose();
+    _loseScene.dispose();
     _overworldScene.dispose();
     _ballistaScene.dispose();
     _lookoutScene.dispose();
@@ -162,24 +163,38 @@ void CastleApp::update(float timestep) {
             _loadingScene.dispose(); // Disables the input listeners in this mode
             _ballistaScene.init(_assets);
             _ballistaScene.setActive(false, 0);
+            //CULog("Ballista Scene Loaded");
             _lookoutScene.init(_assets);
             _lookoutScene.setActive(false);
+            //CULog("Lookout Scene Loaded");
             _repairScene.init(_assets);
             _repairScene.setActive(false);
+            //CULog("Repair Scene Loaded");
             _overworldScene.init(_assets);
             _overworldScene.setActive(false);
+            //CULog("Overworld Scene Loaded");
             _mageScene.init(_assets);
             _mageScene.setActive(false);
+            //CULog("Mage Scene Loaded");
             _ammoScene.init(_assets);
             _ammoScene.setActive(false);
+            //CULog("Ammo Scene Loaded");
             _oilScene.init(_assets);
             _oilScene.setActive(false, 0);
+            //CULog("Oil Scene Loaded");
             _lobbyScene.init(_assets);
             _lobbyScene.setActive(false);
+            //CULog("Lobby Scene Loaded");
             _levelScene.init(_assets);
             _levelScene.setActive(false, 0);
+            //CULog("Level Scene Loaded");
+            _winScene.init(_assets);
+            _winScene.setActive(false);
+            _loseScene.init(_assets);
+            _loseScene.setActive(false);
             _menuScene.init(_assets);
             _currscene=MENU;
+            //CULog("Menu Scene Loaded");
             _loaded=true;
         }
     } else {
@@ -202,6 +217,20 @@ void CastleApp::update(float timestep) {
             if(_levelScene.switchscene!=0){
                 swapscenes(_levelScene.switchscene, 0);
                 _levelScene.setActive(false, _direction);
+            }
+        }
+        else if(_currscene==WIN){
+            _winScene.update(timestep);
+            if(_winScene.switchscene!=0){
+                swapscenes(_winScene.switchscene, 0);
+                _winScene.setActive(false);
+            }
+        }
+        else if(_currscene==LOSE){
+            _loseScene.update(timestep);
+            if(_loseScene.switchscene!=0){
+                swapscenes(_loseScene.switchscene, 0);
+                _loseScene.setActive(false);
             }
         }
         else{ //gameplay update loop
@@ -240,7 +269,7 @@ void CastleApp::update(float timestep) {
                     _mageScene.setActive(false);
                 }
             }
-            else if(_currscene==AMMO){
+            else if(_currscene==AMMO) {
                 _ammoScene.update(timestep);
                 if(_ammoScene.switchscene!=0){
                     swapscenes(_ammoScene.switchscene, 0);
@@ -254,57 +283,118 @@ void CastleApp::update(float timestep) {
                     _oilScene.setActive(false, _direction);
                 }
             }
-            _spawnController.update(timestep);
+            if (gameModel.isServer() || !gameModel.isNetworked()) {
+                _spawnController.update(timestep);
+            }
+
             gameModel.update(timestep);
         }
     }
+    
+
+    
     //refresh the input controller
 	input.update(timestep);
 
 }
+//TODO::FIX THE NEXT LEVEL AND RESET
 
 void CastleApp::swapscenes(int nextscene, int direction){
     _direction = direction;
-    if (_currscene == MENU && nextscene == LEVELS){
-        _players = 1;
+    if (_currscene == MENU && nextscene == LOBBY) {
+        enableBluetooth();
     }
-    if (_currscene == LOBBY && nextscene == LEVELS){
-        _players = _lobbyScene.getNumPlayers();
+    if (_currscene == LOBBY && nextscene == MENU) {
+        gameModel.setNetworked(false);
     }
-	if (_currscene == LEVELS && nextscene == OVERWORLD) {
-		_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(_players, _levelScene.level));
-        gameModel.level=_levelScene.level;
+	if(_currscene == OVERWORLD && nextscene == MENU){
+        _currscene = MENU;
+        _overworldScene.setActive(false);
+	    reset();
 	}
+	if(_currscene == WIN && nextscene == MENU){
+        _currscene = MENU;
+        _winScene.setActive(false);
+        reset();
+    }
+    if(_currscene == LOSE && nextscene == MENU){
+        _currscene = MENU;
+        _loseScene.setActive(false);
+        reset();
+    }
+    if (_currscene==LOSE && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _loseScene.setActive(false);
+        int level = _levelScene.level;
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        initializeRooms();
+        gameModel.level=level;
+    }
+    if (_currscene==WIN && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _winScene.setActive(false);
+        int level = _levelScene.level;
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level + 1));
+        initializeRooms();
+        gameModel.level=level+1;
+    }
+    if (_currscene==LEVELS && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _levelScene.setActive(false, 0);
+        int level = _levelScene.level;
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        initializeRooms();
+        gameModel.level=level;
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
             break;
         case OVERWORLD:
             _overworldScene.setActive(true);
+            gameModel.setCurrentRoom(0);
             break;
         case BALLISTA:
             _ballistaScene.setActive(true, _direction);
+            gameModel.setCurrentRoom(2+_direction);
             break;
         case LOOKOUT:
             _lookoutScene.setActive(true);
+            gameModel.setCurrentRoom(1);
             break;
         case REPAIR:
             _repairScene.setActive(true);
+            gameModel.setCurrentRoom(14);
             break;
         case MAGE:
             _mageScene.setActive(true);
+            gameModel.setCurrentRoom(16);
             break;
         case AMMO:
             _ammoScene.setActive(true);
+            gameModel.setCurrentRoom(15);
             break;
         case OIL:
             _oilScene.setActive(true, _direction);
+            gameModel.setCurrentRoom(8+_direction);
             break;
         case LOBBY:
             _lobbyScene.setActive(true);
             break;
+        case WIN:
+            _winScene.setActive(true);
+            break;
+        case LOSE:
+            _loseScene.setActive(true);
+            break;
         case LEVELS:
-			_levelScene.setActive(true,_players);
+			_levelScene.setActive(true,gameModel.getNoPlayers());
 			break;
     }
     _currscene = nextscene;
@@ -351,8 +441,47 @@ void CastleApp::draw() {
         else if(_currscene==LOBBY){
             _lobbyScene.render(_batch);
         }
+        else if(_currscene==WIN){
+            _winScene.render(_batch);
+        }
+        else if(_currscene==LOSE){
+            _loseScene.render(_batch);
+        }
         else if(_currscene==LEVELS){
             _levelScene.render(_batch);
         }
     }
+}
+//only reset from overworld scene
+void CastleApp::reset(){
+
+
+    //_overworldScene.dispose();
+    //_ballistaScene.dispose();
+    //_lookoutScene.dispose();
+    //_repairScene.dispose();
+    //_mageScene.dispose();
+    //_ammoScene.dispose();
+    //_oilScene.dispose();
+    _spawnController.dispose();
+    gameModel.dispose();
+	input.clear();
+    gameModel.init();
+}
+
+void CastleApp::initializeRooms(){
+    //_ballistaScene.init(_assets);
+    _ballistaScene.setActive(false, 0);
+    //_lookoutScene.init(_assets);
+    _lookoutScene.setActive(false);
+    //_repairScene.init(_assets);
+    _repairScene.setActive(false);
+    //_overworldScene.init(_assets);
+    _overworldScene.setActive(false);
+    //_mageScene.init(_assets);
+    _mageScene.setActive(false);
+    //_ammoScene.init(_assets);
+    _ammoScene.setActive(false);
+    //_oilScene.init(_assets);
+    _oilScene.setActive(false, 0);
 }

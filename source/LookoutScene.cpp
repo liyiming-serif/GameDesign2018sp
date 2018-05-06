@@ -18,10 +18,12 @@ using namespace cugl;
 #define OIL         8
 #define LEVELS      9
 #define LOBBY       10
+#define WIN         11
+#define LOSE        12
 
 
-#define JUNGLE  2
-#define SNOW  3
+#define JUNGLE  5
+#define SNOW  8
 
 bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
@@ -35,7 +37,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
-
+	setZAutoSort(true);
     switchscene = 0;
 
     _assets = assets;
@@ -53,26 +55,35 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     else {
          _background = PolygonNode::allocWithTexture(texture_d);
     }
-    _background->setScale(0.5625f); // Magic number to rescale asset
+    _background->setScale(0.5342f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(0,0);
+    _background->setPosition(_size.width/2,_size.height/2);
     addChild(_background);
     
     
     
 
-    _background->setAnchor(Vec2::ANCHOR_CENTER);
-    _background->setPosition(_size.width/2,_size.height/2);
-
+    
+    // Set the background image
+    std::shared_ptr<Texture> texture2  = _assets->get<Texture>("lookout_progressBar");
+    _progressBar = PolygonNode::allocWithTexture(texture2);
+    _progressBar->setScale(0.525f); // Magic number to rescale asset
+    _progressBar->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _progressBar->setPosition(_size.width-(_progressBar->getWidth()/2),_size.height*.09f);
+    addChild(_progressBar);
+    
+    _distance=.85f*_size.height/gameModel.getEndTime();
+    
+    
 	//allocate an enemy icon, but don't add it yet
 	_enemyIcon = _assets->get<Texture>("skeletonIcon");
-	//initiallize lanes for displaying enemies.
+	//initialize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
 		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
-		ecanvas->setAnchor(Vec2(0.5f,-0.5f));
-		ecanvas->setPosition(_size.width / 2, _size.height / 2);
+		ecanvas->setAnchor(Vec2(0.5f,-0.3f));
+		ecanvas->setPosition(_size.width*0.46, _size.height / 2);
 		ecanvas->setAngle(i * 2 * M_PI / 6);
-		ecanvas->setScale(0.1f,0.4f);
+		ecanvas->setScale(0.075f,0.3f);
 		addChild(ecanvas);
 		_enemyMarkers.push_back(ecanvas);
 	}
@@ -101,7 +112,7 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     // We can only activate a button AFTER it is added to a scene
     _lookoutTOcastle->activate(input.generateKey("lookoutTOcastle"));
-
+	CULog("initialized lookout");
     return true;
 }
 
@@ -121,6 +132,20 @@ void LookoutScene::dispose() {
 }
 
 void LookoutScene::update(float timestep){
+    
+    if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
+        gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
+        switchscene = LOSE;
+    }
+    if (gameModel._currentTime > gameModel._endTime){
+        if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
+                switchscene = WIN;
+        }
+    }
+    if (_progressBar->getPositionY()<_size.height) {
+        _progressBar->setPosition(_progressBar->getPositionX(),_progressBar->getPositionY()+_distance);
+    }
+
 	//UPDATE ENEMY MARKERS
 	//clear enemy lanes
 	for (int i = 0; i < _enemyMarkers.size(); i++) {
@@ -137,18 +162,22 @@ void LookoutScene::update(float timestep){
 	}
 }
 
+
 //Pause or Resume
 void LookoutScene::setActive(bool active){
     _active = active;
     switchscene = 0;
     if(active){
         // Set background color
-        Application::get()->setClearColor(Color4(132,180,113,255));
+        Application::get()->setClearColor(Color4(255,255,255,255));
+		_distance = .85f*_size.height / gameModel.getEndTime();
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
+        _progressBar->setPosition(_progressBar->getPositionX(),
+            std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));
     }
+    
     else{
         _lookoutTOcastle->deactivate();
-
 		for (int i = 0; i < _enemyMarkers.size(); i++) {
 			_enemyMarkers[i]->removeAllChildren();
 		}
