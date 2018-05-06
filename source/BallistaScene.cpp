@@ -156,6 +156,10 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ballistaTurret_YELLOW);
     addChild(_ballistaTurret_ORANGE);
     addChild(_ballistaTurret_RED);
+	_ballistaTurret_GREEN->setVisible(false);
+	_ballistaTurret_YELLOW->setVisible(false);
+	_ballistaTurret_ORANGE->setVisible(false);
+	_ballistaTurret_RED->setVisible(false);
 	if (_ballista != nullptr) {
 		addChild(_ballista->getNode());
 	}

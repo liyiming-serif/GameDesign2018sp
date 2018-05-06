@@ -22,7 +22,7 @@ bool GameModel::init(){
     gameModel._deltaAmmo[2] = 0;
 
     for (int i = 0; i < 6; ++i) {
-        gameModel._castleHealth[i] = 80;
+        gameModel._castleHealth[i] = 100;
         gameModel._deltaCastleHealth[i] = 0;
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;

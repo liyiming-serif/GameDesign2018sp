@@ -133,10 +133,10 @@
 			"rooms_unlocked" : {
 				"lookout" : true,
 				"ballista" : true,
-				"ammo" : false,
-				"repair" : false,
+				"ammo" : true,
+				"repair" : true,
 				"oil" : true,
-				"mage" : false
+				"mage" : true
 			},
 			"ammo" : 100
 		},
