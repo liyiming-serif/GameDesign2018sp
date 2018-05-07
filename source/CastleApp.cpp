@@ -322,7 +322,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _loseScene.setActive(false);
         reset();
     }
-    if (_currscene==LOSE && nextscene == OVERWORLD ) {
+    if ((_currscene==LOSE && nextscene == OVERWORLD) || _currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
         int level = _levelScene.level;
@@ -332,7 +332,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         initializeRooms();
         gameModel.level=level;
     }
-    if (_currscene==WIN && nextscene == OVERWORLD ) {
+    if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _winScene.setActive(false);
         int level = _levelScene.level;

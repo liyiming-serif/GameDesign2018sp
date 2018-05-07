@@ -40,6 +40,7 @@ public:
     
     // Gameplay
     void update(float timestep);
+    bool replayFlag;
     
     //Pause or Resume
     void setActive(bool active);

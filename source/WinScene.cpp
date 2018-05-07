@@ -35,6 +35,8 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     } else if (!Scene::init(_size)) {
         return false;
     }
+
+    replayFlag = false;
     
     // Set background color
     Application::get()->setClearColor(Color4(255,255,255,2555));
@@ -78,7 +80,7 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
-            gameModel.level=gameModel.level+1;
+            replayFlag = false;
         }
     });
     
@@ -93,7 +95,7 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
-            gameModel.level=gameModel.level;
+            replayFlag = true;
         }
     });
     
