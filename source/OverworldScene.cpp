@@ -1039,8 +1039,8 @@ void OverworldScene::setActive(bool active) {
 		std::shared_ptr<Texture> lookoutFloor_texture_d = _assets->get<Texture>("lookout_floor_d");
 		if (gameModel.level<JUNGLE) {
 			_oil_floor->setTexture(oilFloor_texture);
-			_ballista_floor->setTexture(oilFloor_texture);
-			_lookout_floor->setTexture(oilFloor_texture);
+			_ballista_floor->setTexture(ballistaFloor_texture);
+			_lookout_floor->setTexture(lookoutFloor_texture);
 		}
 		else if (gameModel.level<SNOW) {
 			_oil_floor->setTexture(oilFloor_texture_s);
