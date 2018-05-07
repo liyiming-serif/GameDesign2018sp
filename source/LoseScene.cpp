@@ -78,7 +78,6 @@ bool LoseScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = OVERWORLD;
-            gameModel.level=gameModel.level;
         }
     });
     
