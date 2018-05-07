@@ -95,9 +95,9 @@ bool InputController::init(){
 	gest->addStateListener(LISTENER_KEY, [=](GestureState old, GestureState curr) {
 		this->gestureStateCB(old, curr);
 	});
-	gest->loadAssetAsync("Gestures", [=](bool success) {
-		CULog("%i gestures loaded!", gest->getGestures().size());
-	});
+	//gest->loadAssetAsync("Gestures", [=](bool success) {
+		//CULog("%i gestures loaded!", gest->getGestures().size());
+	//});
 	gest->pause();
 	_makeGestureTimer = 100;
 	

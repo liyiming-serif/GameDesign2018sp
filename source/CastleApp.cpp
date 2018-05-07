@@ -97,7 +97,7 @@ void CastleApp::onStartup() {
     _assets->loadDirectoryAsync("json/assets.json",nullptr);
     _assets->loadAsync<JSONReader>("slevels", "json/levels.json", nullptr);
     _direction = -1;
-
+	CULog("looked at: %s", getAssetDirectory().c_str());
     Application::onStartup(); // YOU MUST END with call to parent
 
 }

@@ -174,6 +174,19 @@ void LookoutScene::setActive(bool active){
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
         _progressBar->setPosition(_progressBar->getPositionX(),
             std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));
+
+		std::shared_ptr<Texture> texture = _assets->get<Texture>("lookout_view");
+		std::shared_ptr<Texture> texture_s = _assets->get<Texture>("lookout_view_s");
+		std::shared_ptr<Texture> texture_d = _assets->get<Texture>("lookout_view_d");
+		if (gameModel.level<JUNGLE) {
+			_background->setTexture(texture);
+		}
+		else if (gameModel.level<SNOW) {
+			_background->setTexture(texture_s);
+		}
+		else {
+			_background->setTexture(texture_d);
+		}
     }
     
     else{

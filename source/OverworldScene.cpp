@@ -267,19 +267,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<Texture> oilFloor_texture  = _assets->get<Texture>("oil_floor");
         std::shared_ptr<Texture> oilFloor_texture_s  = _assets->get<Texture>("oil_floor_s");
         std::shared_ptr<Texture> oilFloor_texture_d  = _assets->get<Texture>("oil_floor_d");
-        std::shared_ptr<PolygonNode> oil_floor;
         if (gameModel.level<JUNGLE) {
-            oil_floor = PolygonNode::allocWithTexture(oilFloor_texture);
+            _oil_floor = PolygonNode::allocWithTexture(oilFloor_texture);
         }
         else if (gameModel.level<SNOW) {
-            oil_floor = PolygonNode::allocWithTexture(oilFloor_texture_s);
+            _oil_floor = PolygonNode::allocWithTexture(oilFloor_texture_s);
         }
         else {
-            oil_floor = PolygonNode::allocWithTexture(oilFloor_texture_d);
+            _oil_floor = PolygonNode::allocWithTexture(oilFloor_texture_d);
         }
-        oil_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-        oil_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        oil_floor->setPosition(_size.width/2.14,-2*_size.height);
+        _oil_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
+        _oil_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+        _oil_floor->setPosition(_size.width/2.14,-2*_size.height);
     
     
         // Create the Oil Buttons
@@ -366,12 +365,12 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Positions the Oil Buttons
             //Oil Floor Center
-            centerX = oil_floor->getContentSize().width/2;
-            centerY = oil_floor->getContentSize().height/2;
+            centerX = _oil_floor->getContentSize().width/2;
+            centerY = _oil_floor->getContentSize().height/2;
     
             _oilNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorth->setPosition(centerX,centerY+.27*oil_floor->getContentHeight());
+            _oilNorth->setPosition(centerX,centerY+.27*_oil_floor->getContentHeight());
     
             _oilNorthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
             _oilNorthLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
@@ -379,7 +378,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthEast->setPosition(centerX+.24*_oil_floor->getContentWidth(),centerY+.13*_oil_floor->getContentHeight());
             _oilNorthEast->setAngle(-M_PI/3);
     
             _oilNorthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
@@ -388,7 +387,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouthEast->setPosition(centerX+.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthEast->setPosition(centerX+.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
             _oilSouthEast->setAngle(-2*M_PI/3);
     
             _oilSouthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
@@ -397,7 +396,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouth->setPosition(centerX,centerY-.27*oil_floor->getContentHeight());
+            _oilSouth->setPosition(centerX,centerY-.27*_oil_floor->getContentHeight());
             _oilSouth->setAngle(-3*M_PI/3);
     
             _oilSouthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
@@ -406,7 +405,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY-.13*oil_floor->getContentHeight());
+            _oilSouthWest->setPosition(centerX-.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
             _oilSouthWest->setAngle(-4*M_PI/3);
     
             _oilSouthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
@@ -415,7 +414,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
             _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorthWest->setPosition(centerX-.24*oil_floor->getContentWidth(),centerY+.13*oil_floor->getContentHeight());
+            _oilNorthWest->setPosition(centerX-.24*_oil_floor->getContentWidth(),centerY+.13*_oil_floor->getContentHeight());
             _oilNorthWest->setAngle(M_PI/3);
     
             _oilNorthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
@@ -423,21 +422,21 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _oilNorthWestLOCKED->setPosition(_oilNorthWest->getContentWidth()/2,_oilNorthWest->getContentHeight()/2);
     
         //Adds the buttons to the Scene Graph
-        oil_floor->addChild(_oilNorth);
+        _oil_floor->addChild(_oilNorth);
         _oilNorth->addChild(_oilNorthLOCKED);
-        oil_floor->addChild(_oilNorthEast);
+        _oil_floor->addChild(_oilNorthEast);
         _oilNorthEast->addChild(_oilNorthEastLOCKED);
-        oil_floor->addChild(_oilSouthEast);
+        _oil_floor->addChild(_oilSouthEast);
         _oilSouthEast->addChild(_oilSouthEastLOCKED);
-        oil_floor->addChild(_oilSouth);
+        _oil_floor->addChild(_oilSouth);
         _oilSouth->addChild(_oilSouthLOCKED);
-        oil_floor->addChild(_oilSouthWest);
+        _oil_floor->addChild(_oilSouthWest);
         _oilSouthWest->addChild(_oilSouthWestLOCKED);
-        oil_floor->addChild(_oilNorthWest);
+        _oil_floor->addChild(_oilNorthWest);
         _oilNorthWest->addChild(_oilNorthWestLOCKED);
     
     //Adds the Oil Floor to the castle
-    _levels->addChild(oil_floor);
+    _levels->addChild(_oil_floor);
     
     
     
@@ -446,19 +445,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         std::shared_ptr<Texture> ballistaFloor_texture  = _assets->get<Texture>("ballista_floor");
         std::shared_ptr<Texture> ballistaFloor_texture_s  = _assets->get<Texture>("ballista_floor_s");
         std::shared_ptr<Texture> ballistaFloor_texture_d  = _assets->get<Texture>("ballista_floor_d");
-        std::shared_ptr<PolygonNode> ballista_floor;
         if (gameModel.level<JUNGLE) {
-           ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture);
+			_ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture);
         }
         else if (gameModel.level<SNOW) {
-            ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture_s);
+            _ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture_s);
         }
         else {
-            ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture_d);
+            _ballista_floor = PolygonNode::allocWithTexture(ballistaFloor_texture_d);
         }
-        ballista_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-        ballista_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        ballista_floor->setPosition(_size.width/2.14,-_size.height);
+        _ballista_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
+        _ballista_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+        _ballista_floor->setPosition(_size.width/2.14,-_size.height);
     
         //Creates Ballista buttons
             image_up   = _assets->get<Texture>("ballista_icon");
@@ -538,48 +536,48 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Positions the Ballista buttons
             //Ballista Floor Center
-            centerX = ballista_floor->getContentSize().width/2;
-            centerY = ballista_floor->getContentSize().height/2;
+            centerX = _ballista_floor->getContentSize().width/2;
+            centerY = _ballista_floor->getContentSize().height/2;
     
             _ballistaNorth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaNorth->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaNorth->setPosition(centerX,centerY+.27*ballista_floor->getContentHeight());
+            _ballistaNorth->setPosition(centerX,centerY+.27*_ballista_floor->getContentHeight());
     
             _ballistaNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaNorthEast->setPosition(centerX+.24*ballista_floor->getContentWidth(),centerY+.13*ballista_floor->getContentHeight());
+            _ballistaNorthEast->setPosition(centerX+.24*_ballista_floor->getContentWidth(),centerY+.13*_ballista_floor->getContentHeight());
             _ballistaNorthEast->setAngle(-M_PI/3);
     
             _ballistaSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaSouthEast->setPosition(centerX+.24*ballista_floor->getContentWidth(),centerY-.13*ballista_floor->getContentHeight());
+            _ballistaSouthEast->setPosition(centerX+.24*_ballista_floor->getContentWidth(),centerY-.13*_ballista_floor->getContentHeight());
             _ballistaSouthEast->setAngle(-2*M_PI/3);
     
             _ballistaSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaSouth->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaSouth->setPosition(centerX,centerY-.27*ballista_floor->getContentHeight());
+            _ballistaSouth->setPosition(centerX,centerY-.27*_ballista_floor->getContentHeight());
             _ballistaSouth->setAngle(-3*M_PI/3);
     
             _ballistaSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaSouthWest->setPosition(centerX-.24*ballista_floor->getContentWidth(),centerY-.13*ballista_floor->getContentHeight());
+            _ballistaSouthWest->setPosition(centerX-.24*_ballista_floor->getContentWidth(),centerY-.13*_ballista_floor->getContentHeight());
             _ballistaSouthWest->setAngle(-4*M_PI/3);
     
             _ballistaNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _ballistaNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
-            _ballistaNorthWest->setPosition(centerX-.24*ballista_floor->getContentWidth(),centerY+.13*ballista_floor->getContentHeight());
+            _ballistaNorthWest->setPosition(centerX-.24*_ballista_floor->getContentWidth(),centerY+.13*_ballista_floor->getContentHeight());
             _ballistaNorthWest->setAngle(M_PI/3);
     
         //Adds the buttons to the Scene Graph
-            ballista_floor->addChild(_ballistaNorth);
-            ballista_floor->addChild(_ballistaNorthEast);
-            ballista_floor->addChild(_ballistaSouthEast);
-            ballista_floor->addChild(_ballistaSouth);
-            ballista_floor->addChild(_ballistaSouthWest);
-            ballista_floor->addChild(_ballistaNorthWest);
+            _ballista_floor->addChild(_ballistaNorth);
+            _ballista_floor->addChild(_ballistaNorthEast);
+            _ballista_floor->addChild(_ballistaSouthEast);
+            _ballista_floor->addChild(_ballistaSouth);
+            _ballista_floor->addChild(_ballistaSouthWest);
+            _ballista_floor->addChild(_ballistaNorthWest);
     
     //Adds the Ballista Floor to the castle
-    _levels->addChild(ballista_floor);
+    _levels->addChild(_ballista_floor);
     
     
     
@@ -589,19 +587,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     std::shared_ptr<Texture> lookoutFloor_texture  = _assets->get<Texture>("lookout_floor");
     std::shared_ptr<Texture> lookoutFloor_texture_s  = _assets->get<Texture>("lookout_floor_s");
     std::shared_ptr<Texture> lookoutFloor_texture_d  = _assets->get<Texture>("lookout_floor_d");
-    std::shared_ptr<PolygonNode> lookout_floor;
     if (gameModel.level<JUNGLE) {
-        lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture);
+        _lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture);
     }
     else if (gameModel.level<SNOW) {
-        lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture_s);
+        _lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture_s);
     }
     else {
-        lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture_d);
+        _lookout_floor = PolygonNode::allocWithTexture(lookoutFloor_texture_d);
     }
-    lookout_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-    lookout_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-    lookout_floor->setPosition(_size.width/2.14,0);
+    _lookout_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
+    _lookout_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+    _lookout_floor->setPosition(_size.width/2.14,0);
     
     
     // Create the Lookout button
@@ -622,18 +619,18 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
     //Lookout Floor Center
-    centerX = lookout_floor->getContentSize().width/2;
-    centerY = lookout_floor->getContentSize().height/2;
+    centerX = _lookout_floor->getContentSize().width/2;
+    centerY = _lookout_floor->getContentSize().height/2;
     
     // Position the LOOKOUT button in the center
     _lookout_button->setAnchor(Vec2::ANCHOR_CENTER);
     _lookout_button->setPosition(centerX,centerY);
     
     //Adds the button to the Scene Graph
-    lookout_floor->addChild(_lookout_button);
+    _lookout_floor->addChild(_lookout_button);
     
     //Adds the Lookout Floor to the castle
-    _levels->addChild(lookout_floor);
+    _levels->addChild(_lookout_floor);
     
     
     
@@ -716,14 +713,73 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void OverworldScene::dispose() {
     if (_active) {
         removeAllChildren();
+		_active = false;
         _assets = nullptr;
-        _background = nullptr;
-        _active = false;
+		_actions = nullptr;
         _moveup = nullptr;
         _movedn = nullptr;
         _actions = nullptr;
         _castleFadeIN = nullptr;
         _castleFadeOUT = nullptr;
+		_castleFadeINSTANT = nullptr;
+		_background = nullptr;
+		_levels = nullptr;
+		_oil_floor = nullptr;
+		_ballista_floor = nullptr;
+		_lookout_floor = nullptr;
+		_cloud1 = nullptr;
+		_cloud2 = nullptr;
+		_cloud3 = nullptr;
+		_move1 = nullptr;
+		_move2 = nullptr;
+		_move3 = nullptr;
+
+		_castle_background = nullptr;
+		_castle_flag = nullptr;
+		_castle_black = nullptr;
+		_castle_ballista = nullptr;
+		_castle_oil = nullptr;
+		_castle_lookout = nullptr;
+		_castle_basement = nullptr;
+
+		_menuButton = nullptr;
+
+		_ballistaNorth = nullptr;
+		_ballistaNorthEast = nullptr;
+		_ballistaEast = nullptr;
+		_ballistaSouthEast = nullptr;
+		_ballistaSouth = nullptr;
+		_ballistaSouthWest = nullptr;
+		_ballistaWest = nullptr;
+		_ballistaNorthWest = nullptr;
+
+		_oilNorth = nullptr;
+		_oilNorthEast = nullptr;
+		_oilEast = nullptr;
+		_oilSouthEast = nullptr;
+		_oilSouth = nullptr;
+		_oilSouthWest = nullptr;
+		_oilWest = nullptr;
+		_oilNorthWest = nullptr;
+
+		_oilNorthLOCKED = nullptr;
+		_oilNorthEastLOCKED = nullptr;
+		_oilEastLOCKED = nullptr;
+		_oilSouthEastLOCKED = nullptr;
+		_oilSouthLOCKED = nullptr;
+		_oilSouthWestLOCKED = nullptr;
+		_oilWestLOCKED = nullptr;
+		_oilNorthWestLOCKED = nullptr;
+
+		_lookout_button = nullptr;
+
+		_repair_button = nullptr;
+		_mage_button = nullptr;
+		_ammo_button = nullptr;
+
+		_repair_buttonLOCKED = nullptr;
+		_mage_buttonLOCKED = nullptr;
+		_ammo_buttonLOCKED = nullptr;
     }
 }
 
@@ -891,8 +947,8 @@ void OverworldScene::update(float timestep){
             switchscene = WIN;
         }
     }
+
 	//poll inputs
-    
     if (!click) {
         _lookout_button->setDown(false);
         
@@ -970,6 +1026,32 @@ void OverworldScene::setActive(bool active) {
     if(active){
         enableButtons();
         Application::get()->setClearColor(Color4(255,255,255,255));
+
+		//Change scenery based on level
+		std::shared_ptr<Texture> oilFloor_texture = _assets->get<Texture>("oil_floor");
+		std::shared_ptr<Texture> oilFloor_texture_s = _assets->get<Texture>("oil_floor_s");
+		std::shared_ptr<Texture> oilFloor_texture_d = _assets->get<Texture>("oil_floor_d");
+		std::shared_ptr<Texture> ballistaFloor_texture = _assets->get<Texture>("ballista_floor");
+		std::shared_ptr<Texture> ballistaFloor_texture_s = _assets->get<Texture>("ballista_floor_s");
+		std::shared_ptr<Texture> ballistaFloor_texture_d = _assets->get<Texture>("ballista_floor_d");
+		std::shared_ptr<Texture> lookoutFloor_texture = _assets->get<Texture>("lookout_floor");
+		std::shared_ptr<Texture> lookoutFloor_texture_s = _assets->get<Texture>("lookout_floor_s");
+		std::shared_ptr<Texture> lookoutFloor_texture_d = _assets->get<Texture>("lookout_floor_d");
+		if (gameModel.level<JUNGLE) {
+			_oil_floor->setTexture(oilFloor_texture);
+			_ballista_floor->setTexture(oilFloor_texture);
+			_lookout_floor->setTexture(oilFloor_texture);
+		}
+		else if (gameModel.level<SNOW) {
+			_oil_floor->setTexture(oilFloor_texture_s);
+			_ballista_floor->setTexture(ballistaFloor_texture_s);
+			_lookout_floor->setTexture(lookoutFloor_texture_s);
+		}
+		else {
+			_oil_floor->setTexture(oilFloor_texture_d);
+			_ballista_floor->setTexture(ballistaFloor_texture_d);
+			_lookout_floor->setTexture(lookoutFloor_texture_d);
+		}
     }
     else{
         disableButtons();

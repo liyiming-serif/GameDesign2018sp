@@ -34,6 +34,9 @@ protected:
     //background floorplan
     std::shared_ptr<cugl::Node>  _background;
     std::shared_ptr<cugl::Node>  _levels;
+	std::shared_ptr<cugl::PolygonNode> _oil_floor; //these floors are dynamic based on level
+	std::shared_ptr<cugl::PolygonNode> _ballista_floor;
+	std::shared_ptr<cugl::PolygonNode> _lookout_floor;
     
     //castle views
     std::shared_ptr<cugl::PolygonNode> _castle_background;

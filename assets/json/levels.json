@@ -135,7 +135,7 @@
 				"ballista" : true,
 				"ammo" : false,
 				"repair" : false,
-				"oil" : false,
+				"oil" : true,
 				"mage" : true
 			},
 			"ammo" : 100
@@ -303,7 +303,7 @@
 				"ballista" : true,
 				"ammo" : false,
 				"repair" : false,
-				"oil" : false,
+				"oil" : true,
 				"mage" : false
 			},
 			"ammo" : 99
@@ -597,7 +597,7 @@
 				"ballista" : true,
 				"ammo" : true,
 				"repair" : false,
-				"oil" : false,
+				"oil" : true,
 				"mage" : false
 			},
 			"ammo" : 20

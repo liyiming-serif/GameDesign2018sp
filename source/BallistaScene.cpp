@@ -538,6 +538,19 @@ void BallistaScene::setActive(bool active, int direction){
         _ballistaTOcastle->activate(input.findKey("ballistaTOcastle"));
         BallistaScene::setCompass(direction);
         BallistaScene::setWall(direction);
+
+		std::shared_ptr<Texture> texture = _assets->get<Texture>("weaponBG_jungle");
+		std::shared_ptr<Texture> texture_s = _assets->get<Texture>("weaponBG_snow");
+		std::shared_ptr<Texture> texture_d = _assets->get<Texture>("weaponBG_desert");
+		if (gameModel.level<JUNGLE) {
+			_background->setTexture(texture);
+		}
+		else if (gameModel.level<SNOW) {
+			_background->setTexture(texture_s);
+		}
+		else {
+			_background->setTexture(texture_d);
+		}
     }
     else{
         _ballistaTOcastle->deactivate();

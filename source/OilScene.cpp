@@ -459,7 +459,19 @@ void OilScene::setActive(bool active, int direction){
          OilScene::setCompass(direction);
          OilScene::setWall(direction);
         
-        
+        //Change scenery based on level
+		std::shared_ptr<Texture> texture = _assets->get<Texture>("weaponBG_jungle");
+		std::shared_ptr<Texture> texture_s = _assets->get<Texture>("weaponBG_snow");
+		std::shared_ptr<Texture> texture_d = _assets->get<Texture>("weaponBG_desert");
+		if (gameModel.level<JUNGLE) {
+			_background->setTexture(texture);
+		}
+		else if (gameModel.level<SNOW) {
+			_background->setTexture(texture_s);
+		}
+		else {
+			_background->setTexture(texture_d);
+		}
     }
     else{
 		_deluge->setVisible(false);
