@@ -307,6 +307,9 @@ void CastleApp::swapscenes(int nextscene, int direction){
     if (_currscene == LOBBY && nextscene == MENU) {
         gameModel.setNetworked(false);
     }
+	if (_currscene == MENU && nextscene == LEVELS) {
+		_players = 1;
+	}
 	if(_currscene == OVERWORLD && nextscene == MENU){
         _currscene = MENU;
         _overworldScene.setActive(false);
