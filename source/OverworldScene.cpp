@@ -37,7 +37,7 @@ using namespace cugl;
 #define GAME_WIDTH 1024
 
 /** Define the time settings for animation */
-#define DURATION .7f
+#define DURATION .5f
 #define DURATION2 20.0f
 #define DISTANCE 200
 #define REPEATS  3
@@ -49,7 +49,7 @@ using namespace cugl;
 
 bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
-    Size _size = Application::get()->getDisplaySize();
+    _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
     
     
@@ -75,6 +75,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _moveup = MoveBy::alloc(Vec2(0,-_size.height),DURATION);
     _movedn = MoveBy::alloc(Vec2(0,_size.height),DURATION);
     _castleFadeIN = FadeIn::alloc(DURATION);
+    _castleFadeINSTANT = FadeIn::alloc(0.0f);
     _castleFadeOUT = FadeOut::alloc(DURATION);
 
     
@@ -171,10 +172,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Basement Floor
         std::shared_ptr<Texture> basementFloor_texture  = _assets->get<Texture>("basement_floor");
-        std::shared_ptr<PolygonNode> basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
-        basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
-        basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
-        basement_floor->setPosition(_size.width/2.14,-3*_size.height);
+        _basement_floor = PolygonNode::allocWithTexture(basementFloor_texture);
+        _basement_floor->setScale(FLOOR_SCALEx,FLOOR_SCALEy); // Magic number to rescale asset
+        _basement_floor->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
+        _basement_floor->setPosition(_size.width/2.14,-3*_size.height);
     
     
         // Create the Basement Buttons
@@ -223,11 +224,11 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         //Positions the Basement Buttons
         //Basement Floor Center
-        float centerX = basement_floor->getContentSize().width/2;
-        float centerY = basement_floor->getContentSize().height/2;
+        float centerX = _basement_floor->getContentSize().width/2;
+        float centerY = _basement_floor->getContentSize().height/2;
         _repair_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _repair_button->setAnchor(Vec2::ANCHOR_CENTER);
-        _repair_button->setPosition(centerX-.23*basement_floor->getContentWidth(),centerY);
+        _repair_button->setPosition(centerX-.23*_basement_floor->getContentWidth(),centerY);
     
         _repair_buttonLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
         _repair_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
@@ -235,7 +236,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         _ammo_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _ammo_button->setAnchor(Vec2::ANCHOR_CENTER);
-        _ammo_button->setPosition(centerX+.12*basement_floor->getContentWidth(),centerY+.19*basement_floor->getContentHeight());
+        _ammo_button->setPosition(centerX+.12*_basement_floor->getContentWidth(),centerY+.19*_basement_floor->getContentHeight());
     
         _ammo_buttonLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
         _ammo_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
@@ -243,7 +244,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
         _mage_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _mage_button->setAnchor(Vec2::ANCHOR_CENTER);
-        _mage_button->setPosition(centerX+.12*basement_floor->getContentWidth(),centerY-.19*basement_floor->getContentHeight());
+        _mage_button->setPosition(centerX+.12*_basement_floor->getContentWidth(),centerY-.19*_basement_floor->getContentHeight());
 
         _mage_buttonLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
         _mage_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
@@ -252,16 +253,16 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     
         //Adds the button to the Scene Graph
-        basement_floor->addChild(_repair_button);
+        _basement_floor->addChild(_repair_button);
         _repair_button->addChild(_repair_buttonLOCKED);
-        basement_floor->addChild(_ammo_button);
+        _basement_floor->addChild(_ammo_button);
         _ammo_button->addChild(_ammo_buttonLOCKED);
-        basement_floor->addChild(_mage_button);
+        _basement_floor->addChild(_mage_button);
         _mage_button->addChild(_mage_buttonLOCKED);
     
     
         //Adds the Basement Floor to the castle
-        _levels->addChild(basement_floor);
+        _levels->addChild(_basement_floor);
     
     // Oil Floor
         std::shared_ptr<Texture> oilFloor_texture  = _assets->get<Texture>("oil_floor");
@@ -785,9 +786,14 @@ void OverworldScene::dispose() {
 
 void OverworldScene::resetCastle(){
     _levels->setPosition(castleOrigin);
-    OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
-    currentCastleFloor = 4;
-    OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor);
+    _castle_basement->setVisible(false);
+    _castle_ballista->setVisible(false);
+    _castle_oil->setVisible(false);
+    _castle_lookout->setVisible(true);
+    CULog("test");
+    //OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
+    currentCastleFloor = 3;
+    OverworldScene::doFadeIn(_castleFadeINSTANT, currentCastleFloor);
 }
 
 
@@ -815,6 +821,9 @@ std::shared_ptr<cugl::PolygonNode> OverworldScene::getTowerView(int floor) {
 void OverworldScene::doFadeIn(const std::shared_ptr<FadeIn>& action, int floor) {
     std::shared_ptr<cugl::PolygonNode> _curr_castle_floor;
     _curr_castle_floor = OverworldScene::getTowerView(floor);
+    if (!_curr_castle_floor->isVisible()) {
+        _curr_castle_floor->setVisible(true);
+    }
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);
     _actions->activate(ACT_KEY+1, action, _curr_castle_floor, fcn);
 }
@@ -897,18 +906,29 @@ void OverworldScene::enableButtons() {
         _repair_button->activate(input.findKey("repair_button"));
         _repair_buttonLOCKED->setVisible(false);
     }
+    else {
+        _repair_button->deactivate();
+        _repair_buttonLOCKED->setVisible(true);
+    }
 
     
     if (gameModel._unlockedRooms["mage"] == true) {
         _mage_button->activate(input.findKey("mage_button"));
         _mage_buttonLOCKED->setVisible(false);
     }
+    else {
+        _mage_button->deactivate();
+        _mage_buttonLOCKED->setVisible(true);
+    }
 
     if (gameModel._unlockedRooms["ammo"] == true) {
         _ammo_button->activate(input.findKey("ammo_button"));
         _ammo_buttonLOCKED->setVisible(false);
     }
-    
+    else {
+        _ammo_button->deactivate();
+        _ammo_buttonLOCKED->setVisible(true);
+    }
   
     if (gameModel._gamePlayers > 1) {
         if (gameModel._unlockedRooms["oil"] == true) {
@@ -1052,6 +1072,10 @@ void OverworldScene::setActive(bool active) {
 			_ballista_floor->setTexture(ballistaFloor_texture_d);
 			_lookout_floor->setTexture(lookoutFloor_texture_d);
 		}
+       // resetCastle();
+        CULog("setACtive");
+
+        
     }
     else{
         disableButtons();
