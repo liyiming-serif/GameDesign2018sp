@@ -26,7 +26,7 @@
         <entry file="file://$PROJECT_DIR$/CastleApp.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="535">
-              <caret line="467" column="16" lean-forward="true" selection-start-line="467" selection-start-column="16" selection-end-line="467" selection-end-column="16" />
+              <caret line="470" column="16" lean-forward="true" selection-start-line="470" selection-start-column="16" selection-end-line="470" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -55,8 +55,8 @@
       <file leaf-file-name="OverworldScene.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/OverworldScene.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="912" column="23" lean-forward="false" selection-start-line="912" selection-start-column="23" selection-end-line="912" selection-end-column="23" />
+            <state relative-caret-position="1325">
+              <caret line="932" column="23" lean-forward="false" selection-start-line="932" selection-start-column="23" selection-end-line="932" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -95,8 +95,8 @@
       <file leaf-file-name="EnemyDataModel.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EnemyDataModel.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="63" column="33" lean-forward="true" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
+            <state relative-caret-position="920">
+              <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -315,7 +315,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526165927842" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526168759040" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -362,7 +362,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
       </Profilers>
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526165927842" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526168759041" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -863,8 +863,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/OverworldScene.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="912" column="23" lean-forward="false" selection-start-line="912" selection-start-column="23" selection-end-line="912" selection-end-column="23" />
+        <state relative-caret-position="1325">
+          <caret line="932" column="23" lean-forward="false" selection-start-line="932" selection-start-column="23" selection-end-line="932" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -888,7 +888,7 @@
     <entry file="file://$PROJECT_DIR$/CastleApp.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="535">
-          <caret line="467" column="16" lean-forward="true" selection-start-line="467" selection-start-column="16" selection-end-line="467" selection-end-column="16" />
+          <caret line="470" column="16" lean-forward="true" selection-start-line="470" selection-start-column="16" selection-end-line="470" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -919,8 +919,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EnemyDataModel.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="63" column="33" lean-forward="true" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
+        <state relative-caret-position="920">
+          <caret line="62" column="0" lean-forward="true" selection-start-line="62" selection-start-column="0" selection-end-line="62" selection-end-column="0" />
           <folding />
         </state>
       </provider>
