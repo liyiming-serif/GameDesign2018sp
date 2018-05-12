@@ -306,7 +306,7 @@
 				"oil" : true,
 				"mage" : false
 			},
-			"ammo" : 99
+			"ammo" : 100
 		},
 		"level3" : {
 			"enemies" : {

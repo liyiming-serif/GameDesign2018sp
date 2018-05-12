@@ -116,6 +116,8 @@ public:
 
     void addEnemyChange(std::string name, int damage, int wall);
 
+    void setAmmo(int type, int amt);
+
     void addDeltaAmmo(int type, int amt);
 
     bool isNetworked();
