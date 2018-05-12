@@ -54,78 +54,78 @@
 				},
 				"spawn8" : {
 					"name" : "skeleton",
-					"spawn_time" : 3700,
+					"spawn_time" : 3400,
 					"xCoord" : 200,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn9" : {
 					"name" : "skeleton",
-					"spawn_time" : 3700,
+					"spawn_time" : 3400,
 					"xCoord" : 700,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn10" : {
 					"name" : "skeleton",
-					"spawn_time" : 3700,
+					"spawn_time" : 3400,
 					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn11" : {
 					"name" : "skeleton",
-					"spawn_time" : 4700,
+					"spawn_time" : 4200,
 					"xCoord" : 800,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn12" : {
 					"name" : "skeleton",
-					"spawn_time" : 4700,
+					"spawn_time" : 4200,
 					"xCoord" : 200,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn13" : {
 					"name" : "skeleton",
-					"spawn_time" : 5700,
+					"spawn_time" : 5000,
 					"xCoord" : 550,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn14" : {
 					"name" : "skeleton",
-					"spawn_time" : 5700,
+					"spawn_time" : 5000,
 					"xCoord" : 800,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn15" : {
 					"name" : "skeleton",
-					"spawn_time" : 6900,
-					"xCoord" : 200,
+					"spawn_time" : 5800,
+					"xCoord" : 100,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn16" : {
 					"name" : "skeleton",
-					"spawn_time" : 6900,
-					"xCoord" : 400,
+					"spawn_time" : 5800,
+					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn17" : {
 					"name" : "skeleton",
-					"spawn_time" : 6900,
-					"xCoord" : 600,
+					"spawn_time" : 5800,
+					"xCoord" : 650,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn18" : {
 					"name" : "skeleton",
-					"spawn_time" : 6900,
-					"xCoord" : 800,
+					"spawn_time" : 5800,
+					"xCoord" : 900,
 					"yCoord" : 700,
 					"sector" : 0
 				}
@@ -167,7 +167,7 @@
 				"spawn4" : {
 					"name" : "archer",
 					"spawn_time" : 900,
-					"xCoord" : 200,
+					"xCoord" : 50,
 					"yCoord" : 700,
 					"sector" : 0
 				},
@@ -216,14 +216,14 @@
 				"spawn11" : {
 					"name" : "skeleton",
 					"spawn_time" : 2700,
-					"xCoord" : 100,
+					"xCoord" : 0,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn12" : {
 					"name" : "skeleton",
 					"spawn_time" : 2700,
-					"xCoord" : 300,
+					"xCoord" : 250,
 					"yCoord" : 700,
 					"sector" : 0
 				},
@@ -237,28 +237,28 @@
 				"spawn14" : {
 					"name" : "skeleton",
 					"spawn_time" : 2700,
-					"xCoord" : 700,
+					"xCoord" : 750,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn15" : {
 					"name" : "skeleton",
 					"spawn_time" : 2700,
-					"xCoord" : 900,
+					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn16" : {
 					"name" : "archer",
 					"spawn_time" : 3900,
-					"xCoord" : 100,
+					"xCoord" : 0,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn17" : {
 					"name" : "archer",
 					"spawn_time" : 3900,
-					"xCoord" : 300,
+					"xCoord" : 250,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -272,14 +272,14 @@
 				"spawn19" : {
 					"name" : "archer",
 					"spawn_time" : 3900,
-					"xCoord" : 700,
+					"xCoord" : 750,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn20" : {
 					"name" : "archer",
 					"spawn_time" : 3900,
-					"xCoord" : 900,
+					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -335,7 +335,7 @@
 				"spawn4" : {
 					"name" : "archer",
 					"spawn_time" : 600,
-					"xCoord" : 100,
+					"xCoord" : 50,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -356,7 +356,7 @@
 				"spawn7" : {
 					"name" : "archer",
 					"spawn_time" : 600,
-					"xCoord" : 900,
+					"xCoord" : 950,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -370,7 +370,7 @@
 				"spawn9" : {
 					"name" : "skeleton",
 					"spawn_time" : 1300,
-					"xCoord" : 400,
+					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 0
 				},
@@ -391,28 +391,28 @@
 				"spawn12" : {
 					"name" : "archer",
 					"spawn_time" : 1800,
-					"xCoord" : 100,
+					"xCoord" : 0,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn13" : {
 					"name" : "archer",
 					"spawn_time" : 1800,
-					"xCoord" : 200,
+					"xCoord" : 250,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn14" : {
 					"name" : "archer",
 					"spawn_time" : 1800,
-					"xCoord" : 800,
+					"xCoord" : 750,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn15" : {
 					"name" : "archer",
 					"spawn_time" : 1800,
-					"xCoord" : 900,
+					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -461,7 +461,7 @@
 				"spawn22" : {
 					"name" : "archer",
 					"spawn_time" : 4000,
-					"xCoord" : 100,
+					"xCoord" : 50,
 					"yCoord" : 700,
 					"sector" : 0
 				},
@@ -475,7 +475,7 @@
 				"spawn24" : {
 					"name" : "archer",
 					"spawn_time" : 4300,
-					"xCoord" : 900,
+					"xCoord" : 950,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -489,7 +489,7 @@
 				"spawn26" : {
 					"name" : "archer",
 					"spawn_time" : 4600,
-					"xCoord" : 400,
+					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 4
 				},
@@ -530,64 +530,64 @@
 				},
 				"spawn32" : {
 					"name" : "skeleton",
-					"spawn_time" : 5500,
+					"spawn_time" : 5900,
 					"xCoord" : 500,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn33" : {
 					"name" : "skeleton",
-					"spawn_time" : 5600,
+					"spawn_time" : 6000,
 					"xCoord" : 600,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn34" : {
 					"name" : "skeleton",
-					"spawn_time" : 5700,
+					"spawn_time" : 6100,
 					"xCoord" : 700,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn35" : {
 					"name" : "skeleton",
-					"spawn_time" : 5800,
+					"spawn_time" : 6200,
 					"xCoord" : 800,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn36" : {
 					"name" : "skeleton",
-					"spawn_time" : 5900,
+					"spawn_time" : 6300,
 					"xCoord" : 900,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn37" : {
 					"name" : "archer",
-					"spawn_time" : 6500,
-					"xCoord" : 350,
+					"spawn_time" : 6600,
+					"xCoord" : 100,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn38" : {
 					"name" : "archer",
-					"spawn_time" : 6500,
-					"xCoord" : 450,
+					"spawn_time" : 6600,
+					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn39" : {
 					"name" : "archer",
-					"spawn_time" : 6500,
-					"xCoord" : 550,
+					"spawn_time" : 6600,
+					"xCoord" : 600,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn40" : {
 					"name" : "archer",
-					"spawn_time" : 6500,
-					"xCoord" : 650,
+					"spawn_time" : 6600,
+					"xCoord" : 850,
 					"yCoord" : 700,
 					"sector" : 0
 				}
@@ -608,14 +608,14 @@
 				"spawn1" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 100,
+					"xCoord" : 0,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn2" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 300,
+					"xCoord" : 250,
 					"yCoord" : 700,
 					"sector" : 2
 				},
@@ -629,28 +629,28 @@
 				"spawn4" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 700,
+					"xCoord" : 750,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn5" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 900,
+					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn6" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 100,
+					"xCoord" : 0,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn7" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 300,
+					"xCoord" : 250,
 					"yCoord" : 700,
 					"sector" : 4
 				},
@@ -664,14 +664,14 @@
 				"spawn9" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 700,
+					"xCoord" : 750,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn10" : {
 					"name" : "archer",
 					"spawn_time" : 300,
-					"xCoord" : 900,
+					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 4
 				},
@@ -776,7 +776,7 @@
 				"spawn25" : {
 					"name" : "skeleton",
 					"spawn_time" : 5000,
-					"xCoord" : 400,
+					"xCoord" : 450,
 					"yCoord" : 700,
 					"sector" : 0 
 				},
@@ -804,14 +804,14 @@
 				"spawn29" : {
 					"name" : "skeleton",
 					"spawn_time" : 5000,
-					"xCoord" : 400,
+					"xCoord" : 350,
 					"yCoord" : 700,
 					"sector" : 4
 				},
 				"spawn30" : {
 					"name" : "skeleton",
 					"spawn_time" : 5000,
-					"xCoord" : 700,
+					"xCoord" : 850,
 					"yCoord" : 700,
 					"sector" : 4
 				},
@@ -846,7 +846,7 @@
 				"spawn35" : {
 					"name" : "archer",
 					"spawn_time" : 6200,
-					"xCoord" : 400,
+					"xCoord" : 450,
 					"yCoord" : 700,
 					"sector" : 4
 				},
@@ -1698,21 +1698,21 @@
 			"enemies" : {
 				"numSpawn" : 4,
 				"spawn1" : {
-					"name" : "berserker",
+					"name" : "warrior",
 					"spawn_time" : 100,
-					"xCoord" : 500,
+					"xCoord" : 600,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn2" : {
-					"name" : "berserker",
-					"spawn_time" : 400,
-					"xCoord" : 200,
+					"name" : "warrior",
+					"spawn_time" : 100,
+					"xCoord" : 300,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn3" : {
-					"name" : "reaper",
+					"name" : "warrior",
 					"spawn_time" : 700,
 					"xCoord" : 200,
 					"yCoord" : 700,
@@ -1724,6 +1724,153 @@
 					"xCoord" : 700,
 					"yCoord" : 700,
 					"sector" : 4
+				},
+				"spawn5" : {
+					"name" : "berserker",
+					"spawn_time" : 1500,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn6" : {
+					"name" : "berserker",
+					"spawn_time" : 1600,
+					"xCoord" : 900,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn7" : {
+					"name" : "berserker",
+					"spawn_time" : 1700,
+					"xCoord" : 300,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn8" : {
+					"name" : "warrior",
+					"spawn_time" : 2800,
+					"xCoord" : 400,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn9" : {
+					"name" : "warrior",
+					"spawn_time" : 2900,
+					"xCoord" : 700,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn10" : {
+					"name" : "warrior",
+					"spawn_time" : 3000,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn11" : {
+					"name" : "warrior",
+					"spawn_time" : 3100,
+					"xCoord" : 350,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn12" : {
+					"name" : "berserker",
+					"spawn_time" : 4500,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn13" : {
+					"name" : "berserker",
+					"spawn_time" : 4550,
+					"xCoord" : 200,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn14" : {
+					"name" : "warrior",
+					"spawn_time" : 4600,
+					"xCoord" : 900,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn15" : {
+					"name" : "berserker",
+					"spawn_time" : 4600,
+					"xCoord" : 800,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn16" : {
+					"name" : "berserker",
+					"spawn_time" : 4600,
+					"xCoord" : 450,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn17" : {
+					"name" : "warrior",
+					"spawn_time" : 5000,
+					"xCoord" : 900,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn18" : {
+					"name" : "warrior",
+					"spawn_time" : 5500,
+					"xCoord" : 750,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn19" : {
+					"name" : "warrior",
+					"spawn_time" : 6000,
+					"xCoord" : 600,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn20" : {
+					"name" : "berserker",
+					"spawn_time" : 6000,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn21" : {
+					"name" : "berserker",
+					"spawn_time" : 6000,
+					"xCoord" : 300,
+					"yCoord" : 700,
+					"sector" : 2
+				},
+				"spawn22" : {
+					"name" : "warrior",
+					"spawn_time" : 6500,
+					"xCoord" : 350,
+					"yCoord" : 700,
+					"sector" : 0
+				},
+				"spawn23" : {
+					"name" : "berserker",
+					"spawn_time" : 6750,
+					"xCoord" : 600,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn24" : {
+					"name" : "berserker",
+					"spawn_time" : 6750,
+					"xCoord" : 900,
+					"yCoord" : 700,
+					"sector" : 4
+				},
+				"spawn25" : {
+					"name" : "warrior",
+					"spawn_time" : 7000,
+					"xCoord" : 100,
+					"yCoord" : 700,
+					"sector" : 0
 				}
 			},
 			"rooms_unlocked" : {
