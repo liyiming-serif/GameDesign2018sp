@@ -14,7 +14,7 @@ using namespace cugl;
 bool GameModel::init(){
     clock = 0;
     gameModel.networked = false;
-    gameModel._arrowAmmo[0] = 30;
+    gameModel._arrowAmmo[0] = 0;
     gameModel._arrowAmmo[1] = 0;
     gameModel._arrowAmmo[2] = 0;
     gameModel._deltaAmmo[0] = 0;
@@ -226,6 +226,10 @@ void GameModel::addDeltaHealth(int wall, int repair) {
 
 int GameModel::getDeltaHealth(int wall) {
     return gameModel._deltaCastleHealth[wall];
+}
+
+void GameModel::setAmmo(int type, int amt){
+    gameModel._arrowAmmo[type] = amt;
 }
 
 void GameModel::addDeltaAmmo(int type, int amt) {
