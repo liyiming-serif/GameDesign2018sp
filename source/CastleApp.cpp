@@ -163,38 +163,38 @@ void CastleApp::update(float timestep) {
             _loadingScene.dispose(); // Disables the input listeners in this mode
             _ballistaScene.init(_assets);
             _ballistaScene.setActive(false, 0);
-            //CULog("Ballista Scene Loaded");
+            CULog("Ballista Scene Loaded");
             _lookoutScene.init(_assets);
             _lookoutScene.setActive(false);
-            //CULog("Lookout Scene Loaded");
+            CULog("Lookout Scene Loaded");
             _repairScene.init(_assets);
             _repairScene.setActive(false);
-            //CULog("Repair Scene Loaded");
+            CULog("Repair Scene Loaded");
             _overworldScene.init(_assets);
             _overworldScene.setActive(false);
-            //CULog("Overworld Scene Loaded");
+            CULog("Overworld Scene Loaded");
             _mageScene.init(_assets);
             _mageScene.setActive(false);
-            //CULog("Mage Scene Loaded");
+            CULog("Mage Scene Loaded");
             _ammoScene.init(_assets);
             _ammoScene.setActive(false);
-            //CULog("Ammo Scene Loaded");
+            CULog("Ammo Scene Loaded");
             _oilScene.init(_assets);
             _oilScene.setActive(false, 0);
-            //CULog("Oil Scene Loaded");
+            CULog("Oil Scene Loaded");
             _lobbyScene.init(_assets);
             _lobbyScene.setActive(false);
-            //CULog("Lobby Scene Loaded");
+            CULog("Lobby Scene Loaded");
             _levelScene.init(_assets);
             _levelScene.setActive(false, 0);
-            //CULog("Level Scene Loaded");
+            CULog("Level Scene Loaded");
             _winScene.init(_assets);
             _winScene.setActive(false);
             _loseScene.init(_assets);
             _loseScene.setActive(false);
             _menuScene.init(_assets);
             _currscene=MENU;
-            //CULog("Menu Scene Loaded");
+            CULog("Menu Scene Loaded");
             _loaded=true;
         }
     } else {
