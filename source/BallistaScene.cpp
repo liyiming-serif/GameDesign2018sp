@@ -239,7 +239,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ammoText);
     _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _ammoText->setPosition(10, 30);
-    _ammoText->setForeground(cugl::Color4(0,0,0,255));
+    _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
 
     return true;

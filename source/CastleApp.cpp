@@ -163,38 +163,38 @@ void CastleApp::update(float timestep) {
             _loadingScene.dispose(); // Disables the input listeners in this mode
             _ballistaScene.init(_assets);
             _ballistaScene.setActive(false, 0);
-            //CULog("Ballista Scene Loaded");
+            CULog("Ballista Scene Loaded");
             _lookoutScene.init(_assets);
             _lookoutScene.setActive(false);
-            //CULog("Lookout Scene Loaded");
+            CULog("Lookout Scene Loaded");
             _repairScene.init(_assets);
             _repairScene.setActive(false);
-            //CULog("Repair Scene Loaded");
+            CULog("Repair Scene Loaded");
             _overworldScene.init(_assets);
             _overworldScene.setActive(false);
-            //CULog("Overworld Scene Loaded");
+            CULog("Overworld Scene Loaded");
             _mageScene.init(_assets);
             _mageScene.setActive(false);
-            //CULog("Mage Scene Loaded");
+            CULog("Mage Scene Loaded");
             _ammoScene.init(_assets);
             _ammoScene.setActive(false);
-            //CULog("Ammo Scene Loaded");
+            CULog("Ammo Scene Loaded");
             _oilScene.init(_assets);
             _oilScene.setActive(false, 0);
-            //CULog("Oil Scene Loaded");
+            CULog("Oil Scene Loaded");
             _lobbyScene.init(_assets);
             _lobbyScene.setActive(false);
-            //CULog("Lobby Scene Loaded");
+            CULog("Lobby Scene Loaded");
             _levelScene.init(_assets);
             _levelScene.setActive(false, 0);
-            //CULog("Level Scene Loaded");
+            CULog("Level Scene Loaded");
             _winScene.init(_assets);
             _winScene.setActive(false);
             _loseScene.init(_assets);
             _loseScene.setActive(false);
             _menuScene.init(_assets);
             _currscene=MENU;
-            //CULog("Menu Scene Loaded");
+            CULog("Menu Scene Loaded");
             _loaded=true;
         }
     } else {
@@ -308,7 +308,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         gameModel.setNetworked(false);
     }
 	if (_currscene == MENU && nextscene == LEVELS) {
-		_players = 1;
+		gameModel._gamePlayers = 1;
 	}
 	if(_currscene == OVERWORLD && nextscene == MENU){
         _currscene = MENU;
@@ -325,7 +325,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _loseScene.setActive(false);
         reset();
     }
-    if ((_currscene==LOSE && nextscene == OVERWORLD) || _currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag ) {
+    if ((_currscene==LOSE && nextscene == OVERWORLD) || (_currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag) ) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
         int level = _levelScene.level;
@@ -333,6 +333,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
         initializeRooms();
+        _overworldScene.resetCastle();
         gameModel.level=level;
     }
     if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
@@ -343,6 +344,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level + 1));
         initializeRooms();
+        _overworldScene.resetCastle();
         gameModel.level=level+1;
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
@@ -353,6 +355,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
         initializeRooms();
+        _overworldScene.resetCastle();
         gameModel.level=level;
     }
     switch(nextscene){
