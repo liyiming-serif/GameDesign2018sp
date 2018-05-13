@@ -104,7 +104,8 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move2;
     std::shared_ptr<cugl::MoveTo> _move3;
 
-
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
     
 
 
@@ -194,6 +195,8 @@ public:
      */
     void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
     
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
     
     /**
      * Disables all buttons

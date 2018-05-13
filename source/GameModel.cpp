@@ -24,6 +24,7 @@ bool GameModel::init(){
     for (int i = 0; i < 6; ++i) {
         gameModel._castleHealth[i] = 100;
         gameModel._deltaCastleHealth[i] = 0;
+		gameModel._dmgCastleHealth[i] = 0;
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
@@ -55,6 +56,11 @@ void GameModel::dispose() {
 }
 
 void GameModel::update(float deltaTime){
+	//clear dmg castle health changes from previous frame
+	for (int i = 0; i < gameModel._dmgCastleHealth.size(); i++) {
+		gameModel._dmgCastleHealth[i] = 0;
+	}
+
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -186,6 +192,11 @@ void GameModel::changeWallHealth(int wall, int amt) {
 	}
 	else {
 		this->_castleHealth[wall] += amt;
+	}
+
+	//set dmg wall health for indicators
+	if (amt < 0) {
+		_dmgCastleHealth[wall] += -amt;
 	}
 }
 
@@ -682,6 +693,11 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     char* wallHealthToken = strtok(castleHealthToken, " ");
     section = 0;
     while (wallHealthToken != NULL) {
+		//apply dmg indicators
+		if (std::stoi(wallHealthToken) < gameModel.castleHealth[section]) {
+			gameModel._dmgCastleHealth[section] += gameModel.castleHealth[section] - std::stoi(wallHealthToken);
+		}
+
         gameModel._castleHealth[section] = std::stoi(wallHealthToken);
         wallHealthToken = strtok(NULL, " ");
         section++;

@@ -70,9 +70,51 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "castle_lookout": {
-            "file":     "textures/Overworld/lookout.png",
-            "minfilter":"nearest",
+    "castle_lookout": {
+      "file": "textures/Overworld/lookout.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_n": {
+      "file": "textures/Overworld/dmg_indicator_n.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_nw": {
+      "file": "textures/Overworld/dmg_indicator_nw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_ne": {
+      "file": "textures/Overworld/dmg_indicator_ne.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_s": {
+      "file": "textures/Overworld/dmg_indicator_s.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_sw": {
+      "file": "textures/Overworld/dmg_indicator_sw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_se": {
+            "file":     "textures/Overworld/dmg_indicator_se.png",
+            "minfilter":"linear",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"

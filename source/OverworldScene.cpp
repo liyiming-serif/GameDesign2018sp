@@ -42,6 +42,7 @@ using namespace cugl;
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define DMG_ACT_KEY "marker"
 
 #define JUNGLE  5
 #define SNOW  8
@@ -81,7 +82,45 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Creates the Scene Graph
     _background = Node::alloc();
     _levels = Node::alloc();
-    
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size/dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	_dmgIndicators.push_back(dmg_ind);
+
     //Creates the tower views
     // Background
     std::shared_ptr<Texture> ca_back  = _assets->get<Texture>("castle_background");
@@ -159,9 +198,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_ballista->setColor(Color4(255,255,255,0));
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
-    
-    
-    
     
     currentCastleFloor = 3;
     
@@ -677,10 +713,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the background to the scene graph
     addChild(_background);
     addChild(_menuButton);
-
-    
-    
-    
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
     
     
     // We can only activate a button AFTER it is added to a scene
@@ -713,6 +749,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void OverworldScene::dispose() {
     if (_active) {
         removeAllChildren();
+		_dmgIndicators.clear();
 		_active = false;
         _assets = nullptr;
 		_actions = nullptr;
@@ -841,6 +878,15 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
     _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
+void OverworldScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			_dmgIndicators.at(i)->setColor(Color4::WHITE);
+			_actions->activate(DMG_ACT_KEY + i, _castleFadeOUT, _dmgIndicators.at(i));
+		}
+	}
+}
 
 void OverworldScene::disableButtons() {
 
