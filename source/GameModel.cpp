@@ -702,8 +702,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     section = 0;
     while (wallHealthToken != NULL) {
 		//apply dmg indicators
-		if (std::stoi(wallHealthToken) < gameModel.castleHealth[section]) {
-			gameModel._dmgCastleHealth[section] += gameModel.castleHealth[section] - std::stoi(wallHealthToken);
+		if (std::stoi(wallHealthToken) < gameModel._castleHealth[section]) {
+			gameModel._dmgCastleHealth[section] += gameModel._castleHealth[section] - std::stoi(wallHealthToken);
 		}
 
         gameModel._castleHealth[section] = std::stoi(wallHealthToken);
