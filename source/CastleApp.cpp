@@ -339,13 +339,14 @@ void CastleApp::swapscenes(int nextscene, int direction){
     if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _winScene.setActive(false);
+        _levelScene.level = _levelScene.level + 1;
         int level = _levelScene.level;
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level + 1));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level+1;
+        gameModel.level=level;
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
