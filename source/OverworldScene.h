@@ -21,15 +21,16 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    /** Manager to process the animation actions */
-    std::shared_ptr<cugl::ActionManager> _actions;
-    
+	/** Manager to process the animation actions */
+	std::shared_ptr<cugl::ActionManager> _actions;
+
     /** The movement actions */
     std::shared_ptr<cugl::MoveBy> _moveup;
     std::shared_ptr<cugl::MoveBy> _movedn;
     std::shared_ptr<cugl::FadeIn> _castleFadeIN;
     std::shared_ptr<cugl::FadeOut> _castleFadeOUT;
     std::shared_ptr<cugl::FadeIn> _castleFadeINSTANT;
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
     
     //background floorplan
     std::shared_ptr<cugl::Node>  _background;
@@ -105,6 +106,8 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move2;
     std::shared_ptr<cugl::MoveTo> _move3;
 
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
 
     cugl::Size _size;
     
@@ -196,6 +199,8 @@ public:
      */
     void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
     
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
     
     /**
      * Disables all buttons

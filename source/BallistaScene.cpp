@@ -17,6 +17,12 @@
 #define WIN         11
 #define LOSE        12
 
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
+
 #define JUNGLE  5
 #define SNOW  8
 
@@ -68,6 +74,106 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the assets
     switchscene = 0;
     _assets = assets;
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
 
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
@@ -242,6 +348,11 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
 
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
+
     return true;
 }
 
@@ -278,6 +389,8 @@ void BallistaScene::dispose() {
         _active = false;
         _enemyArray.clear();
 		_enemiesToFree.clear();
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
     }
 }
 
@@ -344,6 +457,9 @@ void BallistaScene::update(float deltaTime, int direction){
 
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
+
+	//poll damage indicators
+	pollDmgIndicators();
 
 	// Poll inputs
 	if (input.justPressed()) {
@@ -448,6 +564,26 @@ void BallistaScene::update(float deltaTime, int direction){
     //crank the physics engine
     _world->update(deltaTime);
 
+}
+
+void BallistaScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
 }
 
 void BallistaScene::updateEnemyModels(float deltaTime, int direction) {

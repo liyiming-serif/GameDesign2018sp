@@ -39,9 +39,14 @@ using namespace cugl;
 /** Define the time settings for animation */
 #define DURATION .5f
 #define DURATION2 20.0f
+#define DMG_DURATION 1.0f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
 
 #define JUNGLE  5
 #define SNOW  8
@@ -77,12 +82,111 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castleFadeIN = FadeIn::alloc(DURATION);
     _castleFadeINSTANT = FadeIn::alloc(0.0f);
     _castleFadeOUT = FadeOut::alloc(DURATION);
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
 
     
     // Creates the Scene Graph
     _background = Node::alloc();
     _levels = Node::alloc();
-    
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size/dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
     //Creates the tower views
     // Background
     std::shared_ptr<Texture> ca_back  = _assets->get<Texture>("castle_background");
@@ -160,9 +264,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_ballista->setColor(Color4(255,255,255,0));
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
-    
-    
-    
     
     currentCastleFloor = 3;
     
@@ -678,10 +779,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the background to the scene graph
     addChild(_background);
     addChild(_menuButton);
-
-    
-    
-    
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
     
     
     // We can only activate a button AFTER it is added to a scene
@@ -714,15 +815,16 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void OverworldScene::dispose() {
     if (_active) {
         removeAllChildren();
+		_dmgIndicators.clear();
 		_active = false;
         _assets = nullptr;
 		_actions = nullptr;
         _moveup = nullptr;
         _movedn = nullptr;
-        _actions = nullptr;
         _castleFadeIN = nullptr;
         _castleFadeOUT = nullptr;
 		_castleFadeINSTANT = nullptr;
+		_dmgFadeOUT = nullptr;
 		_background = nullptr;
 		_levels = nullptr;
 		_oil_floor = nullptr;
@@ -850,6 +952,29 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
     _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
+void OverworldScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i+6)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i+6, _dmgFadeOUT, _dmgIndicators.at(i+6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
+
+//void OverworldScene::shakeScreen() {
+//
+//}
 
 void OverworldScene::disableButtons() {
 
@@ -967,6 +1092,9 @@ void OverworldScene::update(float timestep){
             switchscene = WIN;
         }
     }
+
+	//poll damage indicators
+	pollDmgIndicators();
 
 	//poll inputs
     if (!click) {

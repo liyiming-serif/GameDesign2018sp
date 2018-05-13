@@ -25,7 +25,8 @@ protected:
     int* _playerAvatars;
     int* _playerRooms;
     int _playerID;
-    int _deltaCastleHealth[6];
+    int _deltaCastleHealth[6]; //delta for networking
+	std::array<int, 6> _dmgCastleHealth; //dmg for indicators
     int clock;
     int _noPlayers;
     bool networked;
@@ -92,6 +93,10 @@ public:
     void addDeltaHealth(int wall, int repair);
 
     int getDeltaHealth(int wall);
+
+	int getDmgHealth(int wall) { return _dmgCastleHealth[wall]; }
+
+	void resetWallDmg();
 
     int getPlayerAvatar(int player);
 

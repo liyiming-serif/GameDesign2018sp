@@ -35,6 +35,12 @@ using namespace cugl;
 #define DISTANCE 920
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
+
 #define FONT    _assets->get<Font>("futura")
 
 bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
@@ -63,7 +69,105 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _moveup_O = MoveTo::alloc(Vec2(675,650),DURATION/3);
     _moveup_B = MoveTo::alloc(Vec2(675,650),DURATION/3);
     
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
 
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
     
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("ammo_background");
@@ -254,7 +358,10 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setForeground(cugl::Color4(232,227,201,255));
     addChild(_ammoText);
     
-
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
 
     //initialize ammo count
 	gameModel.setArrowAmmo(0, 30);
@@ -269,16 +376,18 @@ void AmmoScene::dispose() {
         _hammer = nullptr;
         _hammer2 = nullptr;
         _assets = nullptr;
+		_actions = nullptr;
         _ammoTOcastle = nullptr;
         _background = nullptr;
         _hammerAnimation= nullptr;
         _hammerAnim = nullptr ;
         _active = false;
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
     }
 }
 
 void AmmoScene::update(float timestep){
-    // Animate
 
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
@@ -290,6 +399,10 @@ void AmmoScene::update(float timestep){
         }
     }
 
+	//poll damage indicators
+	pollDmgIndicators();
+
+	//Animate
     if (!_actions->isActive(ACT_KEY+1)){
         _jackpot=nullptr;
         _hammer->activate(input.findKey("hammer"));
@@ -335,6 +448,25 @@ void AmmoScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
     _actions->activate(ACT_KEY+2, action, _hammerAnim);
 }
 
+void AmmoScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
 
 //Pause or Resume
 void AmmoScene::setActive(bool active){
