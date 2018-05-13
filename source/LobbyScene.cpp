@@ -506,10 +506,10 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
 #endif
             gameModel.setNetworked(true);
             gameModel.setServer(false);
-            int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
-            gameModel.setNoPlayers(roomOccup+1);
-            gameModel.setPlayerAvatar(roomOccup, roomOccup+1);
-            gameModel.setPlayerID(roomOccup);
+            //int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
+            gameModel.setNoPlayers(2);
+            gameModel.setPlayerAvatar(1, 2);
+            gameModel.setPlayerID(1);
             LobbyScene::changeCanvas("avatar");
             CULog("enter");
         }
@@ -526,10 +526,8 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);
     _buttonText->setForeground(cugl::Color4(233,225,212,255));
     std::string roomName = serverDevices.at(device);
-    const char roomOccup = serverDevices.at(device).at(6);
-    std::string printString = roomName + " " + roomOccup + "/6 Players";
-    CULog("%s", printString.c_str());
-    _buttonText->setText(roomName + " " + roomOccup + "/6 Players");
+    CULog("%s", roomName.c_str());
+    _buttonText->setText(roomName);
     return _buttonText;
 }
 
