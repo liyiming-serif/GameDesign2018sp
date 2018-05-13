@@ -520,7 +520,6 @@ void LevelselectScene::dispose() {
 
 
 void LevelselectScene::setCanvas(int players){
-    gameModel._gamePlayers=players;
     _single->setVisible(false);
    // _levels->setVisible(false);
     _multi->setVisible(false);
@@ -801,7 +800,6 @@ void LevelselectScene::setActive(bool active, int players){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         setCanvas(players);
-        //gameModel._players=players;
         setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
         setButtonActive(_backButtonMULTI, "backButtonMULTI");
     }

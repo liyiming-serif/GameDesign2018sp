@@ -102,7 +102,6 @@ protected:
     int _mode;
     //0 no direction, 0 N, 1 NW, 2 SW, 3 S, 4 SE, 5 NE
     int _direction;
-    int _players;
     int _currscene;
     int _oilDirection;
     
