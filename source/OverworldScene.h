@@ -29,13 +29,14 @@ protected:
     std::shared_ptr<cugl::MoveBy> _movedn;
     std::shared_ptr<cugl::FadeIn> _castleFadeIN;
     std::shared_ptr<cugl::FadeOut> _castleFadeOUT;
-    std::shared_ptr<cugl::FadeOut> _castleFadeINSTANT;
+    std::shared_ptr<cugl::FadeIn> _castleFadeINSTANT;
     
     //background floorplan
     std::shared_ptr<cugl::Node>  _background;
     std::shared_ptr<cugl::Node>  _levels;
 	std::shared_ptr<cugl::PolygonNode> _oil_floor; //these floors are dynamic based on level
 	std::shared_ptr<cugl::PolygonNode> _ballista_floor;
+    std::shared_ptr<cugl::PolygonNode> _basement_floor;
 	std::shared_ptr<cugl::PolygonNode> _lookout_floor;
     
     //castle views
@@ -105,6 +106,7 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move3;
 
 
+    cugl::Size _size;
     
 
 
