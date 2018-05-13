@@ -160,8 +160,7 @@ public:
      */
     void doScroll(const std::shared_ptr<cugl::MoveTo>& action);
 
-    //Sets the compass image based on the direction input
-    void setCanvas (int direction);
+    void setCanvas (int players);
     void setButtonActive ( std::shared_ptr<cugl::Button> button, std::string actKey);
     
     /**

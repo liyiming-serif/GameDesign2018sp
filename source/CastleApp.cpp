@@ -186,7 +186,7 @@ void CastleApp::update(float timestep) {
             _lobbyScene.setActive(false);
             CULog("Lobby Scene Loaded");
             _levelScene.init(_assets);
-            _levelScene.setActive(false, 0);
+            _levelScene.setActive(false, 1);
             CULog("Level Scene Loaded");
             _winScene.init(_assets);
             _winScene.setActive(false);
@@ -216,7 +216,7 @@ void CastleApp::update(float timestep) {
             _levelScene.update(timestep);
             if(_levelScene.switchscene!=0){
                 swapscenes(_levelScene.switchscene, 0);
-                _levelScene.setActive(false, _direction);
+                _levelScene.setActive(false, gameModel.getNoPlayers());
             }
         }
         else if(_currscene==WIN){
@@ -283,10 +283,9 @@ void CastleApp::update(float timestep) {
                     _oilScene.setActive(false, _direction);
                 }
             }
-            if (gameModel.isServer() || !gameModel.isNetworked()) {
-                _spawnController.update(timestep);
-            }
 
+
+            _spawnController.update(timestep);
             gameModel.update(timestep);
         }
     }
@@ -307,9 +306,6 @@ void CastleApp::swapscenes(int nextscene, int direction){
     if (_currscene == LOBBY && nextscene == MENU) {
         gameModel.setNetworked(false);
     }
-	if (_currscene == MENU && nextscene == LEVELS) {
-		gameModel._gamePlayers = 1;
-	}
 	if(_currscene == OVERWORLD && nextscene == MENU){
         _currscene = MENU;
         _overworldScene.setActive(false);
@@ -349,7 +345,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
-        _levelScene.setActive(false, 0);
+        _levelScene.setActive(false, 1);
         int level = _levelScene.level;
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));

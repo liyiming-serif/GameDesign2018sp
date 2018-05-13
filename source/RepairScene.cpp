@@ -859,7 +859,7 @@ void RepairScene::setActive(bool active){
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
         
         
-        if (gameModel._gamePlayers > 1) {
+        if (gameModel.getNoPlayers() > 1) {
             _northeastWallButton->activate(input.findKey("northeastWallButton"));
             _southWallButton->activate(input.findKey("southWallButton"));
             _northwestWallButton->activate(input.findKey("northwestWallButton"));
