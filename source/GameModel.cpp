@@ -54,13 +54,10 @@ void GameModel::dispose() {
 	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
 		gameModel._enemiesToFreeMaster[i].clear();
 	}
+	resetWallDmg();
 }
 
 void GameModel::update(float deltaTime){
-	//clear dmg castle health changes from previous frame
-	for (int i = 0; i < gameModel._dmgCastleHealth.size(); i++) {
-		gameModel._dmgCastleHealth[i] = 0;
-	}
 
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
@@ -237,6 +234,13 @@ void GameModel::addDeltaHealth(int wall, int repair) {
 
 int GameModel::getDeltaHealth(int wall) {
     return gameModel._deltaCastleHealth[wall];
+}
+
+void GameModel::resetWallDmg() {
+	//clear enqueued wall damage
+	for (int i = 0; i < gameModel._dmgCastleHealth.size(); i++) {
+		gameModel._dmgCastleHealth[i] = 0;
+	}
 }
 
 void GameModel::setAmmo(int type, int amt){

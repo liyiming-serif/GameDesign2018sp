@@ -38,6 +38,9 @@ protected:
 	std::unordered_map<std::string,std::shared_ptr<EnemyModel>> _enemyArray;
 	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
+	// Actions
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+
     // Models
     std::shared_ptr<BallistaModel> _ballista;
     std::shared_ptr<cugl::PolygonNode> _background;
@@ -71,6 +74,9 @@ protected:
 	bool inRange(float y);
 	float calcY(float y);
 
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+
 public:
     // Constructors
     BallistaScene() : Scene() {}
@@ -101,6 +107,8 @@ public:
     //Sets the wall image based on the wall health input
     void setWall (int direction);
 
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H

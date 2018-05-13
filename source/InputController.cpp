@@ -101,6 +101,9 @@ bool InputController::init(){
 	gest->pause();
 	_makeGestureTimer = 100;
 	
+	// Allocate the Action Manager
+	_actions = ActionManager::alloc();
+
     return success;
 }
 
@@ -149,6 +152,7 @@ void InputController::update(float deltaTime) {
     _justReleased = false;
     _vScrolling = 0;
 	_hScrolling = 0;
+	_actions->update(deltaTime);
 }
 
 /**
@@ -176,6 +180,7 @@ void InputController::dispose(){
 		gest->removeStateListener(LISTENER_KEY);
         _active = false;
     }
+	_actions = nullptr;
 }
 
 void InputController::clear() {

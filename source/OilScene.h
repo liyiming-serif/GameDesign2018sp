@@ -31,6 +31,9 @@ protected:
 	std::unordered_map<std::string, std::shared_ptr<EnemyModel>> _enemyArray;
 	std::set<std::shared_ptr<EnemyModel>> _enemiesToFree;
 
+	// Actions
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+
 	//models
     std::shared_ptr<cugl::Button> _oilTOcastle;
 	std::shared_ptr<OilModel> _oil;
@@ -54,6 +57,9 @@ protected:
 	bool inRange(float y);
 	float calcY(float y);
     
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+
 public:
     // Constructors
     OilScene() : Scene() {}
@@ -76,6 +82,9 @@ public:
     
     //Sets the wall image based on the wall health input
     void setWall (int direction);
+
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
 };
 
 

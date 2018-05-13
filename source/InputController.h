@@ -29,7 +29,8 @@ private:
     /** Whether or not this input is active */
     bool _active;
 
-
+	// Singleton action manager
+	std::shared_ptr<cugl::ActionManager> _actions;
 
     //TOUCH SUPPORT
     /**Pointer velocity, used for swiping*/
@@ -117,6 +118,8 @@ public:
     /**
      * Resets single frame input results (e.g. justPressed, _pointerVel).
      * Call this update in your scene LAST.
+	 *
+	 * Updates the action manager.
      *
      * IMPORTANT: callbacks could get called mulitple times before update;
      * be sure to account for those cases.
@@ -161,6 +164,8 @@ public:
 
 	bool castBarrier() { return _castBarrier; }
 
+	//Action Manager Getter
+	std::shared_ptr<cugl::ActionManager> actions() { return _actions; }
 };
 
 extern InputController input;

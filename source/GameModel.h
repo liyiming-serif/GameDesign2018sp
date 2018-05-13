@@ -97,6 +97,8 @@ public:
 
 	int getDmgHealth(int wall) { return _dmgCastleHealth[wall]; }
 
+	void resetWallDmg();
+
     int getPlayerAvatar(int player);
 
     int getNoPlayers() {
