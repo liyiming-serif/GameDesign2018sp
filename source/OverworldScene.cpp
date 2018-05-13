@@ -1055,7 +1055,7 @@ void OverworldScene::enableButtons() {
         _ammo_buttonLOCKED->setVisible(true);
     }
   
-    if (gameModel._gamePlayers > 1) {
+    if (gameModel.getNoPlayers() > 1) {
         if (gameModel._unlockedRooms["oil"] == true) {
             _oilNorthEast->activate(input.findKey("oilNorthEast"));
             _oilNorthEastLOCKED->setVisible(false);

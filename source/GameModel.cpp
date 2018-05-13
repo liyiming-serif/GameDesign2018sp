@@ -28,7 +28,6 @@ bool GameModel::init(){
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
-    gameModel._gamePlayers = 1;
     gameModel._noPlayers = 1;
     gameModel._playerAvatars = new int[gameModel._noPlayers];
     gameModel._playerRooms = new int[gameModel._noPlayers];
