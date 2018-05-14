@@ -327,7 +327,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         int level = _levelScene.level;
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
         gameModel.level=level;
@@ -342,6 +342,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
+        _levelScene.level = level;
         gameModel.level=level;
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
@@ -350,7 +351,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         int level = _levelScene.level;
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
         gameModel.level=level;
