@@ -6,7 +6,7 @@
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
-#define BASE_SPEED 0.35f/3
+#define BASE_SPEED 0.4f/3
 
 
 using namespace cugl;
