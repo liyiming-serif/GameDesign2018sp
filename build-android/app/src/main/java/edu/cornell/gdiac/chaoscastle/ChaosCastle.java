@@ -29,7 +29,6 @@ public class ChaosCastle extends SDLActivity {
 	BluetoothServerThread bServer;
 	BluetoothClientThread bClient;
 	BluetoothAdapter mba;
-	String origName;
 	ArrayList<BluetoothDevice> pairedServers;
 	BluetoothConnectedThread bConnected;
 	ArrayList<BluetoothConnectedThread> bConnectedRing;
@@ -45,9 +44,6 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
-		if(mba != null) {
-			origName = mba.getName();
-		}
 	}
 
 	public int getPlayers(){
@@ -203,8 +199,7 @@ public class ChaosCastle extends SDLActivity {
 			// There are paired devices. Get the name and address of each paired device.
 			for (BluetoothDevice device : pairedDevices) {
 				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART &&
-						device.getName().matches("SERVER[0-9].*")) {
+				if (deviceClass == BluetoothClass.Device.PHONE_SMART ) {
 					pairedServers.add(device);
 				}
 			}
@@ -224,13 +219,8 @@ public class ChaosCastle extends SDLActivity {
 		startActivity(discoverableIntent);
 	}
 
-	public void changeServerName(int numPlayers){
-		String newName = "SERVER"+numPlayers+origName;
-		mba.setName(newName);
-	}
 
 	public void setupBluetoothServer() {
-	    changeServerName(1);
 	    makeDiscoverable();
 	    isServer = true;
 	    bConnectedRing = new ArrayList<BluetoothConnectedThread>(5);
@@ -264,7 +254,6 @@ public class ChaosCastle extends SDLActivity {
             	//change server name to reflect number of players
                 BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
                 bConnectedRing.add(b);
-				changeServerName(bConnectedRing.size()+1);
                 b.start();
                 Log.d("CONNECTED", "Another player has joined "+mba.getName());
             }
@@ -281,23 +270,14 @@ public class ChaosCastle extends SDLActivity {
 	}
 
 	public void disconnect(BluetoothConnectedThread connection) {
-		mba.setName(origName);
 		connection.cancel();
 	}
 
 	@Override
-	protected void onStop(){
-		//mba.setName(origName);
-		super.onStop();
-	}
-
-	@Override
 	protected void onDestroy() {
-		mba.setName(origName);
-		super.onDestroy();
-
 		// Don't forget to unregister the ACTION_FOUND receiver.
 		unregisterReceiver(mReceiver);
+		super.onDestroy();
 	}
 	
 }
