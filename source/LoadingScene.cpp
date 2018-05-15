@@ -93,7 +93,7 @@ void LoadingScene::dispose() {
 void LoadingScene::update(float progress) {
     if (_progress < 1) {
         _progress = _assets->progress();
-        CULog("Current progress: %f", progress);
+        CULog("Current progress: %f", _progress);
         if (_progress >= 1) {
             _progress = 1.0f;
             _button->setVisible(true);
