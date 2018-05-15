@@ -35,7 +35,7 @@ using namespace cugl;
 #define DELUGE_NUM_COLS 5
 #define DELUGE_SPEED 0.2f
 
-#define OIL_COOLDOWN 420
+#define OIL_COOLDOWN 600
 #define TIPPING_POINT 0.45f
 
 #define OIL_MAX_RANGE 99	//farthest enemy oil scene can see
