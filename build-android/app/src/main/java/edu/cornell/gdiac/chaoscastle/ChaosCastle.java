@@ -58,6 +58,70 @@ public class ChaosCastle extends SDLActivity {
 		}
     }
 
+	/**
+	 * Call this when the server is ready to receive gameState packets.
+	 * @return success value (0=success, 1=failure)
+	 */
+	public int clearServerACKs() {
+		if(isServer){
+			if(bConnectedRing==null||bConnectedRing.size()==0){
+				return 1;
+			}
+			currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+			synchronized (this){
+				//throws away result and just clear the buffer
+				Log.d("SERVER", "clearing ACK messages from client"+currClientIndex);
+				return bConnectedRing.get(currClientIndex).popState()==null ? 1:0;
+			}
+		}
+		return 1;
+	}
+
+    /** Similar to consumeState, but the client reads states in FIFO order
+	 *  and doesn't erase previous states.
+	 */
+    public byte[] consumeACK(){
+		if(isServer){
+			if(bConnectedRing==null || bConnectedRing.size()==0){
+				return null;
+			}
+			try {
+				currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+				String s;
+				synchronized (this) {
+					s = bConnectedRing.get(currClientIndex).dequeueState();
+				}
+				if(s==null){
+					Log.d("SERVER", "got nothing");
+					return null;
+				}
+				Log.d("SERVER", s);
+				return s.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+				return null;
+			}
+		}
+		else {
+			if (bConnected == null) {
+				return null;
+			}
+			try {
+				String s;
+				synchronized (this) {
+					s = bConnected.dequeueState();
+				}
+				if (s == null){
+					Log.d("CLIENT", "got nothing");
+					return null;
+				}
+				Log.d("CLIENT", s);
+				return s.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+				return null;
+			}
+		}
+	}
+
 	/** Call consumeState from C++ to get one COMPLETE game state
 	 *  from the bluetooth socket.
 	 */
@@ -107,13 +171,6 @@ public class ChaosCastle extends SDLActivity {
 	 *  to the bluetooth socket.
 	 */
 	public int sendState(byte[] byte_buffer) {
-		try {
-			Log.d("CLIENT", "Passed JNI barrier: " + new String(byte_buffer, "UTF-8"));
-		}
-		catch(java.io.UnsupportedEncodingException e){
-			Log.e("CLIENT", "There's no reason to read this.");
-		}
-		Log.d("CLIENT", "Passed JNI barrier: in sendState");
 		int status = 0;
 	    if(isServer){
 	    	if(bConnectedRing==null || bConnectedRing.size()==0){
@@ -248,6 +305,7 @@ public class ChaosCastle extends SDLActivity {
 		// Start the thread to manage the connection and perform transmissions
         if(isServer){
             if(bConnectedRing.size()>=MAX_PLAYERS){
+            	//room is full; close server thread
                 return false;
             }
             synchronized (this) {
@@ -267,6 +325,12 @@ public class ChaosCastle extends SDLActivity {
             }
             return true;
         }
+	}
+
+	public void serverStopAccepting(){
+		if(isServer&&bServer!=null){
+			bServer.cancel();
+		}
 	}
 
 	public void disconnect(BluetoothConnectedThread connection) {
