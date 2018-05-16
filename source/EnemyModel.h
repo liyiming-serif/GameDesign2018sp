@@ -34,6 +34,8 @@ public:
 
     //GAMEPLAY
     void update(float deltaTime) override;
+	//For Berserkers: multiply walking speed as they become more enraged
+	float scaleAnimSp(float factor);
 
     // Assume assets are already loaded, and _node is immutable after init
     const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
@@ -55,6 +57,8 @@ protected:
 	int _dieFrameStart;
 	int _attackFrameStart;
 	float _currFrame;
+	float _walkAnimSp;
+	float _dieAnimSp;
 
     //MEMBERS
 	std::string _name;

@@ -676,19 +676,26 @@
       "wrapT": "clamp"
     },
     "warrior": {
-      "file": "textures/reaper.png",
+      "file": "textures/small-reaper.png",
       "minfilter": "nearest",
       "magfilter": "linear",
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
     "berserker": {
-            "file":     "textures/berserker.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
+      "file": "textures/berserker.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "reaper": {
+      "file": "textures/big-reaper.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
         "repair_background": {
             "file":     "textures/Basement/RepairBackground.png",
             "minfilter":"nearest",

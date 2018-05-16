@@ -4,14 +4,14 @@
 			"enemies" : {
 				"numSpawn" : 18,
 				"spawn1" : {
-					"name" : "reaper",
+					"name" : "warrior",
 					"spawn_time" : 300,
 					"xCoord" : 100,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn2" : {
-					"name" : "reaper",
+					"name" : "archer",
 					"spawn_time" : 700,
 					"xCoord" : 500,
 					"yCoord" : 700,
@@ -25,7 +25,7 @@
 					"sector" : 0
 				},
 				"spawn4" : {
-					"name" : "reaper",
+					"name" : "archer",
 					"spawn_time" : 1700,
 					"xCoord" : 300,
 					"yCoord" : 700,

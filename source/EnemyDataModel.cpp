@@ -23,7 +23,7 @@ bool EnemyDataModel::init(const std::string& name,int hp,const Vec2& pos,int typ
 			_atkRange = -1;
 			break;
 		case 2: //flying ranged
-			_atkRange = rand()%150+250;
+			_atkRange = rand()%150+350;
 			break;
 		case 3: //lil reaper
 			_atkRange = 8;
@@ -49,13 +49,13 @@ int EnemyDataModel::getSpeed() {
 	}
 	else if (_type == 5) {
 		if (_health == 3) {
-			return 1;
-		}
-		else if (_health == 2) {
 			return 3;
 		}
+		else if (_health == 2) {
+			return 5;
+		}
 		else {
-			return 6;
+			return 8;
 		}
 	}
 	return 0;
