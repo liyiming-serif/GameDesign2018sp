@@ -321,7 +321,8 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _loseScene.setActive(false);
         reset();
     }
-    if ((_currscene==LOSE && nextscene == OVERWORLD) || (_currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag) ) {
+    if ((_currscene==LOSE && nextscene == OVERWORLD) || (_currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag)
+        || (_currscene==OVERWORLD && nextscene == OVERWORLD)) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
         int level = _levelScene.level;
@@ -468,6 +469,8 @@ void CastleApp::reset(){
     //_ammoScene.dispose();
     //_oilScene.dispose();
     _overworldScene.resetTutorial();
+    _oilScene._tiltCount = 0;
+    _ballistaScene._shots = 0;
 	gameModel.resetWallDmg();
     _spawnController.dispose();
 	input.clear();

@@ -69,6 +69,10 @@ protected:
 
     //text
     std::shared_ptr<cugl::Label> _ammoText;
+    
+    //tutorial
+    std::shared_ptr<cugl::PolygonNode> _ballista_swipe;
+    bool _swipeTutorial;
 
 	//helper method for translating enemy y coords
 	bool inRange(float y);
@@ -109,6 +113,8 @@ public:
 
 	/**iterate through gameModel's dmg castle health and apply indicators*/
 	void pollDmgIndicators();
+    
+    int _shots;
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H
