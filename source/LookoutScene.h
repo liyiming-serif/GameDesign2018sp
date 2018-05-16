@@ -26,7 +26,12 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _progressBar;
 
+	// Enemy marker textures
 	std::shared_ptr<cugl::Texture> _enemyIcon;
+	std::shared_ptr<cugl::Texture> _flyingIcon;
+	std::shared_ptr<cugl::Texture> _warriorIcon;
+	std::shared_ptr<cugl::Texture> _reaperIcon;
+	std::shared_ptr<cugl::Texture> _berserkerIcon;
 
     std::vector<std::shared_ptr<cugl::Node>> _enemyMarkers;
     

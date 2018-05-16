@@ -180,8 +180,13 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _distance=.85f*_size.height/gameModel.getEndTime();
     
     
-	//allocate an enemy icon, but don't add it yet
+	//allocate the enemy icons, but don't add it yet
 	_enemyIcon = _assets->get<Texture>("skeletonIcon");
+	_flyingIcon = _assets->get<Texture>("flyingIcon");
+	_warriorIcon = _assets->get<Texture>("warriorIcon");
+	_reaperIcon = _assets->get<Texture>("reaperIcon");
+	_berserkerIcon = _assets->get<Texture>("berserkerIcon");
+
 	//initialize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
 		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
@@ -269,10 +274,31 @@ void LookoutScene::update(float timestep){
 	//redraw them
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
-			std::shared_ptr<PolygonNode> e = PolygonNode::allocWithTexture(_enemyIcon);
-			e->setAnchor(Vec2::ANCHOR_CENTER);
-			e->setPosition(enemy.second->getPos());
-			_enemyMarkers[wall]->addChild(e);
+			std::shared_ptr<PolygonNode> e = nullptr;
+			switch (enemy.second->getType()) {
+			case 1:
+				e = PolygonNode::allocWithTexture(_enemyIcon);
+				break;
+			case 2:
+				e = PolygonNode::allocWithTexture(_flyingIcon);
+				break;
+			case 3:
+				e = PolygonNode::allocWithTexture(_warriorIcon);
+				break;
+			case 4:
+				e = PolygonNode::allocWithTexture(_reaperIcon);
+				break;
+			case 5:
+				e = PolygonNode::allocWithTexture(_berserkerIcon);
+				break;
+			default:
+				continue;
+			}
+			if (e != nullptr) {
+				e->setAnchor(Vec2::ANCHOR_CENTER);
+				e->setPosition(enemy.second->getPos());
+				_enemyMarkers[wall]->addChild(e);
+			}
 		}
 	}
 }
