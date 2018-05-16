@@ -781,8 +781,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     //_tap->setPosition(_size.width*.26f,_size.height*.07f);
     _background->addChild(_tap);
     
-
-    
     
     std::shared_ptr<Texture> menu_tex   = _assets->get<Texture>("menu");
     _menuButton = Button::alloc(PolygonNode::allocWithTexture(menu_tex));
@@ -798,18 +796,76 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _menuButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-                switchscene = MENU;
+                _pauseBG->setVisible(!_pauseBG->isVisible());
         }
     });
     
     
+    std::shared_ptr<Texture> pauseBG  = _assets->get<Texture>("pause_BG");
+    _pauseBG = PolygonNode::allocWithTexture(pauseBG);
+    _pauseBG->setScale(.8); // Magic number to rescale asset
+    _pauseBG->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseBG->setPosition(_size.width/2,_size.height/2);
+    _pauseBG->setVisible(false);
     
     
+    std::shared_ptr<Texture> pauseQUIT   = _assets->get<Texture>("pause_quit");
+    _pauseQUIT = Button::alloc(PolygonNode::allocWithTexture(pauseQUIT));
+    _pauseQUIT->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseQUIT->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2-90);
+    _pauseQUIT->setScale(1.0f);
+    _pauseBG->addChild(_pauseQUIT);
+    
+    
+    // Create a callback function for the button
+    _pauseQUIT->setName("quit");
+    _pauseQUIT->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            switchscene = MENU;
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseREPLAY   = _assets->get<Texture>("pause_replay");
+    _pauseREPLAY = Button::alloc(PolygonNode::allocWithTexture(pauseREPLAY));
+    _pauseREPLAY->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseREPLAY->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2-180);
+    _pauseREPLAY->setScale(1.0f);
+    _pauseBG->addChild(_pauseREPLAY);
+    
+    
+    // Create a callback function for the button
+    _pauseREPLAY->setName("replay");
+    _pauseREPLAY->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            _pauseBG->setVisible(false);
+            switchscene = OVERWORLD;
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseBACK   = _assets->get<Texture>("pause_back");
+    _pauseBACK = Button::alloc(PolygonNode::allocWithTexture(pauseBACK));
+    _pauseBACK->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseBACK->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2);
+    _pauseBACK->setScale(1.0f);
+    _pauseBG->addChild(_pauseBACK);
+    
+    
+    // Create a callback function for the button
+    _pauseBACK->setName("back");
+    _pauseBACK->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+             _pauseBG->setVisible(false);
+        }
+    });
     
     
     // Add the background to the scene graph
     addChild(_background);
     addChild(_menuButton);
+    addChild(_pauseBG);
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -818,6 +874,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // We can only activate a button AFTER it is added to a scene
     _menuButton->activate(input.generateKey("menuButton"));
+    
+    _pauseBACK->activate(input.generateKey("pauseBack"));
+    _pauseREPLAY->activate(input.generateKey("pauseReplay"));
+    _pauseQUIT->activate(input.generateKey("pauseQuit"));
     
     _lookout_button->activate(input.generateKey("lookout_button"));
     
@@ -877,6 +937,9 @@ void OverworldScene::dispose() {
 		_castle_basement = nullptr;
 
 		_menuButton = nullptr;
+        _pauseBACK = nullptr;
+        _pauseREPLAY = nullptr;
+        _pauseQUIT = nullptr;
 
 		_ballistaNorth = nullptr;
 		_ballistaNorthEast = nullptr;
@@ -1013,11 +1076,14 @@ void OverworldScene::resetTutorial() {
     _swipeUP=0;
     _roomClick = 0;
     _swipeTutorial=false;
+
 }
 
 
 
 void OverworldScene::disableButtons() {
+    CULog("disable");
+
 
     _lookout_button->deactivate();
     
@@ -1043,6 +1109,8 @@ void OverworldScene::disableButtons() {
 }
 
 void OverworldScene::enableButtons() {
+    
+    CULog("enable");
     _menuButton->activate(input.findKey("menuButton"));
     
     _lookout_button->activate(input.findKey("lookout_button"));
@@ -1139,6 +1207,21 @@ void OverworldScene::enableButtons() {
 }
 
 void OverworldScene::update(float timestep){
+    
+    if (_pauseBG->isVisible()) {
+        CULog("visible");
+        disableButtons();
+        _pauseBACK->activate(input.findKey("pauseBack"));
+        _pauseREPLAY->activate(input.findKey("pauseReplay"));
+        _pauseQUIT->activate(input.findKey("pauseQuit"));
+    }
+    else {
+        CULog("invisible");
+        enableButtons();
+        _pauseBACK->deactivate();
+       _pauseREPLAY->deactivate();
+       _pauseQUIT->deactivate();
+    }
 
     //TODO: Make the relevant buttons unclickable/covered in Avatars for networked game
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
@@ -1196,6 +1279,7 @@ void OverworldScene::update(float timestep){
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor - 1);
 		currentCastleFloor -= 1;
         click=false;
+        _menuButton->deactivate();
         disableButtons();
         _swipeDN+=1;
 	}
@@ -1206,19 +1290,20 @@ void OverworldScene::update(float timestep){
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor + 1);
 		currentCastleFloor += 1;
         click=false;
+        _menuButton->deactivate();
         disableButtons();
         _swipeUP+=1;
 	}
     if (currentCastleFloor==3) {
-        _tap->setPosition(_size.width*.25f,_size.height*.07f);
+        _tap->setPosition(_size.width*.25f,_size.height*.03f);
     }
     else if (currentCastleFloor==0) {
-        _tap->setPosition(_size.width*.315f,_size.height*.265f);
+        _tap->setPosition(_size.width*.315f,_size.height*.260f);
     }
     else {
-        _tap->setPosition(_size.width*.25f,_size.height*.338f);
+        _tap->setPosition(_size.width*.25f,_size.height*.333f);
     }
-    if (!_actions->isActive(ACT_KEY)){
+    if (!_actions->isActive(ACT_KEY) && !_pauseBG->isVisible()){
         click=true;
         enableButtons();
 
@@ -1253,7 +1338,9 @@ void OverworldScene::setActive(bool active) {
         enableButtons();
         Application::get()->setClearColor(Color4(255,255,255,255));
         
-
+        if (_pauseBG->isVisible()) {
+            _pauseBG->setVisible(false);
+        }
 
         if (gameModel.level==1){
             _swipeTutorial=true;
@@ -1300,6 +1387,7 @@ void OverworldScene::setActive(bool active) {
         
     }
     else{
+        _menuButton->deactivate();
         disableButtons();
 
 		//wipe residual action animations
