@@ -174,6 +174,42 @@ void GameModel::update(float deltaTime){
 	}
 }
 
+//init(); dispose(); without resetting multiplayer
+void GameModel::reset() {
+	//dispose:
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		gameModel._enemyArrayMaster[i].clear();
+	}
+	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
+	resetWallDmg();
+
+	//init:
+	gameModel._arrowAmmo[0] = 0;
+	gameModel._arrowAmmo[1] = 0;
+	gameModel._arrowAmmo[2] = 0;
+	gameModel._deltaAmmo[0] = 0;
+	gameModel._deltaAmmo[1] = 0;
+	gameModel._deltaAmmo[2] = 0;
+
+	for (int i = 0; i < 6; ++i) {
+		gameModel._castleHealth[i] = 100;
+		gameModel._deltaCastleHealth[i] = 0;
+		gameModel._dmgCastleHealth[i] = 0;
+		gameModel._oilPoured[i] = 0;
+		gameModel._oilCooldown[i] = 0;
+	}
+	//kick players from rooms
+	for (int i = 0; i < gameModel._noPlayers; ++i) {
+		gameModel._playerRooms[i] = 0;
+	}
+	gameModel._currentRoom = 0;
+	//resynch game time
+	gameModel._currentTime = 0;
+	gameModel._endTime = 100;
+}
+
 int GameModel::getWallHealth(int wall) {
     return _castleHealth[wall];
 }

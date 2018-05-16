@@ -1302,6 +1302,11 @@ void OverworldScene::setActive(bool active) {
     else{
         disableButtons();
 
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			_actions->clearAllActions(it);
+		}
     }
 }
 

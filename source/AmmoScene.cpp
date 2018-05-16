@@ -495,5 +495,11 @@ void AmmoScene::setActive(bool active){
         _ammoTOcastle->deactivate();
         _hammer->deactivate();
         _hammer2->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			_actions->clearAllActions(it);
+		}
     }
 }

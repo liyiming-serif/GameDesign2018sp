@@ -73,7 +73,8 @@ public:
 
     // Gameplay
     void update(float deltaTime);
-
+	//init(); dispose(); without resetting multiplayer
+	void reset();
 
     /**
 	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT

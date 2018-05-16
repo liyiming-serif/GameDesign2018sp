@@ -328,5 +328,11 @@ void LookoutScene::setActive(bool active){
 		for (int i = 0; i < _enemyMarkers.size(); i++) {
 			_enemyMarkers[i]->removeAllChildren();
 		}
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			input.actions()->clearAllActions(it);
+		}
     }
 }

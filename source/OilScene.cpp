@@ -634,5 +634,11 @@ void OilScene::setActive(bool active, int direction){
     else{
 		_deluge->setVisible(false);
         _oilTOcastle->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			input.actions()->clearAllActions(it);
+		}
     }
 }

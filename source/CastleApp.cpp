@@ -470,9 +470,8 @@ void CastleApp::reset(){
     _overworldScene.resetTutorial();
 	gameModel.resetWallDmg();
     _spawnController.dispose();
-    gameModel.dispose();
 	input.clear();
-    gameModel.init();
+	gameModel.reset();
 }
 
 void CastleApp::initializeRooms(){

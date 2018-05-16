@@ -1015,5 +1015,11 @@ void RepairScene::setActive(bool active){
         _southWallButton->deactivate();
         _southwestWallButton->deactivate();
         _northwestWallButton->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			_actions->clearAllActions(it);
+		}
     }
 }
