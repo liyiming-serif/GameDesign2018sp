@@ -52,6 +52,8 @@ public:
 
     ~ArrowModel() {dispose();}
 
+	//Flag for if arrow has already collided with enemy
+	bool collided;
 
 protected:
     /**

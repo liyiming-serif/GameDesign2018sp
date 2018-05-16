@@ -4,35 +4,35 @@
 			"enemies" : {
 				"numSpawn" : 18,
 				"spawn1" : {
-					"name" : "skeleton",
+					"name" : "reaper",
 					"spawn_time" : 300,
 					"xCoord" : 100,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn2" : {
-					"name" : "skeleton",
+					"name" : "reaper",
 					"spawn_time" : 700,
 					"xCoord" : 500,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn3" : {
-					"name" : "skeleton",
+					"name" : "berserker",
 					"spawn_time" : 1100,
 					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn4" : {
-					"name" : "skeleton",
+					"name" : "reaper",
 					"spawn_time" : 1700,
 					"xCoord" : 300,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn5" : {
-					"name" : "skeleton",
+					"name" : "berserker",
 					"spawn_time" : 1700,
 					"xCoord" : 700,
 					"yCoord" : 700,

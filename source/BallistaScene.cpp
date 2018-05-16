@@ -716,7 +716,10 @@ void BallistaScene::beginContact(b2Contact* contact) {
 		std::shared_ptr<ArrowModel> a = *it;
 		if ((body1->GetUserData() == a.get() || body2->GetUserData() == a.get())) {
 			_arrowsToFree.insert(a);
-			contactWithArrow = true;
+			if (!a->collided) {
+				contactWithArrow = true;
+				a->collided = true;
+			}
 			break;
 		}
 	}
