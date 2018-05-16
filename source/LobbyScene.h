@@ -245,7 +245,118 @@ public:
 
         return players;
     }
+
+    void serverStopAccepting() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "serverStopAccepting",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
+
+    char* consumeACK() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "consumeACK",
+                                               "()[B");
+
+        jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
+
+        if (array == NULL) {
+            //CULog("Read Byte Array is Null");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
+        else {
+            //CULog("Read Byte Array is not Null");
+            jbyte* buffer = env->GetByteArrayElements(array, NULL);
+            jsize size = env->GetArrayLength(array);
+            char *byte_buffer = new char[size];
+
+            for(int i = 0; i < size; i++) {
+                byte_buffer[i] = buffer[i];
+            }
+            env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+
+            // Free local references
+            env->DeleteLocalRef(array);
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return byte_buffer;
+        }
+    }
+
+private:
+    std::string produceACKClient();
+    std::string produceACKServer();
+    char* consumeACKClient();
+    char** consumeACKServer();
+    void applyACKClient(char* ACK);
+    void applyACKServer(char** ACKs);
+
+    char* return_buffer(const std::string& string);
+
+    void runLobbyNetworking();
+
+    int sendState(char* byte_buffer) {
+        // Set up parameters for JNI call
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "sendState",
+                                               "([B)I");
+
+        if (byte_buffer != NULL) {
+            // Call the Java method
+            //CULog("Attempting to send across JNI");
+            int n=0;
+            char* p = byte_buffer;
+            while(*p++){
+                //CULog("N is currently: %i", n);
+                n++;
+            } if(n<=0) {
+                CULog("sendState: byte_buffer not big enough");
+                return NULL;
+            }
+            else {
+                CULog("Size of byte_buffer passed to send State is %i", n);
+            }
+            jbyteArray arr = env->NewByteArray(n);
+            env->SetByteArrayRegion(arr,0,n, (jbyte*)byte_buffer);
+
+            int response = env->CallIntMethod(activity, method_id, arr);
+
+            // Free local references
+            //env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
+            //free(p);
+            env->DeleteLocalRef(arr);
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return response;
+        }
+        else {
+            CULog("sendState: attempt to send Null message");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
+    }
 #endif
+    void animateClouds();
 
 };
 
