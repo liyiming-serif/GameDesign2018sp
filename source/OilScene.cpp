@@ -332,6 +332,14 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(SW_compass);
     SW_compass->setVisible(false);
     
+    
+    std::shared_ptr<Texture> tut_tilt  = _assets->get<Texture>("tutorial_tilt");
+    _tilt = PolygonNode::allocWithTexture(tut_tilt);
+    _tilt->setScale(1.0); // Magic number to rescale asset
+    _tilt->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _tilt->setPosition(_size.width*.5f,_size.height*.9f);
+    addChild(_tilt);
+    
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -451,6 +459,10 @@ void OilScene::update(float timestep, int direction){
     }
     setWall(direction);
     
+    if (_tiltCount > 1) {
+        _tilt->setVisible(false);
+    }
+    
 	//poll damage indicators
 	pollDmgIndicators();
 
@@ -462,6 +474,8 @@ void OilScene::update(float timestep, int direction){
         if (gameModel.isNetworked() && !gameModel.isServer()) {
             gameModel.setOilPoured(direction);
         }
+        _tiltCount+=1;
+        CULog("OIL");
 		_deluge->setVisible(true);
 		_delugeFrame = 0;
 		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
@@ -569,6 +583,16 @@ void OilScene::setActive(bool active, int direction){
     _active = active;
     switchscene = 0;
 	_oil->isReloading = false;
+    
+    if (gameModel.level==5){
+        _tiltTutorial=true;
+    }
+    if (_tiltTutorial && _tiltCount < 1) {
+        _tilt->setVisible(true);
+    }
+    if (!_tiltTutorial) {
+        _tilt->setVisible(false);
+    }
 
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {

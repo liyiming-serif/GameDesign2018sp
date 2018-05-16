@@ -108,6 +108,14 @@ protected:
 
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+    
+    /** Tutorial */
+    std::shared_ptr<cugl::PolygonNode> _swipe;
+    int _swipeUP;
+    int _swipeDN;
+    std::shared_ptr<cugl::PolygonNode> _tap;
+    int _roomClick;
+    bool _swipeTutorial;
 
     cugl::Size _size;
     
@@ -215,6 +223,10 @@ public:
      *
      */
     void enableButtons();
+    
+    void resetTutorial();
+    
+    
     
     
 

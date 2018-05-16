@@ -194,6 +194,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
+             _actions->clearAllActions(_jackpot);
+            _actions->clearAllActions(_hammerAnim);
+            _jackpot->dispose();
             switchscene = OVERWORLD;
         }
     });
@@ -404,7 +407,9 @@ void AmmoScene::update(float timestep){
 
 	//Animate
     if (!_actions->isActive(ACT_KEY+1)){
-        _jackpot=nullptr;
+        if (_jackpot != nullptr) {
+            _jackpot->dispose();
+        }
         _hammer->activate(input.findKey("hammer"));
         _hammer2->activate(input.findKey("hammer2"));
     }

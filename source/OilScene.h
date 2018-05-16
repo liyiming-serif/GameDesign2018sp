@@ -49,6 +49,9 @@ protected:
     std::shared_ptr<cugl::PolygonNode> S_compass;
     std::shared_ptr<cugl::PolygonNode> SE_compass;
     std::shared_ptr<cugl::PolygonNode> SW_compass;
+    
+    std::shared_ptr<cugl::PolygonNode> _tilt;
+    bool _tiltTutorial;
 
 	std::shared_ptr<cugl::AnimationNode> _deluge;
 	float _delugeFrame;
@@ -85,6 +88,8 @@ public:
 
 	/**iterate through gameModel's dmg castle health and apply indicators*/
 	void pollDmgIndicators();
+    
+    int _tiltCount;
 };
 
 
