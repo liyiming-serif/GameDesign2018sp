@@ -144,7 +144,10 @@ void GameModel::update(float deltaTime){
             }
 			else {
 				// enemy in position; begin attacking
-				if (it->second->getAtkCounter() <= 0) {
+				if (it->second->getAtkCounter() < 0) {
+					it->second->setAtkCounter(it->second->getAtkSpeed());
+				}
+				if (it->second->getAtkCounter() == 0) {
 					gameModel.changeWallHealth(wall, -it->second->getDamage());
 					it->second->setAtkCounter(it->second->getAtkSpeed());
 				}

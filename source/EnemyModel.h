@@ -36,6 +36,7 @@ public:
     void update(float deltaTime) override;
 	//For Berserkers: multiply walking speed as they become more enraged
 	float scaleAnimSp(float factor);
+	void setAtkProgress(float p) { _atkProgress = p; }
 
     // Assume assets are already loaded, and _node is immutable after init
     const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
@@ -59,6 +60,8 @@ protected:
 	float _currFrame;
 	float _walkAnimSp;
 	float _dieAnimSp;
+	//atkCounter/atkSpeed. Used to set attack animation
+	float _atkProgress;
 
     //MEMBERS
 	std::string _name;
@@ -68,6 +71,7 @@ protected:
 
 	//pixels per meter measurement. obstacle world * _drawScale = screen size
 	int _drawScale;
+
 };
 
 #endif //BUILD_ANDROID_ENEMYMODEL_H

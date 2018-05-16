@@ -20,6 +20,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 	_drawScale = drawScale;
 	_name = name;
 	_node = nullptr;
+	_atkProgress = -1;
 	std::shared_ptr<Texture> texture;
 
 	switch (type) {
@@ -129,9 +130,18 @@ void EnemyModel::update(float deltaTime) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
 
-		//Animation
+		//Animate Attacking
+		if (_atkProgress >= 0.0f && _atkProgress <= 1.0f) {
+			int atkLen = _node->getSize() - _attackFrameStart;
+			_node->setFrame(static_cast<int>(floor((1.0f-_atkProgress)*atkLen))%atkLen + _attackFrameStart);
+			return;
+		}
+
+		//Animate Walking
 		_currFrame += _walkAnimSp;
 		_node->setFrame(static_cast<int>(floor(_currFrame))%_dieFrameStart);
+
+		
     }
 }
 

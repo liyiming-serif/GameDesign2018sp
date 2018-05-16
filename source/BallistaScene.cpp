@@ -594,7 +594,7 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 
 		std::unordered_map<std::string, std::shared_ptr<EnemyModel>>::iterator i =
 			_enemyArray.find(k);
-		if (i == _enemyArray.end()) {
+		if (i == _enemyArray.end()) { //new enemy appeared
 			if (inRange(e->getPos().y)) {
 				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, e->getType(), DRAW_SCALE, _assets);
@@ -605,9 +605,11 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 				}
 			}
 		}
-		else {
+		else { //update existing enemy model
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos/DRAW_SCALE);
+			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
+			i->second->setAtkProgress(atkProgress);
 			i->second->update(deltaTime);
 		}
 	}

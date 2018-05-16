@@ -555,6 +555,8 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 		else { //Enemy already exists; update it.
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos / DRAW_SCALE);
+			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
+			i->second->setAtkProgress(atkProgress);
 			i->second->update(timestep);
 		}
 	}

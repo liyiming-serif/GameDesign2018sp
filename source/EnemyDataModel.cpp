@@ -18,6 +18,7 @@ bool EnemyDataModel::init(const std::string& name,int hp,const Vec2& pos,int typ
 	_pos.set(pos);
 	_type = type;
 	_wall = wall;
+	_atkCounter = -1;
 	switch (type) {
 		case 1: //skeleton
 			_atkRange = -1;
