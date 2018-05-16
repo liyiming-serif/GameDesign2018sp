@@ -797,6 +797,22 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
                 _pauseBG->setVisible(!_pauseBG->isVisible());
+            
+                if (_pauseBG->isVisible()) {
+                    isPaused=true;
+                    disableButtons();
+                    _pauseBACK->activate(input.findKey("pauseBack"));
+                    _pauseREPLAY->activate(input.findKey("pauseReplay"));
+                    _pauseQUIT->activate(input.findKey("pauseQuit"));
+                }
+                else {
+                    isPaused=false;
+                    enableButtons();
+                    _pauseBACK->deactivate();
+                    _pauseREPLAY->deactivate();
+                    _pauseQUIT->deactivate();
+                }
+            
         }
     });
     
@@ -822,6 +838,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _pauseQUIT->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
+            isPaused=false;
             switchscene = MENU;
         }
     });
@@ -840,6 +857,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             _pauseBG->setVisible(false);
+            isPaused=false;
             switchscene = OVERWORLD;
         }
     });
@@ -858,6 +876,11 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
              _pauseBG->setVisible(false);
+            isPaused=false;
+            enableButtons();
+//            _pauseBACK->deactivate();
+//            _pauseREPLAY->deactivate();
+//            _pauseQUIT->deactivate();
         }
     });
     
@@ -1208,21 +1231,15 @@ void OverworldScene::enableButtons() {
 
 void OverworldScene::update(float timestep){
     
-    if (_pauseBG->isVisible()) {
-        CULog("visible");
-        disableButtons();
-        _pauseBACK->activate(input.findKey("pauseBack"));
-        _pauseREPLAY->activate(input.findKey("pauseReplay"));
-        _pauseQUIT->activate(input.findKey("pauseQuit"));
-    }
-    else {
-        CULog("invisible");
+    if (!_pauseBG->isVisible()) {
+        isPaused=false;
         enableButtons();
         _pauseBACK->deactivate();
-       _pauseREPLAY->deactivate();
-       _pauseQUIT->deactivate();
+        _pauseREPLAY->deactivate();
+        _pauseQUIT->deactivate();
     }
-
+    
+    
     //TODO: Make the relevant buttons unclickable/covered in Avatars for networked game
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {

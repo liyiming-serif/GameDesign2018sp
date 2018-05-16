@@ -232,6 +232,8 @@ public:
     
     void resetTutorial();
     
+    bool isPaused;
+    
     
     
     
