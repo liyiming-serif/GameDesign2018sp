@@ -156,6 +156,8 @@ public:
 
     void setCurrentRoom(int room);
 
+    void suspendClient();
+
 private:
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
     std::string produceStateChangeServer();

@@ -796,3 +796,21 @@ void GameModel::setServer(bool server){
 void GameModel::setCurrentRoom(int room){
     gameModel._currentRoom = room;
 }
+
+void GameModel::suspendClient() {
+    std::string suspendString = "|0 0 0 0 0 0| |0 0 0|" + to_string(_playerID)+":0|0 0 0 0 0 0";
+    int premessageSize = suspendString.length();
+    int postmessageSize = premessageSize + to_string(premessageSize).length();
+    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
+    suspendString = to_string(totalmessageSize) + suspendString;
+    char *write_byte_buffer = return_buffer(suspendString);
+
+    CULog("Suspend Message %s \n", write_byte_buffer);
+
+    if (gameModel.sendState(write_byte_buffer) == 1){
+        CULog("At least one write failure");
+    } else {
+        CULog("Write success");
+    }
+    delete[] write_byte_buffer;
+}

@@ -144,6 +144,12 @@ void CastleApp::onShutdown() {
     Application::onShutdown();
 }
 
+void CastleApp::onSuspend() {
+    if (gameModel.isNetworked() && !gameModel.isServer()) {
+        gameModel.suspendClient();
+    }
+}
+
 /**
  * The method called to update the application data.
  *
