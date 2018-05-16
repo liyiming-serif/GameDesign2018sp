@@ -234,59 +234,62 @@ void CastleApp::update(float timestep) {
             }
         }
         else{ //gameplay update loop
-            if(_currscene==OVERWORLD) {
-                _overworldScene.update(timestep);
-                if(_overworldScene.switchscene!=0){
-                    swapscenes(_overworldScene.switchscene, _overworldScene.direction);
-                    _overworldScene.setActive(false);
+            if (!_overworldScene.isPaused) {
+                CULog("Play");
+                if(_currscene==OVERWORLD) {
+                    _overworldScene.update(timestep);
+                    if(_overworldScene.switchscene!=0){
+                        swapscenes(_overworldScene.switchscene, _overworldScene.direction);
+                        _overworldScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==BALLISTA){
-                _ballistaScene.update(timestep, _direction);
-                if(_ballistaScene.switchscene!=0){
-                    swapscenes(_ballistaScene.switchscene, 0);
-                    _ballistaScene.setActive(false, _direction);
+                else if(_currscene==BALLISTA){
+                    _ballistaScene.update(timestep, _direction);
+                    if(_ballistaScene.switchscene!=0){
+                        swapscenes(_ballistaScene.switchscene, 0);
+                        _ballistaScene.setActive(false, _direction);
+                    }
                 }
-            }
-            else if(_currscene==LOOKOUT){
-                _lookoutScene.update(timestep);
-                if(_lookoutScene.switchscene!=0){
-                    swapscenes(_lookoutScene.switchscene, 0);
-                    _lookoutScene.setActive(false);
+                else if(_currscene==LOOKOUT){
+                    _lookoutScene.update(timestep);
+                    if(_lookoutScene.switchscene!=0){
+                        swapscenes(_lookoutScene.switchscene, 0);
+                        _lookoutScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==REPAIR){
-                _repairScene.update(timestep);
-                if(_repairScene.switchscene!=0){
-                    swapscenes(_repairScene.switchscene, 0);
-                    _repairScene.setActive(false);
+                else if(_currscene==REPAIR){
+                    _repairScene.update(timestep);
+                    if(_repairScene.switchscene!=0){
+                        swapscenes(_repairScene.switchscene, 0);
+                        _repairScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==MAGE){
-                _mageScene.update(timestep);
-                if(_mageScene.switchscene!=0){
-                    swapscenes(_mageScene.switchscene, 0);
-                    _mageScene.setActive(false);
+                else if(_currscene==MAGE){
+                    _mageScene.update(timestep);
+                    if(_mageScene.switchscene!=0){
+                        swapscenes(_mageScene.switchscene, 0);
+                        _mageScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==AMMO) {
-                _ammoScene.update(timestep);
-                if(_ammoScene.switchscene!=0){
-                    swapscenes(_ammoScene.switchscene, 0);
-                    _ammoScene.setActive(false);
+                else if(_currscene==AMMO) {
+                    _ammoScene.update(timestep);
+                    if(_ammoScene.switchscene!=0){
+                        swapscenes(_ammoScene.switchscene, 0);
+                        _ammoScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==OIL){
-                _oilScene.update(timestep, _direction);
-                if(_oilScene.switchscene!=0){
-                    swapscenes(_oilScene.switchscene, 0);
-                    _oilScene.setActive(false, _direction);
+                else if(_currscene==OIL){
+                    _oilScene.update(timestep, _direction);
+                    if(_oilScene.switchscene!=0){
+                        swapscenes(_oilScene.switchscene, 0);
+                        _oilScene.setActive(false, _direction);
+                    }
                 }
-            }
 
 
-            _spawnController.update(timestep);
-            gameModel.update(timestep);
+                _spawnController.update(timestep);
+                gameModel.update(timestep);
+            }
         }
     }
     
