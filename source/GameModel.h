@@ -36,6 +36,8 @@ protected:
     int _oilPoured[6];
     int _deltaAmmo[3];
     int _currentRoom;
+    
+    bool _swipeTutorial;
 
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];

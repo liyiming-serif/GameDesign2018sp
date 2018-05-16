@@ -467,6 +467,7 @@ void CastleApp::reset(){
     //_mageScene.dispose();
     //_ammoScene.dispose();
     //_oilScene.dispose();
+    _overworldScene.resetTutorial();
 	gameModel.resetWallDmg();
     _spawnController.dispose();
     gameModel.dispose();

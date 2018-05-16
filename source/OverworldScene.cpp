@@ -267,6 +267,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     currentCastleFloor = 3;
     
+    
+    std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_swipe");
+    _swipe = PolygonNode::allocWithTexture(tut_swipe);
+    _swipe->setScale(1.0); // Magic number to rescale asset
+    _swipe->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _swipe->setPosition(-_size.width/2,0);
+    _background->addChild(_swipe);
+    
 // CREATES THE FLOORS
     
     std::shared_ptr<Texture> room_lock  = _assets->get<Texture>("room_lock");
@@ -299,6 +307,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = REPAIR;
                     }
                     
@@ -309,6 +318,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = AMMO;
                     }
                 }
@@ -318,6 +328,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = MAGE;
                     }
                 }
@@ -408,6 +419,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 0;
                     }
@@ -418,6 +430,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 1;
                     }
@@ -428,6 +441,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 2;
                     }
@@ -438,6 +452,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 3;
                     }
@@ -448,6 +463,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 4;
                     }
@@ -458,6 +474,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = OIL;
                         direction = 5;
                     }
@@ -577,6 +594,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 0;
                     }
@@ -587,6 +605,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 1;
                     }
@@ -597,6 +616,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 2;
                     }
@@ -607,6 +627,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 3;
                     }
@@ -617,6 +638,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 4;
                     }
@@ -627,6 +649,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 5;
                     }
@@ -714,6 +737,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only go to lookout when the button is released
         if (!down) {
             if (click){
+                _roomClick+=1;
                 switchscene = LOOKOUT;
             }
         }
@@ -749,6 +773,13 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
+    
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _tap = PolygonNode::allocWithTexture(tut_tap);
+    _tap->setScale(1.0); // Magic number to rescale asset
+    _tap->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    //_tap->setPosition(_size.width*.26f,_size.height*.07f);
+    _background->addChild(_tap);
     
 
     
@@ -976,6 +1007,16 @@ void OverworldScene::pollDmgIndicators() {
 //
 //}
 
+
+void OverworldScene::resetTutorial() {
+    _swipeDN = 0;
+    _swipeUP=0;
+    _roomClick = 0;
+    _swipeTutorial=false;
+}
+
+
+
 void OverworldScene::disableButtons() {
 
     _lookout_button->deactivate();
@@ -1018,6 +1059,14 @@ void OverworldScene::enableButtons() {
         _oilSouthWest->activate(input.findKey("oilSouthWest"));
         _oilSouthWestLOCKED->setVisible(false);
         
+    }
+    else {
+        _oilNorth->deactivate();
+        _oilNorthLOCKED->setVisible(true);
+        _oilSouthEast->deactivate();
+        _oilSouthEastLOCKED->setVisible(true);
+        _oilSouthWest->deactivate();
+        _oilSouthWestLOCKED->setVisible(true);
     }
     
     
@@ -1064,7 +1113,16 @@ void OverworldScene::enableButtons() {
             _oilSouth->activate(input.findKey("oilSouth"));
             _oilSouthLOCKED->setVisible(false);
         }
+        else {
+            _oilNorthEast->deactivate();
+            _oilNorthEastLOCKED->setVisible(true);
+            _oilNorthWest->deactivate();
+            _oilNorthWestLOCKED->setVisible(true);
+            _oilSouth->deactivate();
+            _oilSouthLOCKED->setVisible(true);
+        }
 
+        
         _ballistaNorthEast->activate(input.findKey("ballistaNorthEast"));
         _ballistaNorthWest->activate(input.findKey("ballistaNorthWest"));
         _ballistaSouth->activate(input.findKey("ballistaSouth"));
@@ -1091,6 +1149,15 @@ void OverworldScene::update(float timestep){
         if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
             switchscene = WIN;
         }
+    }
+    
+
+    if (_swipeUP>1 && _swipeDN > 1) {
+        _swipe->setVisible(false);
+    }
+    
+    if (_roomClick>2) {
+        _tap->setVisible(false);
     }
 
 	//poll damage indicators
@@ -1130,6 +1197,7 @@ void OverworldScene::update(float timestep){
 		currentCastleFloor -= 1;
         click=false;
         disableButtons();
+        _swipeDN+=1;
 	}
 	else if (input.vScrolling() > 0 && currentCastleFloor<3 && !_actions->isActive(ACT_KEY)) {
 		//Moving up
@@ -1139,7 +1207,17 @@ void OverworldScene::update(float timestep){
 		currentCastleFloor += 1;
         click=false;
         disableButtons();
+        _swipeUP+=1;
 	}
+    if (currentCastleFloor==3) {
+        _tap->setPosition(_size.width*.25f,_size.height*.07f);
+    }
+    else if (currentCastleFloor==0) {
+        _tap->setPosition(_size.width*.315f,_size.height*.265f);
+    }
+    else {
+        _tap->setPosition(_size.width*.25f,_size.height*.338f);
+    }
     if (!_actions->isActive(ACT_KEY)){
         click=true;
         enableButtons();
@@ -1174,6 +1252,23 @@ void OverworldScene::setActive(bool active) {
     if(active){
         enableButtons();
         Application::get()->setClearColor(Color4(255,255,255,255));
+        
+
+
+        if (gameModel.level==1){
+            _swipeTutorial=true;
+        }
+        if (_swipeTutorial && _swipeUP<1 && _swipeDN < 1) {
+            _swipe->setVisible(true);
+        }
+        if (_swipeTutorial && _roomClick < 2) {
+            _tap->setVisible(true);
+        }
+        if (!_swipeTutorial) {
+            _swipe->setVisible(false);
+            _tap->setVisible(false);
+        }
+
 
 		//Change scenery based on level
 		std::shared_ptr<Texture> oilFloor_texture = _assets->get<Texture>("oil_floor");
@@ -1201,7 +1296,6 @@ void OverworldScene::setActive(bool active) {
 			_lookout_floor->setTexture(lookoutFloor_texture_d);
 		}
        // resetCastle();
-        CULog("setACtive");
 
         
     }

@@ -884,6 +884,27 @@
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
+        },
+        "tutorial_swipe": {
+            "file":     "textures/Tutorial/swipe.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_tap": {
+            "file":     "textures/Tutorial/tap.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_tilt": {
+            "file":     "textures/Tutorial/tilt.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
         }
 	},
 	"fonts": {
