@@ -824,7 +824,7 @@ void LevelselectScene::animateClouds() {
 }
 
 std::string LevelselectScene::produceACKServer() {
-    return to_string(gameModel.getNoPlayers())+"|1|" + to_string(level);
+    return to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.level);
 }
 
 char* LevelselectScene::return_buffer(const std::string &string) {

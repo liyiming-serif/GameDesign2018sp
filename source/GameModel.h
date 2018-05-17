@@ -87,7 +87,7 @@ public:
 
 	void setEndTime(float time);
 
-	int getLevel(){return level;}
+	int getLevel();
 
 	void setLevel(int inputLevel){level = inputLevel;}
 

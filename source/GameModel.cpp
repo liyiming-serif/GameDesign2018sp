@@ -285,6 +285,10 @@ int GameModel::getNoPlayers() {
     return gameModel._noPlayers;
 }
 
+int GameModel::getLevel() {
+    return gameModel.level;
+}
+
 void GameModel::setAmmo(int type, int amt){
     gameModel._arrowAmmo[type] = amt;
 }
@@ -836,10 +840,6 @@ char* GameModel::return_buffer(const std::string& string) {
     char* return_string = new char[string.length() + 1];
     strcpy(return_string, string.c_str());
     return return_string;
-}
-
-int GameModel::getNoPlayers() {
-    return gameModel._noPlayers;
 }
 
 bool GameModel::isNetworked(){
