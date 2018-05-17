@@ -235,7 +235,6 @@ void CastleApp::update(float timestep) {
         }
         else{ //gameplay update loop
             if (!_overworldScene.isPaused) {
-                CULog("Play");
                 if(_currscene==OVERWORLD) {
                     _overworldScene.update(timestep);
                     if(_overworldScene.switchscene!=0){

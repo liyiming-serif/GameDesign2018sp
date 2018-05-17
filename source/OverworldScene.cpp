@@ -1105,8 +1105,6 @@ void OverworldScene::resetTutorial() {
 
 
 void OverworldScene::disableButtons() {
-    CULog("disable");
-
 
     _lookout_button->deactivate();
     
@@ -1133,7 +1131,6 @@ void OverworldScene::disableButtons() {
 
 void OverworldScene::enableButtons() {
     
-    CULog("enable");
     _menuButton->activate(input.findKey("menuButton"));
     
     _lookout_button->activate(input.findKey("lookout_button"));
