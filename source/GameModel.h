@@ -87,6 +87,10 @@ public:
 
 	void setEndTime(float time);
 
+	int getLevel(){return level;}
+
+	void setLevel(int inputLevel){level = inputLevel;}
+
     int getWallHealth(int wall);
 
     void setWallHealth(int wall, int amt);

@@ -35,7 +35,7 @@ bool GameModel::init(){
         gameModel._playerRooms[i] = 0;
         gameModel._playerAvatars[i] = 0;
     }
-
+    level = 0;
     gameModel._playerID = 0;
 
     gameModel._currentRoom = 0;

@@ -170,7 +170,9 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
+                CULog("before set");
                 gameModel.setLevel(1);
+                CULog("set level");
             }
 
         }
@@ -785,6 +787,7 @@ void LevelselectScene::setLevel(int level){
 }
 
 int LevelselectScene::getLevel(){
+    CULog("before get");
     return gameModel.getLevel();
 }
 

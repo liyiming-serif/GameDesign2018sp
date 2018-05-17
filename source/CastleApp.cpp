@@ -301,6 +301,7 @@ void CastleApp::update(float timestep) {
 //TODO::FIX THE NEXT LEVEL AND RESET
 
 void CastleApp::swapscenes(int nextscene, int direction){
+ CULog("Level Select Level %i", _levelScene.getLevel());
     _direction = direction;
     if (_currscene == MENU && nextscene == LOBBY) {
         enableBluetooth();
@@ -327,38 +328,36 @@ void CastleApp::swapscenes(int nextscene, int direction){
         || (_currscene==OVERWORLD && nextscene == OVERWORLD)) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
-        CULog("Level Select Level %i", _levelScene.level);
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _winScene.setActive(false);
-        _levelScene.level = _levelScene.level + 1;
-        int level = _levelScene.level;
+        _levelScene.setLevel(_levelScene.getLevel() + 1);
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        _levelScene.level = level;
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
         _levelScene.setActive(false, gameModel.getNoPlayers());
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     switch(nextscene){
         case MENU:
