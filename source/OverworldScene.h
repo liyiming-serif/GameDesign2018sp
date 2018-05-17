@@ -79,6 +79,15 @@ protected:
         std::shared_ptr<cugl::PolygonNode> _oilSouthWestLOCKED;
         std::shared_ptr<cugl::PolygonNode> _oilWestLOCKED;
         std::shared_ptr<cugl::PolygonNode> _oilNorthWestLOCKED;
+    
+        std::shared_ptr<cugl::PolygonNode> _oilNorthNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthWestNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilWestNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthWestNEW;
     //Lookout Button
         std::shared_ptr<cugl::Button> _lookout_button;
     //Basement Buttons
@@ -89,6 +98,10 @@ protected:
         std::shared_ptr<cugl::PolygonNode> _repair_buttonLOCKED;
         std::shared_ptr<cugl::PolygonNode>_mage_buttonLOCKED;
         std::shared_ptr<cugl::PolygonNode> _ammo_buttonLOCKED;
+    
+        std::shared_ptr<cugl::PolygonNode> _repair_buttonNEW;
+        std::shared_ptr<cugl::PolygonNode>_mage_buttonNEW;
+        std::shared_ptr<cugl::PolygonNode> _ammo_buttonNEW;
     
 
     
@@ -115,13 +128,23 @@ protected:
     int _swipeDN;
     std::shared_ptr<cugl::PolygonNode> _tap;
     int _roomClick;
+    int _oilClick;
+    int _ammoClick;
+    int _repairClick;
+    int _mageClick;
     bool _swipeTutorial;
+    bool _newOil;
+    bool _newAmmo;
+    bool _newRepair;
+    bool _newMage;
     
     //Pause
     std::shared_ptr<cugl::PolygonNode> _pauseBG;
     std::shared_ptr<cugl::Button> _pauseQUIT;
     std::shared_ptr<cugl::Button> _pauseREPLAY;
     std::shared_ptr<cugl::Button> _pauseBACK;
+    std::shared_ptr<cugl::Button> _pauseSOUND;
+    std::shared_ptr<cugl::PolygonNode> _pauseMUTE;
 
 
     cugl::Size _size;

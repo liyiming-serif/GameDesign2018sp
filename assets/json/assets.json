@@ -948,6 +948,13 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "tutorial_newRoom": {
+            "file":     "textures/Tutorial/newRoom.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "pause_BG": {
             "file":     "textures/Pause/BG.png",
             "minfilter":"nearest",
@@ -971,6 +978,20 @@
         },
         "pause_quit": {
             "file":     "textures/Pause/quit.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_sound": {
+            "file":     "textures/Pause/sound.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_mute": {
+            "file":     "textures/Pause/mute.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
