@@ -281,6 +281,10 @@ void GameModel::resetWallDmg() {
 	}
 }
 
+int GameModel::getNoPlayers() {
+    return gameModel._noPlayers;
+}
+
 void GameModel::setAmmo(int type, int amt){
     gameModel._arrowAmmo[type] = amt;
 }
