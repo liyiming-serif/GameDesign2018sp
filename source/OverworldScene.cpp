@@ -1215,8 +1215,6 @@ void OverworldScene::resetTutorial() {
 
 
 void OverworldScene::disableButtons() {
-
-
     _lookout_button->deactivate();
     
     _oilNorth->deactivate();
