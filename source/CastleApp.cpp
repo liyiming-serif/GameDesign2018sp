@@ -361,6 +361,15 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _overworldScene.resetCastle();
         gameModel.level=level;
     }
+    if (_currscene==LOBBY && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _lobbyScene.setActive(false);
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), gameModel.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, gameModel.level));
+        initializeRooms();
+        _overworldScene.resetCastle();
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);
