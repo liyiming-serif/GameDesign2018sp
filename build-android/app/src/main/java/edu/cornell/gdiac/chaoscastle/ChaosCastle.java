@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.os.*;
 import android.util.Log;
 
@@ -331,6 +333,21 @@ public class ChaosCastle extends SDLActivity {
 		if(isServer&&bServer!=null){
 			bServer.cancel();
 		}
+	}
+
+	public void displayClientError(String serverName){
+		//create alert dialog factory
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+		//Chain together various setter methods to set the dialog characteristics,
+		//then show them.
+		builder.setMessage(serverName+" is currently not hosting a game.")
+				.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+					}
+				})
+				.show();
 	}
 
 	public void disconnect(BluetoothConnectedThread connection) {

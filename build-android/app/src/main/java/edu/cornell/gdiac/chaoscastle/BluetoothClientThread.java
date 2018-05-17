@@ -23,6 +23,9 @@ class BluetoothClientThread extends Thread {
     UUID MY_UUID = UUID.fromString("757b1a35-43e2-4f69-b882-7acf1c9c6c6a");
     private static final String TAG = "CLIENT";
 
+    private static final int TIMEOUT_MS = 5000;
+    private TimeoutThread timer;
+
     public BluetoothClientThread(BluetoothDevice device, ChaosCastle p) {
         // Use a temporary object that is later assigned to mmSocket
         // because mmSocket is final.
@@ -43,13 +46,19 @@ class BluetoothClientThread extends Thread {
         // Cancel discovery because it otherwise slows down the connection.
         mba.cancelDiscovery();
 
+        // Set a timer which forces the socket to close after 5 sec.
+        timer = new TimeoutThread(mmSocket, TIMEOUT_MS);
+        timer.start();
+
         try {
             // Connect to the remote device through the socket. This call blocks
             // until it succeeds or throws an exception.
             mmSocket.connect();
-            Log.d("CLIENT", "Connecting to socket");
+            Log.d(TAG, "Connecting to socket");
         } catch (IOException connectException) {
-            // Unable to connect; close the socket and return.
+            // Unable to connect; close the socket and get parent to show popup.
+            Log.e(TAG, "Remote is not hosting a game.");
+            parent.displayClientError(mmDevice.getName());
             try {
                 mmSocket.close();
             } catch (IOException closeException) {
@@ -60,6 +69,7 @@ class BluetoothClientThread extends Thread {
 
         // The connection attempt succeeded. Perform work associated with
         // the connection in a separate thread.
+        timer.interrupt();
         parent.connected(mmSocket);
     }
 
@@ -72,4 +82,29 @@ class BluetoothClientThread extends Thread {
         }
     }
 
+    //Inner class that exists only to close the client if it takes too long.
+    private class TimeoutThread extends Thread{
+        private int milliseconds; //socket timeout
+        private BluetoothSocket clientSocket;
+        public TimeoutThread(BluetoothSocket client, int ms){
+            milliseconds = ms;
+            clientSocket = client;
+        }
+
+        @Override
+        public void run(){
+            try {
+                Thread.sleep(milliseconds);
+                try {
+                    Log.d("CLIENT", "Connection timed out!");
+                    mmSocket.close();
+                } catch (IOException closeException) {
+                    Log.e("CLIENT", "Could not close the client socket", closeException);
+                }
+            }
+            catch (java.lang.InterruptedException e){
+                Log.d("CLIENT", "Connection successful; stopped timeout.");
+            }
+        }
+    }
 }
