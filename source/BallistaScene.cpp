@@ -614,19 +614,34 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 		}
 	}
 
-	//delete enemy models too close or not found in the master 
+	//delete enemy models too close or not found in the master that have finished dying
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> e : _enemyArray) {
 		std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
 			gameModel._enemyArrayMaster[direction].find(e.first);
-		if (i == gameModel._enemyArrayMaster[direction].end() || !inRange(i->second->getPos().y)) {
+		if (i == gameModel._enemyArrayMaster[direction].end()) {
+			if (!e.second->isDying) {
+				//remove hit box for enemies playing death animation
+				_world->removeObstacle(e.second.get());
+				e.second->isDying = true;
+			}
+			else {
+				//move death animation forward
+				e.second->update(deltaTime);
+			}
+			if(e.second->doneDying) {
+				//mark enemies with finished death animation for removal
+				_enemiesToFree.insert(e.second);
+			}
+		}
+		else if (!inRange(i->second->getPos().y)) {
 			//mark enemy models for deletion
 			_enemiesToFree.insert(e.second);
+			_world->removeObstacle(e.second.get());
 		}
 	}
 	// Delete the enemies here because you can't remove elements while iterating
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}
@@ -658,14 +673,15 @@ void BallistaScene::setActive(bool active, int direction){
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
 		std::shared_ptr<EnemyModel> e = epair.second;
-		_world->removeObstacle(e.get());
+		if (!e->isDying) {
+			_world->removeObstacle(e.get());
+		}
 		removeChild(e->getNode());
 	}
 	_enemyArray.clear();
 
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}

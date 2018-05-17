@@ -38,6 +38,10 @@ public:
 	float scaleAnimSp(float factor);
 	void setAtkProgress(float p) { _atkProgress = p; }
 
+	//DEATH ANIMATION BAFFOONERY 
+	bool isDying;
+	bool doneDying;
+
     // Assume assets are already loaded, and _node is immutable after init
     const std::shared_ptr<cugl::AnimationNode> getNode() const { return _node; }
 

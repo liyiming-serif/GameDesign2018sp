@@ -4,35 +4,35 @@
 			"enemies" : {
 				"numSpawn" : 18,
 				"spawn1" : {
-					"name" : "warrior",
+					"name" : "skeleton",
 					"spawn_time" : 300,
 					"xCoord" : 100,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn2" : {
-					"name" : "archer",
+					"name" : "skeleton",
 					"spawn_time" : 700,
 					"xCoord" : 500,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn3" : {
-					"name" : "berserker",
+					"name" : "skeleton",
 					"spawn_time" : 1100,
 					"xCoord" : 1000,
 					"yCoord" : 700,
 					"sector" : 0
 				},
 				"spawn4" : {
-					"name" : "archer",
+					"name" : "skeleton",
 					"spawn_time" : 1700,
 					"xCoord" : 300,
 					"yCoord" : 700,
 					"sector" : 2
 				},
 				"spawn5" : {
-					"name" : "berserker",
+					"name" : "skeleton",
 					"spawn_time" : 1700,
 					"xCoord" : 700,
 					"yCoord" : 700,
@@ -136,7 +136,7 @@
 				"ammo" : false,
 				"repair" : false,
 				"oil" : false,
-				"mage" : false
+				"mage" : true
 			},
 			"ammo" : 100
 		},

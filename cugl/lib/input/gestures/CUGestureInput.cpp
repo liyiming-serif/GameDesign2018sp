@@ -275,7 +275,7 @@ bool GestureInput::read(const std::string& file, std::function<void(bool success
     bool success = true;
     std::string sep = Pathname::getSeparator();
     std::string index = file+sep+"index.json";
-    
+
     // Get the index file
     std::shared_ptr<JsonReader> reader = JsonReader::allocWithAsset(index);
     if (reader == nullptr) {
@@ -503,7 +503,7 @@ bool GestureInput::loadAsset(const std::string& file) {
     if (!ready()) {
         return false;
     }
-    
+
     return read(file);
 }
 

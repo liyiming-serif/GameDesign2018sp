@@ -21,6 +21,8 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 	_name = name;
 	_node = nullptr;
 	_atkProgress = -1;
+	isDying = false;
+	doneDying = false;
 	std::shared_ptr<Texture> texture;
 
 	switch (type) {
@@ -30,7 +32,9 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_cols = 5;
 			_walkFrameStart = 0;
 			_dieFrameStart = 10;
+			_attackFrameStart = 20;
 			_walkAnimSp = 0.15f;
+			_dieAnimSp = 0.3f;
 
 			//create the scene node
 			texture = assets->get<Texture>("skeleton");
@@ -49,6 +53,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 10;
 			_attackFrameStart = 20;
 			_walkAnimSp = 0.2f;
+			_dieAnimSp = 0.4f;
 
 			//create the scene node
 			texture = assets->get<Texture>("flying");
@@ -66,6 +71,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
+			_dieAnimSp = 0.1f;
 
 			//create the scene node
 			texture = assets->get<Texture>("warrior");
@@ -83,6 +89,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 16;
 			_walkAnimSp = 0.05f;
+			_dieAnimSp = 0.1f;
 
 			//create the scene node
 			texture = assets->get<Texture>("reaper");
@@ -99,6 +106,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
+			_dieAnimSp = 0.1f;
 
 			//create the scene node
 			texture = assets->get<Texture>("berserker");
@@ -130,6 +138,22 @@ void EnemyModel::update(float deltaTime) {
         _node->setPosition(getPosition()*_drawScale);
         _node->setAngle(getAngle());
 
+		//Animate Dying
+		if (isDying) {
+			if (_currFrame < _dieFrameStart) {
+				_currFrame = _dieFrameStart;
+			}
+			else {
+				_currFrame += _dieAnimSp;
+				if (_currFrame >= _node->getSize() || _currFrame >= _attackFrameStart) {
+					doneDying = true;
+					return;
+				}
+			}
+			_node->setFrame(static_cast<int>(floor(_currFrame)));
+			return;
+		}
+
 		//Animate Attacking
 		if (_atkProgress >= 0.0f && _atkProgress <= 1.0f) {
 			int atkLen = _node->getSize() - _attackFrameStart;
@@ -139,8 +163,8 @@ void EnemyModel::update(float deltaTime) {
 
 		//Animate Walking
 		_currFrame += _walkAnimSp;
-		_node->setFrame(static_cast<int>(floor(_currFrame))%_dieFrameStart);
-
+		_currFrame = std::fmodf(_currFrame,(float)_dieFrameStart);
+		_node->setFrame(static_cast<int>(floor(_currFrame)));
 		
     }
 }
