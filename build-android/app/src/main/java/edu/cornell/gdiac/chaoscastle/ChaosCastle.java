@@ -322,6 +322,21 @@ public class ChaosCastle extends SDLActivity {
 		bClient.start();
 	}
 
+	/**Call from C++ every update to check if you're connected*/
+	public boolean isConnected(){
+		if(isServer){
+			if(bConnectedRing != null && bConnectedRing.size()>0){
+				return true;
+			}
+		}
+		else{
+			if(bConnected != null){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean connected(BluetoothSocket mmSocket) {
 		Log.d("CONNECTED", "Starting connection");
 
