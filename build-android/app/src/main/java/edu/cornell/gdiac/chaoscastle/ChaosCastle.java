@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.os.*;
 import android.util.Log;
 
@@ -36,6 +38,8 @@ public class ChaosCastle extends SDLActivity {
 	boolean isServer = false;
 	int currClientIndex = -1;
 
+	Handler mHandler;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	    // Make sure this is before calling super.onCreate
@@ -44,6 +48,25 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
+
+		mHandler = new Handler(Looper.getMainLooper()) {
+			@Override
+			public void handleMessage(Message message) {
+				//create alert dialog factory
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+				Log.d("CLIENT", "here1");
+				//Chain together various setter methods to set the dialog characteristics,
+				//then show them.
+				builder.setMessage((String)message.obj+" is currently not hosting a game.")
+						.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						})
+						.show();
+			}
+		};
 	}
 
 	public int getPlayers(){
@@ -299,6 +322,21 @@ public class ChaosCastle extends SDLActivity {
 		bClient.start();
 	}
 
+	/**Call from C++ every update to check if you're connected*/
+	public boolean isConnected(){
+		if(isServer){
+			if(bConnectedRing != null && bConnectedRing.size()>0){
+				return true;
+			}
+		}
+		else{
+			if(bConnected != null){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean connected(BluetoothSocket mmSocket) {
 		Log.d("CONNECTED", "Starting connection");
 
@@ -332,6 +370,7 @@ public class ChaosCastle extends SDLActivity {
 			bServer.cancel();
 		}
 	}
+
 
 	public void disconnect(BluetoothConnectedThread connection) {
 		connection.cancel();
