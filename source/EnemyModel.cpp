@@ -71,7 +71,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
-			_dieAnimSp = 0.1f;
+			_dieAnimSp = 0.25f;
 
 			//create the scene node
 			texture = assets->get<Texture>("warrior");
@@ -89,7 +89,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 16;
 			_walkAnimSp = 0.05f;
-			_dieAnimSp = 0.1f;
+			_dieAnimSp = 0.15f;
 
 			//create the scene node
 			texture = assets->get<Texture>("reaper");
@@ -106,7 +106,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_dieFrameStart = 8;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
-			_dieAnimSp = 0.1f;
+			_dieAnimSp = 0.25f;
 
 			//create the scene node
 			texture = assets->get<Texture>("berserker");
