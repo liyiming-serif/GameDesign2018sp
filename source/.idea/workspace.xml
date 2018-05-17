@@ -55,7 +55,7 @@
       <file leaf-file-name="LookoutScene.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LookoutScene.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="929">
+            <state relative-caret-position="-1111">
               <caret line="276" column="72" lean-forward="false" selection-start-line="276" selection-start-column="72" selection-end-line="276" selection-end-column="72" />
               <folding />
             </state>
@@ -316,7 +316,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526588971344" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526591498702" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -363,7 +363,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
       </Profilers>
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526588971344" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526591498702" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -959,7 +959,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LookoutScene.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="929">
+        <state relative-caret-position="-1111">
           <caret line="276" column="72" lean-forward="false" selection-start-line="276" selection-start-column="72" selection-end-line="276" selection-end-column="72" />
           <folding />
         </state>
