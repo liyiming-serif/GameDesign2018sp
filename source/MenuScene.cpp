@@ -27,6 +27,7 @@ using namespace cugl;
 
 
 #define DURATION 40.0f
+#define DURATION2 2.0f
 #define DISTANCE 920
 #define REPEATS  3
 #define ACT_KEY  "current"
@@ -50,6 +51,8 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     switchscene = 0;
     
     _assets = assets;
+    
+    _flagAnimation = Animate::alloc(0,3,DURATION2,REPEATS);
     
 
     
@@ -78,12 +81,15 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle->setAnchor(Vec2::ANCHOR_BOTTOM_LEFT);
     _castle->setPosition(_size.width/2+2,-16);
     
-    // Set the background image
-    std::shared_ptr<Texture> texture_flag  = _assets->get<Texture>("m_flag");
-    _flag = PolygonNode::allocWithTexture(texture_flag);
-    _flag->setScale(-0.5625f,0.5625f); // Magic number to rescale asset
+
+
+    
+    // Add the flag
+    _flag = AnimationNode::alloc(_assets->get<Texture>("m_flag"), 1, 4);
     _flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
+    _flag->setScale(0.5625f);
     _flag->setPosition(_size.width-60.5,_castle->getHeight()-57);
+    _flag->setFrame(0);
 
     
     
@@ -204,6 +210,7 @@ void MenuScene::dispose() {
         _cloud5 = nullptr;
         _title = nullptr;
         _flag = nullptr;
+        _flagAnimation = nullptr ;
         _castle = nullptr;
         _active = false;
     }
@@ -265,6 +272,10 @@ void MenuScene::update(float timestep){
         _move5 = MoveTo::alloc(Vec2(700,52),DURATION/4);
         doMove5(_move5, _cloud5);
     }
+    
+    if (!_actions->isActive(ACT_KEY+6)){
+        doStrip(_flagAnimation);
+    }
 
     _actions->update(timestep);
 }
@@ -293,6 +304,10 @@ void MenuScene::doMove4(const std::shared_ptr<MoveTo>& action, std::shared_ptr<c
 void MenuScene::doMove5(const std::shared_ptr<MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object) {
     auto fcn = EasingFunction::alloc(EasingFunction::Type::LINEAR);
     _actions->activate(ACT_KEY+5, action, object, fcn);
+}
+
+void MenuScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
+    _actions->activate(ACT_KEY+6, action, _flag);
 }
 
 

@@ -719,6 +719,7 @@ void RepairScene::dispose() {
         _background = nullptr;
         _active = false;
         _buttons = nullptr;
+        _tap=nullptr;
     }
 }
 

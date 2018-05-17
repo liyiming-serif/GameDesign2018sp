@@ -340,6 +340,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _tilt->setPosition(_size.width*.5f,_size.height*.9f);
     addChild(_tilt);
     
+    
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -375,6 +376,7 @@ void OilScene::dispose() {
 		_enemiesToFree.clear();
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+        _tilt=nullptr;
     }
 }
 

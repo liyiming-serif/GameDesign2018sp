@@ -473,6 +473,8 @@ void CastleApp::reset(){
     _overworldScene.resetTutorial();
     _oilScene._tiltCount = 0;
     _ballistaScene._shots = 0;
+    _ballistaScene._exitCount=0;
+    _lookoutScene._exitCount=0;
     _repairScene._wallClick=0;
     _ammoScene._ammoClick=0;
 	gameModel.resetWallDmg();

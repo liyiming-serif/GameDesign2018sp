@@ -246,6 +246,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballistaTOcastle->setName("ballistaTOcastle");
     _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
         if (!down) {
+            _exitCount+=1;
             switchscene = OVERWORLD;
         }
     });
@@ -359,6 +360,15 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ballista_swipe);
     
     
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _ballista_tap = PolygonNode::allocWithTexture(tut_tap);
+    _ballista_tap->setScale(.5); // Magic number to rescale asset
+    _ballista_tap->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _ballista_tap->setPosition(_size.width*.07f,_size.height*.85f);
+    addChild(_ballista_tap);
+    
+    
+
     
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
@@ -403,6 +413,8 @@ void BallistaScene::dispose() {
 		_enemiesToFree.clear();
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+        _ballista_tap=nullptr;
+        _ballista_swipe=nullptr;
     }
 }
 
@@ -469,6 +481,9 @@ void BallistaScene::update(float deltaTime, int direction){
     
     if (_shots > 2) {
         _ballista_swipe->setVisible(false);
+    }
+    if (_exitCount > 0) {
+        _ballista_tap->setVisible(false);
     }
 
     
@@ -680,10 +695,13 @@ void BallistaScene::setActive(bool active, int direction){
     }
     if (_swipeTutorial && _shots < 2) {
         _ballista_swipe->setVisible(true);
-        
+    }
+    if (_swipeTutorial && _exitCount < 1) {
+        _ballista_tap->setVisible(true);
     }
     if (!_swipeTutorial) {
         _ballista_swipe->setVisible(false);
+        _ballista_tap->setVisible(false);
     }
 
 	//empty the arrow arrays to prevent data leaks

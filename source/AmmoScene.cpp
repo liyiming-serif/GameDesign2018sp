@@ -402,6 +402,7 @@ void AmmoScene::dispose() {
         _active = false;
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+        _tap=nullptr;
     }
 }
 

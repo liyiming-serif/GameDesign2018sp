@@ -557,7 +557,7 @@
             "wrapT":    "clamp"
         },
         "m_flag": {
-            "file":     "textures/Menu/flag.png",
+            "file":     "textures/Menu/flag_animation.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

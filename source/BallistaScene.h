@@ -72,6 +72,7 @@ protected:
     
     //tutorial
     std::shared_ptr<cugl::PolygonNode> _ballista_swipe;
+    std::shared_ptr<cugl::PolygonNode> _ballista_tap;
     bool _swipeTutorial;
 
 	//helper method for translating enemy y coords
@@ -115,6 +116,7 @@ public:
 	void pollDmgIndicators();
     
     int _shots;
+    int _exitCount;
 };
 
 #endif //BUILD_ANDROID_BALLISTASCENE_H

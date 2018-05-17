@@ -39,6 +39,7 @@ using namespace cugl;
 /** Define the time settings for animation */
 #define DURATION .5f
 #define DURATION2 20.0f
+#define DURATION3 2.0f
 #define DMG_DURATION 1.0f
 #define DISTANCE 200
 #define REPEATS  3
@@ -70,6 +71,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     direction = -1;
     switchscene = 0;
+    
+    _flagAnimation = Animate::alloc(0,3,DURATION3,REPEATS);
     
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -194,12 +197,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_background->setScale(TOWER_SCALE); // Magic number to rescale asset
     _castle_background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_background->setPosition(-_size.width/2,0);
-    // Flag
-    std::shared_ptr<Texture> ca_flag  = _assets->get<Texture>("castle_flag_overworld");
-    _castle_flag = PolygonNode::allocWithTexture(ca_flag);
-    _castle_flag->setScale(-TOWER_SCALE,TOWER_SCALE); // Magic number to rescale asset
-    _castle_flag->setAnchor(Vec2::ANCHOR_CENTER);
-    _castle_flag->setPosition(-170,190);
     // Black
     std::shared_ptr<Texture> ca_black  = _assets->get<Texture>("castle_black");
     _castle_black = PolygonNode::allocWithTexture(ca_black);
@@ -231,6 +228,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_basement->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_basement->setPosition(-_size.width/2,0);
     //Adds Nodes to background and sets transparency
+    
+    
+    // Add the flag
+    _castle_flag = AnimationNode::alloc(_assets->get<Texture>("m_flag"), 1, 4);
+    _castle_flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
+    _castle_flag->setScale(0.4f);
+    _castle_flag->setPosition(-170,130);
+    _castle_flag->setFrame(0);
     
     
      std::shared_ptr<Texture> c_1  = _assets->get<Texture>("cloudS");
@@ -1171,6 +1176,10 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
     _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
+void OverworldScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
+    _actions->activate(ACT_KEY+6, action, _castle_flag);
+}
+
 void OverworldScene::pollDmgIndicators() {
 	for (int i = 0; i < 6; i++) {
 		if (gameModel.getDmgHealth(i) > 0) {
@@ -1440,7 +1449,7 @@ void OverworldScene::update(float timestep){
     }
     else if (currentCastleFloor==2 && _roomClick<2 && _swipeTutorial) {
         _tap->setVisible(true);
-         _tap->setPosition(_size.width*.25f,_size.height*.333f);
+         _tap->setPosition(_size.width*.25f,_size.height*.3f);
     }
     else {
         _tap->setVisible(false);
@@ -1467,6 +1476,10 @@ void OverworldScene::update(float timestep){
         _cloud3->setPosition(-1200,-100);
         _move3 = MoveTo::alloc(Vec2(400,-100),DURATION2*1.6);
         doMove3(_move3, _cloud3);
+    }
+    
+    if (!_actions->isActive(ACT_KEY+6)){
+        doStrip(_flagAnimation);
     }
 
 	// Animate
