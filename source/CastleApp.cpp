@@ -235,7 +235,6 @@ void CastleApp::update(float timestep) {
         }
         else{ //gameplay update loop
             if (!_overworldScene.isPaused) {
-                CULog("Play");
                 if(_currscene==OVERWORLD) {
                     _overworldScene.update(timestep);
                     if(_overworldScene.switchscene!=0){
@@ -328,6 +327,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
         || (_currscene==OVERWORLD && nextscene == OVERWORLD)) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
+        CULog("Level Select Level %i", _levelScene.level);
         int level = _levelScene.level;
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));

@@ -196,7 +196,9 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
              _actions->clearAllActions(_jackpot);
             _actions->clearAllActions(_hammerAnim);
-            _jackpot->dispose();
+            if (_jackpot!=nullptr){
+                _jackpot->dispose();
+            }
             switchscene = OVERWORLD;
         }
     });

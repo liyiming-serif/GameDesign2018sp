@@ -675,8 +675,12 @@ void BallistaScene::setActive(bool active, int direction){
     if (gameModel.level==1){
         _swipeTutorial=true;
     }
+    else {
+        _swipeTutorial=false;
+    }
     if (_swipeTutorial && _shots < 2) {
         _ballista_swipe->setVisible(true);
+        
     }
     if (!_swipeTutorial) {
         _ballista_swipe->setVisible(false);

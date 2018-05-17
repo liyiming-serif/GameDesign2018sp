@@ -604,6 +604,9 @@ void OilScene::setActive(bool active, int direction){
     if (gameModel.level==5){
         _tiltTutorial=true;
     }
+    else {
+        _tiltTutorial=false;
+    }
     if (_tiltTutorial && _tiltCount < 1) {
         _tilt->setVisible(true);
     }
