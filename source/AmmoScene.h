@@ -54,6 +54,10 @@ protected:
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
     
+    //tutorial
+    std::shared_ptr<cugl::PolygonNode> _tap;
+    bool _tapTutorial;
+    
     
 public:
     // Constructors
@@ -98,6 +102,8 @@ public:
 
 	/**iterate through gameModel's dmg castle health and apply indicators*/
 	void pollDmgIndicators();
+    
+    int _ammoClick;
 };
 
 

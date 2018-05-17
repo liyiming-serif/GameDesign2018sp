@@ -136,7 +136,7 @@ protected:
     bool _newOil;
     bool _newAmmo;
     bool _newRepair;
-   // bool _newMage;
+
     
     //Pause
     std::shared_ptr<cugl::PolygonNode> _pauseBG;
@@ -171,7 +171,10 @@ public:
     int currentCastleFloor;
     
     bool click;
+    bool wizard;
     int player_TEST=2;
+    bool _newMage;
+//    bool _mac;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;

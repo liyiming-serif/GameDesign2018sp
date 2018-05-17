@@ -601,18 +601,7 @@ void OilScene::setActive(bool active, int direction){
     switchscene = 0;
 	_oil->isReloading = false;
     
-    if (gameModel.level==5){
-        _tiltTutorial=true;
-    }
-    else {
-        _tiltTutorial=false;
-    }
-    if (_tiltTutorial && _tiltCount < 1) {
-        _tilt->setVisible(true);
-    }
-    if (!_tiltTutorial) {
-        _tilt->setVisible(false);
-    }
+
 
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
@@ -637,6 +626,19 @@ void OilScene::setActive(bool active, int direction){
         _oilTOcastle->activate(input.findKey("oilTOcastle"));
          OilScene::setCompass(direction);
          OilScene::setWall(direction);
+        
+        if (gameModel.level==5){
+            _tiltTutorial=true;
+        }
+        else {
+            _tiltTutorial=false;
+        }
+        if (_tiltTutorial && _tiltCount < 1) {
+            _tilt->setVisible(true);
+        }
+        if (!_tiltTutorial) {
+            _tilt->setVisible(false);
+        }
         
         //Change scenery based on level
 		std::shared_ptr<Texture> texture = _assets->get<Texture>("weaponBG_jungle");

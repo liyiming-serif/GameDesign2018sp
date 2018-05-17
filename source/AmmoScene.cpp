@@ -229,6 +229,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             float pos = _cursor->getPositionX();
 
             if (fabs(pos - _size.width / 2) < .05 * _size.width) {
+                _ammoClick+=1;
                 std::shared_ptr<Texture> perf = _assets->get<Texture>("ammo_perfect");
                 _jackpot = PolygonNode::allocWithTexture(perf);
                 _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -243,6 +244,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 }
                 _ammoText->setText("Ammo " + std::to_string(gameModel.getArrowAmmo(0)));
             } else if (fabs(pos - _size.width / 2) < .2 * _size.width) {
+                _ammoClick+=1;
                 std::shared_ptr<Texture> okay = _assets->get<Texture>("ammo_okay");
                 _jackpot = PolygonNode::allocWithTexture(okay);
                 _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -283,6 +285,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             float pos = _cursor->getPositionX();
 
             if (fabs(pos-_size.width/2)< .05*_size.width) {
+                _ammoClick+=1;
                 std::shared_ptr<Texture> perf  = _assets->get<Texture>("ammo_perfect");
                 _jackpot = PolygonNode::allocWithTexture(perf);
                 _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -298,6 +301,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
             }
             else if (fabs(pos-_size.width/2)< .2*_size.width ) {
+                _ammoClick+=1;
                 std::shared_ptr<Texture> okay  = _assets->get<Texture>("ammo_okay");
                 _jackpot = PolygonNode::allocWithTexture(okay);
                 _jackpot->setScale(.5f); // Magic number to rescale asset
@@ -356,6 +360,15 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _moveleft = MoveTo::alloc(Vec2(_size.width-_cursor->getWidth()/2,_size.height/11.5),DURATION);
     _moveright = MoveTo::alloc(Vec2(_cursor->getWidth()/2,_size.height/11.5),DURATION);
+    
+    
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _tap = PolygonNode::allocWithTexture(tut_tap);
+    _tap->setScale(.8); // Magic number to rescale asset
+    _tap->setAnchor(Vec2::ANCHOR_CENTER);
+    _tap->setPosition(_size.width*.5f,_size.height*.3f);
+    _tap->setAngle(M_PI);
+    addChild(_tap);
 
     _ammoText =Label::alloc((std::string) "                                              ", FONT);
     _ammoText->setAnchor(Vec2::ANCHOR_MIDDLE_RIGHT);
@@ -402,6 +415,10 @@ void AmmoScene::update(float timestep){
         if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
             switchscene = WIN;
         }
+    }
+    
+    if (_ammoClick > 1) {
+        _tap->setVisible(false);
     }
 
 	//poll damage indicators
@@ -486,6 +503,23 @@ void AmmoScene::setActive(bool active){
         _hammer->activate(input.findKey("hammer"));
         _hammer2->activate(input.findKey("hammer2"));
         _ammoText->setText("Ammo "+std::to_string(gameModel.getArrowAmmo(0)));
+        
+        
+        if (gameModel.level==3){
+            _tapTutorial=true;
+        }
+        else {
+            _tapTutorial=false;
+        }
+        if (_tapTutorial && _ammoClick < 1) {
+            CULog("true");
+            _tap->setVisible(true);
+        }
+        if (!_tapTutorial) {
+            CULog("false");
+            _tap->setVisible(false);
+        }
+        
         if (_actions->isActive(ACT_KEY+2)){
             CULog("ACTIVE");
             _actions->pause(ACT_KEY);
