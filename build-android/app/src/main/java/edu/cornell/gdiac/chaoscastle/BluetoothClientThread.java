@@ -58,7 +58,7 @@ class BluetoothClientThread extends Thread {
         } catch (IOException connectException) {
             // Unable to connect; close the socket and get parent to show popup.
             Log.e(TAG, "Remote is not hosting a game.");
-            parent.displayClientError(mmDevice.getName());
+            parent.mHandler.obtainMessage(0,mmDevice.getName()).sendToTarget();
             try {
                 mmSocket.close();
             } catch (IOException closeException) {

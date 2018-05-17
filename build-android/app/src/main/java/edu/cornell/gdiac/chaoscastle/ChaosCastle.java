@@ -38,6 +38,8 @@ public class ChaosCastle extends SDLActivity {
 	boolean isServer = false;
 	int currClientIndex = -1;
 
+	Handler mHandler;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	    // Make sure this is before calling super.onCreate
@@ -46,6 +48,25 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
+
+		mHandler = new Handler(Looper.getMainLooper()) {
+			@Override
+			public void handleMessage(Message message) {
+				//create alert dialog factory
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+				Log.d("CLIENT", "here1");
+				//Chain together various setter methods to set the dialog characteristics,
+				//then show them.
+				builder.setMessage((String)message.obj+" is currently not hosting a game.")
+						.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						})
+						.show();
+			}
+		};
 	}
 
 	public int getPlayers(){
@@ -335,20 +356,6 @@ public class ChaosCastle extends SDLActivity {
 		}
 	}
 
-	public void displayClientError(String serverName){
-		//create alert dialog factory
-		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-		//Chain together various setter methods to set the dialog characteristics,
-		//then show them.
-		builder.setMessage(serverName+" is currently not hosting a game.")
-				.setNegativeButton("Back", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				})
-				.show();
-	}
 
 	public void disconnect(BluetoothConnectedThread connection) {
 		connection.cancel();
