@@ -274,6 +274,7 @@ void LookoutScene::update(float timestep){
 	//redraw them
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
+		    if(!(gameModel.getLevel()<5 && (enemy.second->getPos()).y<180)){
 			std::shared_ptr<PolygonNode> e = nullptr;
 			switch (enemy.second->getType()) {
 			case 1:
@@ -298,6 +299,7 @@ void LookoutScene::update(float timestep){
 				e->setAnchor(Vec2::ANCHOR_CENTER);
 				e->setPosition(enemy.second->getPos());
 				_enemyMarkers[wall]->addChild(e);
+			}
 			}
 		}
 	}
