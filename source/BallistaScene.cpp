@@ -348,6 +348,18 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
 
+    
+    
+    std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_ballista");
+    _ballista_swipe = PolygonNode::allocWithTexture(tut_swipe);
+    _ballista_swipe->setScale(1.0); // Magic number to rescale asset
+    _ballista_swipe->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _ballista_swipe->setPosition(_size.width*.5f,_size.height*.9f);
+    _ballista_swipe->setAngle(M_PI_4);
+    addChild(_ballista_swipe);
+    
+    
+    
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -454,6 +466,10 @@ void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
     setWall(direction);
+    
+    if (_shots > 2) {
+        _ballista_swipe->setVisible(false);
+    }
 
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
@@ -529,6 +545,7 @@ void BallistaScene::update(float deltaTime, int direction){
                 }
             }
 			// Fire ballista
+            _shots+=1;
 			_ballista->setPower(0.0f, true);
 			_ballista->isReadyToFire = false;
 		}
@@ -653,6 +670,17 @@ void BallistaScene::setActive(bool active, int direction){
     _direction = direction;
     _active = active;
     switchscene = 0;
+    
+    
+    if (gameModel.level==1){
+        _swipeTutorial=true;
+    }
+    if (_swipeTutorial && _shots < 2) {
+        _ballista_swipe->setVisible(true);
+    }
+    if (!_swipeTutorial) {
+        _ballista_swipe->setVisible(false);
+    }
 
 	//empty the arrow arrays to prevent data leaks
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {

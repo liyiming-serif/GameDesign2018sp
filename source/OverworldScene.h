@@ -116,9 +116,15 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _tap;
     int _roomClick;
     bool _swipeTutorial;
+    
+    //Pause
+    std::shared_ptr<cugl::PolygonNode> _pauseBG;
+    std::shared_ptr<cugl::Button> _pauseQUIT;
+    std::shared_ptr<cugl::Button> _pauseREPLAY;
+    std::shared_ptr<cugl::Button> _pauseBACK;
+
 
     cugl::Size _size;
-    
 
 
 public:
@@ -225,6 +231,8 @@ public:
     void enableButtons();
     
     void resetTutorial();
+    
+    bool isPaused;
     
     
     
