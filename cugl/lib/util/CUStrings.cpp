@@ -56,13 +56,7 @@ namespace cugl {
  * @return a string equivalent to the given byte
  */
 std::string to_string(Uint8 value) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << (Uint32)value;
-    return ss.str();
-#else
     return std::to_string((Uint32)value);
-#endif
 }
 
 /**
@@ -73,13 +67,7 @@ std::string to_string(Uint8 value) {
  * @return a string equivalent to the given signed 16 bit integer
  */
 std::string to_string(Sint16 value) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << (Sint32)value;
-    return ss.str();
-#else
     return std::to_string((Sint32)value);
-#endif
 }
 
 /**
@@ -90,13 +78,7 @@ std::string to_string(Sint16 value) {
  * @return a string equivalent to the given unsigned 16 bit integer
  */
 std::string to_string(Uint16 value) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << (Uint32)value;
-    return ss.str();
-#else
     return std::to_string((Uint32)value);
-#endif
 }
 
 /**
@@ -107,13 +89,7 @@ std::string to_string(Uint16 value) {
  * @return a string equivalent to the given signed 32 bit integer
  */
 std::string to_string(Sint32 value) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-#else
     return std::to_string(value);
-#endif
 }
 
 /**
@@ -124,13 +100,7 @@ std::string to_string(Sint32 value) {
  * @return a string equivalent to the given unsigned 32 bit integer
  */
 std::string to_string(Uint32 value ) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-#else
     return std::to_string(value);
-#endif
 }
 
 /**
@@ -141,13 +111,7 @@ std::string to_string(Uint32 value ) {
  * @return a string equivalent to the given signed 64 bit integer
  */
 std::string to_string(Sint64 value) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-#else
     return std::to_string(value);
-#endif
 }
 
 /**
@@ -158,13 +122,7 @@ std::string to_string(Sint64 value) {
  * @return a string equivalent to the given unsigned 64 bit integer
  */
 std::string to_string(Uint64 value ) {
-#if defined (__ANDROID__)
-    std::stringstream ss;
-    ss << value;
-    return ss.str();
-#else
     return std::to_string(value);
-#endif
 }
 
 /**
@@ -457,15 +415,7 @@ std::string to_string(double* array, size_t length, size_t offset, int precision
  * @return the byte equivalent to the given string
  */
 Uint8 stou8(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Uint8)std::strtol(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Uint8)std::stoi(str,pos,base);
-#endif
 }
 
 /**
@@ -483,15 +433,7 @@ Uint8 stou8(const std::string& str, std::size_t* pos, int base) {
  * @return the signed 16 bit integer equivalent to the given string
  */
 Sint16 stos16(const std::string& str, std::size_t* pos, int base)  {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Sint16)std::strtol(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Sint16)std::stoi(str,pos,base);
-#endif
 }
 
 /**
@@ -509,15 +451,7 @@ Sint16 stos16(const std::string& str, std::size_t* pos, int base)  {
  * @return the unsigned 16 bit integer equivalent to the given string
  */
 Uint16 stou16(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Uint16)std::strtol(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Uint16)std::stol(str,pos,base);
-#endif
 }
 
 /**
@@ -535,15 +469,7 @@ Uint16 stou16(const std::string& str, std::size_t* pos, int base) {
  * @return the signed 32 bit integer equivalent to the given string
  */
 Sint32 stos32(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Sint32)std::strtol(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Sint32)std::stol(str,pos,base);
-#endif
 }
 
 /**
@@ -561,15 +487,7 @@ Sint32 stos32(const std::string& str, std::size_t* pos, int base) {
  * @return the unsigned 32 bit integer equivalent to the given string
  */
 Uint32 stou32(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Uint32)std::strtoul(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Uint32)std::stoul(str,pos,base);
-#endif
 }
 
 /**
@@ -587,15 +505,7 @@ Uint32 stou32(const std::string& str, std::size_t* pos, int base) {
  * @return the signed 64 bit integer equivalent to the given string
  */
 Sint64 stos64(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Sint64)std::strtoll(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Sint64)std::stoll(str,pos,base);
-#endif
 }
 
 
@@ -614,15 +524,7 @@ Sint64 stos64(const std::string& str, std::size_t* pos, int base) {
  * @return the unsigned 64 bit integer equivalent to the given string
  */
 Uint64 stou64(const std::string& str, std::size_t* pos, int base) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    int result = (Uint64)std::strtoull(start, &end, base);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return (Uint64)std::stoull(str,pos,base);
-#endif
 }
 
 /**
@@ -639,15 +541,7 @@ Uint64 stou64(const std::string& str, std::size_t* pos, int base) {
  * @return the float equivalent to the given string
  */
 float  stof(const std::string& str, std::size_t* pos) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    float result = (float)std::strtod(start, &end);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return std::stof(str,pos);
-#endif
 }
 
 /**
@@ -664,15 +558,7 @@ float  stof(const std::string& str, std::size_t* pos) {
  * @return the double equivalent to the given string
  */
 double stod(const std::string& str, std::size_t* pos) {
-#if defined (__ANDROID__)
-    const char* start = str.c_str();
-    char* end;
-    double result = std::strtod(start, &end);
-    *pos = (std::size_t)(end-start); // Bad but no alternative on android
-    return result;
-#else
     return std::stod(str,pos);
-#endif
 }
 
 #pragma mark -

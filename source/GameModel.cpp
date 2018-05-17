@@ -6,7 +6,7 @@
 
 #define DRAW_SCALE 12
 #define GAME_WIDTH 1024
-#define BASE_SPEED 0.35f/3
+#define BASE_SPEED 0.4f/3
 
 
 using namespace cugl;
@@ -24,6 +24,7 @@ bool GameModel::init(){
     for (int i = 0; i < 6; ++i) {
         gameModel._castleHealth[i] = 100;
         gameModel._deltaCastleHealth[i] = 0;
+		gameModel._dmgCastleHealth[i] = 0;
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
@@ -34,7 +35,7 @@ bool GameModel::init(){
         gameModel._playerRooms[i] = 0;
         gameModel._playerAvatars[i] = 0;
     }
-
+    level = 0;
     gameModel._playerID = 0;
 
     gameModel._currentRoom = 0;
@@ -52,9 +53,11 @@ void GameModel::dispose() {
 	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
 		gameModel._enemiesToFreeMaster[i].clear();
 	}
+	resetWallDmg();
 }
 
 void GameModel::update(float deltaTime){
+
     _noPlayers = gameModel._noPlayers;
     if (gameModel.networked) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -141,7 +144,10 @@ void GameModel::update(float deltaTime){
             }
 			else {
 				// enemy in position; begin attacking
-				if (it->second->getAtkCounter() <= 0) {
+				if (it->second->getAtkCounter() < 0) {
+					it->second->setAtkCounter(it->second->getAtkSpeed());
+				}
+				if (it->second->getAtkCounter() == 0) {
 					gameModel.changeWallHealth(wall, -it->second->getDamage());
 					it->second->setAtkCounter(it->second->getAtkSpeed());
 				}
@@ -171,6 +177,42 @@ void GameModel::update(float deltaTime){
 	}
 }
 
+//init(); dispose(); without resetting multiplayer
+void GameModel::reset() {
+	//dispose:
+	for (int i = 0; i < gameModel._enemyArrayMaster.size(); i++) {
+		gameModel._enemyArrayMaster[i].clear();
+	}
+	for (int i = 0; i < gameModel._enemiesToFreeMaster.size(); i++) {
+		gameModel._enemiesToFreeMaster[i].clear();
+	}
+	resetWallDmg();
+
+	//init:
+	gameModel._arrowAmmo[0] = 0;
+	gameModel._arrowAmmo[1] = 0;
+	gameModel._arrowAmmo[2] = 0;
+	gameModel._deltaAmmo[0] = 0;
+	gameModel._deltaAmmo[1] = 0;
+	gameModel._deltaAmmo[2] = 0;
+
+	for (int i = 0; i < 6; ++i) {
+		gameModel._castleHealth[i] = 100;
+		gameModel._deltaCastleHealth[i] = 0;
+		gameModel._dmgCastleHealth[i] = 0;
+		gameModel._oilPoured[i] = 0;
+		gameModel._oilCooldown[i] = 0;
+	}
+	//kick players from rooms
+	for (int i = 0; i < gameModel._noPlayers; ++i) {
+		gameModel._playerRooms[i] = 0;
+	}
+	gameModel._currentRoom = 0;
+	//resynch game time
+	gameModel._currentTime = 0;
+	gameModel._endTime = 100;
+}
+
 int GameModel::getWallHealth(int wall) {
     return _castleHealth[wall];
 }
@@ -186,6 +228,11 @@ void GameModel::changeWallHealth(int wall, int amt) {
 	}
 	else {
 		this->_castleHealth[wall] += amt;
+	}
+
+	//set dmg wall health for indicators
+	if (amt < 0) {
+		_dmgCastleHealth[wall] += -amt;
 	}
 }
 
@@ -225,6 +272,17 @@ void GameModel::addDeltaHealth(int wall, int repair) {
 
 int GameModel::getDeltaHealth(int wall) {
     return gameModel._deltaCastleHealth[wall];
+}
+
+void GameModel::resetWallDmg() {
+	//clear enqueued wall damage
+	for (int i = 0; i < gameModel._dmgCastleHealth.size(); i++) {
+		gameModel._dmgCastleHealth[i] = 0;
+	}
+}
+
+int GameModel::getNoPlayers() {
+    return gameModel._noPlayers;
 }
 
 void GameModel::setAmmo(int type, int amt){
@@ -686,6 +744,11 @@ void GameModel::updateStateClient(const char *ConsumedState) {
     char* wallHealthToken = strtok(castleHealthToken, " ");
     section = 0;
     while (wallHealthToken != NULL) {
+		//apply dmg indicators
+		if (std::stoi(wallHealthToken) < gameModel._castleHealth[section]) {
+			gameModel._dmgCastleHealth[section] += gameModel._castleHealth[section] - std::stoi(wallHealthToken);
+		}
+
         gameModel._castleHealth[section] = std::stoi(wallHealthToken);
         wallHealthToken = strtok(NULL, " ");
         section++;

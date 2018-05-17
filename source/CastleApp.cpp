@@ -241,59 +241,61 @@ void CastleApp::update(float timestep) {
             }
         }
         else{ //gameplay update loop
-            if(_currscene==OVERWORLD) {
-                _overworldScene.update(timestep);
-                if(_overworldScene.switchscene!=0){
-                    swapscenes(_overworldScene.switchscene, _overworldScene.direction);
-                    _overworldScene.setActive(false);
+            if (!_overworldScene.isPaused) {
+                if(_currscene==OVERWORLD) {
+                    _overworldScene.update(timestep);
+                    if(_overworldScene.switchscene!=0){
+                        swapscenes(_overworldScene.switchscene, _overworldScene.direction);
+                        _overworldScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==BALLISTA){
-                _ballistaScene.update(timestep, _direction);
-                if(_ballistaScene.switchscene!=0){
-                    swapscenes(_ballistaScene.switchscene, 0);
-                    _ballistaScene.setActive(false, _direction);
+                else if(_currscene==BALLISTA){
+                    _ballistaScene.update(timestep, _direction);
+                    if(_ballistaScene.switchscene!=0){
+                        swapscenes(_ballistaScene.switchscene, 0);
+                        _ballistaScene.setActive(false, _direction);
+                    }
                 }
-            }
-            else if(_currscene==LOOKOUT){
-                _lookoutScene.update(timestep);
-                if(_lookoutScene.switchscene!=0){
-                    swapscenes(_lookoutScene.switchscene, 0);
-                    _lookoutScene.setActive(false);
+                else if(_currscene==LOOKOUT){
+                    _lookoutScene.update(timestep);
+                    if(_lookoutScene.switchscene!=0){
+                        swapscenes(_lookoutScene.switchscene, 0);
+                        _lookoutScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==REPAIR){
-                _repairScene.update(timestep);
-                if(_repairScene.switchscene!=0){
-                    swapscenes(_repairScene.switchscene, 0);
-                    _repairScene.setActive(false);
+                else if(_currscene==REPAIR){
+                    _repairScene.update(timestep);
+                    if(_repairScene.switchscene!=0){
+                        swapscenes(_repairScene.switchscene, 0);
+                        _repairScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==MAGE){
-                _mageScene.update(timestep);
-                if(_mageScene.switchscene!=0){
-                    swapscenes(_mageScene.switchscene, 0);
-                    _mageScene.setActive(false);
+                else if(_currscene==MAGE){
+                    _mageScene.update(timestep);
+                    if(_mageScene.switchscene!=0){
+                        swapscenes(_mageScene.switchscene, 0);
+                        _mageScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==AMMO) {
-                _ammoScene.update(timestep);
-                if(_ammoScene.switchscene!=0){
-                    swapscenes(_ammoScene.switchscene, 0);
-                    _ammoScene.setActive(false);
+                else if(_currscene==AMMO) {
+                    _ammoScene.update(timestep);
+                    if(_ammoScene.switchscene!=0){
+                        swapscenes(_ammoScene.switchscene, 0);
+                        _ammoScene.setActive(false);
+                    }
                 }
-            }
-            else if(_currscene==OIL){
-                _oilScene.update(timestep, _direction);
-                if(_oilScene.switchscene!=0){
-                    swapscenes(_oilScene.switchscene, 0);
-                    _oilScene.setActive(false, _direction);
+                else if(_currscene==OIL){
+                    _oilScene.update(timestep, _direction);
+                    if(_oilScene.switchscene!=0){
+                        swapscenes(_oilScene.switchscene, 0);
+                        _oilScene.setActive(false, _direction);
+                    }
                 }
-            }
 
 
-            _spawnController.update(timestep);
-            gameModel.update(timestep);
+                _spawnController.update(timestep);
+                gameModel.update(timestep);
+            }
         }
     }
     
@@ -306,6 +308,7 @@ void CastleApp::update(float timestep) {
 //TODO::FIX THE NEXT LEVEL AND RESET
 
 void CastleApp::swapscenes(int nextscene, int direction){
+ CULog("Level Select Level %i", _levelScene.getLevel());
     _direction = direction;
     if (_currscene == MENU && nextscene == LOBBY) {
         enableBluetooth();
@@ -328,38 +331,40 @@ void CastleApp::swapscenes(int nextscene, int direction){
         _loseScene.setActive(false);
         reset();
     }
-    if ((_currscene==LOSE && nextscene == OVERWORLD) || (_currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag) ) {
+    if ((_currscene==LOSE && nextscene == OVERWORLD) || (_currscene==WIN && nextscene==OVERWORLD && _winScene.replayFlag)
+        || (_currscene==OVERWORLD && nextscene == OVERWORLD)) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _winScene.setActive(false);
-        int level = _levelScene.level;
+        _levelScene.setLevel(_levelScene.getLevel() + 1);
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level + 1));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level+1;
+        _levelScene.setLevel(level);
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
         _levelScene.setActive(false, gameModel.getNoPlayers());
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, _levelScene.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==LOBBY && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
@@ -481,10 +486,15 @@ void CastleApp::reset(){
     //_mageScene.dispose();
     //_ammoScene.dispose();
     //_oilScene.dispose();
+    _overworldScene.resetTutorial();
+    _oilScene._tiltCount = 0;
+    _ballistaScene._shots = 0;
+    _repairScene._wallClick=0;
+    _ammoScene._ammoClick=0;
+	gameModel.resetWallDmg();
     _spawnController.dispose();
-    gameModel.dispose();
 	input.clear();
-    gameModel.init();
+	gameModel.reset();
 }
 
 void CastleApp::initializeRooms(){

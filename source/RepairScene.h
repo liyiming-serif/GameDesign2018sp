@@ -28,6 +28,7 @@ protected:
     
     std::shared_ptr<cugl::FadeIn> _wallFadeIN;
     std::shared_ptr<cugl::FadeOut> _wallFadeOUT;
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
     
     std::shared_ptr<PolygonNode> N_100;
     std::shared_ptr<PolygonNode> NE_100;
@@ -91,8 +92,14 @@ protected:
     
     int player_TEST=2;
     
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
     
+    //tutorial 
+    std::shared_ptr<cugl::PolygonNode> _tap;
+    bool _tapTutorial;
     
+
 public:
     // Constructors
     RepairScene() : Scene() {}
@@ -124,6 +131,11 @@ public:
     void doFadeOut(const std::shared_ptr<cugl::FadeOut>& action, std::string direction);
     
     std::shared_ptr<cugl::Button> getWall(std::string direction);
+
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
+    
+    int _wallClick;
 };
 
 

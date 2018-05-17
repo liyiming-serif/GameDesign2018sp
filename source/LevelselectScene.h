@@ -110,6 +110,10 @@ public:
     
     bool click;
     int cooldown;
+
+    void setLevel(int level);
+
+    int getLevel();
     
     /**
      * Performs a move action

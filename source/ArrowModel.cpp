@@ -7,6 +7,7 @@
 using namespace cugl;
 
 bool ArrowModel::init(Vec2 pos, float speed, float dir, int drawScale, const std::shared_ptr<AssetManager>& assets){
+	collided = false;
 	//_drawScale is pixels per meter (meter is for box2d)
 	_drawScale = drawScale;
     //create the scene node

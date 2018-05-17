@@ -39,9 +39,14 @@ using namespace cugl;
 /** Define the time settings for animation */
 #define DURATION .5f
 #define DURATION2 20.0f
+#define DMG_DURATION 1.0f
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
 
 #define JUNGLE  5
 #define SNOW  8
@@ -77,12 +82,111 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castleFadeIN = FadeIn::alloc(DURATION);
     _castleFadeINSTANT = FadeIn::alloc(0.0f);
     _castleFadeOUT = FadeOut::alloc(DURATION);
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
 
     
     // Creates the Scene Graph
     _background = Node::alloc();
     _levels = Node::alloc();
-    
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size/dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
     //Creates the tower views
     // Background
     std::shared_ptr<Texture> ca_back  = _assets->get<Texture>("castle_background");
@@ -161,14 +265,20 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
     
-    
-    
-    
     currentCastleFloor = 3;
+    
+    
+    std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_swipe");
+    _swipe = PolygonNode::allocWithTexture(tut_swipe);
+    _swipe->setScale(1.0); // Magic number to rescale asset
+    _swipe->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _swipe->setPosition(-_size.width/2,0);
+    _background->addChild(_swipe);
     
 // CREATES THE FLOORS
     
     std::shared_ptr<Texture> room_lock  = _assets->get<Texture>("room_lock");
+    std::shared_ptr<Texture> room_new  = _assets->get<Texture>("tutorial_newRoom");
     
     // Basement Floor
         std::shared_ptr<Texture> basementFloor_texture  = _assets->get<Texture>("basement_floor");
@@ -190,6 +300,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _ammo_buttonLOCKED = PolygonNode::allocWithTexture(room_lock);
         _mage_buttonLOCKED = PolygonNode::allocWithTexture(room_lock);
     
+        _repair_buttonNEW = PolygonNode::allocWithTexture(room_new);
+        _ammo_buttonNEW = PolygonNode::allocWithTexture(room_new);
+        _mage_buttonNEW = PolygonNode::allocWithTexture(room_new);
+    
     
     
         // Create a callback function for the Basement buttons
@@ -198,6 +312,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _repairClick+=1;
                         switchscene = REPAIR;
                     }
                     
@@ -208,6 +324,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _ammoClick+=1;
                         switchscene = AMMO;
                     }
                 }
@@ -217,6 +335,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only go to lookout when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _mageClick+=1;
                         switchscene = MAGE;
                     }
                 }
@@ -234,6 +354,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _repair_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
         _repair_buttonLOCKED->setPosition(_repair_button->getContentWidth()/2,_repair_button->getContentHeight()/2);
     
+        _repair_buttonNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+        _repair_buttonNEW->setAnchor(Vec2::ANCHOR_CENTER);
+        _repair_buttonNEW->setPosition(centerX-.23*_basement_floor->getContentWidth(),centerY);
+    
         _ammo_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _ammo_button->setAnchor(Vec2::ANCHOR_CENTER);
         _ammo_button->setPosition(centerX+.12*_basement_floor->getContentWidth(),centerY+.19*_basement_floor->getContentHeight());
@@ -241,6 +365,10 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _ammo_buttonLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
         _ammo_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
         _ammo_buttonLOCKED->setPosition(_ammo_button->getContentWidth()/2,_ammo_button->getContentHeight()/2);
+    
+        _ammo_buttonNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+        _ammo_buttonNEW->setAnchor(Vec2::ANCHOR_CENTER);
+        _ammo_buttonNEW->setPosition(centerX+.12*_basement_floor->getContentWidth(),centerY+.19*_basement_floor->getContentHeight());
     
         _mage_button->setScale(BUTTON_SCALE); // Magic number to rescale asset
         _mage_button->setAnchor(Vec2::ANCHOR_CENTER);
@@ -250,13 +378,22 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _mage_buttonLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
         _mage_buttonLOCKED->setPosition(_mage_button->getContentWidth()/2,_mage_button->getContentHeight()/2);
     
+        _mage_buttonNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+        _mage_buttonNEW->setAnchor(Vec2::ANCHOR_CENTER);
+        _mage_buttonNEW->setPosition(centerX+.12*_basement_floor->getContentWidth(),centerY-.19*_basement_floor->getContentHeight());
+    
     
     
         //Adds the button to the Scene Graph
+        _basement_floor->addChild(_repair_buttonNEW);
         _basement_floor->addChild(_repair_button);
         _repair_button->addChild(_repair_buttonLOCKED);
+    
+        _basement_floor->addChild(_ammo_buttonNEW);
         _basement_floor->addChild(_ammo_button);
         _ammo_button->addChild(_ammo_buttonLOCKED);
+    
+        _basement_floor->addChild(_mage_buttonNEW);
         _basement_floor->addChild(_mage_button);
         _mage_button->addChild(_mage_buttonLOCKED);
     
@@ -301,12 +438,21 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _oilSouthEastLOCKED = PolygonNode::allocWithTexture(room_lock);
             _oilSouthWestLOCKED = PolygonNode::allocWithTexture(room_lock);
     
+            _oilNorthNEW = PolygonNode::allocWithTexture(room_new);
+            _oilNorthEastNEW = PolygonNode::allocWithTexture(room_new);
+            _oilNorthWestNEW = PolygonNode::allocWithTexture(room_new);
+            _oilSouthNEW = PolygonNode::allocWithTexture(room_new);
+            _oilSouthEastNEW = PolygonNode::allocWithTexture(room_new);
+            _oilSouthWestNEW = PolygonNode::allocWithTexture(room_new);
+    
         // Create a callback function for the Oil button
             _oilNorth->setName("oilNorth");
             _oilNorth->setListener([=] (const std::string& name, bool down) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 0;
                     }
@@ -317,6 +463,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 1;
                     }
@@ -327,6 +475,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 2;
                     }
@@ -337,6 +487,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 3;
                     }
@@ -347,6 +499,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 4;
                     }
@@ -357,6 +511,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
+                        _oilClick+=1;
                         switchscene = OIL;
                         direction = 5;
                     }
@@ -373,66 +529,88 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             _oilNorth->setAnchor(Vec2::ANCHOR_CENTER);
             _oilNorth->setPosition(centerX,centerY+.27*_oil_floor->getContentHeight());
     
-            _oilNorthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilNorthLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorthLOCKED->setPosition(_oilNorth->getContentWidth()/2,_oilNorth->getContentHeight()/2);
+                _oilNorthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilNorthLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilNorthLOCKED->setPosition(_oilNorth->getContentWidth()/2,_oilNorth->getContentHeight()/2);
+    
+                _oilNorthNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilNorthNEW->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilNorthNEW->setPosition(centerX,centerY+.27*_oil_floor->getContentHeight());
     
             _oilNorthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilNorthEast->setAnchor(Vec2::ANCHOR_CENTER);
             _oilNorthEast->setPosition(centerX+.24*_oil_floor->getContentWidth(),centerY+.13*_oil_floor->getContentHeight());
             _oilNorthEast->setAngle(-M_PI/3);
     
-            _oilNorthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilNorthEastLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorthEastLOCKED->setPosition(_oilNorthEast->getContentWidth()/2,_oilNorthEast->getContentHeight()/2);
+                _oilNorthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilNorthEastLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilNorthEastLOCKED->setPosition(_oilNorthEast->getContentWidth()/2,_oilNorthEast->getContentHeight()/2);
     
             _oilSouthEast->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouthEast->setAnchor(Vec2::ANCHOR_CENTER);
             _oilSouthEast->setPosition(centerX+.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
             _oilSouthEast->setAngle(-2*M_PI/3);
     
-            _oilSouthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilSouthEastLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouthEastLOCKED->setPosition(_oilSouthEast->getContentWidth()/2,_oilSouthEast->getContentHeight()/2);
+                _oilSouthEastLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilSouthEastLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilSouthEastLOCKED->setPosition(_oilSouthEast->getContentWidth()/2,_oilSouthEast->getContentHeight()/2);
+    
+                _oilSouthEastNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilSouthEastNEW->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilSouthEastNEW->setPosition(centerX+.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
     
             _oilSouth->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouth->setAnchor(Vec2::ANCHOR_CENTER);
             _oilSouth->setPosition(centerX,centerY-.27*_oil_floor->getContentHeight());
             _oilSouth->setAngle(-3*M_PI/3);
     
-            _oilSouthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilSouthLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouthLOCKED->setPosition(_oilSouth->getContentWidth()/2,_oilSouth->getContentHeight()/2);
+                _oilSouthLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilSouthLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilSouthLOCKED->setPosition(_oilSouth->getContentWidth()/2,_oilSouth->getContentHeight()/2);
+    
     
             _oilSouthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilSouthWest->setAnchor(Vec2::ANCHOR_CENTER);
             _oilSouthWest->setPosition(centerX-.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
             _oilSouthWest->setAngle(-4*M_PI/3);
     
-            _oilSouthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilSouthWestLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilSouthWestLOCKED->setPosition(_oilSouthWest->getContentWidth()/2,_oilSouthWest->getContentHeight()/2);
+                _oilSouthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilSouthWestLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilSouthWestLOCKED->setPosition(_oilSouthWest->getContentWidth()/2,_oilSouthWest->getContentHeight()/2);
+    
+                _oilSouthWestNEW->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilSouthWestNEW->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilSouthWestNEW->setPosition(centerX-.24*_oil_floor->getContentWidth(),centerY-.13*_oil_floor->getContentHeight());
     
             _oilNorthWest->setScale(BUTTON_SCALE); // Magic number to rescale asset
             _oilNorthWest->setAnchor(Vec2::ANCHOR_CENTER);
             _oilNorthWest->setPosition(centerX-.24*_oil_floor->getContentWidth(),centerY+.13*_oil_floor->getContentHeight());
             _oilNorthWest->setAngle(M_PI/3);
     
-            _oilNorthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
-            _oilNorthWestLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
-            _oilNorthWestLOCKED->setPosition(_oilNorthWest->getContentWidth()/2,_oilNorthWest->getContentHeight()/2);
+                _oilNorthWestLOCKED->setScale(BUTTON_SCALE2); // Magic number to rescale asset
+                _oilNorthWestLOCKED->setAnchor(Vec2::ANCHOR_CENTER);
+                _oilNorthWestLOCKED->setPosition(_oilNorthWest->getContentWidth()/2,_oilNorthWest->getContentHeight()/2);
+    
     
         //Adds the buttons to the Scene Graph
+        _oil_floor->addChild(_oilNorthNEW);
         _oil_floor->addChild(_oilNorth);
         _oilNorth->addChild(_oilNorthLOCKED);
+    
         _oil_floor->addChild(_oilNorthEast);
         _oilNorthEast->addChild(_oilNorthEastLOCKED);
+    
+        _oil_floor->addChild(_oilSouthEastNEW);
         _oil_floor->addChild(_oilSouthEast);
         _oilSouthEast->addChild(_oilSouthEastLOCKED);
+    
         _oil_floor->addChild(_oilSouth);
         _oilSouth->addChild(_oilSouthLOCKED);
+    
+        _oil_floor->addChild(_oilSouthWestNEW);
         _oil_floor->addChild(_oilSouthWest);
         _oilSouthWest->addChild(_oilSouthWestLOCKED);
+    
         _oil_floor->addChild(_oilNorthWest);
         _oilNorthWest->addChild(_oilNorthWestLOCKED);
     
@@ -476,6 +654,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 0;
                     }
@@ -486,6 +665,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 1;
                     }
@@ -496,6 +676,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 2;
                     }
@@ -506,6 +687,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 3;
                     }
@@ -516,6 +698,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 4;
                     }
@@ -526,6 +709,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 // Only switch scenes when the button is released
                 if (!down) {
                     if (click){
+                        _roomClick+=1;
                         switchscene = BALLISTA;
                         direction = 5;
                     }
@@ -613,6 +797,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only go to lookout when the button is released
         if (!down) {
             if (click){
+                _roomClick+=1;
                 switchscene = LOOKOUT;
             }
         }
@@ -649,7 +834,12 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->setAnchor(Vec2::ANCHOR_CENTER);
     _background->setPosition(_size.width/2,_size.height/2);
     
-
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _tap = PolygonNode::allocWithTexture(tut_tap);
+    _tap->setScale(1.0); // Magic number to rescale asset
+    _tap->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    //_tap->setPosition(_size.width*.26f,_size.height*.07f);
+    _background->addChild(_tap);
     
     
     std::shared_ptr<Texture> menu_tex   = _assets->get<Texture>("menu");
@@ -666,26 +856,145 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _menuButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-                switchscene = MENU;
+                _pauseBG->setVisible(!_pauseBG->isVisible());
+            
+                if (_pauseBG->isVisible()) {
+                    isPaused=true;
+                    disableButtons();
+                    _pauseBACK->activate(input.findKey("pauseBack"));
+                    _pauseREPLAY->activate(input.findKey("pauseReplay"));
+                    _pauseQUIT->activate(input.findKey("pauseQuit"));
+                    _pauseSOUND->activate(input.findKey("pauseSound"));
+                }
+                else {
+                    isPaused=false;
+                    enableButtons();
+                    _pauseBACK->deactivate();
+                    _pauseREPLAY->deactivate();
+                    _pauseQUIT->deactivate();
+                    _pauseSOUND->deactivate();
+                }
+            
         }
     });
     
     
+    std::shared_ptr<Texture> pauseBG  = _assets->get<Texture>("pause_BG");
+    _pauseBG = PolygonNode::allocWithTexture(pauseBG);
+    _pauseBG->setScale(.8); // Magic number to rescale asset
+    _pauseBG->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseBG->setPosition(_size.width/2,_size.height/2);
+    _pauseBG->setVisible(false);
     
     
+    std::shared_ptr<Texture> pauseQUIT   = _assets->get<Texture>("pause_quit");
+    _pauseQUIT = Button::alloc(PolygonNode::allocWithTexture(pauseQUIT));
+    _pauseQUIT->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseQUIT->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2-90);
+    _pauseQUIT->setScale(1.0f);
+    _pauseBG->addChild(_pauseQUIT);
+    
+    
+    // Create a callback function for the button
+    _pauseQUIT->setName("quit");
+    _pauseQUIT->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            isPaused=false;
+            switchscene = MENU;
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseREPLAY   = _assets->get<Texture>("pause_replay");
+    _pauseREPLAY = Button::alloc(PolygonNode::allocWithTexture(pauseREPLAY));
+    _pauseREPLAY->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseREPLAY->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2-180);
+    _pauseREPLAY->setScale(1.0f);
+    _pauseBG->addChild(_pauseREPLAY);
+    
+    
+    // Create a callback function for the button
+    _pauseREPLAY->setName("replay");
+    _pauseREPLAY->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            _pauseBG->setVisible(false);
+            isPaused=false;
+            switchscene = OVERWORLD;
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseBACK   = _assets->get<Texture>("pause_back");
+    _pauseBACK = Button::alloc(PolygonNode::allocWithTexture(pauseBACK));
+    _pauseBACK->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseBACK->setPosition(_pauseBG->getContentWidth()/2, _pauseBG->getContentHeight()/2);
+    _pauseBACK->setScale(1.0f);
+    _pauseBG->addChild(_pauseBACK);
+    
+    
+    // Create a callback function for the button
+    _pauseBACK->setName("back");
+    _pauseBACK->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+             _pauseBG->setVisible(false);
+            isPaused=false;
+            enableButtons();
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseSound   = _assets->get<Texture>("pause_sound");
+    _pauseSOUND = Button::alloc(PolygonNode::allocWithTexture(pauseSound),PolygonNode::allocWithTexture(pauseSound));
+    _pauseSOUND->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseSOUND->setPosition(_pauseBG->getContentWidth()/2 +90, _pauseBG->getContentHeight()/2 +127);
+    _pauseSOUND->setScale(1.0f);
+    _pauseBG->addChild(_pauseSOUND);
+    
+    // Create a callback function for the button
+    _pauseSOUND->setName("sound");
+    _pauseSOUND->setListener([=] (const std::string& name, bool down) {
+        // Only quit when the button is released
+        if (!down) {
+            if (_pauseSOUND->isVisible()){
+                _pauseSOUND->setVisible(false);
+                _pauseMUTE->setVisible(true);
+            }
+            else {
+                _pauseSOUND->setVisible(true);
+                _pauseMUTE->setVisible(false);
+            }
+            
+        }
+    });
+    
+    std::shared_ptr<Texture> pauseMute  = _assets->get<Texture>("pause_mute");
+    _pauseMUTE = PolygonNode::allocWithTexture(pauseMute);
+    _pauseMUTE->setScale(1.0); // Magic number to rescale asset
+    _pauseMUTE->setAnchor(Vec2::ANCHOR_CENTER);
+    _pauseMUTE->setPosition(_pauseBG->getContentWidth()/2+90, _pauseBG->getContentHeight()/2+127);
+    _pauseMUTE->setVisible(false);
+    _pauseBG->addChild(_pauseMUTE);
+    
+
     
     
     // Add the background to the scene graph
     addChild(_background);
     addChild(_menuButton);
-
-    
-    
-    
+    addChild(_pauseBG);
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
     
     
     // We can only activate a button AFTER it is added to a scene
     _menuButton->activate(input.generateKey("menuButton"));
+    
+    _pauseBACK->activate(input.generateKey("pauseBack"));
+    _pauseREPLAY->activate(input.generateKey("pauseReplay"));
+    _pauseQUIT->activate(input.generateKey("pauseQuit"));
+    _pauseSOUND->activate(input.generateKey("pauseSound"));
     
     _lookout_button->activate(input.generateKey("lookout_button"));
     
@@ -714,15 +1023,16 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 void OverworldScene::dispose() {
     if (_active) {
         removeAllChildren();
+		_dmgIndicators.clear();
 		_active = false;
         _assets = nullptr;
 		_actions = nullptr;
         _moveup = nullptr;
         _movedn = nullptr;
-        _actions = nullptr;
         _castleFadeIN = nullptr;
         _castleFadeOUT = nullptr;
 		_castleFadeINSTANT = nullptr;
+		_dmgFadeOUT = nullptr;
 		_background = nullptr;
 		_levels = nullptr;
 		_oil_floor = nullptr;
@@ -744,6 +1054,11 @@ void OverworldScene::dispose() {
 		_castle_basement = nullptr;
 
 		_menuButton = nullptr;
+        _pauseBACK = nullptr;
+        _pauseREPLAY = nullptr;
+        _pauseQUIT = nullptr;
+        _pauseSOUND = nullptr;
+        _pauseMUTE = nullptr;
 
 		_ballistaNorth = nullptr;
 		_ballistaNorthEast = nullptr;
@@ -756,21 +1071,24 @@ void OverworldScene::dispose() {
 
 		_oilNorth = nullptr;
 		_oilNorthEast = nullptr;
-		_oilEast = nullptr;
 		_oilSouthEast = nullptr;
 		_oilSouth = nullptr;
 		_oilSouthWest = nullptr;
-		_oilWest = nullptr;
 		_oilNorthWest = nullptr;
 
 		_oilNorthLOCKED = nullptr;
 		_oilNorthEastLOCKED = nullptr;
-		_oilEastLOCKED = nullptr;
 		_oilSouthEastLOCKED = nullptr;
 		_oilSouthLOCKED = nullptr;
 		_oilSouthWestLOCKED = nullptr;
-		_oilWestLOCKED = nullptr;
 		_oilNorthWestLOCKED = nullptr;
+        
+        _oilNorthNEW = nullptr;
+        _oilNorthEastNEW = nullptr;
+        _oilSouthEastNEW = nullptr;
+        _oilSouthNEW = nullptr;
+        _oilSouthWestNEW = nullptr;
+        _oilNorthWestNEW = nullptr;
 
 		_lookout_button = nullptr;
 
@@ -781,6 +1099,10 @@ void OverworldScene::dispose() {
 		_repair_buttonLOCKED = nullptr;
 		_mage_buttonLOCKED = nullptr;
 		_ammo_buttonLOCKED = nullptr;
+        
+        _repair_buttonNEW = nullptr;
+        _mage_buttonNEW = nullptr;
+        _ammo_buttonNEW = nullptr;
     }
 }
 
@@ -790,7 +1112,6 @@ void OverworldScene::resetCastle(){
     _castle_ballista->setVisible(false);
     _castle_oil->setVisible(false);
     _castle_lookout->setVisible(true);
-    CULog("test");
     //OverworldScene::doFadeOut(_castleFadeOUT, currentCastleFloor);
     currentCastleFloor = 3;
     OverworldScene::doFadeIn(_castleFadeINSTANT, currentCastleFloor);
@@ -850,9 +1171,50 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
     _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
+void OverworldScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i+6)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i+6, _dmgFadeOUT, _dmgIndicators.at(i+6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
+
+//void OverworldScene::shakeScreen() {
+//
+//}
+
+
+void OverworldScene::resetTutorial() {
+    _swipeDN = 0;
+    _swipeUP=0;
+    _roomClick = 0;
+    _oilClick=0;
+    _ammoClick=0;
+    _repairClick=0;
+    _mageClick=0;
+    _swipeTutorial=false;
+    _newOil=false;
+    _newAmmo=false;
+    wizard=false;
+    _newRepair=false;
+
+}
+
+
 
 void OverworldScene::disableButtons() {
-
     _lookout_button->deactivate();
     
     _oilNorth->deactivate();
@@ -893,6 +1255,14 @@ void OverworldScene::enableButtons() {
         _oilSouthWest->activate(input.findKey("oilSouthWest"));
         _oilSouthWestLOCKED->setVisible(false);
         
+    }
+    else {
+        _oilNorth->deactivate();
+        _oilNorthLOCKED->setVisible(true);
+        _oilSouthEast->deactivate();
+        _oilSouthEastLOCKED->setVisible(true);
+        _oilSouthWest->deactivate();
+        _oilSouthWestLOCKED->setVisible(true);
     }
     
     
@@ -939,7 +1309,16 @@ void OverworldScene::enableButtons() {
             _oilSouth->activate(input.findKey("oilSouth"));
             _oilSouthLOCKED->setVisible(false);
         }
+        else {
+            _oilNorthEast->deactivate();
+            _oilNorthEastLOCKED->setVisible(true);
+            _oilNorthWest->deactivate();
+            _oilNorthWestLOCKED->setVisible(true);
+            _oilSouth->deactivate();
+            _oilSouthLOCKED->setVisible(true);
+        }
 
+        
         _ballistaNorthEast->activate(input.findKey("ballistaNorthEast"));
         _ballistaNorthWest->activate(input.findKey("ballistaNorthWest"));
         _ballistaSouth->activate(input.findKey("ballistaSouth"));
@@ -956,7 +1335,17 @@ void OverworldScene::enableButtons() {
 }
 
 void OverworldScene::update(float timestep){
-
+    
+    if (!_pauseBG->isVisible()) {
+        isPaused=false;
+        enableButtons();
+        _pauseBACK->deactivate();
+        _pauseREPLAY->deactivate();
+        _pauseQUIT->deactivate();
+        _pauseSOUND->deactivate();
+    }
+    
+    
     //TODO: Make the relevant buttons unclickable/covered in Avatars for networked game
     if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
         gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
@@ -967,6 +1356,35 @@ void OverworldScene::update(float timestep){
             switchscene = WIN;
         }
     }
+    
+
+    if (_swipeUP>1 && _swipeDN > 1) {
+        _swipe->setVisible(false);
+    }
+    
+    if (_roomClick>2) {
+        _tap->setVisible(false);
+    }
+    if (_oilClick>1) {
+        _oilNorthNEW->setVisible(false);
+        _oilNorthEastNEW->setVisible(false);
+        _oilNorthWestNEW->setVisible(false);
+        _oilSouthNEW->setVisible(false);
+        _oilSouthEastNEW->setVisible(false);
+        _oilSouthWestNEW->setVisible(false);
+    }
+    if (_mageClick>0) {
+        _mage_buttonNEW->setVisible(false);
+    }
+    if (_ammoClick>0) {
+        _ammo_buttonNEW->setVisible(false);
+    }
+    if (_repairClick>0) {
+        _repair_buttonNEW->setVisible(false);
+    }
+
+	//poll damage indicators
+	pollDmgIndicators();
 
 	//poll inputs
     if (!click) {
@@ -1001,7 +1419,9 @@ void OverworldScene::update(float timestep){
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor - 1);
 		currentCastleFloor -= 1;
         click=false;
+        _menuButton->deactivate();
         disableButtons();
+        _swipeDN+=1;
 	}
 	else if (input.vScrolling() > 0 && currentCastleFloor<3 && !_actions->isActive(ACT_KEY)) {
 		//Moving up
@@ -1010,9 +1430,22 @@ void OverworldScene::update(float timestep){
 		OverworldScene::doFadeIn(_castleFadeIN, currentCastleFloor + 1);
 		currentCastleFloor += 1;
         click=false;
+        _menuButton->deactivate();
         disableButtons();
+        _swipeUP+=1;
 	}
-    if (!_actions->isActive(ACT_KEY)){
+    if (currentCastleFloor==3 && _roomClick<2 && _swipeTutorial) {
+        _tap->setVisible(true);
+        _tap->setPosition(_size.width*.25f,_size.height*.03f);
+    }
+    else if (currentCastleFloor==2 && _roomClick<2 && _swipeTutorial) {
+        _tap->setVisible(true);
+         _tap->setPosition(_size.width*.25f,_size.height*.333f);
+    }
+    else {
+        _tap->setVisible(false);
+    }
+    if (!_actions->isActive(ACT_KEY) && !_pauseBG->isVisible()){
         click=true;
         enableButtons();
 
@@ -1046,6 +1479,78 @@ void OverworldScene::setActive(bool active) {
     if(active){
         enableButtons();
         Application::get()->setClearColor(Color4(255,255,255,255));
+        
+        if (_pauseBG->isVisible()) {
+            _pauseBG->setVisible(false);
+        }
+
+        CULog("UP %i", _swipeUP);
+        CULog("DOWN %i", _swipeDN);
+        CULog("CLICKS %i", _roomClick);
+        CULog("LEVEL %i", gameModel.level);
+        if (gameModel.level==1){
+            _swipeTutorial=true;
+        }
+        if (gameModel.level==5){
+            _newOil=true;
+        }
+        if (gameModel.level==3){
+            _newAmmo=true;
+        }
+        if (gameModel.level==4){
+            _newRepair=true;
+        }
+        if (gameModel.level==8){
+            wizard=true;
+        }
+        if (_swipeTutorial && _swipeUP<1 && _swipeDN < 1) {
+            _swipe->setVisible(true);
+        }
+        if (_swipeTutorial && _roomClick < 2) {
+            _tap->setVisible(true);
+        }
+        if (!_swipeTutorial) {
+            _swipe->setVisible(false);
+            _tap->setVisible(false);
+            CULog("false");
+        }
+        if (_newOil  && _oilClick < 1) {
+            _oilNorthNEW->setVisible(true);
+            _oilNorthEastNEW->setVisible(true);
+            _oilNorthWestNEW->setVisible(true);
+            _oilSouthNEW->setVisible(true);
+            _oilSouthEastNEW->setVisible(true);
+            _oilSouthWestNEW->setVisible(true);
+        }
+        if (!_newOil) {
+            _oilNorthNEW->setVisible(false);
+            _oilNorthEastNEW->setVisible(false);
+            _oilNorthWestNEW->setVisible(false);
+            _oilSouthNEW->setVisible(false);
+            _oilSouthEastNEW->setVisible(false);
+            _oilSouthWestNEW->setVisible(false);
+        }
+        if (_newRepair && _repairClick < 1) {
+            _repair_buttonNEW->setVisible(true);
+        }
+        if (!_newRepair) {
+            _repair_buttonNEW->setVisible(false);
+        }
+        
+        if (_newAmmo && _ammoClick < 1) {
+            _ammo_buttonNEW->setVisible(true);
+        }
+        if (!_newAmmo) {
+            _ammo_buttonNEW->setVisible(false);
+        }
+        
+        if (wizard && _mageClick < 1) {
+            _mage_buttonNEW->setVisible(true);
+        }
+        if (!wizard) {
+            _mage_buttonNEW->setVisible(false);
+        }
+
 
 		//Change scenery based on level
 		std::shared_ptr<Texture> oilFloor_texture = _assets->get<Texture>("oil_floor");
@@ -1073,13 +1578,18 @@ void OverworldScene::setActive(bool active) {
 			_lookout_floor->setTexture(lookoutFloor_texture_d);
 		}
        // resetCastle();
-        CULog("setACtive");
 
         
     }
     else{
+        _menuButton->deactivate();
         disableButtons();
 
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			_actions->clearAllActions(it);
+		}
     }
 }
 

@@ -38,6 +38,7 @@ protected:
     std::shared_ptr<cugl::MoveTo> _moveup_J;
     std::shared_ptr<cugl::MoveTo> _moveup_O;
     std::shared_ptr<cugl::MoveTo> _moveup_B;
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
     
     /** The animation */
     std::shared_ptr<cugl::AnimationNode> _hammerAnim;
@@ -50,7 +51,12 @@ protected:
     
     bool move_direction;
     
-
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+    
+    //tutorial
+    std::shared_ptr<cugl::PolygonNode> _tap;
+    bool _tapTutorial;
     
     
 public:
@@ -94,7 +100,10 @@ public:
      */
     void doStrip(const std::shared_ptr<cugl::Animate>& action);
 
-
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
+    
+    int _ammoClick;
 };
 
 

@@ -4,8 +4,8 @@
 
 #include "BallistaModel.h"
 
-#define MIN_ANGLE M_PI*11.0f/12.0f //165 degrees
-#define MAX_ANGLE M_PI/12.0f //15 degrees
+#define MIN_ANGLE M_PI*11.5f/12.0f //172.5 degrees
+#define MAX_ANGLE M_PI*0.5f/12.0f //7.5 degrees
 #define TURN_SPEED M_PI/20.0f
 
 #define MAX_POWER 24.0f

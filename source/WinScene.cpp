@@ -78,9 +78,12 @@ bool WinScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _winNext->setName("winNext");
     _winNext->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
-        if (!down) {
+        if (!down && gameModel.level != 10) {
             switchscene = OVERWORLD;
             replayFlag = false;
+        }
+        else if(!down){
+            switchscene = MENU;
         }
     });
     

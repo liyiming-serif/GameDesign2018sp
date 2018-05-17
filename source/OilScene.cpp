@@ -35,12 +35,18 @@ using namespace cugl;
 #define DELUGE_NUM_COLS 5
 #define DELUGE_SPEED 0.2f
 
-#define OIL_COOLDOWN 420
+#define OIL_COOLDOWN 600
 #define TIPPING_POINT 0.45f
 
-#define OIL_MAX_RANGE 99	//farthest enemy oil scene can see
+#define OIL_MAX_RANGE 100	//farthest enemy oil scene can see
 #define OIL_MIN_RANGE 0		//closest enemy oil scene can see
-#define OIL_END_ZONE 192	//enemies dissapear past this y-coord; set by castle wall art assets
+#define OIL_END_ZONE 200	//enemies dissapear past this y-coord; set by castle wall art assets
+
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
 
 bool OilScene::inRange(float y) {
 	return OIL_MIN_RANGE < y && y < OIL_MAX_RANGE;
@@ -72,6 +78,106 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
     
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
+
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
     std::shared_ptr<Texture> texture_s  = _assets->get<Texture>("weaponBG_snow");
@@ -227,6 +333,17 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     SW_compass->setVisible(false);
     
     
+    std::shared_ptr<Texture> tut_tilt  = _assets->get<Texture>("tutorial_tilt");
+    _tilt = PolygonNode::allocWithTexture(tut_tilt);
+    _tilt->setScale(1.0); // Magic number to rescale asset
+    _tilt->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _tilt->setPosition(_size.width*.5f,_size.height*.9f);
+    addChild(_tilt);
+    
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
 
     return true;
 }
@@ -256,6 +373,8 @@ void OilScene::dispose() {
 		_deluge = nullptr;
 		_enemyArray.clear();
 		_enemiesToFree.clear();
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
     }
 }
 
@@ -340,6 +459,13 @@ void OilScene::update(float timestep, int direction){
     }
     setWall(direction);
     
+    if (_tiltCount > 1) {
+        _tilt->setVisible(false);
+    }
+    
+	//poll damage indicators
+	pollDmgIndicators();
+
 	//poll inputs
 	if (gameModel.getOilCooldown(direction) == 0 && input.oilTilt()>=TIPPING_POINT && !_oil->isReloading) {
 		gameModel.setOilCooldown(direction, OIL_COOLDOWN);
@@ -348,6 +474,8 @@ void OilScene::update(float timestep, int direction){
         if (gameModel.isNetworked() && !gameModel.isServer()) {
             gameModel.setOilPoured(direction);
         }
+        _tiltCount+=1;
+        CULog("OIL");
 		_deluge->setVisible(true);
 		_delugeFrame = 0;
 		for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
@@ -385,6 +513,26 @@ void OilScene::update(float timestep, int direction){
 	_world->update(timestep);
 }
 
+void OilScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
+
 void OilScene::updateEnemyModels(float timestep, int direction) {
 	//add or update enemy models from master array
 	for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> epair : gameModel._enemyArrayMaster[direction]) {
@@ -407,6 +555,8 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 		else { //Enemy already exists; update it.
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos / DRAW_SCALE);
+			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
+			i->second->setAtkProgress(atkProgress);
 			i->second->update(timestep);
 		}
 	}
@@ -415,15 +565,30 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> e : _enemyArray) {
 		std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
 			gameModel._enemyArrayMaster[direction].find(e.first);
-		if (i == gameModel._enemyArrayMaster[direction].end() || !inRange(i->second->getPos().y)) {
+		if (i == gameModel._enemyArrayMaster[direction].end()) {
+			if (!e.second->isDying) {
+				//remove hit box for enemies playing death animation
+				_world->removeObstacle(e.second.get());
+				e.second->isDying = true;
+			}
+			else {
+				//move death animation forward
+				e.second->update(timestep);
+			}
+			if (e.second->doneDying) {
+				//mark enemies with finished death animation for removal
+				_enemiesToFree.insert(e.second);
+			}
+		}
+		else if (!inRange(i->second->getPos().y)) {
 			//mark enemy models for deletion
 			_enemiesToFree.insert(e.second);
+			_world->removeObstacle(e.second.get());
 		}
 	}
 	// Delete the enemies here because you can't remove elements while iterating
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}
@@ -435,18 +600,21 @@ void OilScene::setActive(bool active, int direction){
     _active = active;
     switchscene = 0;
 	_oil->isReloading = false;
+    
+
 
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
 		std::shared_ptr<EnemyModel> e = epair.second;
-		_world->removeObstacle(e.get());
+		if (!epair.second->isDying) {
+			_world->removeObstacle(e.get());
+		}
 		removeChild(e->getNode());
 	}
 	_enemyArray.clear();
 
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}
@@ -458,6 +626,19 @@ void OilScene::setActive(bool active, int direction){
         _oilTOcastle->activate(input.findKey("oilTOcastle"));
          OilScene::setCompass(direction);
          OilScene::setWall(direction);
+        
+        if (gameModel.level==5){
+            _tiltTutorial=true;
+        }
+        else {
+            _tiltTutorial=false;
+        }
+        if (_tiltTutorial && _tiltCount < 1) {
+            _tilt->setVisible(true);
+        }
+        if (!_tiltTutorial) {
+            _tilt->setVisible(false);
+        }
         
         //Change scenery based on level
 		std::shared_ptr<Texture> texture = _assets->get<Texture>("weaponBG_jungle");
@@ -476,5 +657,11 @@ void OilScene::setActive(bool active, int direction){
     else{
 		_deluge->setVisible(false);
         _oilTOcastle->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			input.actions()->clearAllActions(it);
+		}
     }
 }

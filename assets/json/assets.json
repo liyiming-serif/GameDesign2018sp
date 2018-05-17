@@ -70,9 +70,93 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "castle_lookout": {
-            "file":     "textures/Overworld/lookout.png",
-            "minfilter":"nearest",
+    "castle_lookout": {
+      "file": "textures/Overworld/lookout.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_n": {
+      "file": "textures/Overworld/dmg_indicator_n.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_nw": {
+      "file": "textures/Overworld/dmg_indicator_nw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_ne": {
+      "file": "textures/Overworld/dmg_indicator_ne.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_s": {
+      "file": "textures/Overworld/dmg_indicator_s.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_sw": {
+      "file": "textures/Overworld/dmg_indicator_sw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "dmg_indicator_se": {
+      "file": "textures/Overworld/dmg_indicator_se.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+        "hvydmg_indicator_n": {
+      "file": "textures/Overworld/hvydmg_indicator_n.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "hvydmg_indicator_nw": {
+      "file": "textures/Overworld/hvydmg_indicator_nw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "hvydmg_indicator_ne": {
+      "file": "textures/Overworld/hvydmg_indicator_ne.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "hvydmg_indicator_s": {
+      "file": "textures/Overworld/hvydmg_indicator_s.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "hvydmg_indicator_sw": {
+      "file": "textures/Overworld/hvydmg_indicator_sw.png",
+      "minfilter": "linear",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "hvydmg_indicator_se": {
+            "file":     "textures/Overworld/hvydmg_indicator_se.png",
+            "minfilter":"linear",
             "magfilter":"linear",
             "wrapS":    "clamp",
             "wrapT":    "clamp"
@@ -591,20 +675,55 @@
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
+    "flyingIcon": {
+      "file": "textures/flyingIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
     "warrior": {
-      "file": "textures/reaper.png",
+      "file": "textures/small-reaper.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "warriorIcon": {
+      "file": "textures/normalIcon.png",
       "minfilter": "nearest",
       "magfilter": "linear",
       "wrapS": "clamp",
       "wrapT": "clamp"
     },
     "berserker": {
-            "file":     "textures/berserker.png",
-            "minfilter":"nearest",
-            "magfilter":"linear",
-            "wrapS":    "clamp",
-            "wrapT":    "clamp"
-        },
+      "file": "textures/berserker.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "berserkerIcon": {
+      "file": "textures/bersekerIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "reaper": {
+      "file": "textures/big-reaper.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "reaperIcon": {
+      "file": "textures/bossIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
         "repair_background": {
             "file":     "textures/Basement/RepairBackground.png",
             "minfilter":"nearest",
@@ -796,6 +915,83 @@
         },
         "lobby_box": {
             "file":     "textures/Lobby/new/box.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_swipe": {
+            "file":     "textures/Tutorial/swipe.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_tap": {
+            "file":     "textures/Tutorial/tap.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_tilt": {
+            "file":     "textures/Tutorial/tilt.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_ballista": {
+            "file":     "textures/Tutorial/ballista.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_newRoom": {
+            "file":     "textures/Tutorial/newRoom.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_BG": {
+            "file":     "textures/Pause/BG.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_back": {
+            "file":     "textures/Pause/back.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_replay": {
+            "file":     "textures/Pause/replay.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_quit": {
+            "file":     "textures/Pause/quit.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_sound": {
+            "file":     "textures/Pause/sound.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "pause_mute": {
+            "file":     "textures/Pause/mute.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",

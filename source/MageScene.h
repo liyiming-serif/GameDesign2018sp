@@ -24,6 +24,9 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
+	// Actions
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+
     std::shared_ptr<cugl::Button> _mageTOcastle;
     
     std::shared_ptr<cugl::PolygonNode> _background;
@@ -49,7 +52,10 @@ protected:
     std::shared_ptr<PolygonNode> southWall_floor;
     std::shared_ptr<PolygonNode> southwestWall_floor;
     std::shared_ptr<PolygonNode> northwestWall_floor;
-    
+
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+
     // Helpers
 	void resetSpellPath();
 
@@ -72,6 +78,9 @@ public:
     int switchscene;
     
     void setSide (std::string side);
+
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
 };
 
 #endif /* MageScene_h */

@@ -17,6 +17,12 @@
 #define WIN         11
 #define LOSE        12
 
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
+
 #define JUNGLE  5
 #define SNOW  8
 
@@ -27,8 +33,8 @@
 
 #define BALLISTA_MIN_POWER 9.0f
 
-#define BALLISTA_MAX_RANGE 640	//farthest enemy ballista scene can see
-#define BALLISTA_MIN_RANGE 100	//closest enemy ballista scene can see
+#define BALLISTA_MAX_RANGE 680	//farthest enemy ballista scene can see
+#define BALLISTA_MIN_RANGE 101	//closest enemy ballista scene can see
 #define BALLISTA_END_ZONE 0	//enemies dissapear past this y-coord; set by castle wall art assets
 
 using namespace cugl;
@@ -68,6 +74,106 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the assets
     switchscene = 0;
     _assets = assets;
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
 
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("weaponBG_jungle");
@@ -242,6 +348,23 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
 
+    
+    
+    std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_ballista");
+    _ballista_swipe = PolygonNode::allocWithTexture(tut_swipe);
+    _ballista_swipe->setScale(1.0); // Magic number to rescale asset
+    _ballista_swipe->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _ballista_swipe->setPosition(_size.width*.5f,_size.height*.9f);
+    _ballista_swipe->setAngle(M_PI_4);
+    addChild(_ballista_swipe);
+    
+    
+    
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
+
     return true;
 }
 
@@ -278,6 +401,8 @@ void BallistaScene::dispose() {
         _active = false;
         _enemyArray.clear();
 		_enemiesToFree.clear();
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
     }
 }
 
@@ -341,9 +466,16 @@ void BallistaScene::update(float deltaTime, int direction){
     _direction = direction;
 	_ammoText->setText("Ammo "+ std::to_string(gameModel.getArrowAmmo(0)));
     setWall(direction);
+    
+    if (_shots > 2) {
+        _ballista_swipe->setVisible(false);
+    }
 
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
+
+	//poll damage indicators
+	pollDmgIndicators();
 
 	// Poll inputs
 	if (input.justPressed()) {
@@ -413,6 +545,7 @@ void BallistaScene::update(float deltaTime, int direction){
                 }
             }
 			// Fire ballista
+            _shots+=1;
 			_ballista->setPower(0.0f, true);
 			_ballista->isReadyToFire = false;
 		}
@@ -450,6 +583,26 @@ void BallistaScene::update(float deltaTime, int direction){
 
 }
 
+void BallistaScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
+
 void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 	//add or update enemy models from master array
 	for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> epair : gameModel._enemyArrayMaster[direction]) {
@@ -458,7 +611,7 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 
 		std::unordered_map<std::string, std::shared_ptr<EnemyModel>>::iterator i =
 			_enemyArray.find(k);
-		if (i == _enemyArray.end()) {
+		if (i == _enemyArray.end()) { //new enemy appeared
 			if (inRange(e->getPos().y)) {
 				Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 				std::shared_ptr<EnemyModel> en = EnemyModel::alloc(k, pos, e->getType(), DRAW_SCALE, _assets);
@@ -469,26 +622,43 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 				}
 			}
 		}
-		else {
+		else { //update existing enemy model
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos/DRAW_SCALE);
+			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
+			i->second->setAtkProgress(atkProgress);
 			i->second->update(deltaTime);
 		}
 	}
 
-	//delete enemy models too close or not found in the master 
+	//delete enemy models too close or not found in the master that have finished dying
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> e : _enemyArray) {
 		std::unordered_map<std::string, std::shared_ptr<EnemyDataModel>>::iterator i =
 			gameModel._enemyArrayMaster[direction].find(e.first);
-		if (i == gameModel._enemyArrayMaster[direction].end() || !inRange(i->second->getPos().y)) {
+		if (i == gameModel._enemyArrayMaster[direction].end()) {
+			if (!e.second->isDying) {
+				//remove hit box for enemies playing death animation
+				_world->removeObstacle(e.second.get());
+				e.second->isDying = true;
+			}
+			else {
+				//move death animation forward
+				e.second->update(deltaTime);
+			}
+			if(e.second->doneDying) {
+				//mark enemies with finished death animation for removal
+				_enemiesToFree.insert(e.second);
+			}
+		}
+		else if (!inRange(i->second->getPos().y)) {
 			//mark enemy models for deletion
 			_enemiesToFree.insert(e.second);
+			_world->removeObstacle(e.second.get());
 		}
 	}
 	// Delete the enemies here because you can't remove elements while iterating
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}
@@ -500,6 +670,21 @@ void BallistaScene::setActive(bool active, int direction){
     _direction = direction;
     _active = active;
     switchscene = 0;
+    
+    
+    if (gameModel.level==1){
+        _swipeTutorial=true;
+    }
+    else {
+        _swipeTutorial=false;
+    }
+    if (_swipeTutorial && _shots < 2) {
+        _ballista_swipe->setVisible(true);
+        
+    }
+    if (!_swipeTutorial) {
+        _ballista_swipe->setVisible(false);
+    }
 
 	//empty the arrow arrays to prevent data leaks
 	for (auto it = _arrows.begin(); it != _arrows.end(); it++) {
@@ -520,14 +705,15 @@ void BallistaScene::setActive(bool active, int direction){
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
 		std::shared_ptr<EnemyModel> e = epair.second;
-		_world->removeObstacle(e.get());
+		if (!e->isDying) {
+			_world->removeObstacle(e.get());
+		}
 		removeChild(e->getNode());
 	}
 	_enemyArray.clear();
 
 	for (auto it = _enemiesToFree.begin(); it != _enemiesToFree.end(); it++) {
 		std::shared_ptr<EnemyModel> e = *it;
-		_world->removeObstacle(e.get());
 		removeChild(e->getNode());
 		_enemyArray.erase(e->getName());
 	}
@@ -554,6 +740,12 @@ void BallistaScene::setActive(bool active, int direction){
     }
     else{
         _ballistaTOcastle->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			input.actions()->clearAllActions(it);
+		}
     }
 }
 
@@ -574,7 +766,10 @@ void BallistaScene::beginContact(b2Contact* contact) {
 		std::shared_ptr<ArrowModel> a = *it;
 		if ((body1->GetUserData() == a.get() || body2->GetUserData() == a.get())) {
 			_arrowsToFree.insert(a);
-			contactWithArrow = true;
+			if (!a->collided) {
+				contactWithArrow = true;
+				a->collided = true;
+			}
 			break;
 		}
 	}

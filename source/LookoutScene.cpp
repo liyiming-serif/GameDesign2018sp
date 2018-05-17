@@ -21,6 +21,11 @@ using namespace cugl;
 #define WIN         11
 #define LOSE        12
 
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
 
 #define JUNGLE  5
 #define SNOW  8
@@ -41,6 +46,106 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     switchscene = 0;
 
     _assets = assets;
+
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
 
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("lookout_view");
@@ -75,8 +180,13 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _distance=.85f*_size.height/gameModel.getEndTime();
     
     
-	//allocate an enemy icon, but don't add it yet
+	//allocate the enemy icons, but don't add it yet
 	_enemyIcon = _assets->get<Texture>("skeletonIcon");
+	_flyingIcon = _assets->get<Texture>("flyingIcon");
+	_warriorIcon = _assets->get<Texture>("warriorIcon");
+	_reaperIcon = _assets->get<Texture>("reaperIcon");
+	_berserkerIcon = _assets->get<Texture>("berserkerIcon");
+
 	//initialize lanes for displaying enemies.
 	for (int i = 0; i < 6; i++) {
 		std::shared_ptr<cugl::Node> ecanvas = Node::allocWithBounds(_size);
@@ -110,6 +220,11 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the logo and button to the scene graph
     addChild(_lookoutTOcastle);
 
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
+
     // We can only activate a button AFTER it is added to a scene
     _lookoutTOcastle->activate(input.generateKey("lookoutTOcastle"));
 	CULog("initialized lookout");
@@ -122,6 +237,8 @@ void LookoutScene::dispose() {
 			_enemyMarkers[i]->removeAllChildren();
 		}
         removeAllChildren();
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
         _assets = nullptr;
         _lookoutTOcastle = nullptr;
         _background = nullptr;
@@ -146,6 +263,9 @@ void LookoutScene::update(float timestep){
         _progressBar->setPosition(_progressBar->getPositionX(),_progressBar->getPositionY()+_distance);
     }
 
+	//poll damage indicators
+	pollDmgIndicators();
+
 	//UPDATE ENEMY MARKERS
 	//clear enemy lanes
 	for (int i = 0; i < _enemyMarkers.size(); i++) {
@@ -154,14 +274,56 @@ void LookoutScene::update(float timestep){
 	//redraw them
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (std::pair<std::string, std::shared_ptr<EnemyDataModel>> enemy : gameModel._enemyArrayMaster[wall]) {
-			std::shared_ptr<PolygonNode> e = PolygonNode::allocWithTexture(_enemyIcon);
-			e->setAnchor(Vec2::ANCHOR_CENTER);
-			e->setPosition(enemy.second->getPos());
-			_enemyMarkers[wall]->addChild(e);
+		    if(!(gameModel.getLevel()<5 && (enemy.second->getPos()).y<180)){
+			std::shared_ptr<PolygonNode> e = nullptr;
+			switch (enemy.second->getType()) {
+			case 1:
+				e = PolygonNode::allocWithTexture(_enemyIcon);
+				break;
+			case 2:
+				e = PolygonNode::allocWithTexture(_flyingIcon);
+				break;
+			case 3:
+				e = PolygonNode::allocWithTexture(_warriorIcon);
+				break;
+			case 4:
+				e = PolygonNode::allocWithTexture(_reaperIcon);
+				break;
+			case 5:
+				e = PolygonNode::allocWithTexture(_berserkerIcon);
+				break;
+			default:
+				continue;
+			}
+			if (e != nullptr) {
+				e->setAnchor(Vec2::ANCHOR_CENTER);
+				e->setPosition(enemy.second->getPos());
+				_enemyMarkers[wall]->addChild(e);
+			}
+			}
 		}
 	}
 }
 
+void LookoutScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = input.actions()->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
 
 //Pause or Resume
 void LookoutScene::setActive(bool active){
@@ -193,6 +355,12 @@ void LookoutScene::setActive(bool active){
         _lookoutTOcastle->deactivate();
 		for (int i = 0; i < _enemyMarkers.size(); i++) {
 			_enemyMarkers[i]->removeAllChildren();
+		}
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			input.actions()->clearAllActions(it);
 		}
     }
 }

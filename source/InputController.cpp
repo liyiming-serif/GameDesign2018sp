@@ -95,12 +95,13 @@ bool InputController::init(){
 	gest->addStateListener(LISTENER_KEY, [=](GestureState old, GestureState curr) {
 		this->gestureStateCB(old, curr);
 	});
-	//gest->loadAssetAsync("Gestures", [=](bool success) {
-		//CULog("%i gestures loaded!", gest->getGestures().size());
-	//});
+	gest->loadAsset("Gestures");
 	gest->pause();
 	_makeGestureTimer = 100;
 	
+	// Allocate the Action Manager
+	_actions = ActionManager::alloc();
+
     return success;
 }
 
@@ -149,6 +150,7 @@ void InputController::update(float deltaTime) {
     _justReleased = false;
     _vScrolling = 0;
 	_hScrolling = 0;
+	_actions->update(deltaTime);
 }
 
 /**
@@ -176,6 +178,7 @@ void InputController::dispose(){
 		gest->removeStateListener(LISTENER_KEY);
         _active = false;
     }
+	_actions = nullptr;
 }
 
 void InputController::clear() {

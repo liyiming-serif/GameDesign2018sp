@@ -25,7 +25,8 @@ protected:
     int* _playerAvatars;
     int* _playerRooms;
     int _playerID;
-    int _deltaCastleHealth[6];
+    int _deltaCastleHealth[6]; //delta for networking
+	std::array<int, 6> _dmgCastleHealth; //dmg for indicators
     int clock;
     int _noPlayers;
     bool networked;
@@ -35,6 +36,8 @@ protected:
     int _oilPoured[6];
     int _deltaAmmo[3];
     int _currentRoom;
+    
+    bool _swipeTutorial;
 
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];
@@ -70,7 +73,8 @@ public:
 
     // Gameplay
     void update(float deltaTime);
-
+	//init(); dispose(); without resetting multiplayer
+	void reset();
 
     /**
 	 * GETTERS AND SETTERS: DON'T NEED TO REFER TO GAMEMODEL OBJECT
@@ -83,6 +87,10 @@ public:
 
 	void setEndTime(float time);
 
+	int getLevel(){return level;}
+
+	void setLevel(int inputLevel){level = inputLevel;}
+
     int getWallHealth(int wall);
 
     void setWallHealth(int wall, int amt);
@@ -92,6 +100,10 @@ public:
     void addDeltaHealth(int wall, int repair);
 
     int getDeltaHealth(int wall);
+
+	int getDmgHealth(int wall) { return _dmgCastleHealth[wall]; }
+
+	void resetWallDmg();
 
     int getPlayerAvatar(int player);
 

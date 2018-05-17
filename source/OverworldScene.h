@@ -21,15 +21,16 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     
-    /** Manager to process the animation actions */
-    std::shared_ptr<cugl::ActionManager> _actions;
-    
+	/** Manager to process the animation actions */
+	std::shared_ptr<cugl::ActionManager> _actions;
+
     /** The movement actions */
     std::shared_ptr<cugl::MoveBy> _moveup;
     std::shared_ptr<cugl::MoveBy> _movedn;
     std::shared_ptr<cugl::FadeIn> _castleFadeIN;
     std::shared_ptr<cugl::FadeOut> _castleFadeOUT;
     std::shared_ptr<cugl::FadeIn> _castleFadeINSTANT;
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
     
     //background floorplan
     std::shared_ptr<cugl::Node>  _background;
@@ -78,6 +79,15 @@ protected:
         std::shared_ptr<cugl::PolygonNode> _oilSouthWestLOCKED;
         std::shared_ptr<cugl::PolygonNode> _oilWestLOCKED;
         std::shared_ptr<cugl::PolygonNode> _oilNorthWestLOCKED;
+    
+        std::shared_ptr<cugl::PolygonNode> _oilNorthNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthEastNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilSouthWestNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilWestNEW;
+        std::shared_ptr<cugl::PolygonNode> _oilNorthWestNEW;
     //Lookout Button
         std::shared_ptr<cugl::Button> _lookout_button;
     //Basement Buttons
@@ -88,6 +98,10 @@ protected:
         std::shared_ptr<cugl::PolygonNode> _repair_buttonLOCKED;
         std::shared_ptr<cugl::PolygonNode>_mage_buttonLOCKED;
         std::shared_ptr<cugl::PolygonNode> _ammo_buttonLOCKED;
+    
+        std::shared_ptr<cugl::PolygonNode> _repair_buttonNEW;
+        std::shared_ptr<cugl::PolygonNode>_mage_buttonNEW;
+        std::shared_ptr<cugl::PolygonNode> _ammo_buttonNEW;
     
 
     
@@ -105,9 +119,35 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move2;
     std::shared_ptr<cugl::MoveTo> _move3;
 
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+    
+    /** Tutorial */
+    std::shared_ptr<cugl::PolygonNode> _swipe;
+    int _swipeUP;
+    int _swipeDN;
+    std::shared_ptr<cugl::PolygonNode> _tap;
+    int _roomClick;
+    int _oilClick;
+    int _ammoClick;
+    int _repairClick;
+    int _mageClick;
+    bool _swipeTutorial;
+    bool _newOil;
+    bool _newAmmo;
+    bool _newRepair;
+
+    
+    //Pause
+    std::shared_ptr<cugl::PolygonNode> _pauseBG;
+    std::shared_ptr<cugl::Button> _pauseQUIT;
+    std::shared_ptr<cugl::Button> _pauseREPLAY;
+    std::shared_ptr<cugl::Button> _pauseBACK;
+    std::shared_ptr<cugl::Button> _pauseSOUND;
+    std::shared_ptr<cugl::PolygonNode> _pauseMUTE;
+
 
     cugl::Size _size;
-    
 
 
 public:
@@ -131,7 +171,10 @@ public:
     int currentCastleFloor;
     
     bool click;
+    bool wizard;
     int player_TEST=2;
+    bool _newMage;
+//    bool _mac;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
@@ -196,6 +239,8 @@ public:
      */
     void doMove3(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
     
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
     
     /**
      * Disables all buttons
@@ -210,6 +255,12 @@ public:
      *
      */
     void enableButtons();
+    
+    void resetTutorial();
+    
+    bool isPaused;
+    
+    
     
     
 

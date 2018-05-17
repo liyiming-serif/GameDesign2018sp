@@ -37,6 +37,11 @@ using namespace std;
 #define DISTANCE 200
 #define REPEATS  3
 #define ACT_KEY  "current"
+#define DMG_DURATION 1.0f
+#define DMG_ACT_KEY "marker"
+
+// Decide when to use heavy damage indicator
+#define HVY_DMG 6
 
 #define UP  _assets->get<Texture>("ammo_icon")
 
@@ -53,8 +58,6 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         return false;
     }
     
-    // Set background color
-    //Application::get()->setClearColor(Color4(132,180,113,255));
     Application::get()->setClearColor(Color4(0,0,0,255));
     
     switchscene = 0;
@@ -64,11 +67,111 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _curr_wall = "";
     _new_wall = "";
     
+	// Allocate the damage indicators
+	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
+	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("dmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_n");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_nw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_sw");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_s");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_se");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+	dmg_img = _assets->get<Texture>("hvydmg_indicator_ne");
+	dmg_ind = PolygonNode::allocWithTexture(dmg_img);
+	dmg_ind->setScale(_size / dmg_ind->getSize());
+	dmg_ind->setAnchor(Vec2::ANCHOR_CENTER);
+	dmg_ind->setPosition(_size / 2.0);
+	dmg_ind->setColor(Color4::CLEAR);
+	dmg_ind->setZOrder(5);
+	_dmgIndicators.push_back(dmg_ind);
+
+
     // Allocate the manager and the actions
     _actions = ActionManager::alloc();
     
     _wallFadeIN = FadeIn::alloc(DURATION);
     _wallFadeOUT = FadeOut::alloc(DURATION);
+	_dmgFadeOUT = FadeOut::alloc(DMG_DURATION);
     
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("repair_background");
@@ -92,6 +195,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "N";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -118,6 +222,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "NE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -145,6 +250,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "SE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -171,6 +277,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "S";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -196,6 +303,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
 				_new_wall = "SW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -221,6 +329,7 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
 				_new_wall = "NW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
@@ -528,6 +637,13 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
 
     
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _tap = PolygonNode::allocWithTexture(tut_tap);
+    _tap->setScale(1.0); // Magic number to rescale asset
+    _tap->setAnchor(Vec2::ANCHOR_CENTER);
+    _tap->setPosition(_size.width*.5f,_size.height*.5f);
+    addChild(_tap);
+    
     
 
     
@@ -559,6 +675,11 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the logo and button to the scene graph
     addChild(_repairTOcastle);
     
+	// Add damage indicators overlay
+	for (int i = 0; i < _dmgIndicators.size(); i++) {
+		addChild(_dmgIndicators.at(i));
+	}
+
     // We can only activate a button AFTER it is added to a scene
     _repairTOcastle->activate(input.generateKey("repairTOcastle"));
 
@@ -590,6 +711,9 @@ std::shared_ptr<cugl::Button> RepairScene::getWall(std::string direction) {
 void RepairScene::dispose() {
     if (_active) {
         removeAllChildren();
+		_dmgFadeOUT = nullptr;
+		_dmgIndicators.clear();
+		_actions = nullptr;
         _assets = nullptr;
         _repairTOcastle = nullptr;
         _background = nullptr;
@@ -601,6 +725,9 @@ void RepairScene::dispose() {
 void RepairScene::update(float timestep){
 
     // Animate
+	//poll damage indicators
+	pollDmgIndicators();
+
     _actions->update(timestep);
     int _curr_wall_health;
     
@@ -612,6 +739,10 @@ void RepairScene::update(float timestep){
         if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
             switchscene = WIN;
         }
+    }
+    
+    if (_wallClick > 1) {
+        _tap->setVisible(false);
     }
 
     _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
@@ -843,7 +974,25 @@ void RepairScene::update(float timestep){
         }
 }
 
-
+void RepairScene::pollDmgIndicators() {
+	for (int i = 0; i < 6; i++) {
+		if (gameModel.getDmgHealth(i) > 0) {
+			//turn on damage indicator for that side
+			bool succ;
+			if (gameModel.getDmgHealth(i) > HVY_DMG) {
+				_dmgIndicators.at(i + 6)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i + 6, _dmgFadeOUT, _dmgIndicators.at(i + 6));
+			}
+			else {
+				_dmgIndicators.at(i)->setColor(Color4::WHITE);
+				succ = _actions->activate(DMG_ACT_KEY + i, _dmgFadeOUT, _dmgIndicators.at(i));
+			}
+			if (succ) {
+				gameModel.resetWallDmg();
+			}
+		}
+	}
+}
 
 //Pause or Resume
 void RepairScene::setActive(bool active){
@@ -857,6 +1006,21 @@ void RepairScene::setActive(bool active){
         _northWallButton->activate(input.findKey("northWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
+        
+        if (gameModel.level==4){
+            _tapTutorial=true;
+        }
+        else {
+            _tapTutorial=false;
+        }
+        if (_tapTutorial && _wallClick < 1) {
+            CULog("true");
+            _tap->setVisible(true);
+        }
+        if (!_tapTutorial) {
+             CULog("false");
+            _tap->setVisible(false);
+        }
         
         
         if (gameModel.getNoPlayers() > 1) {
@@ -883,5 +1047,11 @@ void RepairScene::setActive(bool active){
         _southWallButton->deactivate();
         _southwestWallButton->deactivate();
         _northwestWallButton->deactivate();
+
+		//wipe residual action animations
+		for (auto const& it : _dmgIndicators) {
+			it->setColor(Color4::CLEAR);
+			_actions->clearAllActions(it);
+		}
     }
 }

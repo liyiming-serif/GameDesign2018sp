@@ -169,15 +169,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             if (click){
+                CULog("ONE!!!");
                 switchscene = OVERWORLD;
-                level=1;
-               gameModel.level=1;
+                gameModel.setLevel(1);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-
         }
     });
     
@@ -198,8 +197,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=2;
-               gameModel.level=2;
+                gameModel.setLevel(2);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
@@ -225,8 +223,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=3;
-                gameModel.level=3;
+                gameModel.setLevel(3);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
@@ -252,14 +249,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=4;
-                gameModel.level=4;
+                gameModel.setLevel(4);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-
         }
     });
     
@@ -280,14 +275,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=5;
-                gameModel.level=5;
+                gameModel.setLevel(5);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-            
         }
     });
 
@@ -309,14 +302,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=6;
-                gameModel.level=6;
+                gameModel.setLevel(6);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-            
         }
     });
 
@@ -338,14 +329,13 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=7;
-                gameModel.level=7;
+                gameModel.setLevel(7);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+
             }
-            
         }
     });
     
@@ -366,14 +356,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=8;
-                gameModel.level=8;
+                gameModel.setLevel(8);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-            
         }
     });
     
@@ -394,14 +382,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=9;
-                gameModel.level=9;
+                gameModel.setLevel(9);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-            
         }
     });
     
@@ -422,14 +408,12 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=10;
-                gameModel.level=10;
+                gameModel.setLevel(10);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
-            
         }
     });
 
@@ -764,6 +748,14 @@ void LevelselectScene::doScroll(const std::shared_ptr<MoveTo>& action) {
     _actions->activate(ACT_KEY+9, action, _levels, fcn);
 }
 
+void LevelselectScene::setLevel(int level){
+    gameModel.setLevel(level);
+}
+
+int LevelselectScene::getLevel(){
+    return gameModel.getLevel();
+}
+
 void LevelselectScene::animateClouds() {
     // Animate
     if (!_actions->isActive(ACT_KEY) && move1 ){
@@ -856,5 +848,6 @@ void LevelselectScene::setActive(bool active, int players){
     else{
         _backButtonSINGLE->deactivate();
         _backButtonMULTI->deactivate();
+        disableButtons();
     }
 }

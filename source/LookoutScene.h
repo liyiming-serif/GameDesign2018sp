@@ -18,15 +18,25 @@ protected:
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
 
+	// Actions
+	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+
     std::shared_ptr<cugl::Button> _lookoutTOcastle;
 
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _progressBar;
 
+	// Enemy marker textures
 	std::shared_ptr<cugl::Texture> _enemyIcon;
+	std::shared_ptr<cugl::Texture> _flyingIcon;
+	std::shared_ptr<cugl::Texture> _warriorIcon;
+	std::shared_ptr<cugl::Texture> _reaperIcon;
+	std::shared_ptr<cugl::Texture> _berserkerIcon;
 
     std::vector<std::shared_ptr<cugl::Node>> _enemyMarkers;
     
+	/** Damage Indicators */
+	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
 
 public:
     // Constructors
@@ -45,5 +55,8 @@ public:
     int switchscene;
     
     float _distance; 
+
+	/**iterate through gameModel's dmg castle health and apply indicators*/
+	void pollDmgIndicators();
 };
 #endif //BUILD_ANDROID_LOOKOUTSCENE_H
