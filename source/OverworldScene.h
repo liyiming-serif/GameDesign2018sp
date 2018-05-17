@@ -136,7 +136,7 @@ protected:
     bool _newOil;
     bool _newAmmo;
     bool _newRepair;
-    bool _newMage;
+   // bool _newMage;
     
     //Pause
     std::shared_ptr<cugl::PolygonNode> _pauseBG;

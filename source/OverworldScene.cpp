@@ -1207,7 +1207,7 @@ void OverworldScene::resetTutorial() {
     _swipeTutorial=false;
     _newOil=false;
     _newAmmo=false;
-    _newMage=false;
+   // _newMage=false;
     _newRepair=false;
 
 }
@@ -1500,9 +1500,9 @@ void OverworldScene::setActive(bool active) {
         if (gameModel.level==4){
             _newRepair=true;
         }
-        if (gameModel.level==8){
-            _newMage=true;
-        }
+//        if (gameModel.level==8){
+//            _newMage=true;
+//        }
         if (_swipeTutorial && _swipeUP<1 && _swipeDN < 1) {
             _swipe->setVisible(true);
         }
@@ -1544,12 +1544,12 @@ void OverworldScene::setActive(bool active) {
             _ammo_buttonNEW->setVisible(false);
         }
         
-        if (_newMage && _mageClick < 1) {
-            _mage_buttonNEW->setVisible(true);
-        }
-        if (!_newMage) {
-            _mage_buttonNEW->setVisible(false);
-        }
+//        if (_newMage && _mageClick < 1) {
+//            _mage_buttonNEW->setVisible(true);
+//        }
+//        if (!_newMage) {
+//            _mage_buttonNEW->setVisible(false);
+//        }
 
 
 		//Change scenery based on level
