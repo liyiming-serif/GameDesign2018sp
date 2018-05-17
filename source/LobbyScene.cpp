@@ -614,6 +614,72 @@ void LobbyScene::runLobbyNetworking() {
     }
 }
 
+std::string LobbyScene::produceACKClient() {
+    if(clientReady) {
+        return "1";
+    } else {
+        return "0";
+    }
+}
 
+std::string LobbyScene::produceACKServer() {
+    if(serverReady) {
+        return to_string(gameModel.getNoPlayers())+"|1|-1";
+    } else {
+        return to_string(gameModel.getNoPlayers())+"|0|-1";
+    }
+}
 
+char* LobbyScene::consumeACKClient() {
+    return consumeACK();
+}
 
+char** LobbyScene::consumeACKServer() {
+    char *tmp[gameModel.getNoPlayers()-1];
+    for (int i = 0; i < gameModel.getNoPlayers()-1; ++i) {
+        tmp[i] = consumeACK();
+        CULog("State from Client %i: %s", i, tmp[i]);
+    }
+    return tmp;
+}
+
+void LobbyScene::applyACKClient(char *ACK) {
+    char* copy = strdup(ACK);
+    const char s[2] = "|";
+    char* numPlayers;
+    char* serverStatus;
+    char* serverLevel;
+    char* token;
+    token = strtok(copy, s);
+    numPlayers = token;
+    token = strtok(NULL, s);
+    serverStatus = token;
+    token = strtok(NULL, s);
+    serverLevel = token;
+
+    gameModel.setNoPlayers(std::stoi(numPlayers));
+    int sLevel = std::stoi(serverLevel);
+    if (sLevel != -1) {
+        gameModel.level = sLevel;
+        switchscene = OVERWORLD;
+    }
+}
+
+void LobbyScene::applyACKServer(char **ACKs) {
+    bool allReady = true;
+    for (int i = 0; i < gameModel.getNoPlayers()-1; ++i) {
+        if (ACKs[i]!=NULL) {
+            int ready = std::stoi(ACKs[i]);
+            if (ready == 0) allReady = false;
+        } else {
+            allReady = false;
+        }
+    }
+    allReady ? _levelsButton->activate(input.findKey("levelsMULTIButton")):_levelsButton->deactivate();
+}
+
+char* LobbyScene::return_buffer(const std::string &string) {
+    char* return_string = new char[string.length() + 1];
+    strcpy(return_string, string.c_str());
+    return return_string;
+}

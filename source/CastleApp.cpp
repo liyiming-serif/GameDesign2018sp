@@ -147,6 +147,7 @@ void CastleApp::onShutdown() {
 void CastleApp::onSuspend() {
     if (gameModel.isNetworked() && !gameModel.isServer()) {
         gameModel.suspendClient();
+        Application::onSuspend();
     }
 }
 

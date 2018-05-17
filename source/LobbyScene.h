@@ -78,6 +78,9 @@ protected:
 
     int LobbyClock = 0;
 
+    bool clientReady = false;
+    bool serverReady = false;
+
     
     
 public:

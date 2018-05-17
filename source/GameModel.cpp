@@ -770,10 +770,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 }
 #endif
 char* GameModel::return_buffer(const std::string& string) {
-    CULog("State Change before buffering %s", string.c_str());
     char* return_string = new char[string.length() + 1];
     strcpy(return_string, string.c_str());
-    CULog("State Change after buffering %s", return_string);
     return return_string;
 }
 
