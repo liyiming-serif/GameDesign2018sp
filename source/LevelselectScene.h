@@ -176,6 +176,59 @@ public:
      *
      */
     void enableButtons();
+
+private:
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+    std::string produceACKServer();
+
+    char* return_buffer(const std::string& string);
+
+    int sendState(char* byte_buffer) {
+        // Set up parameters for JNI call
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "sendState",
+                                               "([B)I");
+
+        if (byte_buffer != NULL) {
+            // Call the Java method
+            //CULog("Attempting to send across JNI");
+            int n=0;
+            char* p = byte_buffer;
+            while(*p++){
+                //CULog("N is currently: %i", n);
+                n++;
+            } if(n<=0) {
+                CULog("sendState: byte_buffer not big enough");
+                return NULL;
+            }
+            else {
+                CULog("Size of byte_buffer passed to send State is %i", n);
+            }
+            jbyteArray arr = env->NewByteArray(n);
+            env->SetByteArrayRegion(arr,0,n, (jbyte*)byte_buffer);
+
+            int response = env->CallIntMethod(activity, method_id, arr);
+
+            // Free local references
+            //env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
+            //free(p);
+            env->DeleteLocalRef(arr);
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return response;
+        }
+        else {
+            CULog("sendState: attempt to send Null message");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
+    }
+#endif
+    void animateClouds();
 };
 
 #endif /* LevelselectScene_h */
