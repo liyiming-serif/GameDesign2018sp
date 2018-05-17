@@ -169,6 +169,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             if (click){
+                CULog("ONE!!!");
                 switchscene = OVERWORLD;
                 gameModel.setLevel(1);
             }
@@ -802,5 +803,6 @@ void LevelselectScene::setActive(bool active, int players){
     else{
         _backButtonSINGLE->deactivate();
         _backButtonMULTI->deactivate();
+        disableButtons();
     }
 }
