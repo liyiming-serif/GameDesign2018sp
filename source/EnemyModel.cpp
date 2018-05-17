@@ -68,7 +68,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_rows = 11;
 			_cols = 4;
 			_walkFrameStart = 0;
-			_dieFrameStart = 8;
+			_dieFrameStart = 10;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
 			_dieAnimSp = 0.25f;
@@ -103,7 +103,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			_rows = 11;
 			_cols = 4;
 			_walkFrameStart = 0;
-			_dieFrameStart = 8;
+			_dieFrameStart = 10;
 			_attackFrameStart = 24;
 			_walkAnimSp = 0.08f;
 			_dieAnimSp = 0.25f;
