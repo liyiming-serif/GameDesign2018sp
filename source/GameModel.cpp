@@ -775,6 +775,10 @@ char* GameModel::return_buffer(const std::string& string) {
     return return_string;
 }
 
+int GameModel::getNoPlayers() {
+    return gameModel._noPlayers;
+}
+
 bool GameModel::isNetworked(){
     return gameModel.networked;
 }

@@ -799,14 +799,10 @@ void LevelselectScene::setActive(bool active, int players){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
+        CULog("players %i", players);
         setCanvas(players);
-        if (players > 1) {
-            setButtonActive(_backButtonMULTI, "backButtonMULTI");
-        }
-        else {
-            setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
-        }
-
+        setButtonActive(_backButtonMULTI, "backButtonMULTI");
+        setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
     }
     else{
         _backButtonSINGLE->deactivate();

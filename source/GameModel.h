@@ -95,9 +95,7 @@ public:
 
     int getPlayerAvatar(int player);
 
-    int getNoPlayers() {
-        return _noPlayers;
-    }
+    int getNoPlayers();
 
     void setNoPlayers(int _noPlayers) {
         this->_noPlayers = _noPlayers;
