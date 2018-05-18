@@ -25,9 +25,13 @@ bool GameModel::init(){
         gameModel._castleHealth[i] = 100;
         gameModel._deltaCastleHealth[i] = 0;
 		gameModel._dmgCastleHealth[i] = 0;
+		gameModel._wallProtect[i] = 0;
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
+	gameModel._barrierCooldown = 0;
+	gameModel._bombCooldown = 0;
+	gameModel._freezeCooldown = 0;
     gameModel._noPlayers = 1;
     gameModel._playerAvatars = new int[gameModel._noPlayers];
     gameModel._playerRooms = new int[gameModel._noPlayers];
@@ -131,6 +135,12 @@ void GameModel::update(float deltaTime){
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
 			Vec2 pos = it->second->getPos();
+
+			//defrost enemies
+			if (it->second->getFreezeStep() > 0) {
+				it->second->setFreezeStep(it->second->getFreezeStep() - 1);
+			}
+
             if (it->second->getHealth() <= 0){
                 gameModel._enemiesToFreeMaster[wall].push_back(it->first);
             }
@@ -158,7 +168,12 @@ void GameModel::update(float deltaTime){
 					it->second->setAtkCounter(it->second->getAtkSpeed());
 				}
 				else {
-					it->second->setAtkCounter(it->second->getAtkCounter() - 1);
+					if (it->second->getFreezeStep() > 0) { //frozen enemies attack twice as slow
+						it->second->setAtkCounter(it->second->getAtkCounter() - 0.5);
+					}
+					else {
+						it->second->setAtkCounter(it->second->getAtkCounter() - 1);
+					}
 				}
 			}
 		}
@@ -182,6 +197,24 @@ void GameModel::update(float deltaTime){
 		else {
 			gameModel._oilCooldown[wall] = 0;
 		}
+
+		if (gameModel._wallProtect[wall] > 0) {
+			gameModel._wallProtect[wall] -= 1;
+		}
+		else {
+			gameModel._wallProtect[wall] = 0;
+		}
+	}
+
+	//decrease spell cooldowns
+	if (gameModel._bombCooldown > 0) {
+		gameModel._bombCooldown -= 1;
+	}
+	if (gameModel._barrierCooldown > 0) {
+		gameModel._barrierCooldown -= 1;
+	}
+	if (gameModel._freezeCooldown > 0) {
+		gameModel._freezeCooldown -= 1;
 	}
 }
 
@@ -211,6 +244,16 @@ void GameModel::reset() {
 		gameModel._oilPoured[i] = 0;
 		gameModel._oilCooldown[i] = 0;
 	}
+	if (gameModel._bombCooldown > 0) {
+		gameModel._bombCooldown -= 1;
+	}
+	if (gameModel._freezeCooldown > 0) {
+		gameModel._freezeCooldown -= 1;
+	}
+	if (gameModel._barrierCooldown > 0) {
+		gameModel._barrierCooldown -= 1;
+	}
+
 	//kick players from rooms
 	for (int i = 0; i < gameModel._noPlayers; ++i) {
 		gameModel._playerRooms[i] = 0;
@@ -227,6 +270,11 @@ int GameModel::getWallHealth(int wall) {
 
 //positive is healing, negative is damage
 void GameModel::changeWallHealth(int wall, int amt) {
+	//protected!
+	if (amt < 0 && _wallProtect[wall]>0) {
+		return;
+	}
+
 	//cap health between 0 and 100
 	if (_castleHealth[wall] + amt > 100) {
 		_castleHealth[wall] = 100;
@@ -263,6 +311,21 @@ int GameModel::getPlayerAvatar(int player) {
 
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
+}
+
+void GameModel::setSpellCooldown(const std::string & spellName, int amt) {
+	if (amt < 0) {
+		return;
+	}
+	if (spellName == "barrier") {
+		_barrierCooldown = amt;
+	}
+	else if (spellName == "bomb") {
+		_bombCooldown = amt;
+	}
+	else if (spellName == "freeze") {
+		_freezeCooldown = amt;
+	}
 }
 
 void GameModel::setOilCooldown(int wall, int amount) {

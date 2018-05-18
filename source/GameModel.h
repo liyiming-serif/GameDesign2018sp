@@ -27,6 +27,7 @@ protected:
     int _playerID;
     int _deltaCastleHealth[6]; //delta for networking
 	std::array<int, 6> _dmgCastleHealth; //dmg for indicators
+	std::array<int, 6> _wallProtect; //steps remaining for barrier on this wall
     int clock;
     int _noPlayers;
     bool networked;
@@ -41,6 +42,11 @@ protected:
 
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];
+
+	//spell cooldown managers. Ready when == 0 for each spell
+	int _freezeCooldown;
+	int _bombCooldown;
+	int _barrierCooldown;
 
 public:
 	/**
@@ -103,6 +109,11 @@ public:
 
 	int getDmgHealth(int wall) { return _dmgCastleHealth[wall]; }
 
+	int getWallProtect(int wall) {
+		return _wallProtect[wall];
+	}
+	void setWallProtect(int wall, int timer) { _wallProtect[wall] = timer; }
+
 	void resetWallDmg();
 
     int getPlayerAvatar(int player);
@@ -152,6 +163,21 @@ public:
             _arrowAmmo[type] = amount;
         }
     }
+
+	int getSpellCooldown(const std::string & spellName) {
+		if (spellName == "barrier") {
+			return _barrierCooldown;
+		}
+		else if (spellName == "bomb") {
+			return _bombCooldown;
+		}
+		else if (spellName == "freeze") {
+			return _freezeCooldown;
+		}
+		return -1;
+	}
+
+	void setSpellCooldown(const std::string & spellName, int amt);
 
 	int getOilCooldown(int wall) {
 		assert(wall < 6);

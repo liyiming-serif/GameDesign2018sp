@@ -44,6 +44,8 @@ using namespace cugl;
 
 #define DMG_DURATION 1.0f
 #define DMG_ACT_KEY "marker"
+#define SPELL_DURATION 0.7f
+#define SPELL_ACT_KEY "spell_o"
 
 // Decide when to use heavy damage indicator
 #define HVY_DMG 6
@@ -78,6 +80,27 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     _assets = assets;
     
+	// Allocate spell filter
+	std::shared_ptr<Texture> filter = _assets->get<Texture>("spell_filter");
+	_spellFilter = PolygonNode::allocWithTexture(filter);
+	_spellFilter->setScale(_size / _spellFilter->getSize());
+	_spellFilter->setAnchor(Vec2::ANCHOR_CENTER);
+	_spellFilter->setPosition(_size / 2.0);
+	_spellFilter->setColor(Color4::CLEAR);
+	_spellFilter->setZOrder(3);
+	addChild(_spellFilter);
+
+	// Allocate spell animations
+	std::shared_ptr<Texture> sp = _assets->get<Texture>("barrier_spell");
+	_barrierAnim = AnimationNode::alloc(sp, 4, 5);
+	_barrierAnim->setAnchor(Vec2::ANCHOR_CENTER);
+	_barrierAnim->setPosition(_size / 2.0);
+	_barrierAnim->setColor(Color4::CLEAR);
+	_barrierAnim->setZOrder(4);
+	addChild(_barrierAnim);
+
+	_spellAnim = Animate::alloc(0, 19, SPELL_DURATION);
+
 	// Allocate the damage indicators
 	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
 	std::shared_ptr<PolygonNode> dmg_ind = PolygonNode::allocWithTexture(dmg_img);
@@ -377,6 +400,12 @@ void OilScene::dispose() {
 		_enemiesToFree.clear();
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+
+		//spells
+		_spellAnim = nullptr;
+		_spellFilter = nullptr;
+		_barrierAnim = nullptr;
+
         _tilt=nullptr;
     }
 }
@@ -466,6 +495,12 @@ void OilScene::update(float timestep, int direction){
         _tilt->setVisible(false);
     }
     
+	//remove spell effects if they're done
+	if (!input.actions()->isActive(SPELL_ACT_KEY)) {
+		_barrierAnim->setColor(Color4::CLEAR);
+		_spellFilter->setColor(Color4::CLEAR);
+	}
+
 	//poll damage indicators
 	pollDmgIndicators();
 
@@ -556,6 +591,12 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 			}
 		}
 		else { //Enemy already exists; update it.
+			if (e->getFreezeStep() > 0) {
+				i->second->getNode()->setColor(Color4::BLUE);
+			}
+			else {
+				i->second->getNode()->setColor(Color4::WHITE);
+			}
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos / DRAW_SCALE);
 			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
@@ -598,8 +639,19 @@ void OilScene::updateEnemyModels(float timestep, int direction) {
 	_enemiesToFree.clear();
 }
 
+void OilScene::animateSpells(const std::string & spellName) {
+	//Animate spells
+	if (spellName == "barrier") {
+		bool succ = input.actions()->activate(SPELL_ACT_KEY, _spellAnim, _barrierAnim);
+		if (succ) {
+			_barrierAnim->setColor(Color4::WHITE);
+			_spellFilter->setColor(Color4::WHITE);
+		}
+	}
+}
+
 //Pause or Resume
-void OilScene::setActive(bool active, int direction){
+void OilScene::setActive(bool active, int direction, std::string spellName){
     _active = active;
     switchscene = 0;
 	_oil->isReloading = false;
@@ -656,6 +708,8 @@ void OilScene::setActive(bool active, int direction){
 		else {
 			_background->setTexture(texture_d);
 		}
+
+		animateSpells(spellName);
     }
     else{
 		_deluge->setVisible(false);
@@ -666,5 +720,10 @@ void OilScene::setActive(bool active, int direction){
 			it->setColor(Color4::CLEAR);
 			input.actions()->clearAllActions(it);
 		}
+
+		//wipe spell fx
+		_spellFilter->setColor(Color4::CLEAR);
+		_barrierAnim->setColor(Color4::CLEAR);
+		input.actions()->clearAllActions(_barrierAnim);
     }
 }

@@ -40,6 +40,8 @@ protected:
 
 	// Actions
 	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+	std::shared_ptr<cugl::Animate> _spellAnim;
+	std::shared_ptr<cugl::Animate> _spellAnim2;
 
     // Models
     std::shared_ptr<BallistaModel> _ballista;
@@ -67,6 +69,10 @@ protected:
 	std::shared_ptr<cugl::AnimationNode> _dragEnd;
 	std::shared_ptr<cugl::PolygonNode> _dragLine;
 
+	// Spell Animations
+	std::shared_ptr<cugl::AnimationNode> _bombAnim;
+	std::shared_ptr<cugl::AnimationNode> _freezeAnim;
+
     //text
     std::shared_ptr<cugl::Label> _ammoText;
     
@@ -84,6 +90,9 @@ protected:
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
 
+	//Spell filter
+	std::shared_ptr<cugl::PolygonNode> _spellFilter;
+
 public:
     // Constructors
     BallistaScene() : Scene() {}
@@ -98,8 +107,10 @@ public:
 
 	void updateEnemyModels(float deltaTime, int direction);
 
+	void animateSpells(const std::string & spellName);
+
     //Pause or Resume
-    void setActive(bool active, int direction);
+    void setActive(bool active, int direction, std::string spellName="none");
     int switchscene;
 
 	//Call to activate collisions for this world

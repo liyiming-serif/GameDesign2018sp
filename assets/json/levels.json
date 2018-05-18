@@ -136,7 +136,7 @@
 				"ammo" : false,
 				"repair" : false,
 				"oil" : false,
-				"mage" : true
+				"mage" : false
 			},
 			"ammo" : 100
 		},

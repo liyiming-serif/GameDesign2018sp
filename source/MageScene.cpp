@@ -30,6 +30,9 @@ using namespace cugl;
 #define BUTTON_SCALE    2.0f
 
 #define GESTURE_TIMEOUT 240
+#define SPELL_COOLDOWN 480
+#define FREEZE_DURATION 240
+#define BARRIER_DURATION 360
 #define HEX_CANVAS_SIZE 200 //length of hexagon side
 
 #define DMG_DURATION 1.0f
@@ -42,6 +45,9 @@ using namespace cugl;
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
+
+	selectedDir = -1;
+	queuedSpell = "none";
     
     if (assets == nullptr) {
         return false;
@@ -184,6 +190,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _mageTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
+			queuedSpell = "none";
             switchscene = OVERWORLD;
         }
     });
@@ -256,8 +263,15 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
         _southwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
         _northwestWallButton = Button::alloc(PolygonNode::allocWithTexture(image_up));
+
+		std::shared_ptr<Texture> sp_button = _assets->get<Texture>("bomb_button");
+		_bombButton = Button::alloc(PolygonNode::allocWithTexture(sp_button));
+		sp_button = _assets->get<Texture>("barrier_button");
+		_barrierButton = Button::alloc(PolygonNode::allocWithTexture(sp_button));
+		sp_button = _assets->get<Texture>("freeze_button");
+		_freezeButton = Button::alloc(PolygonNode::allocWithTexture(sp_button));
     
-        // Create a callback function for the Ballista buttons
+        // Create a callback function for the Mage buttons
         _northWallButton->setName("fade in N");
         _northWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
@@ -309,9 +323,33 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 MageScene::setSide("NW");
             }
         });
+
+		_bombButton->setName("cast bomb spell");
+		_bombButton->setListener([=](const std::string& name, bool down) {
+			// Only switch scenes when the button is released
+			if (!down) {
+				CULog("Callback to bomb");
+				queuedSpell = "bomb";
+			}
+		});
     
-    
-    
+		_freezeButton->setName("cast freeze spell");
+		_freezeButton->setListener([=](const std::string& name, bool down) {
+			// Only switch scenes when the button is released
+			if (!down) {
+				CULog("Callback to freeze");
+				queuedSpell = "freeze";
+			}
+		});
+
+		_barrierButton->setName("cast barrier spell");
+		_barrierButton->setListener([=](const std::string& name, bool down) {
+			// Only switch scenes when the button is released
+			if (!down) {
+				CULog("Callback to barrier");
+				queuedSpell = "barrier";
+			}
+		});
     
         //Positions the wall Buttons
         float centerX = plain_floor->getContentSize().width/2;
@@ -352,6 +390,20 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _southeastWallButton->setVisible(false);
     _southwestWallButton->setVisible(false);
 
+	//position the spell buttons
+	_bombButton->setScale(0.5f);
+	_bombButton->setAnchor(Vec2::ANCHOR_CENTER);
+	//_size.width / 2.75f, _size.height*.06f
+	_bombButton->setPosition(_size.width*.625f, _size.height*.55f + .08*plain_floor->getContentHeight());
+
+	_barrierButton->setScale(0.5f);
+	_barrierButton->setAnchor(Vec2::ANCHOR_CENTER);
+	_barrierButton->setPosition(_size.width*.625f - .1*plain_floor->getContentWidth(), _size.height*.55f - .05*plain_floor->getContentHeight());
+
+	_freezeButton->setScale(0.5f);
+	_freezeButton->setAnchor(Vec2::ANCHOR_CENTER);
+	_freezeButton->setPosition(_size.width*.625f + .1*plain_floor->getContentWidth(), _size.height*.55f - .05*plain_floor->getContentHeight());
+
     
     // Position the overworld button in the bottom left
     _mageTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
@@ -368,6 +420,10 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _hex->addChild(_southWallButton);
     _hex->addChild(_southwestWallButton);
     _hex->addChild(_northwestWallButton);
+
+	addChild(_bombButton);
+	addChild(_freezeButton);
+	addChild(_barrierButton);
     
     
     // We can only activate a button AFTER it is added to a scene
@@ -379,6 +435,9 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _southWallButton->activate(input.generateKey("southWallButton_mage"));
     _southwestWallButton->activate(input.generateKey("southwestWallButton_mage"));
     _northwestWallButton->activate(input.generateKey("northwestWallButton_mage"));
+	_bombButton->activate(input.generateKey("bombButton"));
+	_barrierButton->activate(input.generateKey("barrierButton"));
+	_freezeButton->activate(input.generateKey("freezeButton"));
 
 	//Alloc the canvas for drawing spells
 	float hexheight = HEX_CANVAS_SIZE*sqrtf(3);
@@ -459,46 +518,108 @@ void MageScene::update(float timestep){
 	if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
 		gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
 		switchscene = LOSE;
+		queuedSpell = "none";
 	}
 	if (gameModel._currentTime > gameModel._endTime) {
 		if (gameModel._enemyArrayMaster[0].size() == 0 && gameModel._enemyArrayMaster[1].size() == 0 && gameModel._enemyArrayMaster[2].size() == 0 && gameModel._enemyArrayMaster[3].size() == 0 && gameModel._enemyArrayMaster[4].size() == 0 && gameModel._enemyArrayMaster[5].size() == 0) {
 			switchscene = WIN;
+			queuedSpell = "none";
 		}
 	}
 
 	//poll damage indicators
 	pollDmgIndicators();
 
-	//poll inputs
-	if (input.justPressed()) {
-		if (inHexCanvas(screenToWorldCoords(input.dTouch()))) {
-			_spellPath->setPosition(screenToWorldCoords(input.pointerPos()));
-			_minSpellPathX = screenToWorldCoords(input.pointerPos()).x;
-			_minSpellPathY = screenToWorldCoords(input.pointerPos()).y;
-		}
+	////poll inputs
+	//if (input.justPressed()) {
+	//	if (inHexCanvas(screenToWorldCoords(input.dTouch()))) {
+	//		_spellPath->setPosition(screenToWorldCoords(input.pointerPos()));
+	//		_minSpellPathX = screenToWorldCoords(input.pointerPos()).x;
+	//		_minSpellPathY = screenToWorldCoords(input.pointerPos()).y;
+	//	}
+	//}
+	//if (input.isPressed()) {
+	//	if (_spellTimer <= 0) {
+	//		//Took too long to cast spell
+	//		resetSpellPath();
+	//	}
+	//	else {
+	//		//Trace the attempted spell
+	//		_spellTimer--;
+	//		if (inHexCanvas(screenToWorldCoords(input.pointerPos()))&&inHexCanvas(screenToWorldCoords(input.dTouch()))) {
+	//			//only trace if within bounds
+	//			_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
+	//			_spellPath->setPolygon(_spellPathVertices);
+	//			_minSpellPathX = fminf(_minSpellPathX, screenToWorldCoords(input.pointerPos()).x);
+	//			_minSpellPathY = fminf(_minSpellPathY, screenToWorldCoords(input.pointerPos()).y);
+	//			_spellPath->setPosition(Vec2(_minSpellPathX, _minSpellPathY));
+	//		}
+	//	}
+	//}
+	//if (input.justReleased()) {
+	//	//Done casting spell
+	//	resetSpellPath();
+	//	_spellTimer = GESTURE_TIMEOUT;
+	//}
+
+
+	//queue spell effects
+	//if (input.castBarrier() && gameModel.getSpellCooldown("barrier")==0 && queuedSpell=="none") {
+	//	queuedSpell = "barrier";
+	//}
+	//if (input.castBomb() && gameModel.getSpellCooldown("bomb") == 0 && queuedSpell == "none") {
+	//	queuedSpell = "bomb";
+	//}
+	//if (input.castFreeze() && gameModel.getSpellCooldown("freeze") == 0 && queuedSpell == "none") {
+	//	queuedSpell = "freeze";
+	//}
+
+	//apply spell effects
+	if (queuedSpell == "barrier" && selectedDir != -1) {
+		//apply barrier
+		CULog("Casting Barrier!");
+		gameModel.setWallProtect(selectedDir, BARRIER_DURATION);
+		switchscene = OIL;
+		//bookkeep
+		gameModel.setSpellCooldown("barrier", SPELL_COOLDOWN);
+		//queuedSpell = "none";
+		//setSide("empty");
 	}
-	if (input.isPressed()) {
-		if (_spellTimer <= 0) {
-			//Took too long to cast spell
-			resetSpellPath();
-		}
-		else {
-			//Trace the attempted spell
-			_spellTimer--;
-			if (inHexCanvas(screenToWorldCoords(input.pointerPos()))&&inHexCanvas(screenToWorldCoords(input.dTouch()))) {
-				//only trace if within bounds
-				_spellPathVertices.push_back(screenToWorldCoords(input.pointerPos()));
-				_spellPath->setPolygon(_spellPathVertices);
-				_minSpellPathX = fminf(_minSpellPathX, screenToWorldCoords(input.pointerPos()).x);
-				_minSpellPathY = fminf(_minSpellPathY, screenToWorldCoords(input.pointerPos()).y);
-				_spellPath->setPosition(Vec2(_minSpellPathX, _minSpellPathY));
+	if (queuedSpell == "bomb" && selectedDir != -1) {
+		//apply bomb
+		CULog("Casting Bomb!");
+		for (auto it = gameModel._enemyArrayMaster[selectedDir].begin(); it != gameModel._enemyArrayMaster[selectedDir].end(); ++it) {
+			//deal 1 dmg to all enemies on this side
+			std::shared_ptr<EnemyDataModel> ed = it->second;
+			if (ed->getHealth() <= 1) {
+				gameModel._enemiesToFreeMaster[selectedDir].push_back(it->first);
+			}
+			else {
+				ed->setHealth(ed->getHealth() - 1);
+			}
+			if (gameModel.isNetworked() && !gameModel.isServer()) {
+				gameModel.addEnemyChange(it->first, -1, ed->getWall());
 			}
 		}
+		switchscene = BALLISTA;
+		//bookkeep
+		gameModel.setSpellCooldown("bomb", SPELL_COOLDOWN);
+		//queuedSpell = "none";
+		//setSide("empty");
 	}
-	if (input.justReleased()) {
-		//Done casting spell
-		resetSpellPath();
-		_spellTimer = GESTURE_TIMEOUT;
+	if (queuedSpell == "freeze" && selectedDir != -1) {
+		//apply freeze
+		CULog("Casting Freeze!");
+		for (auto it = gameModel._enemyArrayMaster[selectedDir].begin(); it != gameModel._enemyArrayMaster[selectedDir].end(); ++it) {
+			//slow all enemies on this side
+			std::shared_ptr<EnemyDataModel> ed = it->second;
+			ed->setFreezeStep(FREEZE_DURATION);
+		}
+		switchscene = BALLISTA;
+		//bookkeep
+		gameModel.setSpellCooldown("freeze", SPELL_COOLDOWN);
+		//queuedSpell = "none";
+		//setSide("empty");
 	}
 }
 
@@ -532,27 +653,38 @@ void MageScene::setSide(std::string side){
     southeastWall_floor->setVisible(false);
     if (side == "N") {
         northWall_floor->setVisible(true);
+		selectedDir = 0;
     }
     else if (side == "NE") {
         northeastWall_floor->setVisible(true);
+		selectedDir = 5;
     }
     else if (side == "NW") {
         northwestWall_floor->setVisible(true);
+		selectedDir = 1;
     }
     else if (side == "S") {
         southWall_floor->setVisible(true);
+		selectedDir = 3;
     }
     else if (side == "SE") {
         southeastWall_floor->setVisible(true);
+		selectedDir = 4;
     }
     else if (side == "SW") {
         southwestWall_floor->setVisible(true);
+		selectedDir = 2;
     }
 	else {
 		plain_floor->setVisible(true);
+		selectedDir = -1;
 	}
 }
 
+void MageScene::setSpell(std::string spellName) {
+	CULog("spell name is: %s", spellName.c_str());
+	queuedSpell = spellName;
+}
 
 //Pause or Resume
 void MageScene::setActive(bool active){
@@ -560,6 +692,7 @@ void MageScene::setActive(bool active){
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
 	resetSpellPath();
+	
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));
@@ -572,6 +705,10 @@ void MageScene::setActive(bool active){
 		_northeastWallButton->activate(input.findKey("northeastWallButton_mage"));
 		_southWallButton->activate(input.findKey("southWallButton_mage"));
 		_northwestWallButton->activate(input.findKey("northwestWallButton_mage"));
+		_bombButton->activate(input.findKey("bombButton"));
+		_barrierButton->activate(input.findKey("barrierButton"));
+		_freezeButton->activate(input.findKey("freezeButton"));
+		queuedSpell = "none";
 		setSide("empty");
     }
     else{
@@ -585,6 +722,9 @@ void MageScene::setActive(bool active){
 		_southWallButton->deactivate();
 		_southwestWallButton->deactivate();
 		_northwestWallButton->deactivate();
+		_bombButton->deactivate();
+		_barrierButton->deactivate();
+		_freezeButton->deactivate();
 
 		//wipe residual action animations
 		for (auto const& it : _dmgIndicators) {

@@ -178,7 +178,7 @@ public:
 
     void initializeRooms();
 
-    void swapscenes(int nextscene, int direction);
+    void swapscenes(int nextscene, int direction, std::string spellName = "none");
     
     /**
      * The method called to draw the application to the screen.

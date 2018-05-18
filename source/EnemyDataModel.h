@@ -23,7 +23,8 @@ protected:
 	int _damage;
 	float _atkRange;
 	int _atkSpeed;
-	int _atkCounter;
+	float _atkCounter;
+	int _freezeStep;
 
 public:
 	//CONSTRUCTORS
@@ -66,8 +67,11 @@ public:
 
 	int getAtkSpeed();
 
-	int getAtkCounter() { return _atkCounter; }
-	void setAtkCounter(int c) { _atkCounter = c; }
+	float getAtkCounter() { return _atkCounter; }
+	void setAtkCounter(float c) { _atkCounter = c; }
+
+	int getFreezeStep() { return _freezeStep; }
+	void setFreezeStep(int f) { _freezeStep = f; }
 
 	std::string toString() const {
 		return _name +":"+std::to_string(_health)+":"+std::to_string(_pos.x)+":"+std::to_string(_pos.y)+":"

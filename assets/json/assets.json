@@ -822,8 +822,57 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "mage_transparent": {
-            "file":     "textures/Basement/MageSides/transparent.png",
+    "mage_transparent": {
+      "file": "textures/Basement/MageSides/transparent.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "spell_filter": {
+      "file": "textures/spell-filter.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "barrier_button": {
+      "file": "textures/Basement/ShieldIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "freeze_button": {
+      "file": "textures/Basement/IceIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "bomb_button": {
+      "file": "textures/Basement/FireIcon.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "barrier_spell": {
+      "file": "textures/spell-shield.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "freeze_spell": {
+      "file": "textures/spell-ice.png",
+      "minfilter": "nearest",
+      "magfilter": "linear",
+      "wrapS": "clamp",
+      "wrapT": "clamp"
+    },
+    "bomb_spell": {
+            "file":     "textures/spell-explosion.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
