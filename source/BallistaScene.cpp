@@ -255,6 +255,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballistaTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
     _ballistaTOcastle->setPosition(15,_size.height-18);
     _ballistaTOcastle->setScale(.6f);
+    _ballistaTOcastle->setZOrder(-1);
     
 
     // Add children to the scene graph
@@ -355,6 +356,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lowAmmoText->setForeground(cugl::Color4(209,123,104,255));
     addChild(_lowAmmoText);
     _lowAmmoText->setVisible(false);
+    _lowAmmoText->setZOrder(-1);
     
     _noAmmoText =Label::alloc((std::string) "OUT OF AMMO", FONT);
     _noAmmoText->setAnchor(Vec2::ANCHOR_CENTER);
@@ -362,6 +364,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _noAmmoText->setForeground(cugl::Color4(178,101,99,255));
     addChild(_noAmmoText);
     _noAmmoText->setVisible(false);
+    _noAmmoText->setZOrder(-1);
     
     
     std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_ballista");
@@ -499,7 +502,7 @@ void BallistaScene::update(float deltaTime, int direction){
         _ballista_tap->setVisible(false);
     }
 
-    if (gameModel.getArrowAmmo(0) < 11 && gameModel.getArrowAmmo(0) > 4) {
+    if (gameModel.getArrowAmmo(0) < 11 && gameModel.getArrowAmmo(0) > 0) {
         _lowAmmoText->setVisible(true);
     }
     else {
