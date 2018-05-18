@@ -133,7 +133,12 @@ void GameModel::update(float deltaTime){
             if (it->second->getHealth() <= 0){
                 gameModel._enemiesToFreeMaster[wall].push_back(it->first);
             }
-			else if (pos.y <= 0) {
+			else if (gameModel.getLevel()>4 && pos.y <= 0) {
+				//enemy collided with wall; mark for deletion
+				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
+				gameModel.changeWallHealth(wall, -it->second->getDamage());
+			}
+			else if (gameModel.getLevel() <= 4 && pos.y <= 127) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
