@@ -161,13 +161,13 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _player1 = PolygonNode::allocWithTexture(tex_p1);
     _player1->setScale(.75f); // Magic number to rescale asset
     _player1->setAnchor(Vec2::ANCHOR_CENTER);
-    _player1->setPosition(_size.width/4, _size.height/4);
+    _player1->setPosition(_size.width/5, _size.height/4);
 
     std::shared_ptr<Texture> tex_p2   = _assets->get<Texture>("player_2");
     _player2 = PolygonNode::allocWithTexture(tex_p2);
     _player2->setScale(1.7f); // Magic number to rescale asset
     _player2->setAnchor(Vec2::ANCHOR_CENTER);
-    _player2->setPosition(_size.width - _size.width/4, _size.height/4);
+    _player2->setPosition(_size.width*(2/5), _size.height/4);
 
     std::shared_ptr<Texture> tex_w   = _assets->get<Texture>("waiting");
     _waiting = PolygonNode::allocWithTexture(tex_w);
@@ -179,17 +179,47 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _avatar1 = PolygonNode::allocWithTexture(tex_a1);
     _avatar1->setScale(1.0f); // Magic number to rescale asset
     _avatar1->setAnchor(Vec2::ANCHOR_CENTER);
-    _avatar1->setPosition(_size.width/4,_size.height - _size.height/3);
+    _avatar1->setPosition(_size.width/5,_size.height - _size.height/3);
 
     std::shared_ptr<Texture> tex_a2   = _assets->get<Texture>("avatar_2");
     _avatar2 = PolygonNode::allocWithTexture(tex_a2);
     _avatar2->setScale(1.0f); // Magic number to rescale asset
     _avatar2->setAnchor(Vec2::ANCHOR_CENTER);
-    _avatar2->setPosition(_size.width - _size.width/4,_size.height - _size.height/6 - _size.height/8);
+    _avatar2->setPosition(_size.width*(2/5),_size.height - _size.height/6 - _size.height/8);
     
     
     _avatar->addChild(_player1);
     _avatar->addChild(_player2);
+    _avatar->addChild(_avatar1);
+    _avatar->addChild(_avatar2);
+
+    std::shared_ptr<Texture> tex_p3   = _assets->get<Texture>("player_3");
+    _player3 = PolygonNode::allocWithTexture(tex_p3);
+    _player3->setScale(1.7f); // Magic number to rescale asset
+    _player3->setAnchor(Vec2::ANCHOR_CENTER);
+    _player3->setPosition(_size.width*(3/5), _size.height/4);
+
+    std::shared_ptr<Texture> tex_p4   = _assets->get<Texture>("player_4");
+    _player4 = PolygonNode::allocWithTexture(tex_p4);
+    _player4->setScale(1.7f); // Magic number to rescale asset
+    _player4->setAnchor(Vec2::ANCHOR_CENTER);
+    _player4->setPosition(_size.width*(4/5), _size.height/4);
+
+    std::shared_ptr<Texture> tex_a3   = _assets->get<Texture>("avatar_3");
+    _avatar3 = PolygonNode::allocWithTexture(tex_a3);
+    _avatar3->setScale(1.0f); // Magic number to rescale asset
+    _avatar3->setAnchor(Vec2::ANCHOR_CENTER);
+    _avatar3->setPosition(_size.width*(3/5),_size.height - _size.height/3);
+
+    std::shared_ptr<Texture> tex_a4   = _assets->get<Texture>("avatar_4");
+    _avatar4 = PolygonNode::allocWithTexture(tex_a4);
+    _avatar4->setScale(1.0f); // Magic number to rescale asset
+    _avatar4->setAnchor(Vec2::ANCHOR_CENTER);
+    _avatar4->setPosition(_size.width*(4/5),_size.height - _size.height/6 - _size.height/8);
+
+
+    _avatar->addChild(_player3);
+    _avatar->addChild(_player4);
     _avatar->addChild(_avatar1);
     _avatar->addChild(_avatar2);
 
@@ -449,10 +479,9 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             gameModel.setNetworked(true);
             gameModel.setServer(false);
             //int roomOccup = stoi(to_string(serverDevices.at(device).at(6)));
-            gameModel.setNoPlayers(2);
             gameModel.setPlayerAvatar(1, 2);
-            gameModel.setPlayerID(1);
             LobbyScene::changeCanvas("avatar");
+            _player2->setVisible(true);
             CULog("enter");
         }
     });

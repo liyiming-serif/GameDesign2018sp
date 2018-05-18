@@ -906,6 +906,20 @@
           "wrapS":    "clamp",
           "wrapT":    "clamp"
         },
+      "player_3": {
+        "file":     "textures/Lobby/Player3.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
+      },
+      "player_4": {
+        "file":     "textures/Lobby/Player4.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
+      },
         "waiting": {
           "file":     "textures/Lobby/Waiting.png",
           "minfilter":"nearest",

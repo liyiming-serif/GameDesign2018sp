@@ -35,13 +35,15 @@ protected:
     std::shared_ptr<cugl::Button> _levelsButton;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
     std::shared_ptr<cugl::PolygonNode> _avatar2;
-    std::shared_ptr<cugl::Button> _avatar3;
-    std::shared_ptr<cugl::Button> _avatar4;
+    std::shared_ptr<cugl::PolygonNode> _avatar3;
+    std::shared_ptr<cugl::PolygonNode> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _box;
     std::shared_ptr<cugl::PolygonNode> _player1;
     std::shared_ptr<cugl::PolygonNode> _player2;
+    std::shared_ptr<cugl::PolygonNode> _player3;
+    std::shared_ptr<cugl::PolygonNode> _player4;
     std::shared_ptr<cugl::PolygonNode> _waiting;
     
     std::shared_ptr<cugl::Node>  _lobby;
