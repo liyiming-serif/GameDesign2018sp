@@ -127,6 +127,7 @@ void GameModel::update(float deltaTime){
 #endif
     }
 	//update enemies
+    CULog("Updating Enemies");
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
 			Vec2 pos = it->second->getPos();
@@ -164,6 +165,7 @@ void GameModel::update(float deltaTime){
 	}
 
 	//delete enemies here to not disrupt iterator
+    CULog("Deleting Enemies");
 	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
 		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
 			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
@@ -172,6 +174,7 @@ void GameModel::update(float deltaTime){
 	}
 
 	//decrease oil cooldown
+    CULog("Oil Cooling");
 	for (int wall = 0; wall < 6; wall++) {
 		if (gameModel._oilCooldown[wall] > 0) {
 			gameModel._oilCooldown[wall] -= 1;

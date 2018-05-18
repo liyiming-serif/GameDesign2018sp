@@ -56,7 +56,6 @@ public class BluetoothConnectedThread extends Thread {
             }
             synchronized (this){
                 gameStates.add(gameState);
-                Log.d(TAG, gameState);
             }
         }
     }
