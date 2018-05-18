@@ -20,7 +20,9 @@ class MageScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 	int _spellTimer;
-    
+	int _selectedDir;
+	std::string _queuedSpell;
+
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
     

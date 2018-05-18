@@ -42,6 +42,11 @@ protected:
 	//oil cooldown manager. Ready when == 0 for a particular wall
 	int _oilCooldown[6];
 
+	//spell cooldown managers. Ready when == 0 for each spell
+	int _freezeCooldown;
+	int _bombCooldown;
+	int _barrierCooldown;
+
 public:
 	/**
 	 * NEED TO REFER TO GAMEMODEL OBJECT
@@ -150,6 +155,21 @@ public:
             _arrowAmmo[type] = amount;
         }
     }
+
+	int getSpellCooldown(const std::string & spellName) {
+		if (spellName == "barrier") {
+			return _barrierCooldown;
+		}
+		else if (spellName == "bomb") {
+			return _bombCooldown;
+		}
+		else if (spellName == "freeze") {
+			return _freezeCooldown;
+		}
+		return -1;
+	}
+
+	void setSpellCooldown(const std::string & spellName, int amt);
 
 	int getOilCooldown(int wall) {
 		assert(wall < 6);

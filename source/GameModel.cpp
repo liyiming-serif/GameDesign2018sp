@@ -28,6 +28,9 @@ bool GameModel::init(){
         gameModel._oilPoured[i] = 0;
         gameModel._oilCooldown[i] = 0;
     }
+	gameModel._barrierCooldown = 0;
+	gameModel._bombCooldown = 0;
+	gameModel._freezeCooldown = 0;
     gameModel._noPlayers = 1;
     gameModel._playerAvatars = new int[gameModel._noPlayers];
     gameModel._playerRooms = new int[gameModel._noPlayers];
@@ -175,6 +178,17 @@ void GameModel::update(float deltaTime){
 			gameModel._oilCooldown[wall] = 0;
 		}
 	}
+
+	//decrease spell cooldowns
+	if (gameModel._bombCooldown > 0) {
+		gameModel._bombCooldown -= 1;
+	}
+	if (gameModel._barrierCooldown > 0) {
+		gameModel._barrierCooldown -= 1;
+	}
+	if (gameModel._freezeCooldown > 0) {
+		gameModel._freezeCooldown -= 1;
+	}
 }
 
 //init(); dispose(); without resetting multiplayer
@@ -203,6 +217,16 @@ void GameModel::reset() {
 		gameModel._oilPoured[i] = 0;
 		gameModel._oilCooldown[i] = 0;
 	}
+	if (gameModel._bombCooldown > 0) {
+		gameModel._bombCooldown -= 1;
+	}
+	if (gameModel._freezeCooldown > 0) {
+		gameModel._freezeCooldown -= 1;
+	}
+	if (gameModel._barrierCooldown > 0) {
+		gameModel._barrierCooldown -= 1;
+	}
+
 	//kick players from rooms
 	for (int i = 0; i < gameModel._noPlayers; ++i) {
 		gameModel._playerRooms[i] = 0;
@@ -255,6 +279,21 @@ int GameModel::getPlayerAvatar(int player) {
 
 void GameModel::setPlayerAvatar(int player, int avatar) {
     _playerAvatars[player] = avatar;
+}
+
+void GameModel::setSpellCooldown(const std::string & spellName, int amt) {
+	if (amt < 0) {
+		return;
+	}
+	if (spellName == "barrier") {
+		_barrierCooldown = amt;
+	}
+	else if (spellName == "bomb") {
+		_bombCooldown = amt;
+	}
+	else if (spellName == "freeze") {
+		_freezeCooldown = amt;
+	}
 }
 
 void GameModel::setOilCooldown(int wall, int amount) {

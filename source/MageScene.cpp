@@ -30,6 +30,7 @@ using namespace cugl;
 #define BUTTON_SCALE    2.0f
 
 #define GESTURE_TIMEOUT 240
+#define SPELL_COOLDOWN 480
 #define HEX_CANVAS_SIZE 200 //length of hexagon side
 
 #define DMG_DURATION 1.0f
@@ -42,6 +43,9 @@ using namespace cugl;
 bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
+
+	_selectedDir = -1;
+	_queuedSpell = "none";
     
     if (assets == nullptr) {
         return false;
@@ -500,6 +504,41 @@ void MageScene::update(float timestep){
 		resetSpellPath();
 		_spellTimer = GESTURE_TIMEOUT;
 	}
+
+
+	//queue spell effects
+	if (input.castBarrier() && gameModel.getSpellCooldown("barrier")==0 && _queuedSpell=="none") {
+		_queuedSpell = "barrier";
+	}
+	if (input.castBomb() && gameModel.getSpellCooldown("bomb") == 0 && _queuedSpell == "none") {
+		_queuedSpell = "bomb";
+	}
+	if (input.castFreeze() && gameModel.getSpellCooldown("freeze") == 0 && _queuedSpell == "none") {
+		_queuedSpell = "freeze";
+	}
+
+	//apply spell effects
+	if (_queuedSpell == "barrier" && _selectedDir != -1) {
+		//apply barrier
+		CULog("Casting Barrier!");
+		gameModel.setSpellCooldown("barrier", SPELL_COOLDOWN);
+		_queuedSpell = "none";
+		setSide("empty");
+	}
+	if (_queuedSpell == "bomb" && _selectedDir != -1) {
+		//apply bomb
+		CULog("Casting Bomb!");
+		gameModel.setSpellCooldown("bomb", SPELL_COOLDOWN);
+		_queuedSpell = "none";
+		setSide("empty");
+	}
+	if (_queuedSpell == "freeze" && _selectedDir != -1) {
+		//apply freeze
+		CULog("Casting Freeze!");
+		gameModel.setSpellCooldown("freeze", SPELL_COOLDOWN);
+		_queuedSpell = "none";
+		setSide("empty");
+	}
 }
 
 void MageScene::pollDmgIndicators() {
@@ -532,24 +571,31 @@ void MageScene::setSide(std::string side){
     southeastWall_floor->setVisible(false);
     if (side == "N") {
         northWall_floor->setVisible(true);
+		_selectedDir = 0;
     }
     else if (side == "NE") {
         northeastWall_floor->setVisible(true);
+		_selectedDir = 5;
     }
     else if (side == "NW") {
         northwestWall_floor->setVisible(true);
+		_selectedDir = 1;
     }
     else if (side == "S") {
         southWall_floor->setVisible(true);
+		_selectedDir = 3;
     }
     else if (side == "SE") {
         southeastWall_floor->setVisible(true);
+		_selectedDir = 4;
     }
     else if (side == "SW") {
         southwestWall_floor->setVisible(true);
+		_selectedDir = 2;
     }
 	else {
 		plain_floor->setVisible(true);
+		_selectedDir = -1;
 	}
 }
 
@@ -560,6 +606,7 @@ void MageScene::setActive(bool active){
     switchscene = 0;
 	GestureInput* gest = Input::get<GestureInput>();
 	resetSpellPath();
+	_queuedSpell = "none";
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(132,180,113,255));

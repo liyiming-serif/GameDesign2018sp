@@ -34,7 +34,10 @@ InputController::InputController() :
 		_vScrolling(0),
 		_hScrolling(0),
 		_oilTilt(0.0),
-		_currMaxKey(2){
+		_currMaxKey(2),
+		_castFreeze(false),
+		_castBomb(false),
+		_castBarrier(false){
 }
 
 /**
@@ -92,9 +95,9 @@ bool InputController::init(){
 	gest->addMatchListener(LISTENER_KEY, [=](const GestureEvent& event, bool focus) {
 		this->gestureMatchCB(event, focus);
 	});
-	gest->addStateListener(LISTENER_KEY, [=](GestureState old, GestureState curr) {
-		this->gestureStateCB(old, curr);
-	});
+	//gest->addStateListener(LISTENER_KEY, [=](GestureState old, GestureState curr) {
+	//	this->gestureStateCB(old, curr);
+	//});
 	gest->loadAsset("Gestures");
 	gest->pause();
 	_makeGestureTimer = 100;
@@ -128,17 +131,14 @@ void InputController::pollInputs() {
 		if (_makeGestureTimer == 100) {
 			CULog("Gestures Ready!");
 			std::vector<std::string> gests = gest->getGestures();
-			//for (auto it = gest->getGestures().begin(); it != gest->getGestures().end(); it++) {
-			//	CULog("%s",it);
-			//}
 		}
 		if (_makeGestureTimer > 0) {
 			_makeGestureTimer--;
 		}
 		else if (_makeGestureTimer == 0) {
-			//GestureInput* g = Input::get<GestureInput>();
-			//CULog("NOW RECORDING GESTURE FOR BOMB2 SPELL");
-			//g->record("wind2");
+			/*GestureInput* g = Input::get<GestureInput>();
+			CULog("NOW RECORDING GESTURE FOR BARRIER1 SPELL");
+			g->record("barrier2");*/
 			_makeGestureTimer--;
 		}
 	}
@@ -150,6 +150,9 @@ void InputController::update(float deltaTime) {
     _justReleased = false;
     _vScrolling = 0;
 	_hScrolling = 0;
+	_castFreeze = false;
+	_castBomb = false;
+	_castBarrier = false;
 	_actions->update(deltaTime);
 }
 
@@ -246,15 +249,27 @@ void InputController::mouseUpCB(const MouseEvent& event, Uint8 clicks, bool focu
 }
 
 void InputController::gestureMatchCB(const GestureEvent &event, bool focus) {
-	CULog("recognized a %s spell with %f error.", event.key.c_str(), event.error);
+	//CULog("recognized a %s spell with %f error.", event.key.c_str(), event.error);
+	if (event.key == "wind2") {
+		CULog("recognized FREEZE spell");
+		_castFreeze = true;
+	}
+	else if (event.key == "barrier1" || event.key == "barrier2") {
+		CULog("recognized BARRIER spell");
+		_castBarrier = true;
+	}
+	else if (event.key == "bomb1" || event.key == "bomb2") {
+		CULog("recognized BOMB spell");
+		_castBomb = true;
+	}
 }
 
 void InputController::gestureStateCB(GestureState old, GestureState curr) {
 	if (old == GestureState::RECORDING || old == GestureState::MATCHING) {
 		GestureInput* gest = Input::get<GestureInput>();
 		if (gest->ready()) {
-			//gest->save("Gestures");
-			//CULog("recording session successful for BOMB2 spell");
+			gest->save("Gestures");
+			CULog("recording session successful for BARRIER1 spell");
 		}
 	}
 }
