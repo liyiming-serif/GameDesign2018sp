@@ -95,7 +95,7 @@ public class BluetoothConnectedThread extends Thread {
     public String dequeueState(){
         String result;
         synchronized (this){
-            result = gameStates.poll();
+            result = gameStates.pollFirst();
         }
         return result;
     }
