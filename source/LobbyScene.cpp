@@ -641,9 +641,6 @@ void LobbyScene::runLobbyNetworking() {
             } else {
                 CULog("Write success");
             }
-
-            delete[] write_byte_buffer;
-            //delete[] read_buffers;
             LobbyClock2 = 0;
         }
         else if (!gameModel.isServer() && LobbyClock2 == 0) {
