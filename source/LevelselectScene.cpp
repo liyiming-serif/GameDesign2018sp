@@ -172,12 +172,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 CULog("ONE!!!");
                 switchscene = OVERWORLD;
                 gameModel.setLevel(1);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -200,12 +202,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(2);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -228,12 +232,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(3);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -256,12 +262,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(4);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -284,12 +292,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(5);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -313,12 +323,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(6);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -342,13 +354,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(7);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
-
+#endif
             }
         }
     });
@@ -371,12 +384,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(8);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -399,12 +414,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(9);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -427,12 +444,14 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             if (click){
                 switchscene = OVERWORLD;
                 gameModel.setLevel(10);
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
                     int cleared = clearServerACKs();
                     (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
+#endif
             }
         }
     });
@@ -843,6 +862,8 @@ void LevelselectScene::animateClouds() {
     }
 }
 
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+
 std::string LevelselectScene::produceACKServer() {
     if (gameModel.getLevel() < 10) {
         return "7|" + to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.getLevel());
@@ -858,6 +879,8 @@ char* LevelselectScene::return_buffer(const std::string &string) {
     strcpy(return_string, string.c_str());
     return return_string;
 }
+
+#endif
 
 //Pause or Resume
 void LevelselectScene::setActive(bool active, int players){
