@@ -348,7 +348,20 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setPosition(10, 30);
     _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
-
+    
+    _lowAmmoText =Label::alloc((std::string) "LOW AMMO", FONT);
+    _lowAmmoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _lowAmmoText->setPosition(_size.width*.5f, _size.height*.7f);
+    _lowAmmoText->setForeground(cugl::Color4(209,123,104,255));
+    addChild(_lowAmmoText);
+    _lowAmmoText->setVisible(false);
+    
+    _noAmmoText =Label::alloc((std::string) "OUT OF AMMO", FONT);
+    _noAmmoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _noAmmoText->setPosition(_size.width*.5f, _size.height*.7f);
+    _noAmmoText->setForeground(cugl::Color4(178,101,99,255));
+    addChild(_noAmmoText);
+    _noAmmoText->setVisible(false);
     
     
     std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_ballista");
@@ -486,6 +499,20 @@ void BallistaScene::update(float deltaTime, int direction){
         _ballista_tap->setVisible(false);
     }
 
+    if (gameModel.getArrowAmmo(0) < 11 && gameModel.getArrowAmmo(0) > 4) {
+        _lowAmmoText->setVisible(true);
+    }
+    else {
+        _lowAmmoText->setVisible(false);
+    }
+    
+    if (gameModel.getArrowAmmo(0)== 0) {
+        _noAmmoText->setVisible(true);
+    }
+    else {
+        _noAmmoText->setVisible(false);
+    }
+    
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
 

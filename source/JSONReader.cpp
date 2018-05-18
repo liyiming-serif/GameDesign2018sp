@@ -112,7 +112,7 @@ float JSONReader::getHealth(std::string name){
         return 2.0;
     }
 	else if (name == "reaper") {
-		return 5.0;
+		return 4.0;
 	}
 	else if(name=="berserker"){
         return 3.0;

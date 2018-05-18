@@ -77,7 +77,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			texture = assets->get<Texture>("warrior");
 			_node = AnimationNode::alloc(texture, _rows, _cols);
 			_node->setFrame(_walkFrameStart);
-			_node->setScale(0.8);
+			_node->setScale(1.0f);
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 
@@ -112,7 +112,7 @@ bool EnemyModel::init(std::string name,Vec2 pos,int type,int drawScale,
 			texture = assets->get<Texture>("berserker");
 			_node = AnimationNode::alloc(texture, _rows, _cols);
 			_node->setFrame(_walkFrameStart);
-			_node->setScale(0.8);
+			_node->setScale(1.0f);
 			_node->setAnchor(Vec2::ANCHOR_CENTER);
 			break;
 

@@ -74,6 +74,8 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _ballista_swipe;
     std::shared_ptr<cugl::PolygonNode> _ballista_tap;
     bool _swipeTutorial;
+    std::shared_ptr<cugl::Label> _lowAmmoText;
+    std::shared_ptr<cugl::Label> _noAmmoText;
 
 	//helper method for translating enemy y coords
 	bool inRange(float y);

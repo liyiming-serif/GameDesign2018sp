@@ -234,7 +234,7 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_flag = AnimationNode::alloc(_assets->get<Texture>("m_flag"), 1, 4);
     _castle_flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
     _castle_flag->setScale(0.4f);
-    _castle_flag->setPosition(-170,130);
+    _castle_flag->setPosition(-170,125);
     _castle_flag->setFrame(0);
     
     

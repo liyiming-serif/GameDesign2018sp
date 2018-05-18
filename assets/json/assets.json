@@ -570,7 +570,7 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "win_BG": {
+        "win_FG": {
             "file":     "textures/Menu/WinLose/win.png",
             "minfilter":"nearest",
             "magfilter":"linear",

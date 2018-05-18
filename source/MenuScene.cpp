@@ -88,7 +88,7 @@ bool MenuScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _flag = AnimationNode::alloc(_assets->get<Texture>("m_flag"), 1, 4);
     _flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
     _flag->setScale(0.5625f);
-    _flag->setPosition(_size.width-60.5,_castle->getHeight()-57);
+    _flag->setPosition(_size.width-60.5,_castle->getHeight()-70);
     _flag->setFrame(0);
 
     
