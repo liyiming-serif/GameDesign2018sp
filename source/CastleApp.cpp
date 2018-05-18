@@ -215,7 +215,9 @@ void CastleApp::update(float timestep) {
         else if(_currscene==LOBBY){
             _lobbyScene.update(timestep);
             if(_lobbyScene.switchscene!=0){
+                CULog("Attempting to switch scene");
                 swapscenes(_lobbyScene.switchscene, 0);
+                CULog("switched scenes correctly");
                 _lobbyScene.setActive(false);
             }
         }
@@ -365,15 +367,19 @@ void CastleApp::swapscenes(int nextscene, int direction){
         initializeRooms();
         _overworldScene.resetCastle();
         _levelScene.setLevel(level);
+        CULog("Player ID: %i", gameModel.getPlayerID());
     }
     if (_currscene==LOBBY && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
         _lobbyScene.setActive(false);
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), gameModel.level));
-        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, gameModel.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
+        _levelScene.setLevel(level);
+        CULog("Player ID: %i", gameModel.getPlayerID());
     }
     switch(nextscene){
         case MENU:

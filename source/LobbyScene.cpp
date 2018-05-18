@@ -340,7 +340,6 @@ void LobbyScene::update(float timestep){
     if (!gameModel.isServer() && gameModel.isNetworked() && !clientConnected) {
         if (isConnected()) {
             LobbyScene::changeCanvas("avatar");
-            gameModel.setPlayerID(gameModel.getNoPlayers()+1);
             clientConnected = true;
         }
         else {
@@ -433,7 +432,7 @@ void LobbyScene::changeCanvas(std::string canvas) {
         for(int i = 0; i < length; i++) {
             _enterButtons[i]->deactivate();
         }
-        CULog("go to avatar");
+        //CULog("go to avatar");
     }
     else {
         return;
@@ -534,7 +533,7 @@ std::shared_ptr<cugl::Label> LobbyScene::createServerRoomText(int device) {
     _buttonText->setPosition(_enterButtons[device]->getContentWidth()/2,_enterButtons[device]->getContentHeight()/2);
     _buttonText->setForeground(cugl::Color4(233,225,212,255));
     std::string roomName = serverDevices.at(device);
-    CULog("%s", roomName.c_str());
+    //CULog("%s", roomName.c_str());
     _buttonText->setText(roomName);
     return _buttonText;
 }
@@ -651,21 +650,23 @@ void LobbyScene::runLobbyNetworking() {
                 applyACKClient(read_buffer);
             }
             //delete[] read_buffer;
-            CULog("Lobby Clock in client read %i", LobbyClock2);
+            //CULog("Lobby Clock in client read %i", LobbyClock2);
             LobbyClock2++;
         }
         else if (!gameModel.isServer() && LobbyClock2 == 10) {
-            char *write_byte_buffer = return_buffer(produceACKClient());
-            //TODO: Write to network
-            CULog("State Change: %s \n", write_byte_buffer);
-            if (sendState(write_byte_buffer) == 1){
-                CULog("At least one write failure");
-            } else {
-                CULog("Write success");
+            if (!clientACKSent) {
+                char *write_byte_buffer = return_buffer(produceACKClient());
+                //TODO: Write to network
+                CULog("State Change: %s \n", write_byte_buffer);
+                if (sendState(write_byte_buffer) == 1){
+                    CULog("At least one write failure");
+                } else {
+                    CULog("Write success");
+                }
+                delete[] write_byte_buffer;
             }
-            CULog("Lobby Clock in client write %i", LobbyClock2);
+            //CULog("Lobby Clock in client write %i", LobbyClock2);
             LobbyClock2 = 0;
-            delete[] write_byte_buffer;
         }
         else {
             LobbyClock2++;
@@ -676,6 +677,7 @@ void LobbyScene::runLobbyNetworking() {
 
 std::string LobbyScene::produceACKClient() {
     if(clientReady) {
+        clientACKSent = true;
         return "3|1";
     } else {
         return "3|0";
@@ -698,7 +700,7 @@ char** LobbyScene::consumeACKServer() {
     char *tmp[gameModel.getNoPlayers()-1];
     for (int i = 0; i < gameModel.getNoPlayers()-1; ++i) {
         tmp[i] = consumeACK();
-        CULog("State from Client %i: %s", i, tmp[i]);
+        //CULog("State from Client %i: %s", i, tmp[i]);
     }
     return tmp;
 }
@@ -720,9 +722,14 @@ void LobbyScene::applyACKClient(char *ACK) {
     token = strtok(NULL, s);
     serverLevel = token;
     gameModel.setNoPlayers(std::stoi(numPlayers));
+    if (!obtainedID) {
+        gameModel.setPlayerID(gameModel.getNoPlayers());
+        CULog("Player ID: %i", gameModel.getPlayerID());
+        obtainedID = true;
+    }
     int sLevel = std::stoi(serverLevel);
-    CULog("received level %s", serverLevel);
-    if (sLevel != -1) {
+    //CULog("received level %s", serverLevel);
+    if (sLevel > 0) {
         gameModel.setLevel(sLevel);
         switchscene = OVERWORLD;
     }

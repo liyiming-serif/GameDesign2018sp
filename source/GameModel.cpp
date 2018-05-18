@@ -329,7 +329,7 @@ std::string GameModel::produceStateChangeServer() {
             _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._currentRoom) + " ";
         }
         else {
-            _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._playerRooms[i]) + " ";
+            _tmpPlayerString += to_string(i) + ":" + to_string(gameModel._playerRooms[i]) + " ";
         }
 
     }
@@ -395,7 +395,7 @@ std::string GameModel::produceStateChangeClient() {
         gameModel._deltaAmmo[i] = 0;
     }
 
-    _tmpPlayerString += to_string(gameModel._playerAvatars[gameModel._playerID]) + ":" + to_string(gameModel._currentRoom);
+    _tmpPlayerString += to_string(gameModel.getPlayerID()) + ":" + to_string(gameModel._currentRoom);
 
     _tmpHealthString.pop_back();
     _tmpAmmoString.pop_back();
@@ -817,11 +817,13 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 
     // Update player rooms with new values
     CULog("Updating player room");
-    char* playerRoom = strtok(playerInfoToken, " ");
+    char* playerRoom = strtok(playerInfoToken, " :");
     section = 0;
     while (playerRoom != NULL) {
+        playerRoom = strtok(NULL, " :");
         gameModel._playerRooms[section] = std::stoi(playerRoom);
-        playerRoom = strtok(NULL, " ");
+        CULog("player %i in room %i", section, playerRoom);
+        playerRoom = strtok(NULL, " :");
         section++;
     }
 

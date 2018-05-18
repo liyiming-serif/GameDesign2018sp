@@ -85,6 +85,10 @@ protected:
     bool clientConnected = false;
     bool serverReady = false;
 
+    bool clientACKSent = false;
+
+    bool obtainedID = false;
+
     
     
 public:
