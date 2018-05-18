@@ -866,7 +866,7 @@ void GameModel::setServer(bool server){
 void GameModel::setCurrentRoom(int room){
     gameModel._currentRoom = room;
 }
-
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 void GameModel::suspendClient() {
     std::string suspendString = "|0 0 0 0 0 0| |0 0 0|" + to_string(_playerID)+":0|0 0 0 0 0 0";
     int premessageSize = suspendString.length();
@@ -884,3 +884,4 @@ void GameModel::suspendClient() {
     }
     delete[] write_byte_buffer;
 }
+#endif
