@@ -79,8 +79,10 @@ protected:
     size_t length;
 
     int LobbyClock = 0;
+    int LobbyClock2 = 0;
 
     bool clientReady = false;
+    bool clientConnected = false;
     bool serverReady = false;
 
     
