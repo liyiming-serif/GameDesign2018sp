@@ -49,6 +49,13 @@ bool SpawnController::endlessInit(const std::shared_ptr<AssetManager>& assets, i
     _endless = true;
     _numPlayers = numPlayers;
     _spawnChance = numPlayers*0.003f;
+    gameModel.setEndTime(FLT_MAX/2);
+    gameModel._unlockedRooms["lookout"] = true;
+    gameModel._unlockedRooms["oil"] = true;
+    gameModel._unlockedRooms["mage"] = true;
+    gameModel._unlockedRooms["ballista"] = true;
+    gameModel._unlockedRooms["repair"] = true;
+    gameModel._unlockedRooms["ammo"] = true;
 
     return true;
 }

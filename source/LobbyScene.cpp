@@ -242,9 +242,17 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _levelsButton->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
-            switchscene = LEVELS;
+            switchscene = OVERWORLD;
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
             serverStopAccepting();
+#endif
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+            if (gameModel.isServer() && gameModel.isNetworked()) {
+                int message = sendState(return_buffer(produceACKServer(1)));
+                int cleared = clearServerACKs();
+                (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
+                (message == 0) ? CULog("Level write success"):CULog("Level write failure");
+            }
 #endif
         }
     });
@@ -609,7 +617,6 @@ void LobbyScene::animateClouds() {
     }
 }
 
-#if CU_PLATFORM == CU_PLATFORM_ANDROID
 void LobbyScene::runLobbyNetworking() {
     if (gameModel.isNetworked()) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -632,7 +639,7 @@ void LobbyScene::runLobbyNetworking() {
                 //delete[] read_buffers[l];
             }
 
-            char *write_byte_buffer = return_buffer(produceACKServer());
+            char *write_byte_buffer = return_buffer(produceACKServer(0));
 
             CULog("State Change %s \n", write_byte_buffer);
 
@@ -687,12 +694,18 @@ std::string LobbyScene::produceACKClient() {
     }
 }
 
-std::string LobbyScene::produceACKServer() {
-    if(serverReady) {
-        return "8|" + to_string(gameModel.getNoPlayers())+"|1|-1";
-    } else {
-        return "8|" + to_string(gameModel.getNoPlayers())+"|0|-1";
+std::string LobbyScene::produceACKServer(int mode) {
+    if (mode == 1) {
+        return "8|" + to_string(gameModel.getNoPlayers())+"|1|11";
     }
+    else {
+        if(serverReady) {
+            return "8|" + to_string(gameModel.getNoPlayers())+"|1|-1";
+        } else {
+            return "8|" + to_string(gameModel.getNoPlayers())+"|0|-1";
+        }
+    }
+
 }
 
 char* LobbyScene::consumeACKClient() {
@@ -731,9 +744,8 @@ void LobbyScene::applyACKClient(char *ACK) {
         obtainedID = true;
     }
     int sLevel = std::stoi(serverLevel);
-    //CULog("received level %s", serverLevel);
+    CULog("received level %s", serverLevel);
     if (sLevel > 0) {
-        gameModel.setLevel(sLevel);
         switchscene = OVERWORLD;
     }
 }

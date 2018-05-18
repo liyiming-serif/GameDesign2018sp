@@ -331,7 +331,7 @@ public:
 
 private:
     std::string produceACKClient();
-    std::string produceACKServer();
+    std::string produceACKServer(int mode);
     char* consumeACKClient();
     char** consumeACKServer();
     void applyACKClient(char* ACK);
@@ -384,6 +384,25 @@ private:
             env->DeleteLocalRef(clazz);
             return NULL;
         }
+    }
+
+    int clearServerACKs() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "clearServerACKs",
+                                               "()I");
+
+        // Call the Java method
+        int success = env->CallIntMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return success;
     }
 
 
