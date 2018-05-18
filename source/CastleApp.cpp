@@ -146,8 +146,10 @@ void CastleApp::onShutdown() {
 
 void CastleApp::onSuspend() {
     if (gameModel.isNetworked() && !gameModel.isServer()) {
+        #if CU_PLATFORM == CU_PLATFORM_ANDROID
         gameModel.suspendClient();
         Application::onSuspend();
+        #endif
     }
 }
 
@@ -495,6 +497,8 @@ void CastleApp::reset(){
     _overworldScene.resetTutorial();
     _oilScene._tiltCount = 0;
     _ballistaScene._shots = 0;
+    _ballistaScene._exitCount=0;
+    _lookoutScene._exitCount=0;
     _repairScene._wallClick=0;
     _ammoScene._ammoClick=0;
 	gameModel.resetWallDmg();

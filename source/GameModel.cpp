@@ -133,7 +133,12 @@ void GameModel::update(float deltaTime){
             if (it->second->getHealth() <= 0){
                 gameModel._enemiesToFreeMaster[wall].push_back(it->first);
             }
-			else if (pos.y <= 0) {
+			else if (gameModel.getLevel()>4 && pos.y <= 0) {
+				//enemy collided with wall; mark for deletion
+				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
+				gameModel.changeWallHealth(wall, -it->second->getDamage());
+			}
+			else if (gameModel.getLevel() <= 4 && pos.y <= 127) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
@@ -863,7 +868,7 @@ void GameModel::setServer(bool server){
 void GameModel::setCurrentRoom(int room){
     gameModel._currentRoom = room;
 }
-
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 void GameModel::suspendClient() {
     std::string suspendString = "|0 0 0 0 0 0| |0 0 0|" + to_string(_playerID)+":0|0 0 0 0 0 0";
     int premessageSize = suspendString.length();
@@ -881,3 +886,4 @@ void GameModel::suspendClient() {
     }
     delete[] write_byte_buffer;
 }
+#endif

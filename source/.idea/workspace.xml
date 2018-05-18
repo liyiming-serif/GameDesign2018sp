@@ -12,31 +12,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="GameModel.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/GameModel.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="BallistaScene.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/BallistaScene.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="565">
-              <caret line="590" column="38" lean-forward="false" selection-start-line="590" selection-start-column="32" selection-end-line="590" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OilScene.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/OilScene.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1320">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="1165">
+              <caret line="605" column="38" lean-forward="false" selection-start-line="605" selection-start-column="38" selection-end-line="605" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -45,18 +25,38 @@
       <file leaf-file-name="CastleApp.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CastleApp.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="314" column="16" lean-forward="true" selection-start-line="314" selection-start-column="16" selection-end-line="314" selection-end-column="16" />
+            <state relative-caret-position="-93">
+              <caret line="314" column="16" lean-forward="false" selection-start-line="314" selection-start-column="16" selection-end-line="314" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LookoutScene.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LookoutScene.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LookoutScene.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1111">
-              <caret line="276" column="72" lean-forward="false" selection-start-line="276" selection-start-column="72" selection-end-line="276" selection-end-column="72" />
+            <state relative-caret-position="840">
+              <caret line="303" column="12" lean-forward="true" selection-start-line="303" selection-start-column="12" selection-end-line="321" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpawnController.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SpawnController.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="717">
+              <caret line="107" column="33" lean-forward="false" selection-start-line="107" selection-start-column="33" selection-end-line="107" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SpawnController.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/SpawnController.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-240">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -75,18 +75,18 @@
       <file leaf-file-name="EnemyDataModel.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EnemyDataModel.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1877">
-              <caret line="99" column="9" lean-forward="true" selection-start-line="99" selection-start-column="9" selection-end-line="99" selection-end-column="9" />
+            <state relative-caret-position="-360">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LevelselectScene.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LevelselectScene.cpp">
+      <file leaf-file-name="JSONReader.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/JSONReader.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-102">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="517">
+              <caret line="115" column="5" lean-forward="false" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -95,7 +95,7 @@
       <file leaf-file-name="GameModel.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameModel.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4920">
+            <state relative-caret-position="-5387">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -105,7 +105,7 @@
       <file leaf-file-name="EnemyModel.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EnemyModel.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3720">
+            <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -116,7 +116,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>CULog</find>
       <find>levelscene</find>
       <find>desert</find>
       <find>JUNGLE</find>
@@ -146,6 +145,7 @@
       <find>culog</find>
       <find>gameModel.level</find>
       <find>health</find>
+      <find>180</find>
     </findStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -166,14 +166,12 @@
         <option value="$PROJECT_DIR$/LobbyScene.cpp" />
         <option value="$PROJECT_DIR$/OverworldScene.h" />
         <option value="$PROJECT_DIR$/OilScene.h" />
-        <option value="$PROJECT_DIR$/SpawnController.h" />
         <option value="$PROJECT_DIR$/LoadingScene.cpp" />
         <option value="$PROJECT_DIR$/JSONReader.h" />
         <option value="$PROJECT_DIR$/EnemyDataModel.h" />
         <option value="$PROJECT_DIR$/AmmoScene.cpp" />
         <option value="$PROJECT_DIR$/InputController.cpp" />
         <option value="$PROJECT_DIR$/CastleApp.h" />
-        <option value="$PROJECT_DIR$/SpawnController.cpp" />
         <option value="$PROJECT_DIR$/WinScene.h" />
         <option value="$PROJECT_DIR$/LoseScene.cpp" />
         <option value="$PROJECT_DIR$/OverworldScene.cpp" />
@@ -188,6 +186,8 @@
         <option value="$PROJECT_DIR$/GameModel.cpp" />
         <option value="$PROJECT_DIR$/CastleApp.cpp" />
         <option value="$PROJECT_DIR$/LookoutScene.cpp" />
+        <option value="$PROJECT_DIR$/SpawnController.cpp" />
+        <option value="$PROJECT_DIR$/SpawnController.h" />
       </list>
     </option>
   </component>
@@ -235,7 +235,7 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../build-android" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -316,7 +316,7 @@
       <option name="DEEP_LINK" value="" />
       <option name="ACTIVITY_CLASS" value="" />
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526591498702" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526613606342" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -363,7 +363,7 @@
         <option name="ADVANCED_PROFILING_ENABLED" value="false" />
       </Profilers>
       <method>
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526591498702" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1526613606343" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -583,7 +583,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
@@ -795,13 +797,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SpawnController.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CastleApp.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -817,24 +812,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SpawnController.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LoseScene.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1077">
           <caret line="97" column="59" lean-forward="false" selection-start-line="97" selection-start-column="59" selection-end-line="97" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/JSONReader.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2600">
-          <caret line="65" column="53" lean-forward="false" selection-start-line="65" selection-start-column="53" selection-end-line="65" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -901,14 +882,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CastleApp.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="314" column="16" lean-forward="true" selection-start-line="314" selection-start-column="16" selection-end-line="314" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OilScene.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1320">
@@ -917,10 +890,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EnemyDataModel.cpp">
+    <entry file="file://$PROJECT_DIR$/BallistaScene.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1877">
-          <caret line="99" column="9" lean-forward="true" selection-start-line="99" selection-start-column="9" selection-end-line="99" selection-end-column="9" />
+        <state relative-caret-position="1165">
+          <caret line="605" column="38" lean-forward="false" selection-start-line="605" selection-start-column="38" selection-end-line="605" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CastleApp.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-93">
+          <caret line="314" column="16" lean-forward="false" selection-start-line="314" selection-start-column="16" selection-end-line="314" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EnemyModel.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LookoutScene.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="303" column="12" lean-forward="true" selection-start-line="303" selection-start-column="12" selection-end-line="321" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -933,34 +930,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EnemyModel.cpp">
+    <entry file="file://$PROJECT_DIR$/EnemyDataModel.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3720">
+        <state relative-caret-position="-360">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BallistaScene.cpp">
+    <entry file="file://$PROJECT_DIR$/JSONReader.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="565">
-          <caret line="590" column="38" lean-forward="false" selection-start-line="590" selection-start-column="32" selection-end-line="590" selection-end-column="38" />
+        <state relative-caret-position="517">
+          <caret line="115" column="5" lean-forward="false" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GameModel.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4920">
+        <state relative-caret-position="-5387">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LookoutScene.cpp">
+    <entry file="file://$PROJECT_DIR$/SpawnController.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1111">
-          <caret line="276" column="72" lean-forward="false" selection-start-line="276" selection-start-column="72" selection-end-line="276" selection-end-column="72" />
+        <state relative-caret-position="717">
+          <caret line="107" column="33" lean-forward="false" selection-start-line="107" selection-start-column="33" selection-end-line="107" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SpawnController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-240">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

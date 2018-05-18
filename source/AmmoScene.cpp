@@ -207,7 +207,7 @@ bool AmmoScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Add the hammer
     _hammerAnim = AnimationNode::alloc(_assets->get<Texture>("hammer_animation"), 3, 5);
     _hammerAnim->setAnchor(Vec2::ANCHOR_CENTER);
-    _hammerAnim->setScale(.7f);
+    _hammerAnim->setScale(.945f);
     _hammerAnim->setPosition(_size.width/2-60,_size.height/2+130);
     _hammerAnim->setFrame(0);
     
@@ -402,6 +402,7 @@ void AmmoScene::dispose() {
         _active = false;
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+        _tap=nullptr;
     }
 }
 

@@ -38,7 +38,7 @@ using namespace cugl;
 #define OIL_COOLDOWN 600
 #define TIPPING_POINT 0.45f
 
-#define OIL_MAX_RANGE 100	//farthest enemy oil scene can see
+#define OIL_MAX_RANGE 127	//farthest enemy oil scene can see
 #define OIL_MIN_RANGE 0		//closest enemy oil scene can see
 #define OIL_END_ZONE 200	//enemies dissapear past this y-coord; set by castle wall art assets
 
@@ -340,6 +340,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _tilt->setPosition(_size.width*.5f,_size.height*.9f);
     addChild(_tilt);
     
+    
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -375,6 +376,7 @@ void OilScene::dispose() {
 		_enemiesToFree.clear();
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+        _tilt=nullptr;
     }
 }
 
@@ -459,7 +461,7 @@ void OilScene::update(float timestep, int direction){
     }
     setWall(direction);
     
-    if (_tiltCount > 1) {
+    if (_tiltCount > 0) {
         _tilt->setVisible(false);
     }
     

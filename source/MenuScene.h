@@ -25,7 +25,6 @@ protected:
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _castle;
-    std::shared_ptr<cugl::PolygonNode> _flag;
     std::shared_ptr<cugl::PolygonNode> _title;
     
     std::shared_ptr<cugl::PolygonNode> _cloud1;
@@ -50,6 +49,12 @@ protected:
     bool move3 = true;
     bool move4 = true;
     bool move5 = true;
+    
+    /** The animation */
+    std::shared_ptr<cugl::AnimationNode> _flag;
+    
+    /** The animation actions */
+    std::shared_ptr<cugl::Animate> _flagAnimation;
     
     
     
@@ -104,6 +109,13 @@ public:
      * @param action The move action
      */
     void doMove5(const std::shared_ptr<cugl::MoveTo>& action, std::shared_ptr<cugl::PolygonNode> object);
+    
+    /**
+     * Performs a film strip action
+     *
+     * @param action The film strip action
+     */
+    void doStrip(const std::shared_ptr<cugl::Animate>& action);
     
 };
 

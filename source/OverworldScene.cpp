@@ -39,6 +39,7 @@ using namespace cugl;
 /** Define the time settings for animation */
 #define DURATION .5f
 #define DURATION2 20.0f
+#define DURATION3 2.0f
 #define DMG_DURATION 1.0f
 #define DISTANCE 200
 #define REPEATS  3
@@ -70,6 +71,8 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 
     direction = -1;
     switchscene = 0;
+    
+    _flagAnimation = Animate::alloc(0,3,DURATION3,REPEATS);
     
     // Set background color
     Application::get()->setClearColor(Color4(132,180,113,255));
@@ -194,12 +197,6 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _castle_background->setScale(TOWER_SCALE); // Magic number to rescale asset
     _castle_background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _castle_background->setPosition(-_size.width/2,0);
-    // Flag
-    std::shared_ptr<Texture> ca_flag  = _assets->get<Texture>("castle_flag_overworld");
-    _castle_flag = PolygonNode::allocWithTexture(ca_flag);
-    _castle_flag->setScale(-TOWER_SCALE,TOWER_SCALE); // Magic number to rescale asset
-    _castle_flag->setAnchor(Vec2::ANCHOR_CENTER);
-    _castle_flag->setPosition(-170,190);
     // Black
     std::shared_ptr<Texture> ca_black  = _assets->get<Texture>("castle_black");
     _castle_black = PolygonNode::allocWithTexture(ca_black);
@@ -233,6 +230,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     //Adds Nodes to background and sets transparency
     
     
+    // Add the flag
+    _castle_flag = AnimationNode::alloc(_assets->get<Texture>("m_flag"), 1, 4);
+    _castle_flag->setAnchor(Vec2::ANCHOR_BOTTOM_CENTER);
+    _castle_flag->setScale(0.4f);
+    _castle_flag->setPosition(-170,130);
+    _castle_flag->setFrame(0);
+    
+    
      std::shared_ptr<Texture> c_1  = _assets->get<Texture>("cloudS");
     _cloud1 = PolygonNode::allocWithTexture(c_1);
     _cloud1->setScale(0.5625f); // Magic number to rescale asset
@@ -246,7 +251,19 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cloud3->setScale(0.5625f); // Magic number to rescale asset
     _cloud3->setAnchor(Vec2::ANCHOR_CENTER);
     
+    std::shared_ptr<Texture> _new_floor  = _assets->get<Texture>("tutorial_newFloor");
+    _floorNew = PolygonNode::allocWithTexture(_new_floor);
+    _floorNew->setScale(.55,.6); // Magic number to rescale asset
+    _floorNew->setAnchor(Vec2::ANCHOR_CENTER);
+    _floorNew->setPosition(-_size.width/2+_castle_background->getWidth()/2+3,-_size.height*.188f);
+
     
+    std::shared_ptr<Texture> _new_B_floor  = _assets->get<Texture>("tutorial_newFloorBasement");
+    _floorBasementNew = PolygonNode::allocWithTexture(_new_B_floor);
+    _floorBasementNew->setScale(.55); // Magic number to rescale asset
+    _floorBasementNew->setAnchor(Vec2::ANCHOR_CENTER);
+    _floorBasementNew->setPosition(-_size.width/2+_castle_background->getWidth()/2+3,-_size.height*.4f);
+
 
     _background->addChild(_castle_background);
     
@@ -257,10 +274,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->addChild(_castle_flag);
     _background->addChild(_castle_black);
     
+    _background->addChild(_floorNew);
+    _background->addChild(_floorBasementNew);
+    
     _background->addChild(_castle_basement);
     _background->addChild(_castle_oil);
     _background->addChild(_castle_lookout);
     _background->addChild(_castle_ballista);
+    
     _castle_ballista->setColor(Color4(255,255,255,0));
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
@@ -1171,6 +1192,10 @@ void OverworldScene::doMove3(const std::shared_ptr<MoveTo>& action, std::shared_
     _actions->activate(ACT_KEY+5, action, object, fcn);
 }
 
+void OverworldScene::doStrip(const std::shared_ptr<cugl::Animate>& action) {
+    _actions->activate(ACT_KEY+6, action, _castle_flag);
+}
+
 void OverworldScene::pollDmgIndicators() {
 	for (int i = 0; i < 6; i++) {
 		if (gameModel.getDmgHealth(i) > 0) {
@@ -1372,15 +1397,19 @@ void OverworldScene::update(float timestep){
         _oilSouthNEW->setVisible(false);
         _oilSouthEastNEW->setVisible(false);
         _oilSouthWestNEW->setVisible(false);
+        _floorNew->setVisible(false);
     }
     if (_mageClick>0) {
         _mage_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
     if (_ammoClick>0) {
         _ammo_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
     if (_repairClick>0) {
         _repair_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
 
 	//poll damage indicators
@@ -1440,7 +1469,7 @@ void OverworldScene::update(float timestep){
     }
     else if (currentCastleFloor==2 && _roomClick<2 && _swipeTutorial) {
         _tap->setVisible(true);
-         _tap->setPosition(_size.width*.25f,_size.height*.333f);
+         _tap->setPosition(_size.width*.25f,_size.height*.3f);
     }
     else {
         _tap->setVisible(false);
@@ -1467,6 +1496,10 @@ void OverworldScene::update(float timestep){
         _cloud3->setPosition(-1200,-100);
         _move3 = MoveTo::alloc(Vec2(400,-100),DURATION2*1.6);
         doMove3(_move3, _cloud3);
+    }
+    
+    if (!_actions->isActive(ACT_KEY+6)){
+        doStrip(_flagAnimation);
     }
 
 	// Animate
@@ -1521,6 +1554,7 @@ void OverworldScene::setActive(bool active) {
             _oilSouthNEW->setVisible(true);
             _oilSouthEastNEW->setVisible(true);
             _oilSouthWestNEW->setVisible(true);
+            _floorNew->setVisible(true);
         }
         if (!_newOil) {
             _oilNorthNEW->setVisible(false);
@@ -1529,6 +1563,7 @@ void OverworldScene::setActive(bool active) {
             _oilSouthNEW->setVisible(false);
             _oilSouthEastNEW->setVisible(false);
             _oilSouthWestNEW->setVisible(false);
+            _floorNew->setVisible(false);
         }
         if (_newRepair && _repairClick < 1) {
             _repair_buttonNEW->setVisible(true);
@@ -1549,6 +1584,13 @@ void OverworldScene::setActive(bool active) {
         }
         if (!wizard) {
             _mage_buttonNEW->setVisible(false);
+        }
+        
+        if ((_newAmmo && _ammoClick < 1) || (wizard && _mageClick < 1) || (_newRepair && _repairClick < 1)) {
+            _floorBasementNew->setVisible(true);
+        }
+        if (!wizard && !_newAmmo && !_newRepair) {
+            _floorBasementNew->setVisible(false);
         }
 
 

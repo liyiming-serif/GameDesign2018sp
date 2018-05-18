@@ -243,7 +243,9 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = LEVELS;
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
             serverStopAccepting();
+#endif
         }
     });
 
@@ -394,13 +396,11 @@ void LobbyScene::update(float timestep){
         }
         LobbyClock = 0;
     }
-
+    LobbyClock++;
 #endif
 
     setButtonActive(_createButton,"createButton");
 
-    //TODO: Add new avatars to screen based on number of players; allow players to change their avatars
-    LobbyClock++;
     _actions->update(timestep);
 }
 
@@ -609,6 +609,7 @@ void LobbyScene::animateClouds() {
     }
 }
 
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 void LobbyScene::runLobbyNetworking() {
     if (gameModel.isNetworked()) {
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
@@ -671,9 +672,11 @@ void LobbyScene::runLobbyNetworking() {
         else {
             LobbyClock2++;
         }
-#endif
     }
 }
+#endif
+
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 
 std::string LobbyScene::produceACKClient() {
     if(clientReady) {
@@ -753,3 +756,5 @@ char* LobbyScene::return_buffer(const std::string &string) {
     strcpy(return_string, string.c_str());
     return return_string;
 }
+
+#endif

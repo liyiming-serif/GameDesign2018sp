@@ -42,7 +42,6 @@ protected:
     
     //castle views
     std::shared_ptr<cugl::PolygonNode> _castle_background;
-    std::shared_ptr<cugl::PolygonNode> _castle_flag;
     std::shared_ptr<cugl::PolygonNode> _castle_black;
     std::shared_ptr<cugl::PolygonNode> _castle_ballista;
     std::shared_ptr<cugl::PolygonNode> _castle_oil;
@@ -103,6 +102,10 @@ protected:
         std::shared_ptr<cugl::PolygonNode>_mage_buttonNEW;
         std::shared_ptr<cugl::PolygonNode> _ammo_buttonNEW;
     
+    
+        std::shared_ptr<cugl::PolygonNode> _floorNew;
+        std::shared_ptr<cugl::PolygonNode> _floorBasementNew;
+    
 
     
     
@@ -118,6 +121,13 @@ protected:
     std::shared_ptr<cugl::MoveTo> _move1;
     std::shared_ptr<cugl::MoveTo> _move2;
     std::shared_ptr<cugl::MoveTo> _move3;
+    
+    
+    /** The animation */
+    std::shared_ptr<cugl::AnimationNode> _castle_flag;
+    
+    /** The animation actions */
+    std::shared_ptr<cugl::Animate> _flagAnimation;
 
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
@@ -173,7 +183,7 @@ public:
     bool click;
     bool wizard;
     int player_TEST=2;
-    bool _newMage;
+    //bool _newMage;
 //    bool _mac;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
@@ -255,6 +265,14 @@ public:
      *
      */
     void enableButtons();
+    
+    
+    /**
+     * Performs a film strip action
+     *
+     * @param action The film strip action
+     */
+    void doStrip(const std::shared_ptr<cugl::Animate>& action);
     
     void resetTutorial();
     
