@@ -91,6 +91,7 @@ public class ChaosCastle extends SDLActivity {
 				return 1;
 			}
 			currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+			Log.d("SERVER", "starting to clear ACK messages from client"+currClientIndex);
 			synchronized (this){
 				//throws away result and just clear the buffer
 				Log.d("SERVER", "clearing ACK messages from client"+currClientIndex);

@@ -35,13 +35,15 @@ protected:
     std::shared_ptr<cugl::Button> _levelsButton;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
     std::shared_ptr<cugl::PolygonNode> _avatar2;
-    std::shared_ptr<cugl::Button> _avatar3;
-    std::shared_ptr<cugl::Button> _avatar4;
+    std::shared_ptr<cugl::PolygonNode> _avatar3;
+    std::shared_ptr<cugl::PolygonNode> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _box;
     std::shared_ptr<cugl::PolygonNode> _player1;
     std::shared_ptr<cugl::PolygonNode> _player2;
+    std::shared_ptr<cugl::PolygonNode> _player3;
+    std::shared_ptr<cugl::PolygonNode> _player4;
     std::shared_ptr<cugl::PolygonNode> _waiting;
     
     std::shared_ptr<cugl::Node>  _lobby;
@@ -77,9 +79,15 @@ protected:
     size_t length;
 
     int LobbyClock = 0;
+    int LobbyClock2 = 0;
 
     bool clientReady = false;
+    bool clientConnected = false;
     bool serverReady = false;
+
+    bool clientACKSent = false;
+
+    bool obtainedID = false;
 
     
     
@@ -323,7 +331,7 @@ public:
 
 private:
     std::string produceACKClient();
-    std::string produceACKServer();
+    std::string produceACKServer(int mode);
     char* consumeACKClient();
     char** consumeACKServer();
     void applyACKClient(char* ACK);
@@ -376,6 +384,25 @@ private:
             env->DeleteLocalRef(clazz);
             return NULL;
         }
+    }
+
+    int clearServerACKs() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "clearServerACKs",
+                                               "()I");
+
+        // Call the Java method
+        int success = env->CallIntMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return success;
     }
 
 
