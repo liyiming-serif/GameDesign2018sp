@@ -28,7 +28,6 @@ protected:
     // variables
     int _totalTime;
 
-    bool _endless;
     int _numPlayers;
     float _spawnChance;
     int _enemyGroup;
@@ -46,6 +45,7 @@ protected:
 public:
     //variables
 
+    bool _endless;
     //CONSTRUCTORS
     SpawnController(){};
 

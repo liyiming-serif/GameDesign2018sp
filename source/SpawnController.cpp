@@ -45,11 +45,11 @@ bool SpawnController::init(const std::shared_ptr<AssetManager>& assets, std::vec
 bool SpawnController::endlessInit(const std::shared_ptr<AssetManager>& assets, int numPlayers){
     _active = true;
     _totalTime = 0;
-
+    gameModel.setAmmo(0, 30);
     _endless = true;
     _numPlayers = numPlayers;
     _spawnChance = numPlayers*0.003f;
-    gameModel.setEndTime(FLT_MAX/2);
+    gameModel.setEndTime(1000000);
     gameModel._unlockedRooms["lookout"] = true;
     gameModel._unlockedRooms["oil"] = true;
     gameModel._unlockedRooms["mage"] = false;
@@ -103,6 +103,7 @@ void SpawnController::update(float deltaTime) {
             }
 		}
 		else{
+		    CULog("inside update");
 		    //endless mode here we go
 		    //change spawnChance up here
             std::shared_ptr<EnemyDataModel> e;
@@ -112,6 +113,7 @@ void SpawnController::update(float deltaTime) {
 		    else if(_totalTime>20000 && _totalTime%2000==0){
 		        _spawnChance = _spawnChance+_numPlayers*0.001f;
 		    }
+		    CULog("after spawnchance");
 		    if(rand()%1000<_spawnChance*1000){
 		        //choose type of enemy to spawn
 		        if(_totalTime<1000){
@@ -147,14 +149,16 @@ void SpawnController::update(float deltaTime) {
 		        else{
 		            _enemyGroup = rand()%8+8;
 		        }
+		        CULog("after enemygroup");
                 //EnemyDataModel: (ekey, health, vecPos, type, sector)
 		        //define enemyGroups
 		        switch (_enemyGroup) {
                     case 1:
                     //one skeleton
                         _numEnemies = 1;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
+                        CULog("inside while");
                             std::string ekey;
                             do {
                                 ekey = genRandName(ENEMY_NAME_LEN);
@@ -162,17 +166,20 @@ void SpawnController::update(float deltaTime) {
                                      gameModel._enemyArrayMaster[_sector].find(ekey)
                                      != gameModel._enemyArrayMaster[_sector].end());
                             e = EnemyDataModel::alloc(ekey, 1, Vec2(rand()%950+50, 700), 1, _sector);
-
+CULog("after while");
                             if (e != nullptr) {
+                            CULog("before arraypush");
                                 gameModel._enemyArrayMaster[_sector][ekey] = e;
                             }
+                            CULog("before numenemies");
                             _numEnemies--;
                         }
+                        CULog("end of switch things");
                         break;
                     case 2:
                     //one archer
                         _numEnemies = 1;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -191,7 +198,7 @@ void SpawnController::update(float deltaTime) {
                     case 3:
                     //one warrior
                         _numEnemies = 1;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -210,7 +217,7 @@ void SpawnController::update(float deltaTime) {
                     case 4:
                     //one reaper
                         _numEnemies = 1;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -229,7 +236,7 @@ void SpawnController::update(float deltaTime) {
                     case 5:
                     //one berserker
                         _numEnemies = 1;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -248,7 +255,7 @@ void SpawnController::update(float deltaTime) {
                     case 6:
                         //three skeletons +-200
                         _numEnemies = 3;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%550+250;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -276,7 +283,7 @@ void SpawnController::update(float deltaTime) {
                     case 7:
                         //three archers 250 apart
                         _numEnemies = 3;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%450+300;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -304,7 +311,7 @@ void SpawnController::update(float deltaTime) {
                     case 8:
                         //two warriors 250 apart
                         _numEnemies = 2;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%700+50;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -329,7 +336,7 @@ void SpawnController::update(float deltaTime) {
                     case 9:
                         //two berserkers 400 apart
                         _numEnemies = 2;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%550+50;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -354,7 +361,7 @@ void SpawnController::update(float deltaTime) {
                     case 10:
                         //reaper + 2 archers 250 apart
                         _numEnemies = 3;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%450+300;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -382,7 +389,7 @@ void SpawnController::update(float deltaTime) {
                     case 11:
                         //5 skeletons
                         _numEnemies = 5;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -415,7 +422,7 @@ void SpawnController::update(float deltaTime) {
                     case 12:
                         //5 archers
                         _numEnemies = 5;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         while(_numEnemies>0){
                             std::string ekey;
                             do {
@@ -448,7 +455,7 @@ void SpawnController::update(float deltaTime) {
                     case 13:
                         //4 warriors
                         _numEnemies = 4;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%200+50;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -479,7 +486,7 @@ void SpawnController::update(float deltaTime) {
                     case 14:
                         //3 berserkers
                         _numEnemies = 3;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%450+50;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -507,7 +514,7 @@ void SpawnController::update(float deltaTime) {
                     case 15:
                         //3 reapers
                         _numEnemies = 3;
-                        _sector = rand()%6+1;
+                        _sector = rand()%6;
                         _xCoord = rand()%450+50;
                         while(_numEnemies>0){
                             std::string ekey;
@@ -533,6 +540,7 @@ void SpawnController::update(float deltaTime) {
                         }
                         break;
                     }
+                    CULog("after switch");
 		    }
 		}
 	}

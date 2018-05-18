@@ -142,7 +142,7 @@ public:
     }
 
     void setArrowAmmo(int type, int amount) {
-        if (amount > 909) {
+        if (amount > 999) {
             _arrowAmmo[type] = 999;
         }
         else if (amount < 0) {

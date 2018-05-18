@@ -296,9 +296,11 @@ void CastleApp::update(float timestep) {
                     }
                 }
 
-
+                CULog("before spawn");
                 _spawnController.update(timestep);
+                CULog("between");
                 gameModel.update(timestep);
+                CULog("after gamemodel");
             }
         }
     }
