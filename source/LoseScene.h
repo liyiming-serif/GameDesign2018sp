@@ -28,11 +28,10 @@ protected:
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::Label> _score;
     
-    SpawnController spawncontroller; 
-    
-    
     
 public:
+
+    bool _endless;
     // Constructors
     LoseScene() : Scene() {}
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
@@ -48,6 +47,7 @@ public:
     void setActive(bool active);
     int switchscene;
 
+    void endlessActivate(bool activate);
 
 };
 

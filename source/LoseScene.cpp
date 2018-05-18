@@ -132,7 +132,7 @@ void LoseScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         _loseTOmenu->activate(input.findKey("loseTOmenu"));
-        if (!spawncontroller._endless) {
+        if (!_endless) {
             _loseReplay->activate(input.findKey("loseReplay"));
             _loseReplay->setVisible(true);
             _loseTOmenu->setPosition(_size.width/2,_size.height/4);
@@ -150,4 +150,8 @@ void LoseScene::setActive(bool active){
         _loseTOmenu->deactivate();
         _loseReplay->deactivate();
     }
+}
+
+void LoseScene::endlessActivate(bool activate){
+    _endless = activate;
 }

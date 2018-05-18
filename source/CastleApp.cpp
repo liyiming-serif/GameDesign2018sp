@@ -424,6 +424,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             _winScene.setActive(true);
             break;
         case LOSE:
+            _loseScene.endlessActivate(_spawnController._endless);
             _loseScene.setActive(true);
             break;
         case LEVELS:
