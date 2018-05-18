@@ -385,6 +385,9 @@ void CastleApp::swapscenes(int nextscene, int direction, std::string spellName){
         _levelScene.setLevel(level);
         CULog("Player ID: %i", gameModel.getPlayerID());
     }
+    if((_currscene==MAGE && nextscene == BALLISTA)||(_currscene==MAGE && nextscene == OIL)){
+        _overworldScene.mageSwitch(_mageScene.lastSpellFloor);
+    }
     switch(nextscene){
         case MENU:
             _menuScene.setActive(true);

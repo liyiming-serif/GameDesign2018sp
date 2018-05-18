@@ -1138,6 +1138,24 @@ void OverworldScene::resetCastle(){
     OverworldScene::doFadeIn(_castleFadeINSTANT, currentCastleFloor);
 }
 
+void OverworldScene::mageSwitch(int floor){
+    currentCastleFloor = floor;
+    if(currentCastleFloor == 3){
+        _levels->setPosition(Vec2(_size.width/30, 0));
+    }
+    else if(currentCastleFloor ==2){
+        _levels->setPosition(Vec2 (_size.width/30, _size.height));
+    }
+    else if(currentCastleFloor ==1){
+        _levels->setPosition(Vec2(_size.width/30, 2*_size.height));
+    }
+    _castle_basement->setVisible(false);
+    _castle_ballista->setVisible(false);
+    _castle_oil->setVisible(false);
+    _castle_lookout->setVisible(false);
+    OverworldScene::doFadeIn(_castleFadeINSTANT, currentCastleFloor);
+}
+
 
 void OverworldScene::doMove(const std::shared_ptr<MoveBy>& action, int floor) {
     auto fcn = EasingFunction::alloc(EasingFunction::Type::CUBIC_OUT);

@@ -330,6 +330,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 			if (!down) {
 				CULog("Callback to bomb");
 				queuedSpell = "bomb";
+				lastSpellFloor = 2;
 			}
 		});
     
@@ -339,6 +340,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 			if (!down) {
 				CULog("Callback to freeze");
 				queuedSpell = "freeze";
+				lastSpellFloor = 2;
 			}
 		});
 
@@ -348,6 +350,7 @@ bool MageScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
 			if (!down) {
 				CULog("Callback to barrier");
 				queuedSpell = "barrier";
+				lastSpellFloor = 1;
 			}
 		});
     

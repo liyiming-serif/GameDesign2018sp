@@ -66,6 +66,8 @@ protected:
 	bool inHexCanvas(const cugl::Vec2& point);
 
 public:
+
+    int lastSpellFloor;
     // Constructors
     MageScene() : Scene() {}
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);

@@ -189,7 +189,8 @@ public:
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE
     int direction;
     
-    
+    void mageSwitch(int floor);
+
     /**
      * Resets the castle to the first floor
      *
