@@ -461,7 +461,7 @@ void OilScene::update(float timestep, int direction){
     }
     setWall(direction);
     
-    if (_tiltCount > 1) {
+    if (_tiltCount > 0) {
         _tilt->setVisible(false);
     }
     

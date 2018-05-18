@@ -60,8 +60,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
     
     _movejungle = MoveTo::alloc(Vec2(-20,_size.height/2),DURATION2);
-    _movesnow = MoveTo::alloc(Vec2(-_size.width*1.09,_size.height/2),DURATION2);
-    _movedesert = MoveTo::alloc(Vec2(-_size.width*2.12,_size.height/2),DURATION2);
+    _movesnow = MoveTo::alloc(Vec2(-_size.width*1.05,_size.height/2),DURATION2);
+    _movedesert = MoveTo::alloc(Vec2(-_size.width*2.01,_size.height/2),DURATION2);
     _single = Node::alloc();
     _multi = Node::alloc();
     
@@ -86,7 +86,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     std::shared_ptr<Texture> texture_levels  = _assets->get<Texture>("levelpage_levels");
     _levels = PolygonNode::allocWithTexture(texture_levels);
-    _levels->setScale(.4f); // Magic number to rescale asset
+    _levels->setScale(1.08f); // Magic number to rescale asset
     _levels->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _levels->setPosition(0,_size.height/2);
 
@@ -473,31 +473,31 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _level1->setPosition(190,170);
     
     _level2->setAnchor(Vec2::ANCHOR_CENTER);
-    _level2->setPosition(710,630);
+    _level2->setPosition(355,315);
     
     _level3->setAnchor(Vec2::ANCHOR_CENTER);
-    _level3->setPosition(1180,720);
+    _level3->setPosition(590,360);
     
     _level4->setAnchor(Vec2::ANCHOR_CENTER);
-    _level4->setPosition(1640,900);
+    _level4->setPosition(820,450);
     
     _level5->setAnchor(Vec2::ANCHOR_CENTER);
-    _level5->setPosition(2125,720);
+    _level5->setPosition(1065,365);
     
     _level6->setAnchor(Vec2::ANCHOR_CENTER);
-    _level6->setPosition(2500,323);
+    _level6->setPosition(1250,165);
     
     _level7->setAnchor(Vec2::ANCHOR_CENTER);
-    _level7->setPosition(3140,330);
+    _level7->setPosition(1570,170);
     
     _level8->setAnchor(Vec2::ANCHOR_CENTER);
-    _level8->setPosition(4740,330);
+    _level8->setPosition(2370,168);
     
     _level9->setAnchor(Vec2::ANCHOR_CENTER);
-    _level9->setPosition(5060,645);
+    _level9->setPosition(2530,325);
     
     _level10->setAnchor(Vec2::ANCHOR_CENTER);
-    _level10->setPosition(5390,220);
+    _level10->setPosition(2695,112);
     
     // Create the lobby button.  A button has an up image and a down image
     std::shared_ptr<Texture> back_up   = _assets->get<Texture>("back");

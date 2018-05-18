@@ -146,8 +146,10 @@ void CastleApp::onShutdown() {
 
 void CastleApp::onSuspend() {
     if (gameModel.isNetworked() && !gameModel.isServer()) {
+        #if CU_PLATFORM == CU_PLATFORM_ANDROID
         gameModel.suspendClient();
         Application::onSuspend();
+        #endif
     }
 }
 

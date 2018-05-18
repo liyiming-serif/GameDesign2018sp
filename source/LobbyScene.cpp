@@ -558,9 +558,9 @@ void LobbyScene::animateClouds() {
     }
 }
 
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
 void LobbyScene::runLobbyNetworking() {
     if (gameModel.isNetworked()) {
-#if CU_PLATFORM == CU_PLATFORM_ANDROID
         if (gameModel.isServer() && LobbyClock == 10) {
             //TODO: Read from network
             //Prints the messages from the clients
@@ -623,9 +623,9 @@ void LobbyScene::runLobbyNetworking() {
         else {
             LobbyClock++;
         }
-#endif
     }
 }
+#endif
 
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
 

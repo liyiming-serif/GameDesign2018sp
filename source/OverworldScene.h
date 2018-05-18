@@ -183,7 +183,7 @@ public:
     bool click;
     bool wizard;
     int player_TEST=2;
-    bool _newMage;
+    //bool _newMage;
 //    bool _mac;
 
     //-1 no direction, 0 N, 1 NE, 2 SE, 3 S, 4 SW, 5 SE

@@ -49,7 +49,7 @@ bool BallistaModel::init(Vec2 position, const std::shared_ptr<AssetManager>& ass
 	_node = nullptr;
 	std::shared_ptr<Texture> texture = assets->get<Texture>("ballista");
 	_node = AnimationNode::alloc(texture, NUM_ROWS, NUM_COLS);
-	_node->setScale(0.35);
+	_node->setScale(0.8);
 	_node->setFrame(IDLE_FRAME_START);
 	_node->setAnchor(Vec2::ANCHOR_CENTER);
 	_node->setPosition(position);
