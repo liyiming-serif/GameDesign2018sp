@@ -72,13 +72,13 @@ int EnemyDataModel::getDamage() {
 		return 10;
 	}
 	else if (_type == 2) {
-		return 3;
+		return 1;
 	}
 	else if (_type == 3 || _type == 5) {
-		return 5;
+		return 3;
 	}
 	else if (_type == 4) {
-		return 20;
+		return 10;
 	}
 	return 0;
 }

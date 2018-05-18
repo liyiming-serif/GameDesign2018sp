@@ -32,7 +32,7 @@ using namespace cugl;
 #define REPEATS  3
 #define ACT_KEY  "current"
 
-#define BUTTON_SCALE .95f
+#define BUTTON_SCALE .5f
 #define FONT    _assets->get<Font>("futura_levels")
 
 
@@ -60,8 +60,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _assets = assets;
     
     _movejungle = MoveTo::alloc(Vec2(-20,_size.height/2),DURATION2);
-    _movesnow = MoveTo::alloc(Vec2(-_size.width*1.09,_size.height/2),DURATION2);
-    _movedesert = MoveTo::alloc(Vec2(-_size.width*2.12,_size.height/2),DURATION2);
+    _movesnow = MoveTo::alloc(Vec2(-_size.width*1.05,_size.height/2),DURATION2);
+    _movedesert = MoveTo::alloc(Vec2(-_size.width*2.01,_size.height/2),DURATION2);
     _single = Node::alloc();
     _multi = Node::alloc();
     
@@ -73,20 +73,20 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("levelpage_background");
     _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(0.5625f); // Magic number to rescale asset
+    _background->setScale(1.08f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _background->setPosition(-20,_size.height/2);
     addChild(_background);
     
     std::shared_ptr<Texture> texture_foreground  = _assets->get<Texture>("levelpage_foreground");
     _foreground = PolygonNode::allocWithTexture(texture_foreground);
-    _foreground->setScale(0.55f); // Magic number to rescale asset
+    _foreground->setScale(1.08f); // Magic number to rescale asset
     _foreground->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _foreground->setPosition(-2,_size.height/2-8);
     
     std::shared_ptr<Texture> texture_levels  = _assets->get<Texture>("levelpage_levels");
     _levels = PolygonNode::allocWithTexture(texture_levels);
-    _levels->setScale(0.5625f); // Magic number to rescale asset
+    _levels->setScale(1.08f); // Magic number to rescale asset
     _levels->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _levels->setPosition(0,_size.height/2);
 
@@ -169,11 +169,10 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             if (click){
+                CULog("ONE!!!");
                 switchscene = OVERWORLD;
-                level=1;
-               gameModel.level=1;
+                gameModel.setLevel(1);
             }
-
         }
     });
     
@@ -194,8 +193,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=2;
-               gameModel.level=2;
+                gameModel.setLevel(2);
             }
         }
     });
@@ -217,8 +215,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=3;
-                gameModel.level=3;
+                gameModel.setLevel(3);
             }
         }
     });
@@ -240,10 +237,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=4;
-                gameModel.level=4;
+                gameModel.setLevel(4);
             }
-
         }
     });
     
@@ -264,10 +259,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=5;
-                gameModel.level=5;
+                gameModel.setLevel(5);
             }
-            
         }
     });
 
@@ -289,10 +282,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=6;
-                gameModel.level=6;
+                gameModel.setLevel(6);
             }
-            
         }
     });
 
@@ -314,10 +305,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=7;
-                gameModel.level=7;
+                gameModel.setLevel(7);
             }
-            
         }
     });
     
@@ -338,10 +327,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=8;
-                gameModel.level=8;
+                gameModel.setLevel(8);
             }
-            
         }
     });
     
@@ -362,10 +349,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=9;
-                gameModel.level=9;
+                gameModel.setLevel(9);
             }
-            
         }
     });
     
@@ -386,10 +371,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         if (!down) {
             if (click){
                 switchscene = OVERWORLD;
-                level=10;
-                gameModel.level=10;
+                gameModel.setLevel(10);
             }
-            
         }
     });
 
@@ -407,34 +390,34 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the play buttons
     _level1->setAnchor(Vec2::ANCHOR_CENTER);
-    _level1->setPosition(385,345);
+    _level1->setPosition(190,170);
     
     _level2->setAnchor(Vec2::ANCHOR_CENTER);
-    _level2->setPosition(710,630);
+    _level2->setPosition(355,315);
     
     _level3->setAnchor(Vec2::ANCHOR_CENTER);
-    _level3->setPosition(1180,720);
+    _level3->setPosition(590,360);
     
     _level4->setAnchor(Vec2::ANCHOR_CENTER);
-    _level4->setPosition(1640,900);
+    _level4->setPosition(820,450);
     
     _level5->setAnchor(Vec2::ANCHOR_CENTER);
-    _level5->setPosition(2125,720);
+    _level5->setPosition(1065,365);
     
     _level6->setAnchor(Vec2::ANCHOR_CENTER);
-    _level6->setPosition(2500,323);
+    _level6->setPosition(1250,165);
     
     _level7->setAnchor(Vec2::ANCHOR_CENTER);
-    _level7->setPosition(3140,330);
+    _level7->setPosition(1570,170);
     
     _level8->setAnchor(Vec2::ANCHOR_CENTER);
-    _level8->setPosition(4740,330);
+    _level8->setPosition(2370,168);
     
     _level9->setAnchor(Vec2::ANCHOR_CENTER);
-    _level9->setPosition(5060,645);
+    _level9->setPosition(2530,325);
     
     _level10->setAnchor(Vec2::ANCHOR_CENTER);
-    _level10->setPosition(5390,220);
+    _level10->setPosition(2695,112);
     
     // Create the lobby button.  A button has an up image and a down image
     std::shared_ptr<Texture> back_up   = _assets->get<Texture>("back");
@@ -582,70 +565,7 @@ void LevelselectScene::update(float timestep){
         _level10->setDown(false);
     }
     
-    // Animate
-    if (!_actions->isActive(ACT_KEY) && move1 ){
-        doMove(_move1, _cloud1);
-        move1=false;
-    }
-    else if (!_actions->isActive(ACT_KEY) && !move1 ){
-        _cloud1->setPosition(-500,447);
-        _move1 = MoveTo::alloc(Vec2(1300,447),1.5*DURATION);
-        doMove(_move1, _cloud1);
-    }
-    
-    
-    if (!_actions->isActive(ACT_KEY+2) && move2 ){
-        doMove2(_move2, _cloud2);
-        move2=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+2) && !move2 ){
-        _cloud2->setPosition(-400,496);
-        _move2 = MoveTo::alloc(Vec2(1300,496),DURATION);
-        doMove2(_move2, _cloud2);
-    }
-    
-    
-    if (!_actions->isActive(ACT_KEY+3) && move3 ){
-        doMove3(_move3, _cloud3);
-        move3=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+3) && !move3 ){
-        _cloud3->setPosition(-200,512);
-        _move3 = MoveTo::alloc(Vec2(1200,512),DURATION/1.5);
-        doMove3(_move3, _cloud3);
-    }
-    
-    
-    if (!_actions->isActive(ACT_KEY+4) && move4 ){
-        doMove4(_move4, _cloud4);
-        move4=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+4) && !move4 ){
-        _cloud4->setPosition(-150,285);
-        _move4 = MoveTo::alloc(Vec2(1200,285),DURATION/2);
-        doMove4(_move4, _cloud4);
-    }
-    
-    
-    if (!_actions->isActive(ACT_KEY+5) && move5 ){
-        doMove5(_move5, _cloud5);
-        move5=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+5) && !move5 ){
-        _cloud5->setPosition(-75,52);
-        _move5 = MoveTo::alloc(Vec2(1150,52),DURATION/3);
-        doMove5(_move5, _cloud5);
-    }
-    
-    if (!_actions->isActive(ACT_KEY+6) && move6 ){
-        doMove6(_move6, _cloud6);
-        move6=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+6) && !move6 ){
-        _cloud6->setPosition(-200,185);
-        _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
-        doMove6(_move6, _cloud6);
-    }
+    animateClouds();
     
     if (cooldown>0) {
         cooldown-=1;
@@ -746,10 +666,7 @@ void LevelselectScene::update(float timestep){
         lerp +=.002;
        // CULog("lerp %f",lerp);
     }
-    
-    
-    
-    
+
     _actions->update(timestep);
 }
 
@@ -790,7 +707,100 @@ void LevelselectScene::doScroll(const std::shared_ptr<MoveTo>& action) {
     _actions->activate(ACT_KEY+9, action, _levels, fcn);
 }
 
+void LevelselectScene::setLevel(int level){
+    gameModel.setLevel(level);
+}
 
+int LevelselectScene::getLevel(){
+    return gameModel.getLevel();
+}
+
+void LevelselectScene::animateClouds() {
+    // Animate
+    if (!_actions->isActive(ACT_KEY) && move1 ){
+        doMove(_move1, _cloud1);
+        move1=false;
+    }
+    else if (!_actions->isActive(ACT_KEY) && !move1 ){
+        _cloud1->setPosition(-500,447);
+        _move1 = MoveTo::alloc(Vec2(1300,447),1.5*DURATION);
+        doMove(_move1, _cloud1);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+2) && move2 ){
+        doMove2(_move2, _cloud2);
+        move2=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+2) && !move2 ){
+        _cloud2->setPosition(-400,496);
+        _move2 = MoveTo::alloc(Vec2(1300,496),DURATION);
+        doMove2(_move2, _cloud2);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+3) && move3 ){
+        doMove3(_move3, _cloud3);
+        move3=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+3) && !move3 ){
+        _cloud3->setPosition(-200,512);
+        _move3 = MoveTo::alloc(Vec2(1200,512),DURATION/1.5);
+        doMove3(_move3, _cloud3);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+4) && move4 ){
+        doMove4(_move4, _cloud4);
+        move4=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+4) && !move4 ){
+        _cloud4->setPosition(-150,285);
+        _move4 = MoveTo::alloc(Vec2(1200,285),DURATION/2);
+        doMove4(_move4, _cloud4);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+5) && move5 ){
+        doMove5(_move5, _cloud5);
+        move5=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+5) && !move5 ){
+        _cloud5->setPosition(-75,52);
+        _move5 = MoveTo::alloc(Vec2(1150,52),DURATION/3);
+        doMove5(_move5, _cloud5);
+    }
+
+    if (!_actions->isActive(ACT_KEY+6) && move6 ){
+        doMove6(_move6, _cloud6);
+        move6=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+6) && !move6 ){
+        _cloud6->setPosition(-200,185);
+        _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
+        doMove6(_move6, _cloud6);
+    }
+}
+
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+
+std::string LevelselectScene::produceACKServer() {
+    if (gameModel.getLevel() < 10) {
+        return "7|" + to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.getLevel());
+    }
+    else {
+        return "8|" + to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.getLevel());
+    }
+
+}
+
+char* LevelselectScene::return_buffer(const std::string &string) {
+    char* return_string = new char[string.length() + 1];
+    strcpy(return_string, string.c_str());
+    return return_string;
+}
+
+#endif
 
 //Pause or Resume
 void LevelselectScene::setActive(bool active, int players){
@@ -799,12 +809,14 @@ void LevelselectScene::setActive(bool active, int players){
     if(active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
+        CULog("players %i", players);
         setCanvas(players);
-        setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
         setButtonActive(_backButtonMULTI, "backButtonMULTI");
+        setButtonActive(_backButtonSINGLE, "backButtonSINGLE");
     }
     else{
         _backButtonSINGLE->deactivate();
         _backButtonMULTI->deactivate();
+        disableButtons();
     }
 }

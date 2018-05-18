@@ -37,6 +37,11 @@ protected:
     
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+    
+    //tutorial
+    std::shared_ptr<cugl::PolygonNode> _lookout_tap;
+    bool _tapTutorial;
+    std::shared_ptr<cugl::Label> _text;
 
 public:
     // Constructors
@@ -58,5 +63,7 @@ public:
 
 	/**iterate through gameModel's dmg castle health and apply indicators*/
 	void pollDmgIndicators();
+    
+    int _exitCount;
 };
 #endif //BUILD_ANDROID_LOOKOUTSCENE_H

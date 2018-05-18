@@ -144,6 +144,15 @@ void CastleApp::onShutdown() {
     Application::onShutdown();
 }
 
+void CastleApp::onSuspend() {
+    if (gameModel.isNetworked() && !gameModel.isServer()) {
+        #if CU_PLATFORM == CU_PLATFORM_ANDROID
+        gameModel.suspendClient();
+        Application::onSuspend();
+        #endif
+    }
+}
+
 /**
  * The method called to update the application data.
  *
@@ -208,7 +217,9 @@ void CastleApp::update(float timestep) {
         else if(_currscene==LOBBY){
             _lobbyScene.update(timestep);
             if(_lobbyScene.switchscene!=0){
+                CULog("Attempting to switch scene");
                 swapscenes(_lobbyScene.switchscene, 0);
+                CULog("switched scenes correctly");
                 _lobbyScene.setActive(false);
             }
         }
@@ -285,9 +296,11 @@ void CastleApp::update(float timestep) {
                     }
                 }
 
-
+                CULog("before spawn");
                 _spawnController.update(timestep);
+                CULog("between");
                 gameModel.update(timestep);
+                CULog("after gamemodel");
             }
         }
     }
@@ -301,6 +314,7 @@ void CastleApp::update(float timestep) {
 //TODO::FIX THE NEXT LEVEL AND RESET
 
 void CastleApp::swapscenes(int nextscene, int direction, std::string spellName){
+ CULog("Level Select Level %i", _levelScene.getLevel());
     _direction = direction;
     if (_currscene == MENU && nextscene == LOBBY) {
         enableBluetooth();
@@ -327,38 +341,49 @@ void CastleApp::swapscenes(int nextscene, int direction, std::string spellName){
         || (_currscene==OVERWORLD && nextscene == OVERWORLD)) {
         _currscene = OVERWORLD;
         _loseScene.setActive(false);
-        CULog("Level Select Level %i", _levelScene.level);
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==WIN && nextscene == OVERWORLD && !_winScene.replayFlag ) {
         _currscene = OVERWORLD;
         _winScene.setActive(false);
-        _levelScene.level = _levelScene.level + 1;
-        int level = _levelScene.level;
+        _levelScene.setLevel(_levelScene.getLevel() + 1);
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), level + 1));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        _levelScene.level = level;
-        gameModel.level=level;
+        _levelScene.setLevel(level);
     }
     if (_currscene==LEVELS && nextscene == OVERWORLD ) {
         _currscene = OVERWORLD;
         _levelScene.setActive(false, gameModel.getNoPlayers());
-        int level = _levelScene.level;
+        int level = _levelScene.getLevel();
         reset();
         //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), _levelScene.level));
         _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, level));
         initializeRooms();
         _overworldScene.resetCastle();
-        gameModel.level=level;
+        _levelScene.setLevel(level);
+        CULog("Player ID: %i", gameModel.getPlayerID());
+    }
+    if (_currscene==LOBBY && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _lobbyScene.setActive(false);
+        int level = 11;
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), gameModel.level));
+        _spawnController.endlessInit(_assets, gameModel.getNoPlayers());
+        initializeRooms();
+        _overworldScene.resetCastle();
+        _levelScene.setLevel(level);
+        CULog("Player ID: %i", gameModel.getPlayerID());
     }
     switch(nextscene){
         case MENU:
@@ -399,6 +424,7 @@ void CastleApp::swapscenes(int nextscene, int direction, std::string spellName){
             _winScene.setActive(true);
             break;
         case LOSE:
+            _loseScene.endlessActivate(_spawnController._endless);
             _loseScene.setActive(true);
             break;
         case LEVELS:
@@ -474,6 +500,10 @@ void CastleApp::reset(){
     _overworldScene.resetTutorial();
     _oilScene._tiltCount = 0;
     _ballistaScene._shots = 0;
+    _ballistaScene._exitCount=0;
+    _lookoutScene._exitCount=0;
+    _repairScene._wallClick=0;
+    _ammoScene._ammoClick=0;
 	gameModel.resetWallDmg();
     _spawnController.dispose();
 	input.clear();

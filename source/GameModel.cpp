@@ -39,7 +39,7 @@ bool GameModel::init(){
         gameModel._playerRooms[i] = 0;
         gameModel._playerAvatars[i] = 0;
     }
-
+    level = 0;
     gameModel._playerID = 0;
 
     gameModel._currentRoom = 0;
@@ -131,6 +131,7 @@ void GameModel::update(float deltaTime){
 #endif
     }
 	//update enemies
+    CULog("Updating Enemies");
 	for (int wall = 0; wall<gameModel._enemyArrayMaster.size(); wall++) {
 		for (auto it = gameModel._enemyArrayMaster[wall].begin(); it != gameModel._enemyArrayMaster[wall].end(); ++it) {
 			Vec2 pos = it->second->getPos();
@@ -143,7 +144,12 @@ void GameModel::update(float deltaTime){
             if (it->second->getHealth() <= 0){
                 gameModel._enemiesToFreeMaster[wall].push_back(it->first);
             }
-			else if (pos.y <= 0) {
+			else if (gameModel.getLevel()>4 && pos.y <= 0) {
+				//enemy collided with wall; mark for deletion
+				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
+				gameModel.changeWallHealth(wall, -it->second->getDamage());
+			}
+			else if (gameModel.getLevel() <= 4 && pos.y <= 127) {
 				//enemy collided with wall; mark for deletion
 				gameModel._enemiesToFreeMaster[wall].push_back(it->first);
 				gameModel.changeWallHealth(wall, -it->second->getDamage());
@@ -174,6 +180,7 @@ void GameModel::update(float deltaTime){
 	}
 
 	//delete enemies here to not disrupt iterator
+    CULog("Deleting Enemies");
 	for (int wall = 0; wall<gameModel._enemiesToFreeMaster.size(); wall++) {
 		for (int ekey = 0; ekey < gameModel._enemiesToFreeMaster[wall].size(); ekey++) {
 			gameModel._enemyArrayMaster[wall].erase(gameModel._enemiesToFreeMaster[wall][ekey]);
@@ -181,7 +188,8 @@ void GameModel::update(float deltaTime){
 		gameModel._enemiesToFreeMaster[wall].clear();
 	}
 
-	//decrease oil cooldown and fade away barrier spell
+	//decrease oil cooldown
+    CULog("Oil Cooling");
 	for (int wall = 0; wall < 6; wall++) {
 		if (gameModel._oilCooldown[wall] > 0) {
 			gameModel._oilCooldown[wall] -= 1;
@@ -344,6 +352,14 @@ void GameModel::resetWallDmg() {
 	}
 }
 
+int GameModel::getNoPlayers() {
+    return gameModel._noPlayers;
+}
+
+int GameModel::getLevel() {
+    return gameModel.level;
+}
+
 void GameModel::setAmmo(int type, int amt){
     gameModel._arrowAmmo[type] = amt;
 }
@@ -384,7 +400,7 @@ std::string GameModel::produceStateChangeServer() {
             _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._currentRoom) + " ";
         }
         else {
-            _tmpPlayerString += to_string(gameModel._playerAvatars[i]) + ":" + to_string(gameModel._playerRooms[i]) + " ";
+            _tmpPlayerString += to_string(i) + ":" + to_string(gameModel._playerRooms[i]) + " ";
         }
 
     }
@@ -450,7 +466,7 @@ std::string GameModel::produceStateChangeClient() {
         gameModel._deltaAmmo[i] = 0;
     }
 
-    _tmpPlayerString += to_string(gameModel._playerAvatars[gameModel._playerID]) + ":" + to_string(gameModel._currentRoom);
+    _tmpPlayerString += to_string(gameModel.getPlayerID()) + ":" + to_string(gameModel._currentRoom);
 
     _tmpHealthString.pop_back();
     _tmpAmmoString.pop_back();
@@ -872,11 +888,13 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 
     // Update player rooms with new values
     CULog("Updating player room");
-    char* playerRoom = strtok(playerInfoToken, " ");
+    char* playerRoom = strtok(playerInfoToken, " :");
     section = 0;
     while (playerRoom != NULL) {
+        playerRoom = strtok(NULL, " :");
         gameModel._playerRooms[section] = std::stoi(playerRoom);
-        playerRoom = strtok(NULL, " ");
+        CULog("player %i in room %i", section, playerRoom);
+        playerRoom = strtok(NULL, " :");
         section++;
     }
 
@@ -892,10 +910,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 }
 #endif
 char* GameModel::return_buffer(const std::string& string) {
-    CULog("State Change before buffering %s", string.c_str());
     char* return_string = new char[string.length() + 1];
     strcpy(return_string, string.c_str());
-    CULog("State Change after buffering %s", return_string);
     return return_string;
 }
 
@@ -918,3 +934,22 @@ void GameModel::setServer(bool server){
 void GameModel::setCurrentRoom(int room){
     gameModel._currentRoom = room;
 }
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+void GameModel::suspendClient() {
+    std::string suspendString = "|0 0 0 0 0 0| |0 0 0|" + to_string(_playerID)+":0|0 0 0 0 0 0";
+    int premessageSize = suspendString.length();
+    int postmessageSize = premessageSize + to_string(premessageSize).length();
+    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
+    suspendString = to_string(totalmessageSize) + suspendString;
+    char *write_byte_buffer = return_buffer(suspendString);
+
+    CULog("Suspend Message %s \n", write_byte_buffer);
+
+    if (gameModel.sendState(write_byte_buffer) == 1){
+        CULog("At least one write failure");
+    } else {
+        CULog("Write success");
+    }
+    delete[] write_byte_buffer;
+}
+#endif

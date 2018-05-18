@@ -26,6 +26,8 @@ using namespace cugl;
 #define WIN         11
 #define LOSE        12
 
+#define FONT    _assets->get<Font>("futura_levels")
+
 bool LoseScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
@@ -97,6 +99,13 @@ bool LoseScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _loseTOmenu->activate(input.generateKey("loseTOmenu"));
     _loseTOmenu->activate(input.generateKey("loseReplay"));
     
+    _score =Label::alloc((std::string) "                                              ", FONT);
+    _score->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
+    _score->setPosition(_size.width/2.8,_size.height/7);
+    _score->setForeground(cugl::Color4(255,255,255,255));
+    addChild(_score);
+    _score->setVisible(false);
+    
     return true;
 }
 
@@ -123,10 +132,26 @@ void LoseScene::setActive(bool active){
         // Set background color
         Application::get()->setClearColor(Color4(255,255,255,255));
         _loseTOmenu->activate(input.findKey("loseTOmenu"));
-        _loseReplay->activate(input.findKey("loseReplay"));
+        if (!_endless) {
+            _loseReplay->activate(input.findKey("loseReplay"));
+            _loseReplay->setVisible(true);
+            _loseTOmenu->setPosition(_size.width/2,_size.height/4);
+            _score->setVisible(false);
+        }
+        else {
+            _loseReplay->deactivate();
+            _loseReplay->setVisible(false);
+            _score->setVisible(true);
+            _score->setText("Score: "+std::to_string((int)gameModel.getCurrentTime()/60));
+            _loseTOmenu->setPosition(_size.width/2,_size.height/3);
+        }
     }
     else{
         _loseTOmenu->deactivate();
         _loseReplay->deactivate();
     }
+}
+
+void LoseScene::endlessActivate(bool activate){
+    _endless = activate;
 }

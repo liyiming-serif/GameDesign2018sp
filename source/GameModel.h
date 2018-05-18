@@ -93,6 +93,10 @@ public:
 
 	void setEndTime(float time);
 
+	int getLevel();
+
+	void setLevel(int inputLevel){level = inputLevel;}
+
     int getWallHealth(int wall);
 
     void setWallHealth(int wall, int amt);
@@ -114,9 +118,7 @@ public:
 
     int getPlayerAvatar(int player);
 
-    int getNoPlayers() {
-        return _noPlayers;
-    }
+    int getNoPlayers();
 
     void setNoPlayers(int _noPlayers) {
         this->_noPlayers = _noPlayers;
@@ -151,7 +153,7 @@ public:
     }
 
     void setArrowAmmo(int type, int amount) {
-        if (amount > 909) {
+        if (amount > 999) {
             _arrowAmmo[type] = 999;
         }
         else if (amount < 0) {
@@ -189,6 +191,8 @@ public:
     }
 
     void setCurrentRoom(int room);
+
+    void suspendClient();
 
 private:
 #if CU_PLATFORM == CU_PLATFORM_ANDROID

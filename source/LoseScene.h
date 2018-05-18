@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "GameModel.h"
 #include "InputController.h"
+#include "SpawnController.h"
 #include <cugl/cugl.h>
 
 class LoseScene : public cugl::Scene{
@@ -25,10 +26,12 @@ protected:
     std::shared_ptr<cugl::Button> _loseReplay;
     
     std::shared_ptr<cugl::PolygonNode> _background;
-    
+    std::shared_ptr<cugl::Label> _score;
     
     
 public:
+
+    bool _endless;
     // Constructors
     LoseScene() : Scene() {}
     bool init(const std::shared_ptr<cugl::AssetManager>& assets);
@@ -43,6 +46,9 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+    void endlessActivate(bool activate);
+
 };
 
 #endif /* LoseScene_h */

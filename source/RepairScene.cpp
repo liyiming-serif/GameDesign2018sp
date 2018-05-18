@@ -195,23 +195,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "N";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked SERVER in repair scene");
-                        gameModel.changeWallHealth(0, 1);
+                        gameModel.changeWallHealth(0, 2);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(0,1);
-                        gameModel.addDeltaHealth(0,1);
+                        gameModel.changeWallHealth(0,2);
+                        gameModel.addDeltaHealth(0,2);
                         _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(0, 1);
+                    gameModel.changeWallHealth(0, 2);
                     _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
                 }
             }
@@ -221,23 +222,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "NE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(5, 1);
+                        gameModel.changeWallHealth(5, 2);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(5,1);
-                        gameModel.addDeltaHealth(5,1);
+                        gameModel.changeWallHealth(5,2);
+                        gameModel.addDeltaHealth(5,2);
                         _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(5, 1);
+                    gameModel.changeWallHealth(5, 2);
                     _northeastText->setText(std::to_string(gameModel.getWallHealth(5))+"%");
                 }
             }
@@ -248,23 +250,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southeastWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "SE";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(4, 1);
+                        gameModel.changeWallHealth(4, 2);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(4,1);
-                        gameModel.addDeltaHealth(4,1);
+                        gameModel.changeWallHealth(4,2);
+                        gameModel.addDeltaHealth(4,2);
                         _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(4, 1);
+                    gameModel.changeWallHealth(4, 2);
                     _southeastText->setText(std::to_string(gameModel.getWallHealth(4))+"%");
                 }
             }
@@ -274,23 +277,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
                 _new_wall = "S";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(3, 1);
+                        gameModel.changeWallHealth(3, 2);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(3,1);
-                        gameModel.addDeltaHealth(3,1);
+                        gameModel.changeWallHealth(3,2);
+                        gameModel.addDeltaHealth(3,2);
                         _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(3, 1);
+                    gameModel.changeWallHealth(3, 2);
                     _southText->setText(std::to_string(gameModel.getWallHealth(3))+"%");
                 }
             }
@@ -299,23 +303,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _southwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
 				_new_wall = "SW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(2, 1);
+                        gameModel.changeWallHealth(2, 2);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(2,1);
-                        gameModel.addDeltaHealth(2,1);
+                        gameModel.changeWallHealth(2,2);
+                        gameModel.addDeltaHealth(2,2);
                         _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(2, 1);
+                    gameModel.changeWallHealth(2, 2);
                     _southwestText->setText(std::to_string(gameModel.getWallHealth(2))+"%");
                 }
             }
@@ -324,23 +329,24 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         _northwestWallButton->setListener([=] (const std::string& name, bool down) {
             // Only switch scenes when the button is released
             if (!down  && !_actions->isActive(ACT_KEY)) {
+                _wallClick+=1;
 				_new_wall = "NW";
                 if (gameModel.isNetworked()) {
                     if (gameModel.isServer()) {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(1, 1);
+                        gameModel.changeWallHealth(1, 2);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                     }
                     else {
 						CULog("networked CLIENT in repair scene");
-                        gameModel.changeWallHealth(1,1);
-                        gameModel.addDeltaHealth(1,1);
+                        gameModel.changeWallHealth(1,2);
+                        gameModel.addDeltaHealth(1,2);
                         _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                     }
 
                 }
                 else {
-                    gameModel.changeWallHealth(1, 1);
+                    gameModel.changeWallHealth(1, 2);
                     _northwestText->setText(std::to_string(gameModel.getWallHealth(1))+"%");
                 }
             }
@@ -631,6 +637,13 @@ bool RepairScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
 
     
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _tap = PolygonNode::allocWithTexture(tut_tap);
+    _tap->setScale(1.0); // Magic number to rescale asset
+    _tap->setAnchor(Vec2::ANCHOR_CENTER);
+    _tap->setPosition(_size.width*.5f,_size.height*.5f);
+    addChild(_tap);
+    
     
 
     
@@ -706,6 +719,7 @@ void RepairScene::dispose() {
         _background = nullptr;
         _active = false;
         _buttons = nullptr;
+        _tap=nullptr;
     }
 }
 
@@ -726,6 +740,10 @@ void RepairScene::update(float timestep){
         if (gameModel._enemyArrayMaster[0].size()== 0 && gameModel._enemyArrayMaster[1].size()== 0 && gameModel._enemyArrayMaster[2].size()== 0 && gameModel._enemyArrayMaster[3].size()== 0 && gameModel._enemyArrayMaster[4].size()== 0 && gameModel._enemyArrayMaster[5].size()== 0) {
             switchscene = WIN;
         }
+    }
+    
+    if (_wallClick > 1) {
+        _tap->setVisible(false);
     }
 
     _northText->setText(std::to_string(gameModel.getWallHealth(0))+"%");
@@ -989,6 +1007,21 @@ void RepairScene::setActive(bool active){
         _northWallButton->activate(input.findKey("northWallButton"));
         _southeastWallButton->activate(input.findKey("southeastWallButton"));
         _southwestWallButton->activate(input.findKey("southwestWallButton"));
+        
+        if (gameModel.level==4){
+            _tapTutorial=true;
+        }
+        else {
+            _tapTutorial=false;
+        }
+        if (_tapTutorial && _wallClick < 1) {
+            CULog("true");
+            _tap->setVisible(true);
+        }
+        if (!_tapTutorial) {
+             CULog("false");
+            _tap->setVisible(false);
+        }
         
         
         if (gameModel.getNoPlayers() > 1) {

@@ -28,7 +28,14 @@ protected:
     // variables
     int _totalTime;
 
-
+    int _numPlayers;
+    float _spawnChance;
+    int _enemyGroup;
+    int _numEnemies;
+    int _xCoord;
+    int _type;
+    int _health;
+    int _sector;
 
     //enemy array, specifies air/ground and direction (N, NE, SE, S, SW, NW), will add the rest later
     //for the sector, 0.0 = N, 1.0 = NE, 5.0 = NW (going clockwise)
@@ -38,10 +45,13 @@ protected:
 public:
     //variables
 
+    bool _endless;
     //CONSTRUCTORS
     SpawnController(){};
 
     bool init(const std::shared_ptr<cugl::AssetManager>& assets, std::vector<std::vector<float>> initialEnemies);
+
+    bool endlessInit(const std::shared_ptr<cugl::AssetManager>& assets, int numPlayers);
 
 
 

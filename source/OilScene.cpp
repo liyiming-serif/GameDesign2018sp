@@ -38,7 +38,7 @@ using namespace cugl;
 #define OIL_COOLDOWN 600
 #define TIPPING_POINT 0.45f
 
-#define OIL_MAX_RANGE 100	//farthest enemy oil scene can see
+#define OIL_MAX_RANGE 127	//farthest enemy oil scene can see
 #define OIL_MIN_RANGE 0		//closest enemy oil scene can see
 #define OIL_END_ZONE 200	//enemies dissapear past this y-coord; set by castle wall art assets
 
@@ -274,6 +274,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _oilTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
     _oilTOcastle->setPosition(15,_size.height-18);
     _oilTOcastle->setScale(.6f);
+    _oilTOcastle->setZOrder(-1);
     
 	// Init the oil effect when it's poured
 	_deluge = AnimationNode::alloc(_assets->get<Texture>("oil_wave"),DELUGE_NUM_ROWS,DELUGE_NUM_COLS);
@@ -363,6 +364,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _tilt->setPosition(_size.width*.5f,_size.height*.9f);
     addChild(_tilt);
     
+    
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
 		addChild(_dmgIndicators.at(i));
@@ -403,6 +405,8 @@ void OilScene::dispose() {
 		_spellAnim = nullptr;
 		_spellFilter = nullptr;
 		_barrierAnim = nullptr;
+
+        _tilt=nullptr;
     }
 }
 
@@ -487,7 +491,7 @@ void OilScene::update(float timestep, int direction){
     }
     setWall(direction);
     
-    if (_tiltCount > 1) {
+    if (_tiltCount > 0) {
         _tilt->setVisible(false);
     }
     
@@ -652,18 +656,7 @@ void OilScene::setActive(bool active, int direction, std::string spellName){
     switchscene = 0;
 	_oil->isReloading = false;
     
-    if (gameModel.level==5){
-        _tiltTutorial=true;
-    }
-    else {
-        _tiltTutorial=false;
-    }
-    if (_tiltTutorial && _tiltCount < 1) {
-        _tilt->setVisible(true);
-    }
-    if (!_tiltTutorial) {
-        _tilt->setVisible(false);
-    }
+
 
 	//empty the enemy arrays to prevent data leaks
 	for (std::pair<std::string, std::shared_ptr<EnemyModel>> epair : _enemyArray) {
@@ -688,6 +681,19 @@ void OilScene::setActive(bool active, int direction, std::string spellName){
         _oilTOcastle->activate(input.findKey("oilTOcastle"));
          OilScene::setCompass(direction);
          OilScene::setWall(direction);
+        
+        if (gameModel.level==5){
+            _tiltTutorial=true;
+        }
+        else {
+            _tiltTutorial=false;
+        }
+        if (_tiltTutorial && _tiltCount < 1) {
+            _tilt->setVisible(true);
+        }
+        if (!_tiltTutorial) {
+            _tilt->setVisible(false);
+        }
         
         //Change scenery based on level
 		std::shared_ptr<Texture> texture = _assets->get<Texture>("weaponBG_jungle");

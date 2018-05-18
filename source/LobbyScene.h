@@ -35,13 +35,15 @@ protected:
     std::shared_ptr<cugl::Button> _levelsButton;
     std::shared_ptr<cugl::PolygonNode> _avatar1;
     std::shared_ptr<cugl::PolygonNode> _avatar2;
-    std::shared_ptr<cugl::Button> _avatar3;
-    std::shared_ptr<cugl::Button> _avatar4;
+    std::shared_ptr<cugl::PolygonNode> _avatar3;
+    std::shared_ptr<cugl::PolygonNode> _avatar4;
     
     std::shared_ptr<cugl::PolygonNode> _background;
     std::shared_ptr<cugl::PolygonNode> _box;
     std::shared_ptr<cugl::PolygonNode> _player1;
     std::shared_ptr<cugl::PolygonNode> _player2;
+    std::shared_ptr<cugl::PolygonNode> _player3;
+    std::shared_ptr<cugl::PolygonNode> _player4;
     std::shared_ptr<cugl::PolygonNode> _waiting;
     
     std::shared_ptr<cugl::Node>  _lobby;
@@ -77,6 +79,15 @@ protected:
     size_t length;
 
     int LobbyClock = 0;
+    int LobbyClock2 = 0;
+
+    bool clientReady = false;
+    bool clientConnected = false;
+    bool serverReady = false;
+
+    bool clientACKSent = false;
+
+    bool obtainedID = false;
 
     
     
@@ -245,7 +256,158 @@ public:
 
         return players;
     }
+
+    bool isConnected() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "isConnected",
+                                               "()Z");
+
+        // Call the Java method
+        bool connected = env->CallBooleanMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return connected;
+    }
+
+    void serverStopAccepting() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "serverStopAccepting",
+                                               "()V");
+
+        // Call the Java method
+        env->CallVoidMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+    }
+
+    char* consumeACK() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "consumeACK",
+                                               "()[B");
+
+        jbyteArray array = (jbyteArray) env->CallObjectMethod(activity, method_id);
+
+        if (array == NULL) {
+            //CULog("Read Byte Array is Null");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
+        else {
+            //CULog("Read Byte Array is not Null");
+            jbyte* buffer = env->GetByteArrayElements(array, NULL);
+            jsize size = env->GetArrayLength(array);
+            char *byte_buffer = new char[size];
+
+            for(int i = 0; i < size; i++) {
+                byte_buffer[i] = buffer[i];
+            }
+            env->ReleaseByteArrayElements(array, buffer, JNI_ABORT);
+
+            // Free local references
+            env->DeleteLocalRef(array);
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return byte_buffer;
+        }
+    }
+
+private:
+    std::string produceACKClient();
+    std::string produceACKServer(int mode);
+    char* consumeACKClient();
+    char** consumeACKServer();
+    void applyACKClient(char* ACK);
+    void applyACKServer(char** ACKs);
+
+    char* return_buffer(const std::string& string);
+
+    void runLobbyNetworking();
+
+    int sendState(char* byte_buffer) {
+        // Set up parameters for JNI call
+        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject) SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "sendState",
+                                               "([B)I");
+
+        if (byte_buffer != NULL) {
+            // Call the Java method
+            //CULog("Attempting to send across JNI");
+            int n=0;
+            char* p = byte_buffer;
+            while(*p++){
+                //CULog("N is currently: %i", n);
+                n++;
+            } if(n<=0) {
+                CULog("sendState: byte_buffer not big enough");
+                return NULL;
+            }
+            else {
+                CULog("Size of byte_buffer passed to send State is %i", n);
+            }
+            jbyteArray arr = env->NewByteArray(n);
+            env->SetByteArrayRegion(arr,0,n, (jbyte*)byte_buffer);
+
+            int response = env->CallIntMethod(activity, method_id, arr);
+
+            // Free local references
+            //env->ReleaseByteArrayElements(arr, (jbyte*)byte_buffer, JNI_ABORT);
+            //free(p);
+            env->DeleteLocalRef(arr);
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return response;
+        }
+        else {
+            CULog("sendState: attempt to send Null message");
+            env->DeleteLocalRef(activity);
+            env->DeleteLocalRef(clazz);
+            return NULL;
+        }
+    }
+
+    int clearServerACKs() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "clearServerACKs",
+                                               "()I");
+
+        // Call the Java method
+        int success = env->CallIntMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return success;
+    }
+
+
 #endif
+    void animateClouds();
 
 };
 

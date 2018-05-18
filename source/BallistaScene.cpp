@@ -36,7 +36,7 @@
 #define BALLISTA_MIN_POWER 9.0f
 
 #define BALLISTA_MAX_RANGE 680	//farthest enemy ballista scene can see
-#define BALLISTA_MIN_RANGE 101	//closest enemy ballista scene can see
+#define BALLISTA_MIN_RANGE 128	//closest enemy ballista scene can see
 #define BALLISTA_END_ZONE 0	//enemies dissapear past this y-coord; set by castle wall art assets
 
 using namespace cugl;
@@ -278,6 +278,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballistaTOcastle->setName("ballistaTOcastle");
     _ballistaTOcastle->setListener([=] (const std::string& name, bool down) {
         if (!down) {
+            _exitCount+=1;
             switchscene = OVERWORLD;
         }
     });
@@ -286,6 +287,7 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ballistaTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
     _ballistaTOcastle->setPosition(15,_size.height-18);
     _ballistaTOcastle->setScale(.6f);
+    _ballistaTOcastle->setZOrder(-1);
     
 
     // Add children to the scene graph
@@ -379,7 +381,22 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _ammoText->setPosition(10, 30);
     _ammoText->setForeground(cugl::Color4(255,255,255,255));
     _ammoText->setScale(.5f);
-
+    
+    _lowAmmoText =Label::alloc((std::string) "LOW AMMO", FONT);
+    _lowAmmoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _lowAmmoText->setPosition(_size.width*.5f, _size.height*.7f);
+    _lowAmmoText->setForeground(cugl::Color4(209,123,104,255));
+    addChild(_lowAmmoText);
+    _lowAmmoText->setVisible(false);
+    _lowAmmoText->setZOrder(-1);
+    
+    _noAmmoText =Label::alloc((std::string) "OUT OF AMMO", FONT);
+    _noAmmoText->setAnchor(Vec2::ANCHOR_CENTER);
+    _noAmmoText->setPosition(_size.width*.5f, _size.height*.7f);
+    _noAmmoText->setForeground(cugl::Color4(178,101,99,255));
+    addChild(_noAmmoText);
+    _noAmmoText->setVisible(false);
+    _noAmmoText->setZOrder(-1);
     
     
     std::shared_ptr<Texture> tut_swipe  = _assets->get<Texture>("tutorial_ballista");
@@ -391,6 +408,15 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_ballista_swipe);
     
     
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _ballista_tap = PolygonNode::allocWithTexture(tut_tap);
+    _ballista_tap->setScale(.5); // Magic number to rescale asset
+    _ballista_tap->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _ballista_tap->setPosition(_size.width*.07f,_size.height*.85f);
+    addChild(_ballista_tap);
+    
+    
+
     
 	// Add damage indicators overlay
 	for (int i = 0; i < _dmgIndicators.size(); i++) {
@@ -442,6 +468,10 @@ void BallistaScene::dispose() {
 		_spellFilter = nullptr;
 		_bombAnim = nullptr;
 		_freezeAnim = nullptr;
+
+        _ballista_tap=nullptr;
+        _ballista_swipe=nullptr;
+
     }
 }
 
@@ -509,6 +539,9 @@ void BallistaScene::update(float deltaTime, int direction){
     if (_shots > 2) {
         _ballista_swipe->setVisible(false);
     }
+    if (_exitCount > 0) {
+        _ballista_tap->setVisible(false);
+    }
 
 	//remove spell effects if they're done
 	if (!input.actions()->isActive(SPELL_ACT_KEY)) {
@@ -516,6 +549,20 @@ void BallistaScene::update(float deltaTime, int direction){
 		_freezeAnim->setColor(Color4::CLEAR);
 		_spellFilter->setColor(Color4::CLEAR);
 	}
+
+    if (gameModel.getArrowAmmo(0) < 11 && gameModel.getArrowAmmo(0) > 0) {
+        _lowAmmoText->setVisible(true);
+    }
+    else {
+        _lowAmmoText->setVisible(false);
+    }
+    
+    if (gameModel.getArrowAmmo(0)== 0) {
+        _noAmmoText->setVisible(true);
+    }
+    else {
+        _noAmmoText->setVisible(false);
+    }
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
 
@@ -749,10 +796,13 @@ void BallistaScene::setActive(bool active, int direction, std::string spellName)
     }
     if (_swipeTutorial && _shots < 2) {
         _ballista_swipe->setVisible(true);
-        
+    }
+    if (_swipeTutorial && _exitCount < 1) {
+        _ballista_tap->setVisible(true);
     }
     if (!_swipeTutorial) {
         _ballista_swipe->setVisible(false);
+        _ballista_tap->setVisible(false);
     }
 
 	//empty the arrow arrays to prevent data leaks

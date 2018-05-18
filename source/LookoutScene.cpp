@@ -30,6 +30,8 @@ using namespace cugl;
 #define JUNGLE  5
 #define SNOW  8
 
+#define FONT    _assets->get<Font>("futura_levels")
+
 bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _size = Application::get()->getDisplaySize();
     _size *= GAME_WIDTH/_size.width;
@@ -208,10 +210,10 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _lookoutTOcastle->setListener([=] (const std::string& name, bool down) {
         // Only quit when the button is released
         if (!down) {
+            _exitCount+=1;
             switchscene = OVERWORLD;
         }
     });
-
 
     // Position the overworld button in the bottom left
     _lookoutTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
@@ -228,6 +230,21 @@ bool LookoutScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // We can only activate a button AFTER it is added to a scene
     _lookoutTOcastle->activate(input.generateKey("lookoutTOcastle"));
 	CULog("initialized lookout");
+    
+    
+    std::shared_ptr<Texture> tut_tap  = _assets->get<Texture>("tutorial_tap");
+    _lookout_tap = PolygonNode::allocWithTexture(tut_tap);
+    _lookout_tap->setScale(.5); // Magic number to rescale asset
+    _lookout_tap->setAnchor(Vec2::ANCHOR_TOP_CENTER);
+    _lookout_tap->setPosition(_size.width*.07f,_size.height*.85f);
+    addChild(_lookout_tap);
+    
+    _text =Label::alloc((std::string) "VIEW INCOMING ENEMIES", FONT);
+    addChild(_text);
+    _text->setAnchor(Vec2::ANCHOR_CENTER);
+    _text->setPosition(_size.width*.46f, _size.height*.1f);
+    _text->setForeground(cugl::Color4(255,255,255,255));
+    _text->setScale(.5f);
     return true;
 }
 
@@ -245,6 +262,7 @@ void LookoutScene::dispose() {
         _active = false;
 		_enemyIcon = nullptr;
 		_enemyMarkers.clear();
+        _lookout_tap = nullptr;
     }
 }
 
@@ -261,6 +279,13 @@ void LookoutScene::update(float timestep){
     }
     if (_progressBar->getPositionY()<_size.height) {
         _progressBar->setPosition(_progressBar->getPositionX(),_progressBar->getPositionY()+_distance);
+    }
+    
+    if (_exitCount > 0) {
+        _lookout_tap->setVisible(false);
+    }
+    if (_exitCount > 1) {
+        _text->setVisible(false);
     }
 
 	//poll damage indicators
@@ -334,6 +359,26 @@ void LookoutScene::setActive(bool active){
         _lookoutTOcastle->activate(input.findKey("lookoutTOcastle"));
         _progressBar->setPosition(_progressBar->getPositionX(),
             std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));
+        
+        if (gameModel.level==1){
+            CULog("TRUE");
+            _tapTutorial=true;
+        }
+        else {
+            CULog("FALSE");
+            _tapTutorial=false;
+        }
+        if (_tapTutorial && _exitCount < 1) {
+            _lookout_tap->setVisible(true);
+        }
+        if (_tapTutorial && _exitCount < 2) {
+            _text->setVisible(true);
+        }
+        if (!_tapTutorial) {
+            _lookout_tap->setVisible(false);
+            _text->setVisible(false);
+        }
+
 
 		std::shared_ptr<Texture> texture = _assets->get<Texture>("lookout_view");
 		std::shared_ptr<Texture> texture_s = _assets->get<Texture>("lookout_view_s");

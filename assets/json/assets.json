@@ -557,7 +557,7 @@
             "wrapT":    "clamp"
         },
         "m_flag": {
-            "file":     "textures/Menu/flag.png",
+            "file":     "textures/Menu/flag_animation.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
@@ -570,7 +570,7 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
-        "win_BG": {
+        "win_FG": {
             "file":     "textures/Menu/WinLose/win.png",
             "minfilter":"nearest",
             "magfilter":"linear",
@@ -955,6 +955,20 @@
           "wrapS":    "clamp",
           "wrapT":    "clamp"
         },
+      "player_3": {
+        "file":     "textures/Lobby/Player3.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
+      },
+      "player_4": {
+        "file":     "textures/Lobby/Player4.png",
+        "minfilter":"nearest",
+        "magfilter":"linear",
+        "wrapS":    "clamp",
+        "wrapT":    "clamp"
+      },
         "waiting": {
           "file":     "textures/Lobby/Waiting.png",
           "minfilter":"nearest",
@@ -999,6 +1013,20 @@
         },
         "tutorial_newRoom": {
             "file":     "textures/Tutorial/newRoom.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_newFloor": {
+            "file":     "textures/Tutorial/newFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_newFloorBasement": {
+            "file":     "textures/Tutorial/newFloorBasement.png",
             "minfilter":"nearest",
             "magfilter":"linear",
             "wrapS":    "clamp",
