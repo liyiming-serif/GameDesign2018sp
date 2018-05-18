@@ -456,7 +456,6 @@ bool MageScene::inHexCanvas(const Vec2& point) {
 }
 
 void MageScene::update(float timestep){
-    
 	if (gameModel.getWallHealth(0) == 0 || gameModel.getWallHealth(1) == 0 || gameModel.getWallHealth(2) == 0 ||
 		gameModel.getWallHealth(3) == 0 || gameModel.getWallHealth(4) == 0 || gameModel.getWallHealth(5) == 0) {
 		switchscene = LOSE;

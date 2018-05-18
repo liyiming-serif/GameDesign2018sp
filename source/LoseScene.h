@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "GameModel.h"
 #include "InputController.h"
+#include "SpawnController.h"
 #include <cugl/cugl.h>
 
 class LoseScene : public cugl::Scene{
@@ -25,6 +26,9 @@ protected:
     std::shared_ptr<cugl::Button> _loseReplay;
     
     std::shared_ptr<cugl::PolygonNode> _background;
+    std::shared_ptr<cugl::Label> _score;
+    
+    SpawnController spawncontroller; 
     
     
     
