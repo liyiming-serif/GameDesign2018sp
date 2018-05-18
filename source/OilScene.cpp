@@ -251,6 +251,7 @@ bool OilScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _oilTOcastle->setAnchor(Vec2::ANCHOR_TOP_LEFT);
     _oilTOcastle->setPosition(15,_size.height-18);
     _oilTOcastle->setScale(.6f);
+    _oilTOcastle->setZOrder(-1);
     
 	// Init the oil effect when it's poured
 	_deluge = AnimationNode::alloc(_assets->get<Texture>("oil_wave"),DELUGE_NUM_ROWS,DELUGE_NUM_COLS);
