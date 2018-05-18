@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 import android.os.*;
 import android.util.Log;
 
@@ -29,13 +31,14 @@ public class ChaosCastle extends SDLActivity {
 	BluetoothServerThread bServer;
 	BluetoothClientThread bClient;
 	BluetoothAdapter mba;
-	String origName;
 	ArrayList<BluetoothDevice> pairedServers;
 	BluetoothConnectedThread bConnected;
 	ArrayList<BluetoothConnectedThread> bConnectedRing;
 
 	boolean isServer = false;
 	int currClientIndex = -1;
+
+	Handler mHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,25 @@ public class ChaosCastle extends SDLActivity {
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 		registerReceiver(mReceiver, filter);
 		mba = BluetoothAdapter.getDefaultAdapter();
-		if(mba != null) {
-			origName = mba.getName();
-		}
+
+		mHandler = new Handler(Looper.getMainLooper()) {
+			@Override
+			public void handleMessage(Message message) {
+				//create alert dialog factory
+				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+				Log.d("CLIENT", "here1");
+				//Chain together various setter methods to set the dialog characteristics,
+				//then show them.
+				builder.setMessage((String)message.obj+" is currently not hosting a game.")
+						.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						})
+						.show();
+			}
+		};
 	}
 
 	public int getPlayers(){
@@ -61,6 +80,70 @@ public class ChaosCastle extends SDLActivity {
 	    	return -1;
 		}
     }
+
+	/**
+	 * Call this when the server is ready to receive gameState packets.
+	 * @return success value (0=success, 1=failure)
+	 */
+	public int clearServerACKs() {
+		if(isServer){
+			if(bConnectedRing==null||bConnectedRing.size()==0){
+				return 1;
+			}
+			currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+			synchronized (this){
+				//throws away result and just clear the buffer
+				Log.d("SERVER", "clearing ACK messages from client"+currClientIndex);
+				return bConnectedRing.get(currClientIndex).popState()==null ? 1:0;
+			}
+		}
+		return 1;
+	}
+
+    /** Similar to consumeState, but the client reads states in FIFO order
+	 *  and doesn't erase previous states.
+	 */
+    public byte[] consumeACK(){
+		if(isServer){
+			if(bConnectedRing==null || bConnectedRing.size()==0){
+				return null;
+			}
+			try {
+				currClientIndex = (currClientIndex+1)%bConnectedRing.size();
+				String s;
+				synchronized (this) {
+					s = bConnectedRing.get(currClientIndex).dequeueState();
+				}
+				if(s==null){
+					Log.d("SERVER", "got nothing");
+					return null;
+				}
+				Log.d("SERVER", s);
+				return s.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+				return null;
+			}
+		}
+		else {
+			if (bConnected == null) {
+				return null;
+			}
+			try {
+				String s;
+				synchronized (this) {
+					s = bConnected.dequeueState();
+				}
+				if (s == null){
+					Log.d("CLIENT", "got nothing");
+					return null;
+				}
+				Log.d("CLIENT", s);
+				return s.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+				return null;
+			}
+		}
+	}
 
 	/** Call consumeState from C++ to get one COMPLETE game state
 	 *  from the bluetooth socket.
@@ -111,13 +194,6 @@ public class ChaosCastle extends SDLActivity {
 	 *  to the bluetooth socket.
 	 */
 	public int sendState(byte[] byte_buffer) {
-		try {
-			Log.d("CLIENT", "Passed JNI barrier: " + new String(byte_buffer, "UTF-8"));
-		}
-		catch(java.io.UnsupportedEncodingException e){
-			Log.e("CLIENT", "There's no reason to read this.");
-		}
-		Log.d("CLIENT", "Passed JNI barrier: in sendState");
 		int status = 0;
 	    if(isServer){
 	    	if(bConnectedRing==null || bConnectedRing.size()==0){
@@ -203,8 +279,7 @@ public class ChaosCastle extends SDLActivity {
 			// There are paired devices. Get the name and address of each paired device.
 			for (BluetoothDevice device : pairedDevices) {
 				int deviceClass = device.getBluetoothClass().getDeviceClass();
-				if (deviceClass == BluetoothClass.Device.PHONE_SMART &&
-						device.getName().matches("SERVER[0-9].*")) {
+				if (deviceClass == BluetoothClass.Device.PHONE_SMART ) {
 					pairedServers.add(device);
 				}
 			}
@@ -224,14 +299,9 @@ public class ChaosCastle extends SDLActivity {
 		startActivity(discoverableIntent);
 	}
 
-	public void changeServerName(int numPlayers){
-		String newName = "SERVER"+numPlayers+origName;
-		mba.setName(newName);
-	}
 
 	public void setupBluetoothServer() {
-	    changeServerName(1);
-	    makeDiscoverable();
+	    //makeDiscoverable();
 	    isServer = true;
 	    bConnectedRing = new ArrayList<BluetoothConnectedThread>(5);
 		bServer = new BluetoothServerThread(this);
@@ -252,19 +322,34 @@ public class ChaosCastle extends SDLActivity {
 		bClient.start();
 	}
 
+	/**Call from C++ every update to check if you're connected*/
+	public boolean isConnected(){
+		if(isServer){
+			if(bConnectedRing != null && bConnectedRing.size()>0){
+				return true;
+			}
+		}
+		else{
+			if(bConnected != null){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean connected(BluetoothSocket mmSocket) {
 		Log.d("CONNECTED", "Starting connection");
 
 		// Start the thread to manage the connection and perform transmissions
         if(isServer){
             if(bConnectedRing.size()>=MAX_PLAYERS){
+            	//room is full; close server thread
                 return false;
             }
             synchronized (this) {
             	//change server name to reflect number of players
                 BluetoothConnectedThread b = new BluetoothConnectedThread(mmSocket);
                 bConnectedRing.add(b);
-				changeServerName(bConnectedRing.size()+1);
                 b.start();
                 Log.d("CONNECTED", "Another player has joined "+mba.getName());
             }
@@ -280,24 +365,22 @@ public class ChaosCastle extends SDLActivity {
         }
 	}
 
+	public void serverStopAccepting(){
+		if(isServer&&bServer!=null){
+			bServer.cancel();
+		}
+	}
+
+
 	public void disconnect(BluetoothConnectedThread connection) {
-		mba.setName(origName);
 		connection.cancel();
 	}
 
 	@Override
-	protected void onStop(){
-		//mba.setName(origName);
-		super.onStop();
-	}
-
-	@Override
 	protected void onDestroy() {
-		mba.setName(origName);
-		super.onDestroy();
-
 		// Don't forget to unregister the ACTION_FOUND receiver.
 		unregisterReceiver(mReceiver);
+		super.onDestroy();
 	}
 	
 }

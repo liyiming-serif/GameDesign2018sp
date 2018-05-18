@@ -43,6 +43,8 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+
 };
 
 #endif /* LoseScene_h */

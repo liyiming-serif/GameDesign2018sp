@@ -144,6 +144,13 @@ void CastleApp::onShutdown() {
     Application::onShutdown();
 }
 
+void CastleApp::onSuspend() {
+    if (gameModel.isNetworked() && !gameModel.isServer()) {
+        gameModel.suspendClient();
+        Application::onSuspend();
+    }
+}
+
 /**
  * The method called to update the application data.
  *
@@ -358,6 +365,15 @@ void CastleApp::swapscenes(int nextscene, int direction){
         initializeRooms();
         _overworldScene.resetCastle();
         _levelScene.setLevel(level);
+    }
+    if (_currscene==LOBBY && nextscene == OVERWORLD ) {
+        _currscene = OVERWORLD;
+        _lobbyScene.setActive(false);
+        reset();
+        //_spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(gameModel.getNoPlayers(), gameModel.level));
+        _spawnController.init(_assets, _assets->get<JSONReader>("slevels")->readJSON(1, gameModel.level));
+        initializeRooms();
+        _overworldScene.resetCastle();
     }
     switch(nextscene){
         case MENU:

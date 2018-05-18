@@ -290,6 +290,10 @@ int GameModel::getNoPlayers() {
     return gameModel._noPlayers;
 }
 
+int GameModel::getLevel() {
+    return gameModel.level;
+}
+
 void GameModel::setAmmo(int type, int amt){
     gameModel._arrowAmmo[type] = amt;
 }
@@ -838,10 +842,8 @@ void GameModel::updateStateClient(const char *ConsumedState) {
 }
 #endif
 char* GameModel::return_buffer(const std::string& string) {
-    CULog("State Change before buffering %s", string.c_str());
     char* return_string = new char[string.length() + 1];
     strcpy(return_string, string.c_str());
-    CULog("State Change after buffering %s", return_string);
     return return_string;
 }
 
@@ -863,4 +865,22 @@ void GameModel::setServer(bool server){
 
 void GameModel::setCurrentRoom(int room){
     gameModel._currentRoom = room;
+}
+
+void GameModel::suspendClient() {
+    std::string suspendString = "|0 0 0 0 0 0| |0 0 0|" + to_string(_playerID)+":0|0 0 0 0 0 0";
+    int premessageSize = suspendString.length();
+    int postmessageSize = premessageSize + to_string(premessageSize).length();
+    int totalmessageSize = premessageSize + to_string(postmessageSize).length();
+    suspendString = to_string(totalmessageSize) + suspendString;
+    char *write_byte_buffer = return_buffer(suspendString);
+
+    CULog("Suspend Message %s \n", write_byte_buffer);
+
+    if (gameModel.sendState(write_byte_buffer) == 1){
+        CULog("At least one write failure");
+    } else {
+        CULog("Write success");
+    }
+    delete[] write_byte_buffer;
 }

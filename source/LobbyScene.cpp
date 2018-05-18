@@ -206,6 +206,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
         // Only quit when the button is released
         if (!down) {
             switchscene = LEVELS;
+            serverStopAccepting();
         }
     });
 
@@ -218,7 +219,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             gameModel.setServer(true);
             gameModel.setNetworked(true);
             gameModel.setNoPlayers(1);
-            gameModel.setPlayerAvatar(0, 1);
+            //gameModel.setPlayerAvatar(0, 1);
             LobbyScene::changeCanvas("avatar");
             CULog("create");
 #endif
@@ -252,14 +253,14 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     addChild(_backButton);
     addChild(_lobby);
     addChild(_avatar);
-    addChild(_levelsButton);
+    _avatar->addChild(_levelsButton);
 //    addChild(_refreshButton);
     
     // We can only activate a button AFTER it is added to a scene
     _backButton->activate(input.generateKey("backMULTIButton"));
     _createButton->activate(input.generateKey("createButton"));
 //    _refreshButton->activate(input.generateKey("refreshButton"));
-    _levelsButton->activate(input.generateKey("levelsMULTIButton"));
+    input.generateKey("levelsMULTIButton");
     input.generateKey("_enterButton0");
     input.generateKey("_enterButton1");
     input.generateKey("_enterButton2");
@@ -267,6 +268,8 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     input.generateKey("_enterButton4");
 
     length = 0;
+
+    clientReady = true;
     
     return true;
 }
@@ -295,72 +298,21 @@ void LobbyScene::dispose() {
 
 void LobbyScene::update(float timestep){
 
-    // Animate
-    if (!_actions->isActive(ACT_KEY) && move1 ){
-        doMove(_move1, _cloud1);
-        move1=false;
-    }
-    else if (!_actions->isActive(ACT_KEY) && !move1 ){
-        _cloud1->setPosition(-500,447);
-        _move1 = MoveTo::alloc(Vec2(1300,447),1.5*DURATION);
-        doMove(_move1, _cloud1);
+    animateClouds();
+
+    if (!gameModel.isServer() && gameModel.isNetworked()) {
+        if (isConnected()) {
+            LobbyScene::changeCanvas("avatar");
+        }
+        else {
+            //Animate waiting for connection
+        }
     }
 
-
-    if (!_actions->isActive(ACT_KEY+2) && move2 ){
-        doMove2(_move2, _cloud2);
-        move2=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+2) && !move2 ){
-        _cloud2->setPosition(-400,496);
-        _move2 = MoveTo::alloc(Vec2(1300,496),DURATION);
-        doMove2(_move2, _cloud2);
+    if (_avatar->isVisible()) {
+        runLobbyNetworking();
     }
 
-
-    if (!_actions->isActive(ACT_KEY+3) && move3 ){
-        doMove3(_move3, _cloud3);
-        move3=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+3) && !move3 ){
-        _cloud3->setPosition(-200,500);
-        _move3 = MoveTo::alloc(Vec2(1200,500),DURATION/1.5);
-        doMove3(_move3, _cloud3);
-    }
-
-
-    if (!_actions->isActive(ACT_KEY+4) && move4 ){
-        doMove4(_move4, _cloud4);
-        move4=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+4) && !move4 ){
-        _cloud4->setPosition(-150,285);
-        _move4 = MoveTo::alloc(Vec2(1200,285),DURATION/2);
-        doMove4(_move4, _cloud4);
-    }
-
-
-    if (!_actions->isActive(ACT_KEY+5) && move5 ){
-        doMove5(_move5, _cloud5);
-        move5=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+5) && !move5 ){
-        _cloud5->setPosition(-75,52);
-        _move5 = MoveTo::alloc(Vec2(1150,52),DURATION/3);
-        doMove5(_move5, _cloud5);
-    }
-
-    if (!_actions->isActive(ACT_KEY+6) && move6 ){
-        doMove6(_move6, _cloud6);
-        move6=false;
-    }
-    else if (!_actions->isActive(ACT_KEY+6) && !move6 ){
-        _cloud6->setPosition(-200,185);
-        _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
-        doMove6(_move6, _cloud6);
-    }
-
-    // Delete all enter buttons/text
     if (LobbyClock == 50) {
         if (!serverDevices.empty()) {
             for(int i = 0; i < serverDevices.size(); i++) {
@@ -418,6 +370,13 @@ void LobbyScene::changeCanvas(std::string canvas) {
     if (canvas=="avatar"){
         _lobby->setVisible(false);
         _avatar->setVisible(true);
+        if (gameModel.isServer()) {
+            _levelsButton->activate(input.findKey("levelsMULTIButton"));
+        }
+        else {
+            _levelsButton->deactivate();
+            _levelsButton->setVisible(false);
+        }
         _createButton->deactivate();
         for(int i = 0; i < length; i++) {
             _enterButtons[i]->deactivate();
@@ -508,7 +467,6 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             gameModel.setNoPlayers(2);
             gameModel.setPlayerAvatar(1, 2);
             gameModel.setPlayerID(1);
-            LobbyScene::changeCanvas("avatar");
             CULog("enter");
         }
     });
@@ -533,6 +491,209 @@ void LobbyScene::refreshRooms() {
 
 }
 
+void LobbyScene::animateClouds() {
+    // Animate
+    if (!_actions->isActive(ACT_KEY) && move1 ){
+        doMove(_move1, _cloud1);
+        move1=false;
+    }
+    else if (!_actions->isActive(ACT_KEY) && !move1 ){
+        _cloud1->setPosition(-500,447);
+        _move1 = MoveTo::alloc(Vec2(1300,447),1.5*DURATION);
+        doMove(_move1, _cloud1);
+    }
 
 
+    if (!_actions->isActive(ACT_KEY+2) && move2 ){
+        doMove2(_move2, _cloud2);
+        move2=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+2) && !move2 ){
+        _cloud2->setPosition(-400,496);
+        _move2 = MoveTo::alloc(Vec2(1300,496),DURATION);
+        doMove2(_move2, _cloud2);
+    }
 
+
+    if (!_actions->isActive(ACT_KEY+3) && move3 ){
+        doMove3(_move3, _cloud3);
+        move3=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+3) && !move3 ){
+        _cloud3->setPosition(-200,500);
+        _move3 = MoveTo::alloc(Vec2(1200,500),DURATION/1.5);
+        doMove3(_move3, _cloud3);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+4) && move4 ){
+        doMove4(_move4, _cloud4);
+        move4=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+4) && !move4 ){
+        _cloud4->setPosition(-150,285);
+        _move4 = MoveTo::alloc(Vec2(1200,285),DURATION/2);
+        doMove4(_move4, _cloud4);
+    }
+
+
+    if (!_actions->isActive(ACT_KEY+5) && move5 ){
+        doMove5(_move5, _cloud5);
+        move5=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+5) && !move5 ){
+        _cloud5->setPosition(-75,52);
+        _move5 = MoveTo::alloc(Vec2(1150,52),DURATION/3);
+        doMove5(_move5, _cloud5);
+    }
+
+    if (!_actions->isActive(ACT_KEY+6) && move6 ){
+        doMove6(_move6, _cloud6);
+        move6=false;
+    }
+    else if (!_actions->isActive(ACT_KEY+6) && !move6 ){
+        _cloud6->setPosition(-200,185);
+        _move6 = MoveTo::alloc(Vec2(1250,185),DURATION/1.5);
+        doMove6(_move6, _cloud6);
+    }
+}
+
+void LobbyScene::runLobbyNetworking() {
+    if (gameModel.isNetworked()) {
+#if CU_PLATFORM == CU_PLATFORM_ANDROID
+        if (gameModel.isServer() && LobbyClock == 10) {
+            //TODO: Read from network
+            //Prints the messages from the clients
+            char **read_buffers = consumeACKServer();
+
+            bool nothingToRead = false;
+            for (int l = 0; l<gameModel.getNoPlayers()-1; l++) {
+                if (read_buffers[l] == NULL) {
+                    nothingToRead = true;
+                }
+            }
+            if (!nothingToRead) {
+                applyACKServer(read_buffers);
+            }
+
+            for (int l = 0; l<gameModel.getNoPlayers()-1; l++) {
+                //delete[] read_buffers[l];
+            }
+
+            char *write_byte_buffer = return_buffer(produceACKServer());
+
+            CULog("State Change %s \n", write_byte_buffer);
+
+            if (sendState(write_byte_buffer) == 1){
+                CULog("At least one write failure");
+            } else {
+                CULog("Write success");
+            }
+
+            delete[] write_byte_buffer;
+            //delete[] read_buffers;
+            LobbyClock = 0;
+        }
+        else if (!gameModel.isServer() && LobbyClock%10 == 0 && LobbyClock != 30) {
+            //TODO: Read from network
+            char *read_buffer = consumeACKClient();
+            CULog("Read Server State: %s \n", read_buffer);
+            if (read_buffer != NULL) {
+                applyACKClient(read_buffer);
+            }
+            //delete[] read_buffer;
+            LobbyClock++;
+        }
+        else if (!gameModel.isServer() && LobbyClock%15 == 0) {
+            char *write_byte_buffer = return_buffer(produceACKClient());
+            //TODO: Write to network
+            CULog("State Change: %s \n", write_byte_buffer);
+            if (sendState(write_byte_buffer) == 1){
+                CULog("At least one write failure");
+            } else {
+                CULog("Write success");
+            }
+            if (LobbyClock == 15) {
+                LobbyClock++;
+            } else {
+                LobbyClock = 0;
+            }
+            delete[] write_byte_buffer;
+        }
+        else {
+            LobbyClock++;
+        }
+#endif
+    }
+}
+
+std::string LobbyScene::produceACKClient() {
+    if(clientReady) {
+        return "3|1";
+    } else {
+        return "3|0";
+    }
+}
+
+std::string LobbyScene::produceACKServer() {
+    if(serverReady) {
+        return "8|" + to_string(gameModel.getNoPlayers())+"|1|-1";
+    } else {
+        return "8|" + to_string(gameModel.getNoPlayers())+"|0|-1";
+    }
+}
+
+char* LobbyScene::consumeACKClient() {
+    return consumeACK();
+}
+
+char** LobbyScene::consumeACKServer() {
+    char *tmp[gameModel.getNoPlayers()-1];
+    for (int i = 0; i < gameModel.getNoPlayers()-1; ++i) {
+        tmp[i] = consumeACK();
+        CULog("State from Client %i: %s", i, tmp[i]);
+    }
+    return tmp;
+}
+
+void LobbyScene::applyACKClient(char *ACK) {
+    char* copy = strdup(ACK);
+    const char s[2] = "|";
+    char* numPlayers;
+    char* serverStatus;
+    char* serverLevel;
+    char* token;
+    token = strtok(copy, s);
+    numPlayers = token;
+    token = strtok(NULL, s);
+    serverStatus = token;
+    token = strtok(NULL, s);
+    serverLevel = token;
+
+    gameModel.setNoPlayers(std::stoi(numPlayers));
+    int sLevel = std::stoi(serverLevel);
+    CULog("received level %s", serverLevel);
+    if (sLevel != -1) {
+        gameModel.setLevel(sLevel);
+        switchscene = OVERWORLD;
+    }
+}
+
+void LobbyScene::applyACKServer(char **ACKs) {
+    bool allReady = true;
+    for (int i = 0; i < gameModel.getNoPlayers()-1; ++i) {
+        if (ACKs[i]!=NULL) {
+            int ready = std::stoi(ACKs[i]);
+            if (ready == 0) allReady = false;
+        } else {
+            allReady = false;
+        }
+    }
+    allReady ? _levelsButton->activate(input.findKey("levelsMULTIButton")):_levelsButton->deactivate();
+}
+
+char* LobbyScene::return_buffer(const std::string &string) {
+    char* return_string = new char[string.length() + 1];
+    strcpy(return_string, string.c_str());
+    return return_string;
+}

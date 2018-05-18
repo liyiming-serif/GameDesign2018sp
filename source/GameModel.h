@@ -87,7 +87,7 @@ public:
 
 	void setEndTime(float time);
 
-	int getLevel(){return level;}
+	int getLevel();
 
 	void setLevel(int inputLevel){level = inputLevel;}
 
@@ -165,6 +165,8 @@ public:
     }
 
     void setCurrentRoom(int room);
+
+    void suspendClient();
 
 private:
 #if CU_PLATFORM == CU_PLATFORM_ANDROID
