@@ -249,6 +249,25 @@ public:
         return players;
     }
 
+    bool isConnected() {
+        // Set up parameters for JNI call
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+        jobject activity = (jobject)SDL_AndroidGetActivity();
+
+        jclass clazz(env->GetObjectClass(activity));
+        jmethodID method_id = env->GetMethodID(clazz, "isConnected",
+                                               "()Z");
+
+        // Call the Java method
+        bool connected = env->CallBooleanMethod(activity, method_id);
+
+        // Free local references
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(clazz);
+
+        return connected;
+    }
+
     void serverStopAccepting() {
         // Set up parameters for JNI call
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
@@ -358,6 +377,8 @@ private:
             return NULL;
         }
     }
+
+
 #endif
     void animateClouds();
 

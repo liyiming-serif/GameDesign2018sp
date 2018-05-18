@@ -301,7 +301,7 @@ public class ChaosCastle extends SDLActivity {
 
 
 	public void setupBluetoothServer() {
-	    makeDiscoverable();
+	    //makeDiscoverable();
 	    isServer = true;
 	    bConnectedRing = new ArrayList<BluetoothConnectedThread>(5);
 		bServer = new BluetoothServerThread(this);

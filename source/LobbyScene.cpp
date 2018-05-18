@@ -219,7 +219,7 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
             gameModel.setServer(true);
             gameModel.setNetworked(true);
             gameModel.setNoPlayers(1);
-            gameModel.setPlayerAvatar(0, 1);
+            //gameModel.setPlayerAvatar(0, 1);
             LobbyScene::changeCanvas("avatar");
             CULog("create");
 #endif
@@ -268,6 +268,8 @@ bool LobbyScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     input.generateKey("_enterButton4");
 
     length = 0;
+
+    clientReady = true;
     
     return true;
 }
@@ -297,6 +299,15 @@ void LobbyScene::dispose() {
 void LobbyScene::update(float timestep){
 
     animateClouds();
+
+    if (!gameModel.isServer() && gameModel.isNetworked()) {
+        if (isConnected()) {
+            LobbyScene::changeCanvas("avatar");
+        }
+        else {
+            //Animate waiting for connection
+        }
+    }
 
     if (_avatar->isVisible()) {
         runLobbyNetworking();
@@ -361,6 +372,10 @@ void LobbyScene::changeCanvas(std::string canvas) {
         _avatar->setVisible(true);
         if (gameModel.isServer()) {
             _levelsButton->activate(input.findKey("levelsMULTIButton"));
+        }
+        else {
+            _levelsButton->deactivate();
+            _levelsButton->setVisible(false);
         }
         _createButton->deactivate();
         for(int i = 0; i < length; i++) {
@@ -452,7 +467,6 @@ std::shared_ptr<cugl::Button> LobbyScene::createServerRoomButton(int device) {
             gameModel.setNoPlayers(2);
             gameModel.setPlayerAvatar(1, 2);
             gameModel.setPlayerID(1);
-            LobbyScene::changeCanvas("avatar");
             CULog("enter");
         }
     });
@@ -567,9 +581,8 @@ void LobbyScene::runLobbyNetworking() {
             }
 
             char *write_byte_buffer = return_buffer(produceACKServer());
-            //TODO: Write to network
 
-            //CULog("State Change %s \n", write_byte_buffer);
+            CULog("State Change %s \n", write_byte_buffer);
 
             if (sendState(write_byte_buffer) == 1){
                 CULog("At least one write failure");
@@ -616,17 +629,17 @@ void LobbyScene::runLobbyNetworking() {
 
 std::string LobbyScene::produceACKClient() {
     if(clientReady) {
-        return "1";
+        return "3|1";
     } else {
-        return "0";
+        return "3|0";
     }
 }
 
 std::string LobbyScene::produceACKServer() {
     if(serverReady) {
-        return to_string(gameModel.getNoPlayers())+"|1|-1";
+        return "8|" + to_string(gameModel.getNoPlayers())+"|1|-1";
     } else {
-        return to_string(gameModel.getNoPlayers())+"|0|-1";
+        return "8|" + to_string(gameModel.getNoPlayers())+"|0|-1";
     }
 }
 
@@ -659,8 +672,9 @@ void LobbyScene::applyACKClient(char *ACK) {
 
     gameModel.setNoPlayers(std::stoi(numPlayers));
     int sLevel = std::stoi(serverLevel);
+    CULog("received level %s", serverLevel);
     if (sLevel != -1) {
-        gameModel.level = sLevel;
+        gameModel.setLevel(sLevel);
         switchscene = OVERWORLD;
     }
 }
