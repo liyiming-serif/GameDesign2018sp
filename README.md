@@ -1,8 +1,23 @@
 # Game Design Group 3 Spring 2018
 Project repo for Chaos Castle, a co-op game for Android (and iOS).
 
+## Final release notes
+Chaos Castle (single player) requires no additional configuration. Build and run this project as you would 'HelloWorld' for Android, Apple, and Windows.
+
+### Changes from Open Beta
+The mage room can cast AOE spells on a single wall when it's unlocked from level 8 onwards. To cast a spell, tap a side of the castle (i.e. black hexagon) you wish to cast the spell at. Then tap the spell you wish to cast:
+
+Fire-deal 1 damage to all enemies on a side. Great for taking out hordes of weak enemies.
+
+Blizzard-slow down all enemies on a side, frozen enemies take double damage from arrows. Great for taking down strong targets.
+
+Shield-Prevent damage for a specific wall for a few seconds; great if your oil is still recharging.
+
+### Updated mutliplayer instructions
+To set up mutliplayer, two Android devices need to be paired up beforehand (through your phone settings.) Afterward, tap "mutliplayer" and "create room" for one of the devices. Afterwards, the other player should tap on the host's device name. Both players will then be taken to the mutliplayer endless mode, where all rooms except for the mage are unlocked.
+
+
 ## Open Beta release notes
-Chaos Castle requires no additional configuration. Build and run this project as you would 'HelloWorld' for Android, Apple, and Windows.
 
 ### Changes from Closed Beta
 Multiplayer works for up to six players! All devices must run Android. Before starting the game the server device (the one to create the room) must have previously paired with all client devices via Bluetooth (i.e. have their Bluetooth ID saved). Once the server creates a room, it may take a few seconds for the room to display on the clients' lobby screen.
