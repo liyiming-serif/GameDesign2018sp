@@ -174,6 +174,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(1);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -200,6 +202,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(2);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -226,6 +230,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(3);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -252,6 +258,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(4);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -278,6 +286,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(5);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -305,6 +315,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(6);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -332,6 +344,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(7);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
 
@@ -359,6 +373,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(8);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -385,6 +401,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(9);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -411,6 +429,8 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
                 gameModel.setLevel(10);
                 if (gameModel.isServer() && gameModel.isNetworked()) {
                     int message = sendState(return_buffer(produceACKServer()));
+                    int cleared = clearServerACKs();
+                    (cleared == 0) ? CULog("Server clear success"):CULog("Server clear failure");
                     (message == 0) ? CULog("Level write success"):CULog("Level write failure");
                 }
             }
@@ -824,7 +844,13 @@ void LevelselectScene::animateClouds() {
 }
 
 std::string LevelselectScene::produceACKServer() {
-    return to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.level);
+    if (gameModel.getLevel() < 10) {
+        return "7|" + to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.getLevel());
+    }
+    else {
+        return "8|" + to_string(gameModel.getNoPlayers())+"|1|" + to_string(gameModel.getLevel());
+    }
+
 }
 
 char* LevelselectScene::return_buffer(const std::string &string) {
