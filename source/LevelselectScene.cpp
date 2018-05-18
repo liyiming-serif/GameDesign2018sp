@@ -32,7 +32,7 @@ using namespace cugl;
 #define REPEATS  3
 #define ACT_KEY  "current"
 
-#define BUTTON_SCALE .95f
+#define BUTTON_SCALE .5f
 #define FONT    _assets->get<Font>("futura_levels")
 
 
@@ -73,20 +73,20 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the background image
     std::shared_ptr<Texture> texture  = _assets->get<Texture>("levelpage_background");
     _background = PolygonNode::allocWithTexture(texture);
-    _background->setScale(0.5625f); // Magic number to rescale asset
+    _background->setScale(1.08f); // Magic number to rescale asset
     _background->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _background->setPosition(-20,_size.height/2);
     addChild(_background);
     
     std::shared_ptr<Texture> texture_foreground  = _assets->get<Texture>("levelpage_foreground");
     _foreground = PolygonNode::allocWithTexture(texture_foreground);
-    _foreground->setScale(0.55f); // Magic number to rescale asset
+    _foreground->setScale(1.08f); // Magic number to rescale asset
     _foreground->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _foreground->setPosition(-2,_size.height/2-8);
     
     std::shared_ptr<Texture> texture_levels  = _assets->get<Texture>("levelpage_levels");
     _levels = PolygonNode::allocWithTexture(texture_levels);
-    _levels->setScale(0.5625f); // Magic number to rescale asset
+    _levels->setScale(.4f); // Magic number to rescale asset
     _levels->setAnchor(Vec2::ANCHOR_MIDDLE_LEFT);
     _levels->setPosition(0,_size.height/2);
 
@@ -398,7 +398,7 @@ bool LevelselectScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     
     // Position the play buttons
     _level1->setAnchor(Vec2::ANCHOR_CENTER);
-    _level1->setPosition(385,345);
+    _level1->setPosition(190,170);
     
     _level2->setAnchor(Vec2::ANCHOR_CENTER);
     _level2->setPosition(710,630);

@@ -102,6 +102,10 @@ protected:
         std::shared_ptr<cugl::PolygonNode>_mage_buttonNEW;
         std::shared_ptr<cugl::PolygonNode> _ammo_buttonNEW;
     
+    
+        std::shared_ptr<cugl::PolygonNode> _floorNew;
+        std::shared_ptr<cugl::PolygonNode> _floorBasementNew;
+    
 
     
     

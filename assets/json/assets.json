@@ -955,6 +955,20 @@
             "wrapS":    "clamp",
             "wrapT":    "clamp"
         },
+        "tutorial_newFloor": {
+            "file":     "textures/Tutorial/newFloor.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
+        "tutorial_newFloorBasement": {
+            "file":     "textures/Tutorial/newFloorBasement.png",
+            "minfilter":"nearest",
+            "magfilter":"linear",
+            "wrapS":    "clamp",
+            "wrapT":    "clamp"
+        },
         "pause_BG": {
             "file":     "textures/Pause/BG.png",
             "minfilter":"nearest",

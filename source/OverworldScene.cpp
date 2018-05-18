@@ -251,7 +251,19 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _cloud3->setScale(0.5625f); // Magic number to rescale asset
     _cloud3->setAnchor(Vec2::ANCHOR_CENTER);
     
+    std::shared_ptr<Texture> _new_floor  = _assets->get<Texture>("tutorial_newFloor");
+    _floorNew = PolygonNode::allocWithTexture(_new_floor);
+    _floorNew->setScale(.55,.6); // Magic number to rescale asset
+    _floorNew->setAnchor(Vec2::ANCHOR_CENTER);
+    _floorNew->setPosition(-_size.width/2+_castle_background->getWidth()/2+3,-_size.height*.188f);
+
     
+    std::shared_ptr<Texture> _new_B_floor  = _assets->get<Texture>("tutorial_newFloorBasement");
+    _floorBasementNew = PolygonNode::allocWithTexture(_new_B_floor);
+    _floorBasementNew->setScale(.55); // Magic number to rescale asset
+    _floorBasementNew->setAnchor(Vec2::ANCHOR_CENTER);
+    _floorBasementNew->setPosition(-_size.width/2+_castle_background->getWidth()/2+3,-_size.height*.4f);
+
 
     _background->addChild(_castle_background);
     
@@ -262,10 +274,14 @@ bool OverworldScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     _background->addChild(_castle_flag);
     _background->addChild(_castle_black);
     
+    _background->addChild(_floorNew);
+    _background->addChild(_floorBasementNew);
+    
     _background->addChild(_castle_basement);
     _background->addChild(_castle_oil);
     _background->addChild(_castle_lookout);
     _background->addChild(_castle_ballista);
+    
     _castle_ballista->setColor(Color4(255,255,255,0));
     _castle_basement->setColor(Color4(255,255,255,0));
     _castle_oil->setColor(Color4(255,255,255,0));
@@ -1381,15 +1397,19 @@ void OverworldScene::update(float timestep){
         _oilSouthNEW->setVisible(false);
         _oilSouthEastNEW->setVisible(false);
         _oilSouthWestNEW->setVisible(false);
+        _floorNew->setVisible(false);
     }
     if (_mageClick>0) {
         _mage_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
     if (_ammoClick>0) {
         _ammo_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
     if (_repairClick>0) {
         _repair_buttonNEW->setVisible(false);
+        _floorBasementNew->setVisible(false);
     }
 
 	//poll damage indicators
@@ -1534,6 +1554,7 @@ void OverworldScene::setActive(bool active) {
             _oilSouthNEW->setVisible(true);
             _oilSouthEastNEW->setVisible(true);
             _oilSouthWestNEW->setVisible(true);
+            _floorNew->setVisible(true);
         }
         if (!_newOil) {
             _oilNorthNEW->setVisible(false);
@@ -1542,6 +1563,7 @@ void OverworldScene::setActive(bool active) {
             _oilSouthNEW->setVisible(false);
             _oilSouthEastNEW->setVisible(false);
             _oilSouthWestNEW->setVisible(false);
+            _floorNew->setVisible(false);
         }
         if (_newRepair && _repairClick < 1) {
             _repair_buttonNEW->setVisible(true);
@@ -1562,6 +1584,13 @@ void OverworldScene::setActive(bool active) {
         }
         if (!wizard) {
             _mage_buttonNEW->setVisible(false);
+        }
+        
+        if ((_newAmmo && _ammoClick < 1) || (wizard && _mageClick < 1) || (_newRepair && _repairClick < 1)) {
+            _floorBasementNew->setVisible(true);
+        }
+        if (!wizard && !_newAmmo && !_newRepair) {
+            _floorBasementNew->setVisible(false);
         }
 
 

@@ -363,9 +363,11 @@ void LookoutScene::setActive(bool active){
             std::min((_size.height*.09f+(gameModel.getCurrentTime()*_distance)),_size.height));
         
         if (gameModel.level==1){
+            CULog("TRUE");
             _tapTutorial=true;
         }
         else {
+            CULog("FALSE");
             _tapTutorial=false;
         }
         if (_tapTutorial && _exitCount < 1) {
@@ -374,9 +376,9 @@ void LookoutScene::setActive(bool active){
         if (_tapTutorial && _exitCount < 2) {
             _text->setVisible(true);
         }
-        if (!_lookout_tap) {
+        if (!_tapTutorial) {
             _lookout_tap->setVisible(false);
-            _text->setVisible(true);
+            _text->setVisible(false);
         }
 
 
