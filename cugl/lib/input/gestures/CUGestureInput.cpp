@@ -863,7 +863,6 @@ bool GestureInput::updateState(const SDL_Event& event, const Timestamp& stamp) {
                 
                 if (_tolerance < 0 || _event.error <= _tolerance) {
                     _match = true;
-					CULog("Here: %i",_gestures.size());
                     for(auto it = _matchListeners.begin(); it != _matchListeners.end(); ++it) {
                         it->second(_event,it->first == _focus);
                     }

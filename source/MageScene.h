@@ -20,8 +20,6 @@ class MageScene : public cugl::Scene{
 protected:
     cugl::Size _size;
 	int _spellTimer;
-	int _selectedDir;
-	std::string _queuedSpell;
 
     // asset manager
     std::shared_ptr<cugl::AssetManager> _assets;
@@ -55,6 +53,10 @@ protected:
     std::shared_ptr<PolygonNode> southwestWall_floor;
     std::shared_ptr<PolygonNode> northwestWall_floor;
 
+	std::shared_ptr<cugl::Button> _bombButton;
+	std::shared_ptr<cugl::Button> _barrierButton;
+	std::shared_ptr<cugl::Button> _freezeButton;
+
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
 
@@ -78,8 +80,13 @@ public:
     //Pause or Resume
     void setActive(bool active);
     int switchscene;
+
+	//spell info that gets passed to ballista or oil
+	std::string queuedSpell;
+	int selectedDir;
     
     void setSide (std::string side);
+	void setSpell(std::string spellName);
 
 	/**iterate through gameModel's dmg castle health and apply indicators*/
 	void pollDmgIndicators();

@@ -266,7 +266,7 @@ void CastleApp::update(float timestep) {
                 else if(_currscene==MAGE){
                     _mageScene.update(timestep);
                     if(_mageScene.switchscene!=0){
-                        swapscenes(_mageScene.switchscene, 0);
+                        swapscenes(_mageScene.switchscene, _mageScene.selectedDir, _mageScene.queuedSpell);
                         _mageScene.setActive(false);
                     }
                 }
@@ -300,7 +300,7 @@ void CastleApp::update(float timestep) {
 }
 //TODO::FIX THE NEXT LEVEL AND RESET
 
-void CastleApp::swapscenes(int nextscene, int direction){
+void CastleApp::swapscenes(int nextscene, int direction, std::string spellName){
     _direction = direction;
     if (_currscene == MENU && nextscene == LOBBY) {
         enableBluetooth();
@@ -369,7 +369,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             gameModel.setCurrentRoom(0);
             break;
         case BALLISTA:
-            _ballistaScene.setActive(true, _direction);
+            _ballistaScene.setActive(true, _direction,spellName);
             gameModel.setCurrentRoom(2+_direction);
             break;
         case LOOKOUT:
@@ -389,7 +389,7 @@ void CastleApp::swapscenes(int nextscene, int direction){
             gameModel.setCurrentRoom(15);
             break;
         case OIL:
-            _oilScene.setActive(true, _direction);
+            _oilScene.setActive(true, _direction,spellName);
             gameModel.setCurrentRoom(8+_direction);
             break;
         case LOBBY:

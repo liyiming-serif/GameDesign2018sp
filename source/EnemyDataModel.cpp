@@ -19,6 +19,7 @@ bool EnemyDataModel::init(const std::string& name,int hp,const Vec2& pos,int typ
 	_type = type;
 	_wall = wall;
 	_atkCounter = -1;
+	_freezeStep = 0;
 	switch (type) {
 		case 1: //skeleton
 			_atkRange = -1;
@@ -42,24 +43,28 @@ bool EnemyDataModel::init(const std::string& name,int hp,const Vec2& pos,int typ
 }
 
 int EnemyDataModel::getSpeed() {
+	int result = 0;
 	if (_type == 1 || _type == 2 || _type == 3) {
-		return 3;
+		result = 3;
 	}
 	else if (_type == 4) {
-		return 2;
+		result = 2;
 	}
 	else if (_type == 5) {
 		if (_health == 3) {
-			return 3;
+			result = 3;
 		}
 		else if (_health == 2) {
-			return 5;
+			result = 6;
 		}
 		else {
-			return 8;
+			result = 10;
 		}
 	}
-	return 0;
+	if (_freezeStep > 0) {
+		result /= 2;
+	}
+	return result;
 }
 
 int EnemyDataModel::getDamage() {

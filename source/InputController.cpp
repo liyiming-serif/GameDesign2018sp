@@ -99,6 +99,10 @@ bool InputController::init(){
 	//	this->gestureStateCB(old, curr);
 	//});
 	gest->loadAsset("Gestures");
+	for (int i = 0; i < gest->getGestures().size(); i++) {
+
+		CULog("loaded %s gestures", gest->getGestures().at(i).c_str());
+	}
 	gest->pause();
 	_makeGestureTimer = 100;
 	
@@ -265,13 +269,13 @@ void InputController::gestureMatchCB(const GestureEvent &event, bool focus) {
 }
 
 void InputController::gestureStateCB(GestureState old, GestureState curr) {
-	if (old == GestureState::RECORDING || old == GestureState::MATCHING) {
-		GestureInput* gest = Input::get<GestureInput>();
-		if (gest->ready()) {
-			gest->save("Gestures");
-			CULog("recording session successful for BARRIER1 spell");
-		}
-	}
+	//if (old == GestureState::RECORDING || old == GestureState::MATCHING) {
+	//	GestureInput* gest = Input::get<GestureInput>();
+	//	if (gest->ready()) {
+	//		gest->save("Gestures");
+	//		CULog("recording session successful for BARRIER1 spell");
+	//	}
+	//}
 }
 
 Uint32 InputController::generateKey(const std::string & name) {

@@ -33,6 +33,7 @@ protected:
 
 	// Actions
 	std::shared_ptr<cugl::FadeOut> _dmgFadeOUT;
+	std::shared_ptr<cugl::Animate> _spellAnim;
 
 	//models
     std::shared_ptr<cugl::Button> _oilTOcastle;
@@ -55,6 +56,9 @@ protected:
 
 	std::shared_ptr<cugl::AnimationNode> _deluge;
 	float _delugeFrame;
+
+	// Spell Animations
+	std::shared_ptr<cugl::AnimationNode> _barrierAnim;
     
 	//helper functions for translating enemy y coords
 	bool inRange(float y);
@@ -62,6 +66,9 @@ protected:
     
 	/** Damage Indicators */
 	std::vector<std::shared_ptr<cugl::PolygonNode>> _dmgIndicators;
+
+	//Spell filter
+	std::shared_ptr<cugl::PolygonNode> _spellFilter;
 
 public:
     // Constructors
@@ -75,9 +82,10 @@ public:
     // Gameplay
     void update(float timestep, int direction);
 	void updateEnemyModels(float timestep, int direction);
+	void animateSpells(const std::string & spellName);
 
     //Pause or Resume
-    void setActive(bool active, int direction);
+    void setActive(bool active, int direction, std::string spellName="none");
     int switchscene;
     
     //Sets the compass image based on the direction input

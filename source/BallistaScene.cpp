@@ -19,6 +19,8 @@
 
 #define DMG_DURATION 1.0f
 #define DMG_ACT_KEY "marker"
+#define SPELL_DURATION 0.7f
+#define SPELL_ACT_KEY "spell_b"
 
 // Decide when to use heavy damage indicator
 #define HVY_DMG 6
@@ -74,6 +76,36 @@ bool BallistaScene::init(const std::shared_ptr<cugl::AssetManager>& assets) {
     // Set the assets
     switchscene = 0;
     _assets = assets;
+
+	// Allocate spell filter
+	std::shared_ptr<Texture> filter = _assets->get<Texture>("spell_filter");
+	_spellFilter = PolygonNode::allocWithTexture(filter);
+	_spellFilter->setScale(_size / _spellFilter->getSize());
+	_spellFilter->setAnchor(Vec2::ANCHOR_CENTER);
+	_spellFilter->setPosition(_size / 2.0);
+	_spellFilter->setColor(Color4::CLEAR);
+	_spellFilter->setZOrder(3);
+	addChild(_spellFilter);
+
+	// Allocate spell animations
+	std::shared_ptr<Texture> sp = _assets->get<Texture>("bomb_spell");
+	_bombAnim = AnimationNode::alloc(sp,2,4);
+	_bombAnim->setAnchor(Vec2::ANCHOR_CENTER);
+	_bombAnim->setPosition(_size / 2.0);
+	_bombAnim->setColor(Color4::CLEAR);
+	_bombAnim->setZOrder(4);
+	addChild(_bombAnim);
+
+	sp = _assets->get<Texture>("freeze_spell");
+	_freezeAnim = AnimationNode::alloc(sp, 3, 6);
+	_freezeAnim->setAnchor(Vec2::ANCHOR_CENTER);
+	_freezeAnim->setPosition(_size / 2.0);
+	_freezeAnim->setColor(Color4::CLEAR);
+	_freezeAnim->setZOrder(4);
+	addChild(_freezeAnim);
+
+	_spellAnim = Animate::alloc(0,7,SPELL_DURATION);
+	_spellAnim2 = Animate::alloc(0, 17, SPELL_DURATION);
 
 	// Allocate the damage indicators
 	std::shared_ptr<Texture> dmg_img = _assets->get<Texture>("dmg_indicator_n");
@@ -403,6 +435,13 @@ void BallistaScene::dispose() {
 		_enemiesToFree.clear();
 		_dmgFadeOUT = nullptr;
 		_dmgIndicators.clear();
+
+		//spells
+		_spellAnim = nullptr;
+		_spellAnim2 = nullptr;
+		_spellFilter = nullptr;
+		_bombAnim = nullptr;
+		_freezeAnim = nullptr;
     }
 }
 
@@ -471,6 +510,12 @@ void BallistaScene::update(float deltaTime, int direction){
         _ballista_swipe->setVisible(false);
     }
 
+	//remove spell effects if they're done
+	if (!input.actions()->isActive(SPELL_ACT_KEY)) {
+		_bombAnim->setColor(Color4::CLEAR);
+		_freezeAnim->setColor(Color4::CLEAR);
+		_spellFilter->setColor(Color4::CLEAR);
+	}
     
 	bool hasAmmo = gameModel.getArrowAmmo(0) > 0;
 
@@ -623,6 +668,12 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 			}
 		}
 		else { //update existing enemy model
+			if (e->getFreezeStep() > 0) {
+				i->second->getNode()->setColor(Color4::BLUE);
+			}
+			else {
+				i->second->getNode()->setColor(Color4::WHITE);
+			}
 			Vec2 pos = Vec2(e->getPos().x, calcY(e->getPos().y));
 			i->second->setPosition(pos/DRAW_SCALE);
 			float atkProgress = (float)e->getAtkCounter() / (float)e->getAtkSpeed();
@@ -665,8 +716,26 @@ void BallistaScene::updateEnemyModels(float deltaTime, int direction) {
 	_enemiesToFree.clear();
 }
 
+void BallistaScene::animateSpells(const std::string & spellName) {
+	//Animate spells
+	if (spellName == "freeze") {
+		bool succ = input.actions()->activate(SPELL_ACT_KEY, _spellAnim2, _freezeAnim);
+		if (succ) {
+			_freezeAnim->setColor(Color4::WHITE);
+			_spellFilter->setColor(Color4::WHITE);
+		}
+	}
+	else if (spellName == "bomb") {
+		bool succ = input.actions()->activate(SPELL_ACT_KEY, _spellAnim, _bombAnim);
+		if (succ) {
+			_bombAnim->setColor(Color4::WHITE);
+			_spellFilter->setColor(Color4::WHITE);
+		}
+	}
+}
+
 //Pause or Resume
-void BallistaScene::setActive(bool active, int direction){
+void BallistaScene::setActive(bool active, int direction, std::string spellName){
     _direction = direction;
     _active = active;
     switchscene = 0;
@@ -737,6 +806,8 @@ void BallistaScene::setActive(bool active, int direction){
 		else {
 			_background->setTexture(texture_d);
 		}
+
+		animateSpells(spellName);
     }
     else{
         _ballistaTOcastle->deactivate();
@@ -746,6 +817,14 @@ void BallistaScene::setActive(bool active, int direction){
 			it->setColor(Color4::CLEAR);
 			input.actions()->clearAllActions(it);
 		}
+
+		//wipe spell fx
+		_spellFilter->setColor(Color4::CLEAR);
+		_bombAnim->setColor(Color4::CLEAR);
+		_freezeAnim->setColor(Color4::CLEAR);
+		input.actions()->clearAllActions(_bombAnim);
+		input.actions()->clearAllActions(_freezeAnim);
+		
     }
 }
 
@@ -787,10 +866,20 @@ void BallistaScene::beginContact(b2Contact* contact) {
 						gameModel._enemiesToFreeMaster[_direction].push_back(k);
 					}
 					else {
-						ed->setHealth(ed->getHealth() - 1);
+						if (ed->getFreezeStep() > 0) {
+							ed->setHealth(ed->getHealth() - 2);
+						}
+						else {
+							ed->setHealth(ed->getHealth() - 1);
+						}
 					}
 					if (gameModel.isNetworked() && !gameModel.isServer()) {
-						gameModel.addEnemyChange(k, -1, ed->getWall());
+						if (ed->getFreezeStep() > 0) {
+							gameModel.addEnemyChange(k, -2, ed->getWall());
+						}
+						else {
+							gameModel.addEnemyChange(k, -1, ed->getWall());
+						}
 					}
 				}
 				break;
